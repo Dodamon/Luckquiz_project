@@ -1,7 +1,7 @@
-##ERD
+## ERD
 https://www.erdcloud.com/d/E3dHxJH2rDW9RJ9cj
 
-##FIGMA
+## FIGMA
 https://www.figma.com/file/1MYq7dM9NfZOK26ccFZLKd/LuckQuiz?node-id=0%3A1&t=t0hwaByaN5i2LCCs-1
 
 ## Sequence Diagram
