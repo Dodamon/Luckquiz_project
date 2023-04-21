@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
     "lib": [
+      "ES6",
       "dom",
       "dom.iterable",
+      "ScriptHost",
       "esnext"
     ],
     "allowJs": true,
@@ -18,9 +20,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src/",
   },
   "include": [
     "src"
-  ]
+  ],
 }

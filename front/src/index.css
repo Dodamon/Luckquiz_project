@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'GodoM';
+    src: url('/public/font/GodoM.ttf') format('truetype');
+}
+
+* {
+    font-family: 'GodoM', sans-serif;
+}
+
+body {
+    margin: 0;
+    
+    /* 기본 색깔 */
+    --point-color: #7557FF;
+    --black-color: #010101;
+    --white-color: #fbfbfb;
+
+    /* 버튼 색깔, one을 위주로 사용, 버튼 두 개거나 배경이 포인트 컬러일 때 two 사용 */
+    --button-one: #7557FF;
+    --button-two: #FFC107;
+    --button-delete: #F75555;
+
+    /* 퀴즈의 선택지 색깔과 틀린 답 색깔 */
+    --select-one: #F75555;
+    --select-two: #1BD392;
+    --select-three: #FF981F;
+    --select-four: #3779FF;
+    --wrong-answer: #CBCBCB;
+
+    /* 세팅 색깔 */
+    --placeholder-text: #7E7E7E;
+    --side-bar: #DCD5FF;
+    --mypage-background: #F1F1F1;
+    --ranking-background: #917AFD;
+    --box-shadow: 1px 1px 10px -4px #858585;
+
+    /* 위 색들 다 쓰고도 색깔이 더 필요한 경우에만 기타 색깔로 사용 */
+    --etc-one: #7A5548;
+    --etc-two: #607D8A;
+    --etc-three: #935CD7;
+
+    /* 텍스트 크기 설정 (페이지 만들면서 추가 예정) */
+}
+
+p {
+    margin: 0;
+}
