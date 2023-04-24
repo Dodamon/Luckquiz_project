@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'GodoM';
-    src: url('/public/font/GodoM.ttf') format('truetype');
+    src: url('assets/font/GodoM.ttf') format('truetype');
 }
 
 * {
@@ -39,6 +39,11 @@ body {
     --etc-two: #607D8A;
     --etc-three: #935CD7;
 
+    background-image: url(assets/images/background.png);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    background-attachment: fixed;
     /* 텍스트 크기 설정 (페이지 만들면서 추가 예정) */
 }
 
