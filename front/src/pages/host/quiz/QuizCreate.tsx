@@ -30,7 +30,12 @@ const QuizCreate: React.FC = () => {
         setItemsList([...itemsList, newContent]);
     }
 
-    
+    const deleteContentHandler= (idx:string)=>{
+        const newQuizList = itemsList.filter(it=> it.id !==idx+"")
+        setItemsList(newQuizList);
+    }
+
+
     return (
         <div className={styles.QuizCreate}>
             <section className={styles.left_side} >
@@ -47,9 +52,15 @@ const QuizCreate: React.FC = () => {
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
+                                                <div className={styles.quiz_sub}>
+                                                <div className={styles.quiz_title} style={item.type==="게임"?{backgroundColor:`var(--point-color)`}:{backgroundColor:"none"}}>{item.type} {index + 1}</div>
+                                                <div className={styles.quiz_delete} onClick={()=>deleteContentHandler(item.id)}>x</div>
+                                                </div>
+                                                <div className={styles.quiz_content}>
 
-                                                <div className={styles.quiz_title}>{item.type} {index + 1}</div>
-                                                <div className={styles.quiz_content}></div>
+                                                
+
+                                                </div>
 
                                             </li>
                                         )}
