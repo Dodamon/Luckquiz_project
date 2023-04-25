@@ -1,9 +1,11 @@
 import { useState } from "react";
-import styles from "./QuizCreate.module.css"
+import styles from "./QuizCreatePage.module.css"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { Icon } from '@iconify/react';
 
-const QuizCreate: React.FC = () => {
+import QuizCreateLayout from "./QuizCreateLayout";
+import GameCreateLayout from "./GameCreateLayout";
+
+const QuizCreatePage: React.FC = () => {
 
     const [itemsList, setItemsList] = useState([
         { id: "0", content: "one", type: "퀴즈" },
@@ -55,7 +57,7 @@ const QuizCreate: React.FC = () => {
                                                 {...provided.dragHandleProps}
                                             >
                                                 <div className={styles.quiz_sub}>
-                                                    <div className={styles.quiz_title} style={item.type === "게임" ? { backgroundColor: `var(--point-color)` } : { backgroundColor: "none" }}>{item.type} {index + 1}</div>
+                                                    <div className={styles.quiz_title} style={item.type === "퀴즈" ? { backgroundColor: `var(--point-color)` } : { backgroundColor: `var(--button-two)`  }}>{item.type} {index + 1}</div>
                                                     <div className={styles.quiz_delete} onClick={() => deleteContentHandler(item.id)}>x</div>
                                                 </div>
                                                 <div className={styles.quiz_content}>
@@ -81,63 +83,10 @@ const QuizCreate: React.FC = () => {
             </section>
 
             <section className={styles.right_side} >
-
-                <nav className={styles.content_nav}>
-
-                    <div className={styles.nav_left}>
-                        <select>
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                        </select>
-                        <select>
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                        </select>
-                    </div>
-
-                    <div className={styles.nav_right}>
-                        <div>
-                            <div>임시저장</div>
-                        </div>
-
-                        <div>
-                            <div>저장</div><Icon icon="ic:round-log-out" />
-                        </div>
-                    </div>
-
-                </nav>
-
-                <div className={styles.content_title}>
-                    <input type="text" placeholder="질문을 입력하세요" />
-                </div>
-
-                <div className={styles.content_images}>
-                    
-                   <div className={styles.plus_font} ><Icon icon="ic:round-plus"/></div>
-                   <div className={styles.plus_comment}>이미지를 첨부하세요</div>
-                    
-                </div>
-
-                <div className={styles.content_answerbox}>
-                    <div className={styles.content_answer_1}>
-                                           
-                    </div>
-                    <div className={styles.content_answer_2}>정답2</div>
-                    <div className={styles.content_answer_3}>정답3</div>
-                    <div className={styles.content_answer_4}>정답4</div>
-                </div>
-
-
-
-
-
-
-
-
-
+                      <GameCreateLayout/>      
             </section>
         </div>
     );
 };
 
-export default QuizCreate;
+export default QuizCreatePage;
