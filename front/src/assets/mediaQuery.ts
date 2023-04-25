@@ -17,6 +17,6 @@ export const Mobile = ({children}: {children: JSX.Element}): JSX.Element | null 
 
 // mobile이 아닐 때만 출력되는 컴포넌트
 export const Default = ({children}: {children: JSX.Element}): JSX.Element | null => {
-  const isNotMobile = useMediaQuery({ minWidth: 768 });
+  const isNotMobile = useMediaQuery({ minWidth: 767 });
   return isNotMobile ? children : null;
 };

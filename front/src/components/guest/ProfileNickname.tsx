@@ -34,7 +34,7 @@ const ProfileNickname: React.FC = () => {
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  
     if (e.key === "Enter") {
       const enteredTxt = nicknameRef.current!.value;
       if (enteredTxt.length > 6) {
@@ -54,7 +54,7 @@ const ProfileNickname: React.FC = () => {
           <Icon icon="ph:plus-circle-fill" className={styles.imgEditBtn} onClick={onClickEditImg} />
         </div>
       </div>
-      <div className={styles.nicknameWrapper}>
+      <div className={styles.nicknameWrapper} >
         <input className={styles.nicknameInput} type="text" ref={nicknameRef} placeholder="닉네임을 입력하세요" onKeyDown={enterHandler}/>
       </div>
       <div className={styles.nicknameWrapper}>

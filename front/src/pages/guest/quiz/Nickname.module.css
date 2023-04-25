@@ -1,20 +1,21 @@
 .defaultMode {
-    height: 80%;
+    height: 530px;
+    width: 400px;
 }
 
 .defaultLogo {
-  height: 40%;
-  width: 100%;
-  object-fit: contain;
+  height: 160px;
+  width: 400px;
+  object-fit: fill;
 }
 
 .mobileMode {
-    height: 50%;
-    width: 330px;
+    height: 440px;
+    width: 290px;
 }
 
 .mobileLogo {
-    height: 40%;
-    width: 100%;
-    object-fit: contain;
+    height: 120px;
+    width: 290px;
+    object-fit: fill;
 }
