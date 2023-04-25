@@ -2,6 +2,7 @@ import App from "App";
 import Nickname from "pages/guest/quiz/Nickname";
 import Profile from "pages/guest/quiz/Profile";
 import GuestQuiz from "pages/guest/GuestQuiz";
+import HomeMain from "pages/host/home/HomeMain";
 import Quiz from "pages/host/home/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
@@ -19,34 +20,40 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "login",
+        index: true,
         element: <Login />,
       },
       {
-        path: "home/quiz",
-        element: <Quiz />,
-      },
-      {
-        path: "home/report",
-        element: <ReportMain />,
+        path: "home",
+        element: <HomeMain />,
         children: [
           {
             index: true,
-            element: <Report/>,
+            element: <Quiz />,
           },
           {
-            path: ":report-id/basicinfo",
-            element: <></>,
+            path: "report",
+            element: <ReportMain />,
+            children: [
+              {
+                index: true,
+                element: <Report />,
+              },
+              {
+                path: ":report-id/basicinfo",
+                element: <></>,
+              },
+              {
+                path: ":report-id/partinfo",
+                element: <></>,
+              },
+              {
+                path: ":report-id/quizinfo",
+                element: <></>,
+              },
+            ],
           },
-          {
-            path: ":report-id/partinfo",
-            element: <></>,
-          },
-          {
-            path: ":report-id/quizinfo",
-            element: <></>,
-          },
-        ]
+        ],
       },
       {
         path: "quiz/create",
