@@ -9,11 +9,13 @@
 
 body {
     margin: 0;
+    height: 100vh;
     
     /* 기본 색깔 */
     --point-color: #7557FF;
     --black-color: #010101;
     --white-color: #fbfbfb;
+    --grey-color: #cacaca;
 
     /* 버튼 색깔, one을 위주로 사용, 버튼 두 개거나 배경이 포인트 컬러일 때 two 사용 */
     --button-one: #7557FF;

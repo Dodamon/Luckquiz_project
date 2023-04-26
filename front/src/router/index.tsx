@@ -1,6 +1,8 @@
 import App from "App";
+import { createBrowserRouter } from "react-router-dom";
+
 import Nickname from "pages/guest/quiz/Nickname";
-import Profile from "pages/guest/quiz/Profile";
+import Profile from "pages/guest/quiz/ProfileImage";
 import GuestQuiz from "pages/guest/GuestQuiz";
 import Quiz from "pages/host/home/Quiz";
 import Report from "pages/host/home/report/Report";
@@ -8,10 +10,10 @@ import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
 import Create from "pages/host/quiz/Create";
 import Edit from "pages/host/quiz/Edit";
-import { createBrowserRouter } from "react-router-dom";
 import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
+import GuestLobby from "pages/guest/quiz/GuestLobby";
 
 const router = createBrowserRouter([
   {
@@ -96,7 +98,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/lobby",
-            element: <></>,
+            element: <GuestLobby/>,
           },
           {
             path: "quiz/play",

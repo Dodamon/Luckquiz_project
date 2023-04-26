@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
+import styles from "./GuestQuiz.module.css";
 
 const GuestQuiz = () => {
   return (
-    <>
-      <h1>GuestQuiz</h1>
+    <div className={styles.guestQuizContainer}>
       <Outlet></Outlet>
-    </>
+    </div>
   );
 };
 

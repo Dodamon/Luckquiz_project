@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth";
+import guestReducer from "./guest";
 
 const persistConfig = {
   key: "root",
@@ -10,10 +11,12 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
+const persistedGuestReducer = persistReducer(persistConfig, guestReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
+    guest: persistedGuestReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

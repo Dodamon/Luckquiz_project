@@ -1,0 +1,21 @@
+.defaultMode {
+    height: 530px;
+    width: 400px;
+}
+
+.defaultLogo {
+  height: 160px;
+  width: 400px;
+  object-fit: fill;
+}
+
+.mobileMode {
+    height: 440px;
+    width: 290px;
+}
+
+.mobileLogo {
+    height: 120px;
+    width: 290px;
+    object-fit: fill;
+}
