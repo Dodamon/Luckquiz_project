@@ -2,7 +2,7 @@ import App from "App";
 import { createBrowserRouter } from "react-router-dom";
 
 import Nickname from "pages/guest/quiz/Nickname";
-import Profile from "pages/guest/quiz/Profile";
+import Profile from "pages/guest/quiz/ProfileImage";
 import GuestQuiz from "pages/guest/GuestQuiz";
 import Quiz from "pages/host/home/Quiz";
 import Report from "pages/host/home/report/Report";

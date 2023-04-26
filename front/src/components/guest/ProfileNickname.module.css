@@ -26,11 +26,12 @@
     border-radius: 100%;
     margin-top: 10%;
     object-fit: cover;
+    border: 2px solid var(--grey-color);
 }
 
 .imgEditBtn {
     position: absolute;
-    top: 100px;
+    top: 101px;
     left: 88px;
     font-size: 40px;
     color: var(--button-two);
