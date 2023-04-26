@@ -4,15 +4,15 @@ FROM adoptopenjdk/openjdk11
 ENV SPRING_CONFIG_LOCATION=<path-to-file>
 # env finish
 
-COPY quiz/gradlew .
-COPY quiz/gradle gradle
-COPY quiz/build.gradle .
-COPY quiz/settings.gradle .
-COPY quiz/src src
-RUN chmod +x ./gradlew
-RUN ./gradlew clean bootJar
+#COPY gradlew .
+#COPY gradle gradle
+#COPY build.gradle .
+#COPY settings.gradle .
+#COPY src src
+#RUN chmod +x ./gradlew
+#RUN ./gradlew clean bootJar
 
-FROM adoptopenjdk/openjdk11
+#FROM adoptopenjdk/openjdk11
 ARG JAR_FILE=/build/libs/quiz-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
