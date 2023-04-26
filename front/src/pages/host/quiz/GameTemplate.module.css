@@ -1,0 +1,11 @@
+.GameTemplate{
+    width: 100%;
+}
+
+.emotion_content{
+    width: 90%;
+    height: 90%;
+    margin-top: 10px;
+    background-color: wheat;
+
+}
