@@ -5,7 +5,7 @@ import Nickname from "pages/guest/quiz/Nickname";
 import Profile from "pages/guest/quiz/ProfileImage";
 import GuestQuiz from "pages/guest/GuestQuiz";
 import HomeMain from "pages/host/home/HomeMain";
-import Quiz from "pages/host/home/Quiz";
+import Quiz from "pages/host/home/quiz/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
