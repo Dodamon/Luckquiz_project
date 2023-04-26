@@ -58,7 +58,7 @@ const ProfileImage: React.FC = () => {
     <>
       <div className={styles.imgContainer}>
         {IMAGES.map((img, index) => (
-          <div className={styles.imgBox}>
+          <div className={styles.imgBox} key={index}>
             <img
               src={img}
               alt=""
