@@ -83,7 +83,7 @@ const QuizCreatePage: React.FC = () => {
             </section>
 
             <section className={styles.right_side} >
-                      <GameCreateLayout/>      
+                      <GameCreateLayout/>   
             </section>
         </div>
     );
