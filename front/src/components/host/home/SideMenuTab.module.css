@@ -1,6 +1,5 @@
-.side-tab-box {
+.side-tab {
   width: 70%;
-  height: 250px;
   background-color: #F2EFFF;
   border-radius: 20px;
   box-sizing: border-box;
@@ -21,6 +20,11 @@
   margin-bottom: 15px;
   padding: 9%;
   font-size: 17px;
+}
+.profile-name {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .profile-img {
