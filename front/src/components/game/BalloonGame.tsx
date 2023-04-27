@@ -1,178 +1,93 @@
-import React from "react";
+import React, { useRef } from "react";
 import "./BalloonGame.css";
 
 const BalloonGame: React.FC = () => {
-  let mainSvg = document.getElementById("main-svg");
-  let secondSvg = document.getElementById("second-svg");
-  let thirdSvg = document.getElementById("third-svg");
-  let fourthSvg = document.getElementById("fourth-svg");
-  let content = document.getElementById("content");
-  let needle = document.getElementById("needle");
+  const mainSvg = useRef<any>();
+  const secondSvg = useRef<any>();
+  const thirdSvg = useRef<any>();
+  const content = useRef<any>();
+  const needle = useRef<any>();
+  const normalMotion = useRef<any>();
   let audio = new Audio("http://soundbible.com/mp3/Balloon%20Popping-SoundBible.com-1247261379.mp3");
-  let normalMotion = document.getElementById("normal-motion");
-  let slowMotion = document.getElementById("slow-motion");
-
-  normalMotion?.addEventListener("click", function () {
-    normalMotion!.style.visibility = "hidden";
-    slowMotion!.style.visibility = "hidden";
+  const timeLimit = "13:49";
+  console.log(normalMotion);
+  const onClickPop = () => {
+    normalMotion!.current.style.visibility = "hidden";
     setTimeout(() => {
-      needle!.style.left = "70vw";
+      needle!.current.style.left = "70vw";
     }, 50);
 
     setTimeout(() => {
-      needle!.style.left = "60vw";
+      needle!.current.style.left = "60vw";
     }, 70);
-
+ 
     setTimeout(() => {
-      needle!.style.left = "50vw";
+      needle!.current.style.left = "50vw";
     }, 90);
-
+  
     setTimeout(() => {
-      needle!.style.left = "45vw";
+      needle!.current.style.left = "45vw";
     }, 110);
-
+  
     setTimeout(() => {
       audio.play();
-      mainSvg!.style.visibility = "hidden";
-      secondSvg!.style.visibility = "visible";
+      mainSvg!.current.style.visibility = "hidden";
+      secondSvg!.current.style.visibility = "visible";
     }, 130);
 
     setTimeout(() => {
-      thirdSvg!.style.visibility = "visible";
+      thirdSvg!.current.style.visibility = "visible";
     }, 150);
 
     setTimeout(() => {
-      content!.style.opacity = ".9";
+      content!.current.style.opacity = ".9";
     }, 170);
 
     setTimeout(() => {
-      content!.style.opacity = ".8";
+      content!.current.style.opacity = ".8";
     }, 190);
 
     setTimeout(() => {
-      content!.style.opacity = ".7";
+      content!.current.style.opacity = ".7";
     }, 210);
 
     setTimeout(() => {
-      content!.style.opacity = ".6";
+      content!.current.style.opacity = ".6";
     }, 230);
 
     setTimeout(() => {
-      content!.style.opacity = ".4";
+      content!.current.style.opacity = ".4";
     }, 250);
 
     setTimeout(() => {
-      content!.style.opacity = ".3";
+      content!.current.style.opacity = ".3";
     }, 270);
 
     setTimeout(() => {
-      content!.style.opacity = ".2";
+      content!.current.style.opacity = ".2";
     }, 290);
 
     setTimeout(() => {
-      content!.style.opacity = ".1";
+      content!.current.style.opacity = ".1";
     }, 300);
 
     setTimeout(() => {
-      content!.style.opacity = "0";
+      content!.current.style.opacity = "0";
     }, 300);
 
     setTimeout(() => {
-      mainSvg!.style.visibility = "visible";
-      secondSvg!.style.visibility = "hidden";
-      thirdSvg!.style.visibility = "hidden";
-      content!.style.opacity = "1";
-      needle!.style.left = "80vw";
+      mainSvg!.current.style.visibility = "hidden";
+      secondSvg!.current.style.visibility = "hidden";
+      thirdSvg!.current.style.visibility = "visible";
+      content!.current.style.opacity = "1";
+      needle!.current.style.visibility="hidden";
     }, 320);
-
-    setTimeout(() => {
-      normalMotion!.style.visibility = "visible";
-      slowMotion!.style.visibility = "visible";
-    }, 1650);
-  });
-
-  slowMotion?.addEventListener("click", function () {
-    normalMotion!.style.visibility = "hidden";
-    slowMotion!.style.visibility = "hidden";
-    setTimeout(() => {
-      needle!.style.left = "70vw";
-    }, 100);
-
-    setTimeout(() => {
-      needle!.style.left = "60vw";
-    }, 200);
-
-    setTimeout(() => {
-      needle!.style.left = "50vw";
-    }, 300);
-
-    setTimeout(() => {
-      needle!.style.left = "45vw";
-    }, 400);
-
-    setTimeout(() => {
-      audio.play();
-      mainSvg!.style.visibility = "hidden";
-      secondSvg!.style.visibility = "visible";
-    }, 500);
-
-    setTimeout(() => {
-      thirdSvg!.style.visibility = "visible";
-    }, 600);
-
-    setTimeout(() => {
-      content!.style.opacity = ".9";
-    }, 700);
-
-    setTimeout(() => {
-      content!.style.opacity = ".8";
-    }, 800);
-
-    setTimeout(() => {
-      content!.style.opacity = ".7";
-    }, 900);
-
-    setTimeout(() => {
-      content!.style.opacity = ".6";
-    }, 1000);
-
-    setTimeout(() => {
-      content!.style.opacity = ".4";
-    }, 1100);
-
-    setTimeout(() => {
-      content!.style.opacity = ".3";
-    }, 1200);
-
-    setTimeout(() => {
-      content!.style.opacity = ".2";
-    }, 1300);
-
-    setTimeout(() => {
-      content!.style.opacity = ".1";
-    }, 1400);
-
-    setTimeout(() => {
-      content!.style.opacity = "0";
-    }, 1500);
-
-    setTimeout(() => {
-      mainSvg!.style.visibility = "visible";
-      secondSvg!.style.visibility = "hidden";
-      thirdSvg!.style.visibility = "hidden";
-      content!.style.opacity = "1";
-      needle!.style.left = "80vw";
-    }, 1600);
-
-    setTimeout(() => {
-      normalMotion!.style.visibility = "visible";
-      slowMotion!.style.visibility = "visible";
-    }, 1900);
-  });
+  };
 
   return (
-    <div id="content">
-      <svg viewBox="0 0 100 100" id="main-svg">
+    <div id="content" ref={content}>
+      <div id="time-box">{timeLimit} 초</div>
+      <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg}>
         <path
           d="M24 55,
 					 C0 45, 10 20, 25 20, 
@@ -222,7 +137,7 @@ const BalloonGame: React.FC = () => {
 					 Q14 35,13.8 37, Z"
           fill="#f1d4d6"
           stroke="none"
-        />
+        /> 
         <path
           d="M12.5 29, 
 					 Q15 25, 19 23, 
@@ -258,7 +173,7 @@ const BalloonGame: React.FC = () => {
           strokeWidth="1"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="second-svg">
+      <svg viewBox="0 0 100 100" id="second-svg" ref={secondSvg}>
         <path
           d="M20 50, 
 					L21 45, 
@@ -404,7 +319,7 @@ const BalloonGame: React.FC = () => {
           stroke="none"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="third-svg">
+      <svg viewBox="0 0 100 100" id="third-svg" ref={thirdSvg}>
         <path
           d="M17 47, 
 					L18 42, 
@@ -526,10 +441,9 @@ const BalloonGame: React.FC = () => {
           stroke="none"
         />
       </svg>
-
-      <div id="needle"></div>
-      <button id="normal-motion"> Pop the balloon! </button>
-      <button id="slow-motion"> Slow Motion</button>
+ 
+      <div id="needle" ref={needle}></div>
+      <button ref={normalMotion} onClick={onClickPop}> POP !! </button>
     </div>
   );
 };

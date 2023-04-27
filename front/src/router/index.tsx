@@ -14,7 +14,8 @@ import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
-import BalloonGame from "pages/guest/game/BalloonGame";
+import BalloonGame from "components/game/BalloonGame";
+import PlayBalloonGame from "pages/guest/game/PlayBalloonGame";
 
 const router = createBrowserRouter([
   {
@@ -107,7 +108,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/balloon",
-            element: <BalloonGame></BalloonGame>,
+            element: <PlayBalloonGame></PlayBalloonGame>,
           },
           {
             path: "quiz/result",
