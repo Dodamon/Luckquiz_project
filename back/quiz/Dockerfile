@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-slim as bulder
+FROM openjdk:11-jdk-slim as builder
 
 # env
 ENV SPRING_CONFIG_LOCATION=<path-to-file>
