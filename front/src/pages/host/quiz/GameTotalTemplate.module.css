@@ -1,0 +1,36 @@
+.shake_content{
+    margin-top: 30px;
+    background-color: white;
+    border-radius: 20px;
+    width: 90%;
+    height: 80%;
+    /* height: 90%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.shake_title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.shake_title h1{
+    font-size: 32px;
+}
+.shake_explain{
+    font-size: 24px;
+    color: var(    --placeholder-text);
+}
+
+.shake_img{
+    background-color: red;
+    width: 300px;
+    height: 350px;
+    margin-top: 30px;
+}
+
+.shake_img img{
+  height: 100%;
+  width: 100%;
+}
