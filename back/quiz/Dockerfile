@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-slim
+FROM openjdk:11-jdk-slim as bulder
 
 # env
 ENV SPRING_CONFIG_LOCATION=<path-to-file>
@@ -6,7 +6,7 @@ ENV SPRING_CONFIG_LOCATION=<path-to-file>
 
 ARG JAR_FILE=build/libs/*.jar
 
-COPY ${JAR_FILE} app.jar
+COPY --from=builder build/libs/*.jar app.jar
 
 EXPOSE 8080
 
