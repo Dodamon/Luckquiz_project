@@ -42,18 +42,23 @@ const newGameItem :setQuizItem ={
 const QuizCreatePage: React.FC = () => {
     const quizInfo = useSelector((state:RootState)=> state.quiz);
     const dispatch = useDispatch();
-    console.log(quizInfo.quizList);
     
-    function onDragEnd(result: any) {
+ 
+    
+    const onDragEnd = (result: any)=>{
         if (!result.destination) {
             return;
         }
         const items = Array.from(quizInfo.quizList);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
-      } 
+        dispatch(quizAtions.updateQuiz(items))
+    }
+  
+
+
     useEffect(() => {
-        
+        // console.log(quizInfo.quizList);
       }, [quizInfo.quizList]); 
     
 

@@ -36,6 +36,10 @@ reducers:{
     removeQuiz:(state, action)=>{
         state.quizList=state.quizList.filter((it,index)=> index!==action.payload);
     }
+    ,
+    updateQuiz:(state, action)=>{
+        state.quizList=action.payload;
+    }
 }
 })
 
