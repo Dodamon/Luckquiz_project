@@ -9,7 +9,7 @@ const GameCreateLayout = () => {
         <div className={styles.GameCreateLayout}>
           {/* <GameSelection/> */}
           <GameTemplate/>
-          
+
 
         
         </div>
