@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth";
+import quizReducer from "./quiz";
 import guestReducer from "./guest";
 
 const persistConfig = {
@@ -15,6 +16,7 @@ const persistedGuestReducer = persistReducer(persistConfig, guestReducer);
 
 const store = configureStore({
   reducer: {
+    quiz: quizReducer,
     auth: persistedReducer,
     guest: persistedGuestReducer,
   },

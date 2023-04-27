@@ -1,44 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { setQuizSet } from "models/quiz";
+import { setQuizItem } from "models/quiz";
 
-
-// 전역 로그인 데이터 타입 설정
-interface QuizStateList {
-    isAuthenticated: boolean;
-    nickname: string;
-    connected: boolean;
+const quizItem: setQuizItem ={
+    quizType:"",
+    quiz: "",
+    quizUrl: "",
+    answer: "",
+    one: "",
+    two:"",
+    three: "",
+    four: "",
+    answerList: [],
+    game: "",
+    timer: 0
 }
 
 
 // 전역 로그인 데이터 기본 값 설정
-const initialAuth: QuizStateList ={
-    isAuthenticated: false,
-    nickname: "",
-    connected: false,
+const initialQuizSet: setQuizSet ={
+    name: "",
+    hostId: 0,
+    quizList:[]
 }
 
-// Redux Toolkit에서 제공하는 함수 중 하나
-// Redux의 reducer를 작성할 때 보일러플레이트 코드를 줄이고,
-// 코드의 가독성과 유지보수성을 높이기 위해 사용
-const authSlice = createSlice({
-name: "auth",
-initialState: initialAuth,
+
+
+
+const quizSlice = createSlice({
+name: "quiz",
+initialState: initialQuizSet,
 reducers:{
 
-    login:(state, action)=>{
-        state.isAuthenticated =true;
-        state.nickname = action.payload.name;
+    addQuiz:(state,action)=>{
+        state.quizList.push(action.payload);
     },
-    logout:(state)=>{
-        state.isAuthenticated = false;
-        state.nickname = "";
+    removeQuiz:(state, action)=>{
+        state.quizList=state.quizList.filter(it=> it!==action.payload);
     }
 }
 })
 
 // slice안에 있는 action들 뽑아내
-export const authAtions = authSlice.actions;
+export const quizAtions = quizSlice.actions;
 // reducer 속성을 추출하여, 이를 해당 모듈의 기본 내보내기
-export default authSlice.reducer;
+export default quizSlice.reducer;
 
 
 

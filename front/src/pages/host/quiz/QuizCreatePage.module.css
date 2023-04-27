@@ -11,7 +11,7 @@
     height: 100vh;
     overflow: auto;
     overflow-x: hidden;
-  
+    background-color: var(--white-color);
 }
 
 
@@ -42,10 +42,13 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 0;
+    list-style: none;
 }
 
 .quiz_item {
     margin-bottom: 20px;
+    
 }
 
 .quiz_title {

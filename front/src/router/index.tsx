@@ -8,7 +8,7 @@ import Quiz from "pages/host/home/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
-import Create from "pages/host/quiz/Create";
+import QuizCreatePage from "pages/host/quiz/QuizCreatePage";
 import Edit from "pages/host/quiz/Edit";
 import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       },
       {
         path: "quiz/create",
-        element: <Create />,
+        element: <QuizCreatePage />,
       },
       {
         path: "quiz/:quiz-id/edit",
