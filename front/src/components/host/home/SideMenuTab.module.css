@@ -1,0 +1,29 @@
+.side-tab-box {
+  width: 70%;
+  height: 250px;
+  background-color: #F2EFFF;
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7% 7% 7% 10%;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+  padding: 9%;
+  font-size: 17px;
+}
+
+.profile-img {
+  width: 35%;
+  border-radius: 50%;
+}

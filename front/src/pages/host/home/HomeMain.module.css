@@ -1,9 +1,18 @@
 .background {
   background-color: white;
   width: 100%;
-  height: 2000px;
+  /* height: 2000px; */
+  height: 100%;
   min-width: 740px;
   min-height: 100%;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+
+/* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .header {
@@ -31,7 +40,7 @@
   width: fit-content;
   height: 80px;
   display: flex;
-  align-items:end
+  align-items: end;
 }
 
 .logo-img {
@@ -39,7 +48,7 @@
   margin-right: 30px;
 }
 
-.btn{
+.btn {
   /* width: 210px; */
   /* min-width: 102px; */
   height: 40px;
@@ -60,4 +69,18 @@
 .add-icon {
   min-width: 20px;
   margin-right: 10px;
+}
+
+.container {
+  height: calc(100% - 80px);
+  display: flex;
+}
+
+.side {
+  width: 20%;
+  /* min-width :198px;  */
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: calc(12vh + 30px);
 }

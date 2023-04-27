@@ -13,6 +13,9 @@ import { createBrowserRouter } from "react-router-dom";
 import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
+import ReportBasic from "pages/host/home/report/ReportBasic";
+import ReportPart from "pages/host/home/report/ReportPart";
+import ReportQuiz from "pages/host/home/report/ReportQuiz";
 
 const router = createBrowserRouter([
   {
@@ -40,16 +43,16 @@ const router = createBrowserRouter([
                 element: <Report />,
               },
               {
-                path: ":report-id/basicinfo",
-                element: <></>,
+                path: ":report_id/basicinfo",
+                element: <ReportBasic></ReportBasic>,
               },
               {
-                path: ":report-id/partinfo",
-                element: <></>,
+                path: ":report_id/partinfo",
+                element: <ReportPart></ReportPart>,
               },
               {
-                path: ":report-id/quizinfo",
-                element: <></>,
+                path: ":report_id/quizinfo",
+                element: <ReportQuiz></ReportQuiz>,
               },
             ],
           },
@@ -60,11 +63,11 @@ const router = createBrowserRouter([
         element: <Create />,
       },
       {
-        path: "quiz/:quiz-id/edit",
+        path: "quiz/:quiz_id/edit",
         element: <Edit />,
       },
       {
-        path: "host/quiz/:quiz-id",
+        path: "host/quiz/:quiz_id",
         element: <HostQuiz />,
         children: [
           {
