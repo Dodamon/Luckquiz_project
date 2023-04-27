@@ -10,6 +10,35 @@ import { useDispatch } from "react-redux";
 import { quizAtions } from "store/quiz";
 import { setQuizItem } from "models/quiz";
 
+
+const newQuizItem :setQuizItem ={
+    quizType:"퀴즈",
+    quiz: "",
+    quizUrl: "",
+    answer: "",
+    one: "",
+    two:"",
+    three: "",
+    four: "",
+    answerList: [],
+    game: "",
+    timer: 0
+} 
+
+const newGameItem :setQuizItem ={
+    quizType:"게임",
+    quiz: "",
+    quizUrl: "",
+    answer: "",
+    one: "",
+    two:"",
+    three: "",
+    four: "",
+    answerList: [],
+    game: "",
+    timer: 0
+} 
+
 const QuizCreatePage: React.FC = () => {
     const quizInfo = useSelector((state:RootState)=> state.quiz);
     const dispatch = useDispatch();
@@ -27,39 +56,19 @@ const QuizCreatePage: React.FC = () => {
         
       }, [quizInfo.quizList]); 
     
-    // const [itemsList, setItemsList] = useState(quizInfo.quizList);
 
   
 
     const addQuizHandler = () => {
-        // const index = itemsList.length + 1
-        // const newContent = { id: index + "", content: "two", type: "퀴즈" };
-        // setItemsList([...itemsList, newContent]);
-        const newItem :setQuizItem ={
-            quizType:"퀴즈",
-            quiz: "",
-            quizUrl: "",
-            answer: "",
-            one: "",
-            two:"",
-            three: "",
-            four: "",
-            answerList: [],
-            game: "",
-            timer: 0
-        } 
-        dispatch(quizAtions.addQuiz(newItem))
+        dispatch(quizAtions.addQuiz(newQuizItem))
     }
 
     const addGameHandler = () => {
-        // const index = itemsList.length + 1
-        // const newContent = { id: index + "", content: "two", type: "게임" };
-        // setItemsList([...itemsList, newContent]);
+        dispatch(quizAtions.addQuiz(newGameItem))
     }
 
     const deleteContentHandler = (idx: number) => {
-        // const newQuizList = itemsList.filter(it => it.id !== idx + "")
-        // setItemsList(newQuizList);
+        dispatch(quizAtions.removeQuiz(idx))
     }
 
 

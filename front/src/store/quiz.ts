@@ -25,8 +25,6 @@ const initialQuizSet: setQuizSet ={
 }
 
 
-
-
 const quizSlice = createSlice({
 name: "quiz",
 initialState: initialQuizSet,
@@ -36,7 +34,7 @@ reducers:{
         state.quizList.push(action.payload);
     },
     removeQuiz:(state, action)=>{
-        state.quizList=state.quizList.filter(it=> it!==action.payload);
+        state.quizList=state.quizList.filter((it,index)=> index!==action.payload);
     }
 }
 })
