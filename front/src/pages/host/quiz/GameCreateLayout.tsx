@@ -7,7 +7,7 @@ import GameTemplate from './GameTemplate';
 const GameCreateLayout = () => {
     return (
         <div className={styles.GameCreateLayout}>
-          {/* <GameSelection/> */}
+  
           <GameTemplate/>
 
 

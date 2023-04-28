@@ -14,6 +14,7 @@ export interface getQuizItem {
 }
 
 export interface setQuizItem {
+    id: number,
     quizType: string,
     quiz: string,
     quizUrl: string,

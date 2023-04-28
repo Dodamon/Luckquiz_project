@@ -1,18 +1,43 @@
 
 import styles from "./QuizSelectMenu.module.css"
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { authAtions } from "store/auth";
 const QuizSelectMenu = () => {
+    const [selectedQuizOption, setSelectedQuizOption] = useState('');
+    const [selectedTimeOption, setSelectedTimeOption] = useState('');
+    const dispatch = useDispatch();
+
+    const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedQuizOption(event.target.value);
+        console.log(event.target.value);
+        dispatch(authAtions.selectQuizType(event.target.value))
+      
+    };
+
+    const quizTimeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedTimeOption(event.target.value);
+        console.log(event.target.value);
+    };
+  
+
+
+
     return (
         <nav className={styles.content_nav}>
 
         <div className={styles.nav_left}>
-            <select>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
+            <select value={selectedQuizOption} onChange={quizTypeHandler}>
+                <option value="four">사지선다</option>
+                <option value="ox">OX 선택</option>
+                <option value="text">주관식</option>
             </select>
-            <select>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
+            <select value={selectedTimeOption} onChange={quizTimeHandler}>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+                <option value="60">60</option>
             </select>
         </div>
 

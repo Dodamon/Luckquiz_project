@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import produce from "immer";
 import { setQuizSet } from "models/quiz";
 import { setQuizItem } from "models/quiz";
+import { act } from "react-dom/test-utils";
 
 const quizItem: setQuizItem ={
+    id:0,
     quizType:"",
     quiz: "",
     quizUrl: "",
@@ -24,12 +27,11 @@ const initialQuizSet: setQuizSet ={
     quizList:[]
 }
 
-
+//{index: selectInfo.choiceType, gameType: gameType
 const quizSlice = createSlice({
 name: "quiz",
 initialState: initialQuizSet,
 reducers:{
-
     addQuiz:(state,action)=>{
         state.quizList.push(action.payload);
     },
@@ -37,9 +39,19 @@ reducers:{
         state.quizList=state.quizList.filter((it,index)=> index!==action.payload);
     }
     ,
-    updateQuiz:(state, action)=>{
+    locationUpdate:(state, action)=>{
         state.quizList=action.payload;
+    }, 
+    chooseQuiz:(state, action)=>{
+        state.quizList=action.payload;
+    },
+    gameTypeUpdate:(state, action)=>{
+        const { index, gameType } = action.payload;
+        state.quizList = produce(state.quizList, draftList => {
+            draftList[index].game = gameType;
+        });
     }
+    
 }
 })
 

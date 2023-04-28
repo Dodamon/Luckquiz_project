@@ -6,6 +6,8 @@ interface AuthState {
     isAuthenticated: boolean;
     nickname: string;
     connected: boolean;
+    choiceType: number;
+    quizType: string;
 }
 
 
@@ -14,6 +16,8 @@ const initialAuth: AuthState ={
     isAuthenticated: false,
     nickname: "",
     connected: false,
+    choiceType: -1,
+    quizType: ""
 }
 
 // Redux Toolkit에서 제공하는 함수 중 하나
@@ -32,6 +36,12 @@ reducers:{
         state.isAuthenticated = false;
         state.nickname = "";
     }
+    ,selectType:(state, action)=>{
+        state.choiceType=action.payload;
+    },
+    selectQuizType:(state, action)=>{
+        state.quizType=action.payload;
+    },
 }
 })
 
