@@ -11,9 +11,7 @@ const PlayBalloonGame:React.FC = () => {
             <div className={styles.gameTitle}>
                 풍선 터트리기 게임 
             </div>
-
             <BalloonGame/> 
-  
         </div>  
     );
 };

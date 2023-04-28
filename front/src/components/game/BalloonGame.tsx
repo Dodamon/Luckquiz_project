@@ -1,93 +1,120 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import "./BalloonGame.css";
 
 const BalloonGame: React.FC = () => {
-  const mainSvg = useRef<any>();
-  const secondSvg = useRef<any>();
-  const thirdSvg = useRef<any>();
-  const content = useRef<any>();
-  const needle = useRef<any>();
-  const normalMotion = useRef<any>();
+  const mainSvg = useRef<SVGSVGElement>();
+  const secondSvg = useRef<SVGSVGElement>();
+  const thirdSvg = useRef<SVGSVGElement>();
+  const content = useRef<HTMLDivElement>();
+  const needle = useRef<HTMLDivElement>();
+  const normalMotion = useRef<HTMLButtonElement>();
   let audio = new Audio("http://soundbible.com/mp3/Balloon%20Popping-SoundBible.com-1247261379.mp3");
+
+  // timeLimit 불러옴
   const timeLimit = "13:49";
-  console.log(normalMotion);
+
+  const [ time, setTime ] = useState(0);
+  const [ isRunning, setIsRunning ] = useState(false);
+
   const onClickPop = () => {
-    normalMotion!.current.style.visibility = "hidden";
+    if (normalMotion.current) normalMotion!.current.style.visibility = "hidden";
     setTimeout(() => {
-      needle!.current.style.left = "70vw";
+      if (needle.current) needle!.current.style.left = "70vw";
     }, 50);
 
     setTimeout(() => {
-      needle!.current.style.left = "60vw";
+      if (needle.current) needle!.current.style.left = "60vw";
     }, 70);
  
     setTimeout(() => {
-      needle!.current.style.left = "50vw";
+      if (needle.current) needle!.current.style.left = "50vw";
     }, 90);
   
     setTimeout(() => {
-      needle!.current.style.left = "45vw";
+      if (needle.current) needle!.current.style.left = "45vw";
     }, 110);
   
     setTimeout(() => {
       audio.play();
-      mainSvg!.current.style.visibility = "hidden";
-      secondSvg!.current.style.visibility = "visible";
+      if (mainSvg.current) mainSvg!.current.style.visibility = "hidden";
+      if (secondSvg.current) secondSvg!.current.style.visibility = "visible";
     }, 130);
 
     setTimeout(() => {
-      thirdSvg!.current.style.visibility = "visible";
+      if (thirdSvg.current) thirdSvg!.current.style.visibility = "visible";
     }, 150);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".9";
+      if (content.current) content!.current.style.opacity = ".9";
     }, 170);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".8";
+      if (content.current) content!.current.style.opacity = ".8";
     }, 190);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".7";
+      if (content.current) content!.current.style.opacity = ".7";
     }, 210);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".6";
+      if (content.current) content!.current.style.opacity = ".6";
     }, 230);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".4";
+      if (content.current) content!.current.style.opacity = ".4";
     }, 250);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".3";
+      if (content.current) content!.current.style.opacity = ".3";
     }, 270);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".2";
+      if (content.current) content!.current.style.opacity = ".2";
     }, 290);
 
     setTimeout(() => {
-      content!.current.style.opacity = ".1";
+      if (content.current) content!.current.style.opacity = ".1";
     }, 300);
 
     setTimeout(() => {
-      content!.current.style.opacity = "0";
+      if (content.current) content!.current.style.opacity = "0";
     }, 300);
 
     setTimeout(() => {
-      mainSvg!.current.style.visibility = "hidden";
-      secondSvg!.current.style.visibility = "hidden";
-      thirdSvg!.current.style.visibility = "visible";
-      content!.current.style.opacity = "1";
-      needle!.current.style.visibility="hidden";
+      if (mainSvg.current) mainSvg!.current.style.visibility = "hidden";
+      if (secondSvg.current) secondSvg!.current.style.visibility = "visible";
+      if (thirdSvg.current) thirdSvg!.current.style.visibility = "visible";
+      if (content.current) content!.current.style.opacity = "1";
+      if (needle.current) needle!.current.style.visibility="hidden";
     }, 320);
+
+    console.log(time.toFixed(2));
+    // POST time.toFixed(2) data
+    ////////////////////////////
+    setIsRunning(false);
   };
 
+  useEffect(() => {
+    console.log("타이머 시작");
+    setIsRunning(true);
+  }, []);
+
+  useEffect(() => {
+    let interval:NodeJS.Timer;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTime((time) => time + 0.01);
+      }, 10);
+    };
+    return () => {
+      clearInterval(interval)};
+  }, [isRunning]);
+
   return (
-    <div id="content" ref={content}>
+    <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
       <div id="time-box">{timeLimit} 초</div>
-      <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg}>
+      <div id="game-description">가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
+      <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg as MutableRefObject<SVGSVGElement>}>
         <path
           d="M24 55,
 					 C0 45, 10 20, 25 20, 
@@ -173,7 +200,7 @@ const BalloonGame: React.FC = () => {
           strokeWidth="1"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="second-svg" ref={secondSvg}>
+      <svg viewBox="0 0 100 100" id="second-svg" ref={secondSvg as MutableRefObject<SVGSVGElement>}>
         <path
           d="M20 50, 
 					L21 45, 
@@ -319,7 +346,7 @@ const BalloonGame: React.FC = () => {
           stroke="none"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="third-svg" ref={thirdSvg}>
+      <svg viewBox="0 0 100 100" id="third-svg" ref={thirdSvg as MutableRefObject<SVGSVGElement>}>
         <path
           d="M17 47, 
 					L18 42, 
@@ -442,8 +469,8 @@ const BalloonGame: React.FC = () => {
         />
       </svg>
  
-      <div id="needle" ref={needle}></div>
-      <button ref={normalMotion} onClick={onClickPop}> POP !! </button>
+      <div id="needle" ref={needle as MutableRefObject<HTMLDivElement>}></div>
+      <button ref={normalMotion as MutableRefObject<HTMLButtonElement>} onClick={onClickPop}> POP !! </button>
     </div>
   );
 };

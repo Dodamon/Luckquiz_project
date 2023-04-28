@@ -25,6 +25,13 @@
     align-items: center;
   }
 
+  #game-description {
+    font-size: 18px;
+    color: white;
+    margin-top: 3%;
+    text-align: center;
+  }
+
   svg {
     stroke-width: 0.3;
     fill: none;
@@ -115,10 +122,11 @@
 
 @media screen and (max-width: 767px) {
   #content {
-    width: 100%;
+    width: 80%;
     padding: 10px;
-    margin: 20px 0;
-    background-color: rgba(246, 223, 223, 0.271);
+    margin-top: 20px;
+    margin-bottom: 10px;   
+    background-color: rgba(255, 255, 255, 0.271);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -139,10 +147,18 @@
     align-items: center;
   }
 
+  #game-description {
+    font-size: 16px;
+    color: white;
+    margin-top: 5%;
+    text-align: center;
+  }
+
   svg {
     stroke-width: 0.3;
     fill: none;
     width: 100%;
+    margin-left: -18%;
     height: 60vh;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -155,14 +171,16 @@
   #second-svg {
     visibility: hidden;
     position: absolute;
-    left: 4%;
+    top: 240px;
+    left: 27%;
   }
 
   #third-svg {
     z-index: -1;
     visibility: hidden;
     position: absolute;
-    left: 4%;
+    top: 240px;
+    left: 27%;
   }
 
   #rotate {
@@ -174,11 +192,12 @@
   }
 
   #needle {
+    /* top: 1%; */
     width: 40px;
     height: 8px;
     background: white;
     position: absolute;
-    left: 77vw;
+    margin-left: 65%;
     border-radius: 0 10px 10px 0;
   }
 
@@ -208,11 +227,13 @@
 
   button {
     position: absolute;
-    left: 65vw;
+    margin-left: 60%;
     top: 75vh;
     outline: none;
     border: none;
-    width: 80px;
+    width: 16%;
+    min-width: 60px;
+    max-width: 60px;
     height: 36px;
     border-radius: 10px;
     background-color: var(--button-two);
