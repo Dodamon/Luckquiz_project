@@ -1,0 +1,243 @@
+@media screen and (min-width: 767px) {
+  #content {
+    width: 80%;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;   
+    background-color: rgba(255, 255, 255, 0.271);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #time-box {
+    width: 150px;
+    height: 60px;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 20px;
+    font-size: 24px;
+    color: var(--point-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #game-description {
+    font-size: 18px;
+    color: white;
+    margin-top: 3%;
+    text-align: center;
+  }
+
+  svg {
+    stroke-width: 0.3;
+    fill: none;
+    margin-left: -40%;
+    height: 60vh;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #main-svg {
+    visibility: visible;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  
+  #second-svg {
+    visibility: hidden;
+    position: absolute;
+    top: 260px;
+    left: 55%;
+  }
+
+  #third-svg {
+    z-index: -1;
+    visibility: hidden;
+    position: absolute;
+    top: 260px;
+    left: 55%;
+  }
+
+  #rotate {
+    transform: rotate(20deg);
+  }
+
+  #rotate-2 {
+    transform: rotate(30deg);
+  }
+  
+  #needle {
+    width: 100px;
+    height: 8px;
+    background: white;
+    position: absolute;
+    left: 75vw;
+    border-radius: 0 10px 10px 0;
+  }
+
+  #needle::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 4px 20px 4px 0px;
+    border-color: transparent white transparent transparent;
+    border-style: solid;
+    position: absolute;
+    left: -20px;
+  }
+
+  #needle::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 3px;
+    background: var(--point-color);
+    border-radius: 40%;
+    position: absolute;
+    left: 85px;
+    top: 2.5px;
+  }
+
+  button {
+    position: absolute;
+    left: 74.5vw;
+    top: 80vh;
+    outline: none;
+    border: none;
+    width: 13%;
+    max-width: 100px;
+    height: 50px;
+    border-radius: 10px;
+    background-color: var(--button-two);
+    box-shadow: 0px 0px 10px -4px #3d3d3d;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #content {
+    width: 80%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;   
+    background-color: rgba(255, 255, 255, 0.271);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #time-box {
+    width: 150px;
+    height: 50px;
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 20px;
+    font-size: 22px;
+    color: var(--point-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #game-description {
+    font-size: 16px;
+    color: white;
+    margin-top: 5%;
+    text-align: center;
+  }
+
+  svg {
+    stroke-width: 0.3;
+    fill: none;
+    width: 100%;
+    margin-left: -18%;
+    height: 60vh;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #main-svg {
+    visibility: visible;
+  }
+
+  #second-svg {
+    visibility: hidden;
+    position: absolute;
+    top: 240px;
+    left: 27%;
+  }
+
+  #third-svg {
+    z-index: -1;
+    visibility: hidden;
+    position: absolute;
+    top: 240px;
+    left: 27%;
+  }
+
+  #rotate {
+    transform: rotate(20deg);
+  }
+
+  #rotate-2 {
+    transform: rotate(30deg);
+  }
+
+  #needle {
+    /* top: 1%; */
+    width: 40px;
+    height: 8px;
+    background: white;
+    position: absolute;
+    margin-left: 65%;
+    border-radius: 0 10px 10px 0;
+  }
+
+  #needle::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 4px 20px 4px 0px;
+    border-color: transparent white transparent transparent;
+    border-style: solid;
+    position: absolute;
+    left: -20px;
+  }
+
+  #needle::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 3px;
+    background: var(--point-color);
+    border-radius: 40%;
+    position: absolute;
+    left: 27px;
+    top: 2.5px;
+  }
+
+  button {
+    position: absolute;
+    margin-left: 60%;
+    top: 75vh;
+    outline: none;
+    border: none;
+    width: 16%;
+    min-width: 60px;
+    max-width: 60px;
+    height: 36px;
+    border-radius: 10px;
+    background-color: var(--button-two);
+    box-shadow: 0px 0px 10px -4px #3d3d3d;
+    font-size: 16px;
+  }
+}
