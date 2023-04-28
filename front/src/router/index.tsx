@@ -48,15 +48,15 @@ const router = createBrowserRouter([
               },
               {
                 path: ":report_id/basicinfo",
-                element: <ReportBasic></ReportBasic>,
+                element: <ReportBasic />,
               },
               {
                 path: ":report_id/partinfo",
-                element: <ReportPart></ReportPart>,
+                element: <ReportPart />,
               },
               {
                 path: ":report_id/quizinfo",
-                element: <ReportQuiz></ReportQuiz>,
+                element: <ReportQuiz />,
               },
             ],
           },
