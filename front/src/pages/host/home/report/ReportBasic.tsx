@@ -5,7 +5,6 @@ import { Icon } from "@iconify/react";
 import report_logo from "assets/images/report_logo.png";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
-import Chart from "chart.js/auto";
 
 const reportBasic = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -16,56 +15,34 @@ const reportBasic = {
   percentage: 42,
 };
 
-// const options = {
-//   plugins: {
-//     legend: {
-//       display: true,
-//       position: "right",
-//     },
-//   },
-//   elements: {
-//     arc: {
-//       shadowOffsetX: 0,
-//       shadowOffsetY: 0,
-//       shadowBlur: 10,
-//       shadowColor: "rgba(0, 0, 0, 0.5)",
-//     },
-//   },
-// };
+const data = {
+  labels: [],
+  datasets: [
+    {
+      data: [42, 58], // 정답율, 오답율
+      // width: 0.2,
+      backgroundColor: ["#7557ff", "#f75555"],
+      borderRadius: 30,
+      borderColor: "#ffff",
+      borderWidth: 2.5,
+      cutout: "60%",
+      // shadowOffsetX: 30,
+      // shadowOffsetY: 30,
+      // shadowBlur: 10,
+      // shadowColor: "#a3c8ff",
+    },
+  ],
+  options: {
+    tooltips: {
+      endabled: false,
+    },
+  },
+};
+
 
 const ReportBasic = () => {
   const { report_id } = useParams();
   // getReportBasic
-
-  const data = {
-    labels: [],
-    datasets: [
-      {
-        data: [42, 58], // 정답율, 오답율
-        width: 0.5,
-        backgroundColor: ["#7557ff", "#f75555"],
-        borderRadius: 30,
-        borderColor: "#ffff",
-        borderWidth: 0,
-        shadowOffsetX: 30,
-        shadowOffsetY: 30,
-        shadowBlur: 10,
-        shadowColor: "#a3c8ff",
-      },
-    ],
-    options: {
-      tooltips: {
-        endabled: false,
-      },
-    },
-  };
-
-  const config = {
-    type: "doughnut",
-    data: data,
-  };
-
-  // const dc = new Chart()
 
   return (
     <div className={`${styles[`content`]}`}>
@@ -94,13 +71,12 @@ const ReportBasic = () => {
         <div className={`${styles[`chart-container`]}`}>
           <img src={report_logo} alt="" width={"50%"} style={{ marginRight: "20px" }} />
           <div className={`${styles[`chart-box`]}`}>
-            <div className={`${styles[`text-style`]}`}>
+            <div style={{display:"flex", alignItems:"center"}}>
               <div className={`${styles[`text-style`]}`}>총 정답률</div>
-              {reportBasic.percentage}%
+              <div className={`${styles[`text-style`]}`}>{reportBasic.percentage}%</div>
             </div>
-            <div className={`${styles[`doughnut-style`]}`}>
-              <Doughnut data={data} />
-              {/* <Chart type={doughnut} data={data} /> */}
+            <div className={`${styles[`pie-style`]}`}>
+            <Doughnut data={data} />
             </div>
           </div>
         </div>
