@@ -14,8 +14,9 @@ import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
-import BalloonGame from "components/game/BalloonGame";
-import PlayBalloonGame from "pages/guest/game/PlayBalloonGame";
+
+import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
+import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
 
 const router = createBrowserRouter([
   {
@@ -107,8 +108,14 @@ const router = createBrowserRouter([
             element: <></>,
           },
           {
+            // 지워야 됨
             path: "quiz/balloon",
-            element: <PlayBalloonGame></PlayBalloonGame>,
+            element: <PlayBalloonGame/>,
+          },
+          {
+            // 지워야 됨
+            path: "quiz/balloon/ready",
+            element: <ReadyBalloonGame/>
           },
           {
             path: "quiz/result",

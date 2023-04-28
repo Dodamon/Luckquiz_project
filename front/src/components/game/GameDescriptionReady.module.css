@@ -1,0 +1,39 @@
+.logoCatImg {
+    width: 60px;
+    height: 50px;
+    object-fit: fill;
+}
+
+.gameContainer {
+    width: 80%;
+    height: 30%;
+    background-color: white;
+    border-radius: 20px; 
+}
+
+.imgWrapper {
+    width: 30%;
+    height: 80%;
+}
+
+.gameImg {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}   
+
+.gameDescriptionWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.gameName {
+
+}
+
+.gameDescription {
+
+}
