@@ -1,13 +1,13 @@
-package com.luckquiz.quizroom;
+package com.luckquiz.quizRoom;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class QuizroomApplication {
+public class QuizRoomApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QuizroomApplication.class, args);
+		SpringApplication.run(QuizRoomApplication.class, args);
 	}
 
 }
