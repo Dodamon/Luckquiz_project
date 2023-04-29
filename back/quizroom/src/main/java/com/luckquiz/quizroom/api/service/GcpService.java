@@ -1,4 +1,4 @@
-package com.luckquiz.quizRoom.api.service;
+package com.luckquiz.quizroom.api.service;
 
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
