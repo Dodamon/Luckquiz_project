@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.10'
+	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -34,18 +34,12 @@ dependencies {
 
 	// gcp file upload
 	implementation 'com.google.cloud:google-cloud-storage:2.0.0'
-
-	// socket
-	implementation 'org.webjars:webjars-locator-core'  // src main 의 resource 가면 부트스트랩 css 등
-	implementation 'org.webjars:sockjs-client:1.0.2'
-	implementation 'org.webjars:stomp-websocket:2.3.3'
-
-	// rsocket
-	implementation 'io.rsocket:rsocket-core:1.1.0'
-	implementation 'io.rsocket:rsocket-transport-netty:1.1.0'
-
 	// for m1 chip
 	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
+
+	// socket
+	implementation 'org.webjars:sockjs-client:1.0.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3'
 }
 
 tasks.named('test') {

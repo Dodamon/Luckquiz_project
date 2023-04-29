@@ -1,13 +1,21 @@
-package com.luckquiz.quizRoom;
+package com.luckquiz.quizroom;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 @SpringBootApplication
-public class QuizRoomApplication {
+public class QuizroomApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QuizRoomApplication.class, args);
+		SpringApplication.run(QuizroomApplication.class, args);
 	}
 
 }

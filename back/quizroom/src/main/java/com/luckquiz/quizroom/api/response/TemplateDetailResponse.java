@@ -1,4 +1,4 @@
-package com.luckquiz.quizRoom.api.response;
+package com.luckquiz.quizroom.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +17,7 @@ public class TemplateDetailResponse {
     private int hostId;
     private List<TemplateInfoResponse> quizList;
     private String[] numbering;
+
+
 }
+

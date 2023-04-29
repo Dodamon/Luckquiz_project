@@ -1,6 +1,5 @@
-package com.luckquiz.quizRoom.api.response;
+package com.luckquiz.quizroom.api.response;
 
-import com.luckquiz.quizRoom.db.entity.QuizType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
