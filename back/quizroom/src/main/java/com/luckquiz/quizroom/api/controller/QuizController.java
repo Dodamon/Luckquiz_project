@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class QuizController {
     private final SimpMessageSendingOperations simpMessageSendingOperations;
-    @MessageMapping("/quiz/message")
+    @MessageMapping("/quiz/message")  // 초기 업데이터
     public void message(Message message) {
         if(QuizMessage.MessageType.ENTER.equals(message.getType())){
             message.setMessage(message.getSender()+"님께서 입장하셨습니다.");
