@@ -20,7 +20,6 @@ const data = {
   datasets: [
     {
       data: [42, 58], // 정답율, 오답율
-      // width: 0.2,
       backgroundColor: ["#7557ff", "#f75555"],
       borderRadius: 30,
       borderColor: "#ffff",

@@ -17,13 +17,14 @@
 
 .report-content {
   /* width: 80%; */
-  height: 50%;
+  height: 57%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 0px 70px 0px 70px;
-  padding: 6% 6% 6% 6%;
+  padding: 5% 6% 5% 6%;
   border-radius: 0px 20px 20px 20px;
+  box-shadow: 5px 5px #00000015;
 }
 
 .quiz-box {
@@ -93,10 +94,11 @@ li {
 
 .chart-container {
   width: 50%;
-  height: 80%;
+  height: 75%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: center;
   margin-bottom: 8vh;
 }
 
@@ -125,25 +127,20 @@ li {
   width: 40%;
   height: 70%;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* padding: 10px; */
 }
 
-.report-content-col {
-  /* width: 80%; */
-  height: 50%;
+.ttt {
+  height: 40px;
+  width: fit-content;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: start;
-  margin: 0px 70px 0px 70px;
-  padding: 6% 6% 6% 6%;
-  border-radius: 0px 20px 20px 20px;
-}
-
-.subtitle {
-  font-size: 20px;
-}
-
-.row {
-  display: flex;
+  align-items: center;
+  background-color: var(--button-two);
+  background-size: contain;
+  background-position: center;
+  box-shadow: 4px 4px #00000015;
+  border-radius: 10px;
 }
