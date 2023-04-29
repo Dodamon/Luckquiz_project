@@ -1,10 +1,10 @@
-package com.luckquiz.quizroom;
+package com.luckquiz.quizRoom;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class QuizroomApplicationTests {
+class QuizApplicationTests {
 
 	@Test
 	void contextLoads() {
