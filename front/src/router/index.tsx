@@ -4,7 +4,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Nickname from "pages/guest/quiz/Nickname";
 import Profile from "pages/guest/quiz/ProfileImage";
 import GuestQuiz from "pages/guest/GuestQuiz";
-import Quiz from "pages/host/home/Quiz";
+import HomeMain from "pages/host/home/HomeMain";
+import Quiz from "pages/host/home/quiz/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
@@ -16,6 +17,9 @@ import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
 import BalloonGame from "components/game/BalloonGame";
 import PlayBalloonGame from "pages/guest/game/PlayBalloonGame";
+import ReportBasic from "pages/host/home/report/ReportBasic";
+import ReportPart from "pages/host/home/report/ReportPart";
+import ReportQuiz from "pages/host/home/report/ReportQuiz";
 
 const router = createBrowserRouter([
   {
@@ -23,45 +27,51 @@ const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        path: "login",
+        index: true,
         element: <Login />,
       },
       {
-        path: "home/quiz",
-        element: <Quiz />,
-      },
-      {
-        path: "home/report",
-        element: <ReportMain />,
+        path: "home",
+        element: <HomeMain />,
         children: [
           {
             index: true,
-            element: <Report/>,
+            element: <Quiz />,
           },
           {
-            path: ":report-id/basicinfo",
-            element: <></>,
+            path: "report",
+            element: <ReportMain />,
+            children: [
+              {
+                index: true,
+                element: <Report />,
+              },
+              {
+                path: ":report_id/basicinfo",
+                element: <ReportBasic />,
+              },
+              {
+                path: ":report_id/partinfo",
+                element: <ReportPart />,
+              },
+              {
+                path: ":report_id/quizinfo",
+                element: <ReportQuiz />,
+              },
+            ],
           },
-          {
-            path: ":report-id/partinfo",
-            element: <></>,
-          },
-          {
-            path: ":report-id/quizinfo",
-            element: <></>,
-          },
-        ]
+        ],
       },
       {
         path: "quiz/create",
         element: <Create />,
       },
       {
-        path: "quiz/:quiz-id/edit",
+        path: "quiz/:quiz_id/edit",
         element: <Edit />,
       },
       {
-        path: "host/quiz/:quiz-id",
+        path: "host/quiz/:quiz_id",
         element: <HostQuiz />,
         children: [
           {
