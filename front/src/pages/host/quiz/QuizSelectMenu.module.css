@@ -35,3 +35,7 @@ justify-content: space-between;
     word-break: keep-all;
 }
 
+.select_form{
+    padding-left: 15px;
+    font-size: 18px
+}
