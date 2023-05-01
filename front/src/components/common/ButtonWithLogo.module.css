@@ -1,9 +1,9 @@
-.btn-box {
+.btnBox {
   display: flex;
   align-items: center;
 }
 
-.logo-box {
+.logoBox {
   height: 100%;
   aspect-ratio: 1/1;
   display: flex;
@@ -18,14 +18,14 @@
   box-shadow: 4px 4px #00000015;
 }
 
-.name-box {
+.nameBox {
   /* height: 40px; */
   width: fit-content;
   display: flex;
   align-items: center;
 
   border-radius: 0px 10px 10px 0px;
-  background-color: var(--button-two);
+  background-color: var(-Button-two);
   background-size: contain;
   background-position: center;
   box-shadow: 4px 4px #00000015;

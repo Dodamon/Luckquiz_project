@@ -36,9 +36,9 @@ const Report = () => {
   ];
 
   return (
-      <div className={`${styles[`content`]}`} style={{ backgroundImage: report_bg }}>
-        <div className={`${styles[`title`]}`}>레포트</div>
-        <div className={`${styles[`list-col-frame`]}`}>
+      <div className={styles.content} style={{ backgroundImage: report_bg }}>
+        <div className={styles.title}>레포트</div>
+        <div className={styles.listColFrame}>
           {myReportList.map((report, index) => (
             <Link key={index} to={`/home/report/${report.id}/basicinfo`} style={{width:"100%"}}>
               <HomeListCard menu={1} report={report}/>

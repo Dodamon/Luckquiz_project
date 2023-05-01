@@ -10,23 +10,25 @@ const SideMenuTab = () => {
   const bgcolor = pathname.includes('report') ? ['', "var(--side-bar)"] : ["var(--side-bar)",'']
 
   return (
-    <div className={`${styles[`side-tab`]}`}>
-      <div className={`${styles[`profile`]}`}>
-        <img className={`${styles[`profile-img`]}`} src={profile_sample} alt="" />
-        <div className={`${styles[`profile-name`]}`}>무지개꽃잎이</div>
+    <div className={styles.sideTab}>
+      <div className={styles.profile}>
+        <img className={styles.profileImg} src={profile_sample} alt="" />
+        <div className={styles.profileName}>무지개꽃잎이</div>
       </div>
       <Link to={"/home"}>
-        <div className={`${styles[`menu`]}`} style={{ backgroundColor: bgcolor[0] }}>
+        <div className={styles.menu} style={{ backgroundColor: bgcolor[0] }}>
           <Icon icon="mdi:view-list-outline" />
           퀴즈
         </div>
       </Link>
       <Link to={"/home/report"}>
-        <div className={`${styles[`menu`]}`} style={{ backgroundColor: bgcolor[1], borderRadius: "0px 0px 20px 20px" }}>
+        <div className={styles.menu} style={{ backgroundColor: bgcolor[1], borderRadius: "0px 0px 20px 20px" }}>
           <Icon icon="mdi:poll" />
           레포트
         </div>
       </Link>
+
+      
     </div>
   );
 };

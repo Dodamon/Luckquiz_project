@@ -52,11 +52,11 @@ const hardest = [
 const ReportQuiz = () => {
   const { report_id } = useParams();
   return (
-    <div className={`${styles[`content`]}`}>
-      <div className={`${styles[`title`]}`}>{quiz.title}</div>
+    <div className={styles.content}>
+      <div className={styles.title}>{quiz.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
       <div
-        className={`${styles[`report-content`]}`}
+        className={styles.reportContent}
         style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "start", gap: "6%" }}
       >
         <ButtonWithLogo name={"가장 어려웠던 문제"} color="var(--select-three)" fontSize="18px" />

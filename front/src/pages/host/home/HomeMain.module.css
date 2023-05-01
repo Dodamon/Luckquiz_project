@@ -37,14 +37,14 @@
   margin-left: 80px;
 }
 
-.logo-img-container {
+.logoImgContainer {
   width: fit-content;
   height: 80px;
   display: flex;
   align-items: flex-end;
 }
 
-.logo-img {
+.logoImg {
   height: 80%;
   margin-right: 30px;
 }
@@ -67,7 +67,7 @@
   font-size: 18px;
 }
 
-.add-icon {
+.addIcon {
   min-width: 20px;
   margin-right: 10px;
 }
@@ -81,7 +81,8 @@
   width: 20%;
   /* min-width :198px;  */
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   padding-top: calc(12vh + 30px);
 }
