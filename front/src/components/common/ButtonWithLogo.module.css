@@ -1,0 +1,38 @@
+.btn-box {
+  display: flex;
+  align-items: center;
+}
+
+.logo-box {
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border-radius: 10px 0px 0px 10px;
+  background-color: white;
+  background-image: url(assets/images/orange_logo.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: 4px 4px #00000015;
+}
+
+.name-box {
+  /* height: 40px; */
+  width: fit-content;
+  display: flex;
+  align-items: center;
+
+  border-radius: 0px 10px 10px 0px;
+  background-color: var(--button-two);
+  background-size: contain;
+  background-position: center;
+  box-shadow: 4px 4px #00000015;
+}
+
+.name {
+  padding: 0.6em;
+  font-size: 20px;
+  white-space: nowrap;
+}

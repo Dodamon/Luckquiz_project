@@ -1,0 +1,24 @@
+.content {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  padding: 3.5vh 5% 3.5vh 5%;
+  font-size: 28px;
+}
+
+.list-col-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0% 6% 6% 6%;
+}
+
+.add-icon {
+  color: var(--placeholder-text);
+  font-size: 40px;
+}

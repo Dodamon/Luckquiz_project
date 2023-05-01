@@ -1,0 +1,128 @@
+.QuizCreate {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* 페이지 좌측 */
+.left_side {
+    /* width: 350px; */
+    width: 250px;
+    height: 100vh;
+    overflow: auto;
+    overflow-x: hidden;
+  
+}
+
+
+
+/* 스크롤바 설정*/
+.left_side::-webkit-scrollbar{
+    width: 8px;
+}
+
+/* 스크롤바 막대 설정*/
+.left_side::-webkit-scrollbar-thumb{
+    background-color: var( --wrong-answer);
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;    
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.left_side::-webkit-scrollbar-track{
+    background-color: rgba(0,0,0,0);
+}
+
+
+
+/* 누적 퀴즈 리스트 */
+.quiz_list {
+    
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quiz_item {
+    margin-bottom: 20px;
+}
+
+.quiz_title {
+    margin-left: 10px;
+    background-color: var( --button-two);
+    color: var(--white-color);
+    width: 60px;
+    font-size: 16px;
+    text-align: center;
+    border-top-left-radius: 5px;
+}
+.quiz_sub{
+    display: flex;
+}
+.quiz_delete{
+    background-color: var( --select-one);
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--white-color);
+    border-top-right-radius: 5px;
+}
+
+.quiz_content {
+    /* width: 305px; */
+    width: 225px;
+    /* height: 210px; */
+    height: 145px;
+    border-radius: 10px;
+    background-color: var(--wrong-answer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.quiz_add{
+   width: 305px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+  
+}
+
+.quiz_add>button{
+    display: block;
+    border-style: none;
+    width: 120px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 15px;
+    color: var(--white-color);
+    font-size: 18px;
+}
+
+.game_add_btn{
+    background-color: var(--button-one);
+}
+.quiz_add_btn{
+    background-color: var( --button-two);
+}
+
+
+/* ------------------------------------------- */
+/* 우측 페이지 구성 */
+.right_side {
+    width: calc(100% - 250px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    background-image: url(assets/images/background.png);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
