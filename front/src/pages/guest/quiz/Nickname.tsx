@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Nickname.module.css"
-import { Desktop, Tablet, Mobile, Default } from "assets/mediaQuery";
+import { Desktop, Tablet, Mobile, Default } from "hooks/mediaQuery";
 import logo from "assets/images/logo.png";
 import ProfileNickname from "components/guest/ProfileNickname";
 
