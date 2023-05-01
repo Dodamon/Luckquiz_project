@@ -1,7 +1,0 @@
-diff a/front/src/components/game/balloon/PlayBalloonGame.tsx b/front/src/components/game/balloon/PlayBalloonGame.tsx	(rejected hunks)
-@@ -1,4 +1,5 @@
- import React from "react";
-+import BalloonGame from "components/game/balloon/BalloonGame";
- import styles from "./PlayBalloonGame.module.css";
- import logoCat from "assets/images/logoCharacter.png";
- 

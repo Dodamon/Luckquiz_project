@@ -32,7 +32,7 @@
     text-align: center;
   }
 
-  .svg {
+  svg {
     stroke-width: 0.3;
     fill: none;
     margin-left: -40%;
@@ -104,7 +104,7 @@
     top: 2.5px;
   }
 
-  .button {
+  button {
     position: absolute;
     left: 74.5vw;
     top: 80vh;
@@ -225,7 +225,7 @@
     top: 2.5px;
   }
 
-  .button {
+  button {
     position: absolute;
     margin-left: 60%;
     top: 75vh;

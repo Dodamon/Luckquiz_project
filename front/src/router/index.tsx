@@ -16,10 +16,11 @@ import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
 import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
-import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
+// import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
 import ReportBasic from "pages/host/home/report/ReportBasic";
 import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
+import ReadyGame from "components/common/ReadyGame";
 
 const router = createBrowserRouter([
   {
@@ -123,8 +124,8 @@ const router = createBrowserRouter([
           },
           {
             // 지워야 됨
-            path: "quiz/balloon/ready",
-            element: <ReadyBalloonGame/>
+            path: "quiz/game/ready",
+            element: <ReadyGame/>
           },
           {
             path: "quiz/result",
