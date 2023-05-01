@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("api/quizroom")
+@RequestMapping("/api/quizroom")
 public class ChatRoomController { // for controller update
     private final QuizService quizService;
 
