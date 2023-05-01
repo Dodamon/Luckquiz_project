@@ -12,6 +12,13 @@ spring:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
         show_sql: true #show sql
+  cloud:
+    gcp:
+      storage:
+        bucket: luckquiz
+        project-id: snappy-analog-384101
+        credentials:
+          location: classpath:snappy-analog-384101-5ff843401827.json
 
 server:
   servlet:
