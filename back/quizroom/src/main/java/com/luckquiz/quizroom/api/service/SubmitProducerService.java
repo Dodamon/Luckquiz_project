@@ -37,4 +37,13 @@ public class SubmitProducerService {
         log.info("=====producerTest end=====");
         return ResponseEntity.ok(var + "entered");
     }
+
+    // server_message
+    public void callQuizTemp(String request){
+        KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
+        ProducerRecord record = new ProducerRecord<String,String>("server_message",request);
+        producer.send(record);
+        producer.close();
+    }
+
 }

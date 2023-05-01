@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://K8A707.p.ssafy.io:3306/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: eodrms
+    password: eodrms
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5000
+      cache-null-values: false
+      host: k8a707.p.ssafy.io
+      port: 3307
+
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  cloud:
+    gcp:
+      storage:
+        bucket: luckquiz
+        project-id: snappy-analog-384101
+        credentials:
+          location: classpath:snappy-analog-384101-5ff843401827.json
