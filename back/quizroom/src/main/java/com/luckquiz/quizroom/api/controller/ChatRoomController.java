@@ -1,5 +1,6 @@
 package com.luckquiz.quizroom.api.controller;
 
+import com.luckquiz.quizroom.api.request.QuizRoomStartRequest;
 import com.luckquiz.quizroom.api.service.QuizService;
 import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/quiz")
-public class ChatRoomController { // for controller update sssss ㅇㄴㅇㄴ
+public class ChatRoomController { // for controller update
     private final QuizService quizService;
 
     // 채팅 리스트 화면
@@ -22,15 +23,14 @@ public class ChatRoomController { // for controller update sssss ㅇㄴㅇㄴ
     }
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
-    @ResponseBody
     public List<QuizRoom> room() {
         return quizService.findAllRoom();
     }
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public QuizRoom createRoom(@RequestBody String name) {
-        return quizService.createRoom(name);
+    public QuizRoom createRoom(@RequestBody QuizRoomStartRequest qsr) {
+        return quizService.createRoom(qsr);
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
@@ -44,4 +44,5 @@ public class ChatRoomController { // for controller update sssss ㅇㄴㅇㄴ
     public QuizRoom roomInfo(@PathVariable String roomId) {
         return quizService.findById(roomId);
     }
+
 }

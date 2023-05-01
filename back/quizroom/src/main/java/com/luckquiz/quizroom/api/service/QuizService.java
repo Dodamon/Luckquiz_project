@@ -1,5 +1,6 @@
 package com.luckquiz.quizroom.api.service;
 
+import com.luckquiz.quizroom.api.request.QuizRoomStartRequest;
 import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class QuizService {
     private Map<String, QuizRoom> quizRoomMap;
+    private final SubmitProducerService submitProducerService;
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -35,9 +37,12 @@ public class QuizService {
     }
 
     //방 생성
-    public QuizRoom createRoom(String name) {
-        QuizRoom quizRoom = QuizRoom.create(name);
+    public QuizRoom createRoom(QuizRoomStartRequest qsr) {
+        QuizRoom quizRoom = QuizRoom.create();
         quizRoomMap.put(quizRoom.getRoomId(), quizRoom);
+        submitProducerService.callQuizTemp(qsr.getHostId()+" "+qsr.getTemplateId());
         return quizRoom;
     }
+
+
 }
