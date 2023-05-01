@@ -24,11 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 public class GradeService {
 	private final StringRedisTemplate redisTemplate;
 	private final Gson gson;
-	@KafkaListener(topics = "test", groupId = "foo")
+	@KafkaListener(topics = "test_2", groupId = "test_group_1")
 	@Transactional
-	public void consume(String message) {
-		KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
-		addGrades(gradeRequest);
+	public void consume(KafkaGradeRequest message) {
+		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
+		System.out.println(message.getRoomId());
+		// addGrades(message);
 	}
 
 

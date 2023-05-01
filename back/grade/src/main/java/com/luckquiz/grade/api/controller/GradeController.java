@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class GradeController {
 	private final KafkaProducer producer;
 
-	@PostMapping("/ka")
+	@PostMapping("/test")
 	@ResponseBody
 	public String sendMessage(@RequestBody KafkaGradeRequest message) throws JsonProcessingException {
 		producer.sendMessage(message);
