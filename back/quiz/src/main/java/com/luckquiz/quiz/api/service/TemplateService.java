@@ -41,9 +41,9 @@ public class TemplateService {
                 .hostId(tcr.getHostId())
                 .name(tcr.getName())
                 .build();
-        templateRepository.save(temp);
+        Template a = templateRepository.save(temp);
 
-        return 1;
+        return a.getId();
     }
 
     @Transactional
@@ -181,5 +181,6 @@ public class TemplateService {
 
         return new QGCreateResponse(temp.getId());
     }
+
 
 }
