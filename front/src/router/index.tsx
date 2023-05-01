@@ -15,11 +15,12 @@ import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
-import BalloonGame from "components/game/BalloonGame";
-import PlayBalloonGame from "pages/guest/game/PlayBalloonGame";
+import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
+// import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
 import ReportBasic from "pages/host/home/report/ReportBasic";
 import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
+import ReadyGame from "components/common/ReadyGame";
 
 const router = createBrowserRouter([
   {
@@ -117,8 +118,14 @@ const router = createBrowserRouter([
             element: <></>,
           },
           {
+            // 지워야 됨
             path: "quiz/balloon",
-            element: <PlayBalloonGame></PlayBalloonGame>,
+            element: <PlayBalloonGame/>,
+          },
+          {
+            // 지워야 됨
+            path: "quiz/game/ready",
+            element: <ReadyGame/>
           },
           {
             path: "quiz/result",
