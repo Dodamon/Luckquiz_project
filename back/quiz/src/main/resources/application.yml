@@ -19,6 +19,13 @@ spring:
         project-id: snappy-analog-384101
         credentials:
           location: classpath:snappy-analog-384101-5ff843401827.json
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5000
+      cache-null-values: false
+      host: k8a707.p.ssafy.io
+      port: 3307
 
 server:
   servlet:
