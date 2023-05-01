@@ -28,5 +28,6 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
         // 메시지 핸들러로 라우팅되는 prefix
         // 클라이언트가 메시지를 보낼 때 경로 맨앞에 "/app"이 붙어있으면 Broker로 보내짐.
+        registry.setUserDestinationPrefix("/user");
     }
 }
