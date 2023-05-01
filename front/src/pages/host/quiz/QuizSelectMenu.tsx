@@ -8,31 +8,55 @@ import { useDispatch } from "react-redux";
 import { authAtions } from "store/auth";
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import { useEffect } from 'react';
+import { quizAtions } from 'store/quiz';
 const QuizSelectMenu = () => {
-    const [selectedQuizOption, setSelectedQuizOption] = useState('');
-    const [selectedTimeOption, setSelectedTimeOption] = useState('');
-
-    const authInfo = useSelector((state: RootState) => state.auth);
-    const quizInfo = useSelector((state: RootState) => state.quiz);
-
-
+    const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
+    const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+    const [selectedQuizOption, setSelectedQuizOption] = useState(quizInfo[selectInfo].quiz);
+    const [selectedGameOption, setSelectedGameOption] = useState(quizInfo[selectInfo].game);
+    const [selectedTimeOption, setSelectedTimeOption] = useState(quizInfo[selectInfo].timer);
+    console.log(selectInfo);
+    console.log(quizInfo);
+    
+    
     const dispatch = useDispatch();
-    const [age, setAge] = useState('');
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
-    };
+
     const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedQuizOption(event.target.value);
         console.log(event.target.value);
-        dispatch(authAtions.selectQuizType(event.target.value))
+        dispatch(quizAtions.quizTypeUpdate({index: selectInfo, quizType: event.target.value}))
+    };
 
+    const gameTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedGameOption(event.target.value);
+        console.log(event.target.value);
+        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, gameType: event.target.value}))
     };
 
     const quizTimeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedTimeOption(event.target.value);
+        setSelectedTimeOption(parseInt(event.target.value));
         console.log(event.target.value);
+        dispatch(quizAtions.quizTimeUpdate({index: selectInfo, time: event.target.value}))
     };
+
+
+    useEffect(()=>{
+
+        if(quizInfo[selectInfo]?.quizType==="게임"){
+            setSelectedGameOption(quizInfo[selectInfo].game);
+            setSelectedTimeOption(quizInfo[selectInfo].timer);
+
+        }else if(quizInfo[selectInfo]?.quizType==="퀴즈"){
+            setSelectedQuizOption(quizInfo[selectInfo].quiz);
+            setSelectedTimeOption(quizInfo[selectInfo].timer);
+            // dispatch(quizAtions.gameTypeUpdate({index: selectInfo, quizType: selectedQuizOption}))
+            // dispatch(quizAtions.quizTimeUpdate({index: selectInfo, time: selectedTimeOption}))
+        }
+      
+    }, [quizInfo, selectInfo])
+
 
 
 
@@ -44,14 +68,13 @@ const QuizSelectMenu = () => {
 
                 {
 
-                    quizInfo.quizList[authInfo.choiceType]?.quizType === "퀴즈" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
+                    quizInfo[selectInfo]?.quizType === "퀴즈" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
                         <option value="four">사지선다</option>
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>
-                    </select> : <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
+                    </select> : <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
                         <option value="emotion">감정 셀카 게임</option>
                         <option value="wakeup">쿼카야 일어나 게임</option>
-                        <option value="text">주관식</option>
                     </select>
 
                 }

@@ -9,18 +9,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 
 const GameCreateLayout = () => {
-  const quizInfo = useSelector((state: RootState) => state.quiz);
-  const selectInfo = useSelector((state: RootState) => state.auth);
+  const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+  const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
 
   return (
     <div className={styles.GameCreateLayout}>
 
 
       {
-
-        quizInfo.quizList[selectInfo.choiceType].game === "" ? <GameSelection /> : <> <QuizSelectMenu />
+              quizInfo[selectInfo].game === "" ? <GameSelection /> : <> <QuizSelectMenu />
           <GameTotalTemplate /></>
-
 
       }
 

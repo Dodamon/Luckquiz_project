@@ -11,12 +11,11 @@ import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
 
 const GameSelection = () => {
-    const quizInfo = useSelector((state: RootState) => state.quiz);
-    const selectInfo = useSelector((state: RootState) => state.auth);
+    const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
     const dispatch = useDispatch();
 
     const gameSelectHandler = (gameType: string) =>{
-        dispatch(quizAtions.gameTypeUpdate({index: selectInfo.choiceType, gameType: gameType}));
+        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, gameType: gameType}));
     }
     
 
@@ -36,7 +35,7 @@ const GameSelection = () => {
                         </footer>
                     </li>
 
-                    <li className={styles.game_item} onClick={()=> gameSelectHandler("balloon")}>
+                    <li className={styles.game_item} onClick={()=> gameSelectHandler("wakeup")}>
                         <header className={styles.game_title} ><h4>일어나 럭퀴야 학교가자</h4></header>
                         <section className={styles.game_img} ><img src={wakeup} alt="감정분석" /></section>
                         <footer className={styles.game_setting}><div className={styles.game_btnbox}>

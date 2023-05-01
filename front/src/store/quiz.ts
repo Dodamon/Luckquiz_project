@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 import { setQuizSet } from "models/quiz";
 import { setQuizItem } from "models/quiz";
-import { act } from "react-dom/test-utils";
+
 
 const quizItem: setQuizItem ={
     id:0,
@@ -43,6 +43,7 @@ reducers:{
         state.quizList=action.payload;
     }, 
     chooseQuiz:(state, action)=>{
+        
         state.quizList=action.payload;
     },
     gameTypeUpdate:(state, action)=>{
@@ -50,10 +51,23 @@ reducers:{
         state.quizList = produce(state.quizList, draftList => {
             draftList[index].game = gameType;
         });
-    }
+    },
+    quizTypeUpdate:(state, action)=>{
+        const { index, quizType } = action.payload;
+        state.quizList = produce(state.quizList, draftList => {
+            draftList[index].quiz = quizType;
+        });
+    },
+    quizTimeUpdate:(state, action)=>{
+        const { index, time } = action.payload;
+        state.quizList = produce(state.quizList, draftList => {
+            draftList[index].timer = time;
+        });
+    },
+}
     
 }
-})
+)
 
 // slice안에 있는 action들 뽑아내
 export const quizAtions = quizSlice.actions;

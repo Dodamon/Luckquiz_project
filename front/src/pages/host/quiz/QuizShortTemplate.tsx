@@ -26,8 +26,8 @@ const QuizShortTemplate = () => {
 
             <div className={styles.content_answerbox}>
                         {
-                            answerList.map(it=>{
-                                return   <div className={styles.content_answer}> <div className={styles.content_color} style={{backgroundColor:"var( --button-two)"}}><div><Icon icon="ic:round-menu" /></div></div>
+                            answerList.map((it,index)=>{
+                                return   <div className={styles.content_answer} key={index}> <div className={styles.content_color} style={{backgroundColor:"var( --button-two)"}}><div><Icon icon="ic:round-menu" /></div></div>
                                 <div className={styles.content_input}><input type="text" /></div>
                                 <div className={styles.content_add} onClick={answerAddHandler}><Icon icon="ic:round-plus" /></div></div>
                             })

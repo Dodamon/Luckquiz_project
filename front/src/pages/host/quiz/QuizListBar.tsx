@@ -10,7 +10,7 @@ import { authAtions } from 'store/auth';
 const newQuizItem: setQuizItem = {
     id:0,
     quizType: "퀴즈",
-    quiz: "",
+    quiz: "four",
     quizUrl: "",
     answer: "",
     one: "",
@@ -19,7 +19,7 @@ const newQuizItem: setQuizItem = {
     four: "",
     answerList: [],
     game: "",
-    timer: 0
+    timer: 15
 }
 
 const newGameItem: setQuizItem = {
@@ -34,7 +34,7 @@ const newGameItem: setQuizItem = {
     four: "",
     answerList: [],
     game: "",
-    timer: 0
+    timer: 15
 }
 
 
@@ -45,22 +45,19 @@ const QuizListBar = () => {
     const [focusedItem, setFocusedItem]= useState(0);
 
     const itemSelectHandler = (quiznum: number)=>{
-        // localStorage.setItem("pages",quiznum+"");
-        dispatch(authAtions.selectType(quiznum));
+        dispatch(authAtions.selectIndex(quiznum));
         setFocusedItem(quiznum);
     }
 
-
-
-
     const onDragEnd = (result: any) => {
-        if (!result.destination) {
+        if (!result.destination) { 
             return;
         }
         const items = Array.from(quizInfo.quizList);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
         setFocusedItem(result.destination.index);
+        dispatch(authAtions.selectIndex(result.destination.index));
         dispatch(quizAtions.locationUpdate(items))
     }
 
@@ -74,6 +71,10 @@ const QuizListBar = () => {
     }
 
     const deleteContentHandler = (idx: number) => {
+        if(focusedItem>=idx && focusedItem!==0){
+            dispatch(authAtions.selectIndex(focusedItem-1));
+            setFocusedItem(focusedItem-1);
+        }
         dispatch(quizAtions.removeQuiz(idx));
     }
 

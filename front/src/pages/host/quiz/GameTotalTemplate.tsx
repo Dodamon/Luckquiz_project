@@ -6,14 +6,14 @@ import GameWakeupTemplate from './GameWakeupTemplate';
 // 게임 재사용 페이지
 const GameTotalTemplate = () => {
 
-    const quizInfo = useSelector((state: RootState) => state.quiz);
-    const selectInfo = useSelector((state: RootState) => state.auth);
+    const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+    const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
 
 
     return (
         <>
             {
-                quizInfo.quizList[selectInfo.choiceType].game === "emotion" ? <GameEmotionTemplate /> : quizInfo.quizList[selectInfo.choiceType].game === "wakeup" ? <GameWakeupTemplate /> : <></>
+               quizInfo[selectInfo].game === "emotion" ? <GameEmotionTemplate /> :  quizInfo[selectInfo].game === "wakeup" ? <GameWakeupTemplate /> : <></>
             }
         </>
     );

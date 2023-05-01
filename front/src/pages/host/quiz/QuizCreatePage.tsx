@@ -9,9 +9,9 @@ import EmptyContentPage from "./EmptyContentPage";
 
 
 const QuizCreatePage: React.FC = () => {
-    const quizInfo = useSelector((state: RootState) => state.quiz);
-    const selectInfo = useSelector((state: RootState) => state.auth);
-    console.log(quizInfo.quizList);
+    const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+    const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
+    // console.log(quizInfo);
 
     return (
         <div className={styles.QuizCreate}>
@@ -23,7 +23,7 @@ const QuizCreatePage: React.FC = () => {
 
                 {
 
-                    quizInfo.quizList.length === 0 ? <EmptyContentPage /> : quizInfo.quizList[selectInfo.choiceType]?.quizType === "게임" ? <GameCreateLayout /> : <QuizCreateLayout />
+                    quizInfo.length === 0 ? <EmptyContentPage /> : quizInfo[selectInfo]?.quizType === "게임" ? <GameCreateLayout /> : <QuizCreateLayout />
 
                 }
 
