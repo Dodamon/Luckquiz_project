@@ -114,7 +114,7 @@ const BalloonGame: React.FC = () => {
     <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
       <div id="time-box">{timeLimit} 초</div>
       <div id="game-description">가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
-      <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg as MutableRefObject<SVGSVGElement>}>
+      <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg as MutableRefObject<SVGSVGElement>} className="svg">
         <path
           d="M24 55,
 					 C0 45, 10 20, 25 20, 
@@ -200,7 +200,7 @@ const BalloonGame: React.FC = () => {
           strokeWidth="1"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="second-svg" ref={secondSvg as MutableRefObject<SVGSVGElement>}>
+      <svg viewBox="0 0 100 100" id="second-svg" ref={secondSvg as MutableRefObject<SVGSVGElement>} className="svg">
         <path
           d="M20 50, 
 					L21 45, 
@@ -346,7 +346,7 @@ const BalloonGame: React.FC = () => {
           stroke="none"
         />
       </svg>
-      <svg viewBox="0 0 100 100" id="third-svg" ref={thirdSvg as MutableRefObject<SVGSVGElement>}>
+      <svg viewBox="0 0 100 100" id="third-svg" ref={thirdSvg as MutableRefObject<SVGSVGElement>} className="svg">
         <path
           d="M17 47, 
 					L18 42, 
@@ -470,7 +470,7 @@ const BalloonGame: React.FC = () => {
       </svg>
  
       <div id="needle" ref={needle as MutableRefObject<HTMLDivElement>}></div>
-      <button ref={normalMotion as MutableRefObject<HTMLButtonElement>} onClick={onClickPop}> POP !! </button>
+      <button ref={normalMotion as MutableRefObject<HTMLButtonElement>} onClick={onClickPop} className="button"> POP !! </button>
     </div>
   );
 };
