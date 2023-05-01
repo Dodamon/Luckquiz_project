@@ -3,6 +3,7 @@ import styles from "./Quiz.module.css";
 import { Icon } from "@iconify/react";
 import profile_sample from "assets/images/profile_sample.png";
 import HomeListCard from "components/host/home/HomeListCard";
+import SubmitChart from "components/host/quiz/SubmitChart";
 
 export interface Quiz {
   id: number;
@@ -37,6 +38,7 @@ const Quiz = () => {
             <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
           </Link>
         </div>
+        <SubmitChart/>
       </div>
   );
 };

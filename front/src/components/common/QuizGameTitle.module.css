@@ -1,0 +1,37 @@
+@media screen and (min-width: 767px) {
+  .gameTitle {
+      width: fit-content;
+      padding: 20px 60px;
+      text-align: center;
+      background-color: white;
+      border-radius: 20px;
+      font-size: 24px;
+  }
+  
+  .logoCatImg {
+      width: 60px;
+      height: 63px;
+      object-fit: fill;
+      margin-top: 40px;  
+      margin-left: 20px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .gameTitle {
+      width: fit-content;
+      padding: 20px 60px;
+      text-align: center;
+      background-color: white;
+      border-radius: 20px;
+      font-size: 22px;
+  }
+  
+  .logoCatImg {
+      width: 40px;
+      height: 43px;
+      object-fit: fill;
+      margin-top: 20px;  
+      margin-left: 20px;
+  }
+}
