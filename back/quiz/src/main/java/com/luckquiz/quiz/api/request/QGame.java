@@ -15,7 +15,7 @@ import java.util.List;
 public class QGame {
     public QuizType type;
 
-    public Quiz quiz;
+    public QuizType quiz;
     public String question;
     public String quizUrl;
     public String answer;
