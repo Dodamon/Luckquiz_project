@@ -1,7 +1,7 @@
 /* 누적 퀴즈 리스트 */
 .quiz_list {
-    
     width: 100%;
+    /* height: 100%; */
     display: inline-flex;
     flex-direction: column;
     align-items: center;

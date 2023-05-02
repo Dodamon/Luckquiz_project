@@ -9,6 +9,9 @@
     /* justify-content: ; */
     /* justify-content: space-around; */
 }
+ul{
+    padding-left: 0px;
+}
 
 .emotion_intro{
     display: flex;

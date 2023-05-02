@@ -6,16 +6,20 @@ import { setQuizItem } from "models/quiz";
 
 const quizItem: setQuizItem ={
     id:0,
-    quizType:"",
+    quizType: "",
+    // 'quiz', 'game'
     quiz: "",
+    // 'text, four, ox,
     quizUrl: "",
     answer: "",
     one: "",
     two:"",
     three: "",
     four: "",
-    answerList: [],
+    question: "",
+    answerList: [], 
     game: "",
+    //balloon, wakeup, emotion
     timer: 0
 }
 
@@ -54,6 +58,7 @@ reducers:{
     },
     quizTypeUpdate:(state, action)=>{
         const { index, quizType } = action.payload;
+
         state.quizList = produce(state.quizList, draftList => {
             draftList[index].quiz = quizType;
         });
@@ -62,6 +67,12 @@ reducers:{
         const { index, time } = action.payload;
         state.quizList = produce(state.quizList, draftList => {
             draftList[index].timer = time;
+        });
+    },
+    contentsUpdate:(state, action)=>{
+        const { index, content } = action.payload;
+        state.quizList = produce(state.quizList, draftList => {
+            draftList[index]= content;
         });
     },
 }

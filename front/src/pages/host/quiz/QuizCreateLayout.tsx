@@ -17,7 +17,6 @@ const QuizCreateLayout = () => {
         <>
             <QuizSelectMenu/>
             {
-                // console.log();
                 
                quizInfo[selectInfo]?.quiz==="four"? <QuizTemplate/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate/>:<QuizShortTemplate/>
             }

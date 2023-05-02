@@ -4,6 +4,7 @@
     background-color: var( --white-color);
     width: 95%;
     height: 95%;
+    min-height: 680px;
     border-radius: 15px;
     display: flex;
     justify-content: center;

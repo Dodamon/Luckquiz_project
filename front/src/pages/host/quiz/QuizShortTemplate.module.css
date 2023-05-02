@@ -16,6 +16,7 @@
     background-color: var(--white-color);
     width: 400px;
     height: 200px;
+    min-height: 200px;
     border-radius: 20px;
     opacity: 90%;
     display: flex;
@@ -26,11 +27,15 @@
 }
 
 .plus_font{
-    font-size: 48px;
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .plus_comment{
-    font-size: 28px;
+    font-size: 48px;
+    cursor: pointer;
 }
 
 .content_answerbox{
@@ -103,3 +108,4 @@
 .content_add:hover{
    color: var(--black-color)
 }
+

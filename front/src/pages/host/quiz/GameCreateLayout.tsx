@@ -14,16 +14,9 @@ const GameCreateLayout = () => {
 
   return (
     <div className={styles.GameCreateLayout}>
-
-
       {
-              quizInfo[selectInfo].game === "" ? <GameSelection /> : <> <QuizSelectMenu />
-          <GameTotalTemplate /></>
-
+              quizInfo[selectInfo].game === "" ? <GameSelection /> : <> <QuizSelectMenu /><GameTotalTemplate /></>
       }
-
-
-
     </div>
   );
 };
