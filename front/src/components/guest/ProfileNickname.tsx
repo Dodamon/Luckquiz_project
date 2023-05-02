@@ -1,4 +1,4 @@
-import React, { useRef, KeyboardEvent, useEffect } from "react";
+import React, { useRef, KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
@@ -23,7 +23,6 @@ import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
 import { socketActions } from "store/webSocket";
 import { Client } from "@stomp/stompjs";
-
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -48,10 +47,10 @@ const ProfileNickname: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
-  const nickname = useSelector<RootState, HTMLInputElement | null>((state) => state.guest.nickname);
-  const nicknameRef = useRef<HTMLInputElement>(nickname);
+  const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
+  const nicknameRef = useRef<HTMLInputElement>(null);
   const client = useSelector<RootState, Client>((state) => state.socket.client);
-  const connected = useSelector<RootState, number>((state) => state.socket.connected);
+
   // 프로필 사진 수정
   const onClickEditImg = () => {
     navigate("/guest/profile", { state: imgIdx });
@@ -74,24 +73,17 @@ const ProfileNickname: React.FC = () => {
     nicknameRef.current?.blur();
     dispatch(guestActions.updateGuestNickname(enteredTxt));
     
-
-    dispatch(socketActions.connectAndSubscribe());
-    // websocket 연결, 구독
-    // await dispatch(socketActions.connectAndSubscribe());
-    // await dispatch(socketActions.subscribe(socketProps));
-    // 닉네임, 프로필 사진 POST
-    //////////////////////////
-    // navigate('/guest/quiz/lobby');
-  };
-  useEffect(() => {
-    const enteredTxt = nicknameRef.current!.value;
+    // websocket subscribe, publish
     const socketProps = {
       name: enteredTxt,
-      img: imgIdx,
+      img: imgIdx, 
       subscribeURL: 8469539,
     };
-    if (connected === 1) dispatch(socketActions.subscribe(socketProps));
-  }, [connected])
+    dispatch(socketActions.subscribe(socketProps));
+    dispatch(socketActions.sendEnterMessage(socketProps));
+
+    // navigate('/guest/quiz/lobby');
+  };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     const enteredTxt = nicknameRef.current!.value;
