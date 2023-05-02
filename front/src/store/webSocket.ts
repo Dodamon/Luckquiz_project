@@ -7,32 +7,49 @@ const client = new Client({brokerURL: brokerURL});
 
 const socketSlice = createSlice({
   name: "socket",
-  initialState: null,
+  initialState: {client:new Client({brokerURL:"ws://localhost:8080/connect/quiz"}), connected: 0},
   reducers: {
-    connectAndSubscribe: (state, actions) => {
+    connectAndSubscribe: (state) => {
+      const client = state.client;
       // Connect
       client.onConnect = () => {
         console.log(`webSocket connected`);
+        state.connected = 1;
       };
       client.onWebSocketClose = () => {
         console.log("webSocket Closed");
       };
       client.activate();
+      // const sender = {
+      //   name: actions.payload.name,
+      //   img: actions.payload.img,
+      //   type: "ENTER"
+      // };
+      // // Subscribe
+      // const subscribeURL = `/topic/quiz/${actions.payload.subscribeURL}`;
+      // // const senderObj = JSON.stringify(sender);
+      // client.subscribe(subscribeURL, (res) => {
+      //   if (res.body) console.log(`도착 message: ${res.body}`);
+      //   else console.log("got empty message")
+      // }, { ...sender });
+    },
+    subscribe: (state, actions) => {
+      const client = state.client;
       const sender = {
         name: actions.payload.name,
-        img: actions.payload.img,
+        img: actions.payload.img, 
         type: "ENTER"
       };
-      // Subscribe
-      const subscribeURL = `/topic/quiz/${actions.payload.subscribeURL}`;
-      const senderObj = JSON.stringify(sender);
-      client.subscribe(subscribeURL, (res) => {
-        console.log(`도착 message: ${res.body}`);
+      // const subscribeURL = `/topic/quiz/${actions.payload.subscribeURL}`;
+      // const senderObj = JSON.stringify(sender);
+      client.subscribe(`/topic/quiz/${actions.payload.subscribeURL}`, (res) => {
+        if (res.body) console.log(`도착 message: ${res.body}`);
+        else console.log("got empty message")
       }, { ...sender });
     },
-
     // Disconnect
-    disconnect: () => {
+    disconnect: (state) => {
+      const client = state.client
       if (client) {
         client.deactivate();
         console.log("webSocket Disconnected");
@@ -41,6 +58,7 @@ const socketSlice = createSlice({
 
     // Send message when enter
     sendEnterMessage: (state, actions) => {
+      const client = state.client;
       if (client) {
         client.publish({
           destination: "보낼 주소",

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface GuestState {
     image: number;
-    nickname: string;
+    nickname: HTMLInputElement|null;
 };
 
 const guestInitialState:GuestState = {
     image: 0,
-    nickname: "",
+    nickname: null,
 };
 
 const guestSlice = createSlice({
