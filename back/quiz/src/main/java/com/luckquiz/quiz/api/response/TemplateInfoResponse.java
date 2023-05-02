@@ -14,6 +14,7 @@ public class TemplateInfoResponse {
     private Integer id;
     private QuizType quizType;
     private String quiz;
+    private String question;
     private String quizUrl;
     private String answer;
     private String one;

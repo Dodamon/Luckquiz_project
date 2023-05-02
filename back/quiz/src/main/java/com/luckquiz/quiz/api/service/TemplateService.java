@@ -16,11 +16,15 @@ import com.luckquiz.quiz.db.entity.Template;
 import com.luckquiz.quiz.db.repository.QuizGameRepository;
 import com.luckquiz.quiz.db.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.el.util.ReflectionUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
@@ -73,30 +77,31 @@ public class TemplateService {
             QuizType type = a.getType();
             String quizDumb = new String(a.getQuiz(),"UTF-8");
             String[] quizDummy = quizDumb.split("``");
-            switch (type){
-                case text:
-                    String [] asList = quizDummy[3].split("₩₩");
-                    qgr.setQuiz(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setAnswer(quizDummy[2]);
-                    qgr.setAnswerList(asList);
-                    break;
-                case four:
-                    qgr.setQuiz(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setOne(quizDummy[2]);
-                    qgr.setTwo(quizDummy[3]);
-                    qgr.setThree(quizDummy[4]);
-                    qgr.setFour(quizDummy[5]);
-                    qgr.setAnswer(quizDummy[6]);
-                    break;
-                case ox:
-                    qgr.setQuiz(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setAnswer(quizDummy[2]);
-                    break;
-                default:
-                    qgr.setGame(type.toString());
+            if(type.equals(QuizType.quiz)){
+                switch (a.getType()){
+                    case ox:
+                        qgr.setId(a.getId());
+                        qgr.setQuiz(quizDummy[0]);
+                        qgr.setQuizUrl(quizDummy[1]);
+                        qgr.setAnswer(quizDummy[2]);
+                        break;
+                    case text:
+                        String [] asList = quizDummy[3].split("₩₩");
+                        qgr.setQuiz(quizDummy[0]);
+                        qgr.setQuizUrl(quizDummy[1]);
+                        qgr.setAnswer(quizDummy[2]);
+                        qgr.setAnswerList(asList);
+                        break;
+                    case four:
+                        qgr.setQuiz(quizDummy[0]);
+                        qgr.setQuizUrl(quizDummy[1]);
+                        qgr.setOne(quizDummy[2]);
+                        qgr.setTwo(quizDummy[3]);
+                        qgr.setThree(quizDummy[4]);
+                        qgr.setFour(quizDummy[5]);
+                        qgr.setAnswer(quizDummy[6]);
+                        break;
+                }
             }
             qgr.setTimer(a.getTimer());
             qgr.setQuizType(a.getType());
@@ -143,30 +148,31 @@ public class TemplateService {
         List<QGame> qGames = qgcr.getContents();
         for(QGame a:qGames){
             String game = "";
-            switch (a.getType()){
-                case ox:
-                    game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
-                    break;
-                case four:
-                    game += a.getQuiz() + "``" + a.getQuizUrl() + "``" +a.getOne()
-                            + "``" + a.getTwo() + "``" + a.getThree() + "``" + a.getFour()
-                            + "``" + a.getAnswer();
-                    break;
-                case text:
-                    String al = "";
-                    for (int i = 0; i < a.getAnswerList().size(); i++) {
-                        if(i < a.getAnswerList().size()-1){
-                            al += a.getAnswerList().get(i) + "₩₩";
-                        }else{
-                            al += a.getAnswerList().get(i);
+            if(a.getType().equals(QuizType.quiz)){
+                switch (a.getQuiz()){  // game or quiz
+                    case ox:
+                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
+                        break;
+                    case four:
+                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" +a.getOne()
+                                + "``" + a.getTwo() + "``" + a.getThree() + "``" + a.getFour()
+                                + "``" + a.getAnswer();
+                        break;
+                    case text:
+                        String al = "";
+                        for (int i = 0; i < a.getAnswerList().size(); i++) {
+                            if(i < a.getAnswerList().size()-1){
+                                al += a.getAnswerList().get(i) + "₩₩";
+                            }else{
+                                al += a.getAnswerList().get(i);
+                            }
                         }
-                    }
-                    game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer()
-                            + "``" + al;
-                    break;
-                default:
-                    game += a.getType()+"";
+                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer()
+                                + "``" + al;
+                        break;
+                }
             }
+
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = game.getBytes(charset);
             QuizGame qgame = QuizGame.builder()
@@ -180,6 +186,5 @@ public class TemplateService {
 
         return findTemplateDetail(temp.getId(),temp.getHostId());
     }
-
 
 }

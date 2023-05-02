@@ -13,15 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QGame {
-    private QuizType type;
-    private String quiz;
-    private String quizUrl;
-    private String answer;
-    private List<String> answerList;
-    private String one;
-    private String two;
-    private String three;
-    private String four;
-    private String game;
+    public QuizType type;
+
+    public Quiz quiz;
+    public String question;
+    public String quizUrl;
+    public String answer;
+    public List<String> answerList;
+    public String one;
+    public String two;
+    public String three;
+    public String four;
+    public String game;
 
 }
