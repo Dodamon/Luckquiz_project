@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -14,7 +15,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     // 새로운 핸드쉐이크 커넥션을 생성할 때 사용됨.
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/connect/quiz").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/connect/quiz").setAllowedOriginPatterns("*").addInterceptors(new HttpSessionHandshakeInterceptor());
 
     }
 
@@ -22,12 +23,12 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     // 주로 "/queue"는 1대1 메시징, "/topic"은 1대다 메시징일 때 주로 사용함.
     @Override
     public void configureMessageBroker (MessageBrokerRegistry registry) {  // 메시지 브로커 설정
-        registry.enableSimpleBroker( "/connect/quiz/queue","/connect/quiz/topic");  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
+        registry.enableSimpleBroker( "/queue","/topic");  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
         // 내장 브로커 사용
         // 파라미터로 설정된 값으로 prefix가 붙은 메시지를 발행 시 브로커가 처리하겠다.
-        registry.setApplicationDestinationPrefixes("/connect/quiz/app");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
+        registry.setApplicationDestinationPrefixes("/app");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
         // 메시지 핸들러로 라우팅되는 prefix
         // 클라이언트가 메시지를 보낼 때 경로 맨앞에 "/app"이 붙어있으면 Broker로 보내짐.
-        registry.setUserDestinationPrefix("/connect/quiz/user");
+        registry.setUserDestinationPrefix("/user");
     }
 }
