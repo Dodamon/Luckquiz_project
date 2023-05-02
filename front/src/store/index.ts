@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth";
 import guestReducer from "./guest";
+import guestSocketReducer from "./webSocket";
 
 const persistConfig = {
   key: "root",
@@ -17,6 +18,7 @@ const store = configureStore({
   reducer: {
     auth: persistedReducer,
     guest: persistedGuestReducer,
+    socket: guestSocketReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

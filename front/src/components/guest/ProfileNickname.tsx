@@ -1,4 +1,4 @@
-import React, { useState, useRef, KeyboardEvent } from "react";
+import React, { useRef, KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
@@ -21,6 +21,9 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
+import { socketActions } from "store/webSocket";
+
+Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
   const IMAGES = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16];
@@ -29,13 +32,15 @@ const ProfileNickname: React.FC = () => {
   const nicknameRef = useRef<HTMLInputElement>(null);
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
 
+
   // 프로필 사진 수정
   const onClickEditImg = () => {
     navigate('/guest/profile', { state: imgIdx });
   };
 
-  // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 대기 화면으로 가기
+  // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 웹소켓 연결, 대기화면으로 navigate
   const onClickSubmit = () => {
+    // 닉네임 유효성 검사
     const enteredTxt = nicknameRef.current!.value;
     if (enteredTxt.length === 0) {
       alert("닉네임을 입력하세요.")
@@ -48,11 +53,17 @@ const ProfileNickname: React.FC = () => {
       return
     };
     nicknameRef.current?.blur();
-
     dispatch(guestActions.updateGuestNickname(enteredTxt));
+    const socketProps = {
+      name: enteredTxt,
+      img: imgIdx,
+      subscribeURL: 8469539
+    }
+    // websocket 연결, 구독
+    dispatch(socketActions.connectAndSubscribe(socketProps));
     // 닉네임, 프로필 사진 POST
     //////////////////////////
-    navigate('/guest/quiz/lobby');
+    // navigate('/guest/quiz/lobby');
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {

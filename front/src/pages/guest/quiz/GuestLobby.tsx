@@ -5,8 +5,7 @@ import GuestNameInLobby from "components/common/GuestNameInLobby";
 
 const GuestLobby:React.FC = () => {
     // 웹소켓에서 guest 들 불러옴
-    // const quizGuests = [{name: "예징", img: 1}, {name: "유징", img: "img2"}, {name: "웡철", img: "img3"}, {name: "료황", img: "img4"}, {name: "동귱", img: "img5"}, {name: "예응", img: "img6"}, {name: "서노", img: "img7"}]
-    const quizGuests = [{name: "예징", img: 1}]
+    const quizGuests = [{name: "예징가나다라", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16},{name: "예징", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16},{name: "예징", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16},{name: "예징", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16},{name: "예징", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16},{name: "예징", img: 1}, {name: "유쥥", img: 2}, {name: "웡철", img: 3}, {name: "료황", img: 10}, {name: "동긍", img: 11}, {name: "예응", img: 12}, {name: "서노", img: 16}]
     return (
         <div className={styles.lobby}>
             <div className={styles.logoContainer}>
