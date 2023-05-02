@@ -15,13 +15,14 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class TokenProvider implements InitializingBean {
-    private static final String AUTHORITIES_KEY = "auth";
+    private static final String AUTHORITIES_KEY = "role";
     @Value("${app.auth.token-secret}")
     private String SECRET_KEY;
     @Value("${app.auth.token-access-expiration-msec}")
     private long ACCESS_TOKEN_EXPIRATION;
     @Value("${app.auth.token-refresh-expiration-msec}")
     private long REFRESH_TOKEN_EXPIRATION;
+
 
     private Key key;
 
@@ -39,11 +40,11 @@ public class TokenProvider implements InitializingBean {
         Date expiryDate = new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION);
 
         return Jwts.builder()
-                .setSubject(user_id.toString()) // String email
+                .setSubject(user_id.toString()) // String id
                 .claim(AUTHORITIES_KEY, role) // role
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
     }
 
@@ -55,13 +56,24 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, key)
                 .compact();
     }
 
-    public boolean validateToken(String authToken) {
+    public UUID getUserIdFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return UUID.fromString(claims.getSubject());
+    }
+
+
+    public Boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(authToken);
+            log.info(authToken);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
