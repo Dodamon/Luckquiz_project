@@ -14,14 +14,28 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/kafka")
+@RequestMapping(value = "/api/grade/kafka")
 public class GradeController {
 	private final KafkaProducer producer;
-
-	@PostMapping("/test")
+	@PostMapping("/rollbackfinish")
 	@ResponseBody
-	public String sendMessage(@RequestBody KafkaGradeRequest message) throws JsonProcessingException {
-		producer.sendMessage(message);
+	public String rollbackFinish(@RequestBody String roomId) {
+		producer.rollbackFinish(roomId);
 		return "success";
 	}
+
+	@PostMapping("/gradestart")
+	@ResponseBody
+	public String gradeStart(@RequestBody String roomId) {
+		producer.gradeStart(roomId);
+		return "submit";
+	}
+
+	@PostMapping("/gradefinish")
+	@ResponseBody
+	public String gradeFinish(@RequestBody String roomId) {
+		producer.gradeEnd(roomId);
+		return "submit";
+	}
 }
+
