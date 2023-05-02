@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileImg {
+  height: 120px;
+  width: 120px;
+  border-radius: 100%;
+  margin-top: 10%;
+  object-fit: cover;
+  border: 2px solid var(--grey-color);
+}
+
+.nameTag {
+  position: absolute;
+  top: 120px;
+  height: 50px;
+  width: 160px;
+  border-radius: 10px;
+  background-color: rgb(201, 201, 201);
+}
