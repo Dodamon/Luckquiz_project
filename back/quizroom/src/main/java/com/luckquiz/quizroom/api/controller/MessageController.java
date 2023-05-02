@@ -1,11 +1,18 @@
 package com.luckquiz.quizroom.api.controller;
 
 
+import com.google.gson.Gson;
+import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.service.SubmitProducerService;
 import com.luckquiz.quizroom.model.QuizMessage;
 import com.luckquiz.quizroom.model.SessionContext;
+import com.luckquiz.quizroom.model.SessionUsers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,7 +22,10 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -23,20 +33,33 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class MessageController {
     private final SimpMessageSendingOperations sendingOperations;
-    private final SubmitProducerService submitProducerService;
     private final Map<String, SessionContext> sessionContextMap = new ConcurrentHashMap<>();
-
+    private  final StringRedisTemplate stringRedisTemplate;
+    private final SessionUsers sessionUsers= new SessionUsers();
+    private final Gson gson;
     private static final String TOPIC = "json_01";
 
     private final KafkaTemplate<String, QuizMessage> kafkaTemplate;
 
+
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {
+        Grade grade = new Grade();
+        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         System.out.println(message.getType());
         if (QuizMessage.MessageType.ENTER.equals(message.getType())) {
+            String roomId = message.getRoomId();
             message.setMessage(message.getSender() + "님이 입장하였습니다.");
+            grade.setPlayerName(message.getSender());
+
+            hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
+
+            zSetOperations.add(roomId+"rank",message.getSender(),30d);
         }
+        Set all =zSetOperations.range(message.getRoomId()+"rank", 0,-1);
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), message.getMessage());
+        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(),all);
     }
 
     @MessageMapping("/submit")
@@ -61,7 +84,6 @@ public class MessageController {
         kafkaTemplate.flush();
         log.info("=====producerTest end=====");
     }
-
 
     @MessageMapping("/quiz/start")
     public void start(QuizMessage message) {

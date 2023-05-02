@@ -14,6 +14,8 @@ public class QuizMessage {
     private MessageType type;
     private String roomId;
     private String sender;
+    private String senderUrl;
+
     private String message;
 
     public void setType(MessageType type) {
@@ -30,5 +32,9 @@ public class QuizMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setSenderUrl(String senderUrl) {
+        this.senderUrl = senderUrl;
     }
 }
