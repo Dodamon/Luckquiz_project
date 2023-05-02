@@ -1,5 +1,6 @@
 .container {
   position: relative;
+  margin: 5%;
 }
 
 .profileBox {
@@ -7,11 +8,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+  width: 38%;
 }
 
 .profileImg {
-  height: 120px;
-  width: 120px;
+  width: 54%;
   border-radius: 100%;
   margin-top: 10%;
   object-fit: cover;
@@ -20,9 +22,12 @@
 
 .nameTag {
   position: absolute;
-  top: 120px;
-  height: 50px;
-  width: 160px;
+  top: 90%;
+  height: 40%;
+  width: 65%;
   border-radius: 10px;
   background-color: rgb(201, 201, 201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
