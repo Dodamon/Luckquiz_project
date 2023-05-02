@@ -22,10 +22,11 @@ public class KafkaConsumerController {
 	@KafkaListener(topics = "grade" , groupId = "grade_group")
 	public void gradingConsumer(KafkaGradeRequest message, @Header(KafkaHeaders.RECEIVED_TOPIC) Topic topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
-		if(key=="quiz_submit"){
+		if(key.equals("grade")){
 			gradeService.grade(message);
+		} else {
+			System.out.println("값이 다릅니다.");
 		}
-
 	}
 
 	@KafkaListener(topics = "sign_to_grade", groupId = "grade_sign_group")

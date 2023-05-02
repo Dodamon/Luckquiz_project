@@ -37,5 +37,12 @@ public class GradeController {
 		producer.gradeEnd(roomId);
 		return "submit";
 	}
+
+	@PostMapping("/fortest")
+	@ResponseBody
+	public String grade(@RequestBody KafkaGradeRequest kafkaGradeRequest) {
+		producer.gradeTest(kafkaGradeRequest);
+		return "submit";
+	}
 }
 

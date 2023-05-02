@@ -38,10 +38,8 @@ public class GradeService {
 	@Transactional
 	public void grade(KafkaGradeRequest gradeRequest){
 		String roomId = gradeRequest.getRoomId();
-
 		Grade grade = new Grade();
 		Double score = 0d;
-
 		grade.setPlayerName(gradeRequest.getPlayerName());
 		grade.setScore_get(0);
 		grade.setRank_pre(0);
@@ -51,6 +49,8 @@ public class GradeService {
 		// 랭킹 정보
 		zSetOperations.add(roomId+"rank",gradeRequest.getPlayerName(),score);
 	}
+
+
 
 	// @KafkaListener(topics = "inter_server", groupId = "inter_server")
 	// @Transactional

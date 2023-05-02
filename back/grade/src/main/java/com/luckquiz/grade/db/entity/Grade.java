@@ -2,6 +2,8 @@ package com.luckquiz.grade.db.entity;
 
 import java.io.Serializable;
 
+import org.springframework.data.redis.core.RedisHash;
+
 import lombok.Getter;
 import lombok.Setter;
 
