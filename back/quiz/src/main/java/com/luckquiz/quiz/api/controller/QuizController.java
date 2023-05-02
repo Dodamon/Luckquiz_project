@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 @RestController
 @RequestMapping("/api/quiz")
 @AllArgsConstructor
@@ -34,7 +36,7 @@ public class QuizController {
     // 템플릿 만들기
     @PostMapping("/template/regist")
     @ResponseBody
-    public ResponseEntity<Integer> registTemplate(@RequestBody TemplateCreateRequest tcr){
+    public ResponseEntity<Integer> registTemplate(@RequestBody TemplateCreateRequest tcr)throws Exception{
         return ResponseEntity.status(HttpStatus.CREATED).body(templateService.createTemplate(tcr));
     }
 
@@ -47,7 +49,7 @@ public class QuizController {
     // 퀴즈 만들기 - 이유 update 가 아닌 create 로 하는거라 수정과 생성이 똑같다.
     @PostMapping("/template/contents-create")
     @ResponseBody
-    public ResponseEntity<QGCreateResponse> insertQuizGame(@RequestBody QuizGameCreateRequest qcr)throws Exception{
+    public ResponseEntity<TemplateDetailResponse> insertQuizGame(@RequestBody QuizGameCreateRequest qcr)throws Exception{
         return ResponseEntity.status(HttpStatus.CREATED).body(templateService.quizGameCreate(qcr));
     }
 

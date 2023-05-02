@@ -42,7 +42,6 @@ public class TemplateService {
                 .name(tcr.getName())
                 .build();
         Template a = templateRepository.save(temp);
-
         return a.getId();
     }
 
@@ -121,7 +120,7 @@ public class TemplateService {
     // 구분자는 모두 `` 으로 나눴고 인정답안은 ₩₩ 으로 구분하였다.
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
-    public QGCreateResponse quizGameCreate(QuizGameCreateRequest qgcr)throws Exception{
+    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr)throws Exception{
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(),qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         if(quizGameRepository.existsByTemplateId(temp.getId())){
             quizGameRepository.deleteByTemplateId(temp.getId());
@@ -179,7 +178,7 @@ public class TemplateService {
             quizGameRepository.save(qgame);
         }
 
-        return new QGCreateResponse(temp.getId());
+        return findTemplateDetail(temp.getId(),temp.getHostId());
     }
 
 
