@@ -1,18 +1,16 @@
 package com.luckquiz.grade.db.entity;
 
-import java.io.Serializable;
-
-import org.springframework.data.redis.core.RedisHash;
-
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class Grade {
 	private String playerName;
-	private int score_get;
-	private int rank_pre;
-	private int rank_now;
+	private int scoreGet;
+	private int rankPre;
+	private int rankNow;
 
 }

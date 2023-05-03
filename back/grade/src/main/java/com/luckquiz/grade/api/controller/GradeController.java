@@ -44,5 +44,19 @@ public class GradeController {
 		producer.gradeTest(kafkaGradeRequest);
 		return "submit";
 	}
+
+	@PostMapping("/rollback")
+	@ResponseBody
+	public String rollback(@RequestBody String roomId) {
+		producer.rollback(roomId);
+		return "submit";
+	}
+
+	@PostMapping("/quizstart")
+	@ResponseBody
+	public String quizStart(@RequestBody String roomId) {
+		producer.quizStart(roomId);
+		return "quizStart";
+	}
 }
 
