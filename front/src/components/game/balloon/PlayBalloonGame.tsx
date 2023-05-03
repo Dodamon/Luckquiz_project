@@ -1,5 +1,5 @@
 import React from "react";
-import BalloonGame from "components/game/BalloonGame";
+import BalloonGame from "components/game/balloon/BalloonGame";
 import styles from "./PlayBalloonGame.module.css";
 import logoCat from "assets/images/logoCharacter.png";
 

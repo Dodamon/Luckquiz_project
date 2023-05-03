@@ -1,0 +1,47 @@
+@media screen and (min-width: 767px) {
+    .loadingSpinnerContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5%;
+    }
+    
+    .waitTxt {
+        font-size: 18px; 
+        color: white;  
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .svg {
+        margin-left: 0;
+        height: 200px;
+        
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .loadingSpinnerContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 8%;
+        height: 150px;
+        width: 150px;
+    }
+    
+    .waitTxt {
+        font-size: 16px; 
+        color: white;  
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .svg {
+        margin-left: 0;
+        height: 130px;
+    }
+}
