@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
+import confetti from "canvas-confetti";
 import "./BalloonGame.css";
 
 const BalloonGame: React.FC = () => {
@@ -13,8 +14,8 @@ const BalloonGame: React.FC = () => {
   // timeLimit 불러옴
   const timeLimit = "13:49";
 
-  const [ time, setTime ] = useState(0);
-  const [ isRunning, setIsRunning ] = useState(false);
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
   const onClickPop = () => {
     if (normalMotion.current) normalMotion!.current.style.visibility = "hidden";
@@ -25,15 +26,15 @@ const BalloonGame: React.FC = () => {
     setTimeout(() => {
       if (needle.current) needle!.current.style.left = "60vw";
     }, 70);
- 
+
     setTimeout(() => {
       if (needle.current) needle!.current.style.left = "50vw";
     }, 90);
-  
+
     setTimeout(() => {
       if (needle.current) needle!.current.style.left = "45vw";
     }, 110);
-  
+
     setTimeout(() => {
       audio.play();
       if (mainSvg.current) mainSvg!.current.style.visibility = "hidden";
@@ -84,8 +85,17 @@ const BalloonGame: React.FC = () => {
       if (mainSvg.current) mainSvg!.current.style.visibility = "hidden";
       if (secondSvg.current) secondSvg!.current.style.visibility = "visible";
       if (thirdSvg.current) thirdSvg!.current.style.visibility = "visible";
+      confetti({
+        particleCount: 400,
+        spread: 180,
+        origin: {
+          x: 0.25,
+          // since they fall down, start a bit higher than random
+          y: 0.8,
+        },
+      });
       if (content.current) content!.current.style.opacity = "1";
-      if (needle.current) needle!.current.style.visibility="hidden";
+      if (needle.current) needle!.current.style.visibility = "hidden";
     }, 320);
 
     console.log(time.toFixed(2));
@@ -100,14 +110,15 @@ const BalloonGame: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let interval:NodeJS.Timer;
+    let interval: NodeJS.Timer;
     if (isRunning) {
       interval = setInterval(() => {
         setTime((time) => time + 0.01);
       }, 10);
-    };
+    }
     return () => {
-      clearInterval(interval)};
+      clearInterval(interval);
+    };
   }, [isRunning]);
 
   return (
@@ -164,7 +175,7 @@ const BalloonGame: React.FC = () => {
 					 Q14 35,13.8 37, Z"
           fill="#f1d4d6"
           stroke="none"
-        /> 
+        />
         <path
           d="M12.5 29, 
 					 Q15 25, 19 23, 
@@ -468,9 +479,12 @@ const BalloonGame: React.FC = () => {
           stroke="none"
         />
       </svg>
- 
+
       <div id="needle" ref={needle as MutableRefObject<HTMLDivElement>}></div>
-      <button ref={normalMotion as MutableRefObject<HTMLButtonElement>} onClick={onClickPop} className="button"> POP !! </button>
+      <button ref={normalMotion as MutableRefObject<HTMLButtonElement>} onClick={onClickPop} className="button">
+        {" "}
+        POP !!{" "}
+      </button>
     </div>
   );
 };

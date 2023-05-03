@@ -1,4 +1,4 @@
-import React, { useState, useRef, KeyboardEvent } from "react";
+import React, { useRef, KeyboardEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
@@ -21,50 +21,82 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
+import { socketActions } from "store/webSocket";
+import { Client } from "@stomp/stompjs";
+Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
-  const IMAGES = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16];
-  const navigate = useNavigate(); 
-  const dispatch = useDispatch(); 
-  const nicknameRef = useRef<HTMLInputElement>(null);
+  const IMAGES = [
+    img1,
+    img2,
+    img3,
+    img4,
+    img5,
+    img6,
+    img7,
+    img8,
+    img9,
+    img10,
+    img11,
+    img12,
+    img13,
+    img14,
+    img15,
+    img16,
+  ];
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
+  const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
+  const nicknameRef = useRef<HTMLInputElement>(null);
+  const client = useSelector<RootState, Client>((state) => state.socket.client);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
-    navigate('/guest/profile', { state: imgIdx });
+    navigate("/guest/profile", { state: imgIdx });
   };
 
-  // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 대기 화면으로 가기
-  const onClickSubmit = () => {
+  // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 웹소켓 연결, 대기화면으로 navigate
+  const onClickSubmit = async () => {
+    // 닉네임 유효성 검사
     const enteredTxt = nicknameRef.current!.value;
     if (enteredTxt.length === 0) {
-      alert("닉네임을 입력하세요.")
+      alert("닉네임을 입력하세요.");
       nicknameRef.current?.focus();
-      return
+      return;
     } else if (enteredTxt.length > 6) {
       alert("닉네임은 6자 이하로 작성하세요.");
       nicknameRef.current!.value = "";
       nicknameRef.current?.focus();
-      return
-    };
+      return;
+    }
     nicknameRef.current?.blur();
-
     dispatch(guestActions.updateGuestNickname(enteredTxt));
-    // 닉네임, 프로필 사진 POST
-    //////////////////////////
+    
+    // websocket subscribe, publish
+    const socketProps = {
+      name: enteredTxt,
+      img: imgIdx, 
+      subscribeURL: 123,
+    };
+    dispatch(socketActions.subscribe(socketProps));
+    dispatch(socketActions.sendEnterMessage(socketProps));
+
     navigate('/guest/quiz/lobby');
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const enteredTxt = nicknameRef.current!.value;
     if (e.key === "Enter") {
-      const enteredTxt = nicknameRef.current!.value;
       if (enteredTxt.length > 6) {
         alert("닉네임은 6자 이하로 작성하세요.");
         nicknameRef.current!.value = "";
         nicknameRef.current?.focus();
-      };
+      }
       nicknameRef.current!.blur();
-    };
+      dispatch(guestActions.updateGuestNickname(enteredTxt));
+    }
+    dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
 
   return (
@@ -75,8 +107,14 @@ const ProfileNickname: React.FC = () => {
           <Icon icon="ph:plus-circle-fill" className={styles.imgEditBtn} onClick={onClickEditImg} />
         </div>
       </div>
-      <div className={styles.nicknameWrapper} >
-        <input className={styles.nicknameInput} type="text" ref={nicknameRef} placeholder="닉네임을 입력하세요" onKeyDown={enterHandler}/>
+      <div className={styles.nicknameWrapper}>
+        <input
+          className={styles.nicknameInput}
+          type="text"
+          ref={nicknameRef}
+          placeholder={"닉네임을 입력하세요"}
+          onKeyDown={enterHandler}
+        />
       </div>
       <div className={styles.nicknameWrapper}>
         <div className={styles.startBtn} onClick={onClickSubmit}>

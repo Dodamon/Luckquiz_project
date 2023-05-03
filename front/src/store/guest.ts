@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface GuestState {
+export interface GuestState {
     image: number;
     nickname: string;
 };
