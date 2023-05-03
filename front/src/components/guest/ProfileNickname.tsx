@@ -77,12 +77,12 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 8469539,
+      subscribeURL: 123,
     };
     dispatch(socketActions.subscribe(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 
-    // navigate('/guest/quiz/lobby');
+    navigate('/guest/quiz/lobby');
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {

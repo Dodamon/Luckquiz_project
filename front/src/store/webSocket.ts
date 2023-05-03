@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // import { client } from "App";
 import { Client } from "@stomp/stompjs";
 
-const brokerURL = "ws://localhost:8080/connect/quiz";
+const brokerURL = "ws://k8a707.p.ssafy.io/connect/quiz";
 export const client = new Client({brokerURL: brokerURL});
 
 interface SocketState {
@@ -33,7 +33,7 @@ const socketSlice = createSlice({
       console.log("아놔")
       // const client = state.client;
       const sender = {
-        name: actions.payload.name,
+        sender: actions.payload.name,
         img: actions.payload.img, 
         type: "ENTER"
       };
@@ -52,6 +52,7 @@ const socketSlice = createSlice({
         console.log("subscribe");
       };
     },
+    
     // Disconnect
     disconnect: (state) => {
       // const client = state.client;
@@ -67,10 +68,21 @@ const socketSlice = createSlice({
       if (state.client) {
         state.client.publish({
           destination: "/app/enter",
-          body: JSON.stringify({name: actions.payload.name, img: actions.payload.img, type: "ENTER"})
+          body: JSON.stringify({sender: actions.payload.name, img: actions.payload.img, type: "ENTER"})
         });
-        console.log("publish" + actions.payload.name + ' ' + actions.payload.img);
+        console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
       }
+    },
+
+    // Send message when submit
+    sendAnswerMessage: (state, actions) => {
+      if (state.client) {
+        state.client.publish({
+          destination: "",
+          body: JSON.stringify({}),
+        });
+      };
+      
     }
   },
 });
