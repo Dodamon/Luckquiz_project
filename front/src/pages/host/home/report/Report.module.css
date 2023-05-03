@@ -55,11 +55,6 @@
   align-items: center;
 }
 
-.button {
-  border: 0;
-  background-color: transparent;
-}
-
 .logoImgContainer {
   width: fit-content;
   height: 100px;

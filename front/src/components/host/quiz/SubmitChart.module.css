@@ -1,0 +1,7 @@
+.container {
+  padding: 5%;
+  box-sizing: border-box;
+}
+.x {
+  border-bottom : 5px solid #ffff;
+}

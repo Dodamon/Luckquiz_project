@@ -1,8 +1,9 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import styles from "./Quiz.module.css";
 import { Icon } from "@iconify/react";
-import profile_sample from "assets/images/profile_sample.png";
 import HomeListCard from "components/host/home/HomeListCard";
+import SubmitChart from "components/host/quiz/SubmitChart";
+import Podium from "components/common/Podium";
 
 export interface Quiz {
   id: number;
@@ -26,18 +27,18 @@ const Quiz = () => {
   ];
 
   return (
-
-      <div className={styles.content}>
-        <div className={styles.title}>내가 만든 퀴즈</div>
-        <div className={styles.listColFrame}>
-          {myQuizList.map((quiz, index) => (
-            <HomeListCard key={index} menu={0} quiz={quiz}/>
-          ))}
-          <Link to={"/quiz/create"}>
-            <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
-          </Link>
-        </div>
+    <div className={styles.content}>
+      <div className={styles.title}>내가 만든 퀴즈</div>
+      <div className={styles.listColFrame}>
+        {myQuizList.map((quiz, index) => (
+          <HomeListCard key={index} menu={0} quiz={quiz} />
+        ))}
+        <Link to={"/quiz/create"}>
+          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
+        </Link>
       </div>
+      <Podium/>
+    </div>
   );
 };
 
