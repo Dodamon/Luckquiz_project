@@ -10,8 +10,8 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: true #To beautify or pretty print the SQL
-        show_sql: true #show sql
+        format_sql: false #To beautify or pretty print the SQL
+        show_sql: false #show sql
   cloud:
     gcp:
       storage:
