@@ -40,7 +40,7 @@ public class QuizService {
     public QuizRoom createRoom(QuizRoomStartRequest qsr) {
         QuizRoom quizRoom = QuizRoom.create();
         quizRoomMap.put(quizRoom.getRoomId(), quizRoom);
-        submitProducerService.callQuizTemp(qsr.getHostId()+" "+qsr.getRoomId()+" "+qsr.getTemplateId());
+        submitProducerService.callQuizTemp(qsr.getHostId()+" "+quizRoom.getRoomId()+" "+qsr.getTemplateId());
         return quizRoom;
     }
 
