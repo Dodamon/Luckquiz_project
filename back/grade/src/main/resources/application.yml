@@ -1,0 +1,50 @@
+spring:
+  cache:
+    redis:
+      port: '3307'
+      host: k8a707.p.ssafy.io
+      cache-null-values: 'false'
+      time-to-live: '5000'
+      password: 'eodrms1111!'
+    type: redis
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+    consumer:
+      group-id: foo
+      auto-offset-reset: earliest
+      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  jpa:
+    generate-ddl: 'true'
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+    open-in-view: 'false'
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    password: eodrms
+    username: eodrms
+    url: jdbc:mariadb://K8A707.p.ssafy.io:3306/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          locatation: classpath:snappy-analog-384101-5ff843401827.json
+        project-id: snappy-analog-384101
+        bucket: luckquiz
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jackson:
+    serialization:
+      fail-on-empty-beans: 'false'
