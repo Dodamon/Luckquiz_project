@@ -3,16 +3,6 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
 
-interface WebcamProps {
-  audio: boolean;
-  style: React.CSSProperties;
-  screenshotFormat: string;
-  videoConstraints: {
-    facingMode: string;
-  };
-  onUserMediaError: () => void;
-}
-
 const EmotionGame: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const [isFacingModeUser, setIsFacingModeUser] = useState<boolean>(true);
@@ -44,8 +34,10 @@ const EmotionGame: React.FC = () => {
       {img ? (
           <div className={styles.emotionGameCamera}>
             <img src={img} alt="" className={styles.photoImg}/>
-            <button onClick={() => setImg("")} className={styles.againBtn}>다시 찍기</button>
-            <button onClick={onClickSubmit} className={styles.submitBtn}>제출</button>
+            <div className={styles.btnWrapper}>
+                <button onClick={() => setImg("")} className={styles.againBtn}>다시 찍기</button>
+                <button onClick={onClickSubmit} className={styles.submitBtn}>제출</button>
+            </div>
         </div>
       ) : (
         <>
