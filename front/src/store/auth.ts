@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // 전역 로그인 데이터 타입 설정
 interface AuthState {
     isAuthenticated: boolean;
+    userId: string;
     nickname: string;
     image_url: string;
     connected: boolean;
@@ -13,6 +14,7 @@ interface AuthState {
 // 전역 로그인 데이터 기본 값 설정
 const initialAuth: AuthState ={
     isAuthenticated: false,
+    userId: "",
     nickname: "",
     image_url:"",
     connected: false,
@@ -37,6 +39,7 @@ reducers:{
     },
     updateInfo:(state, action)=>{
         state.nickname = action.payload.nickname;
+        state.userId = action.payload.userId;
         state.image_url = action.payload.image_url;
     }
 }
