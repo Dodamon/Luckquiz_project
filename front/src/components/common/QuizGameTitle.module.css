@@ -1,4 +1,13 @@
 @media screen and (min-width: 767px) {
+  .titleContainer {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .gameTitle {
       width: fit-content;
       padding: 20px 60px;
@@ -12,12 +21,20 @@
       width: 60px;
       height: 63px;
       object-fit: fill;
-      margin-top: 40px;  
+      margin-top: 20px;  
       margin-left: 20px;
   }
 }
 
 @media screen and (max-width: 767px) {
+  .titleContainer {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   .gameTitle {
       width: fit-content;
       padding: 20px 60px;

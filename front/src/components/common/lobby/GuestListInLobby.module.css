@@ -1,0 +1,120 @@
+@media screen and (min-width: 1024px) {
+    .nameContainer {
+        margin-top: 3%;
+        width: 80%;
+        height: 70%;
+        background-color: rgba(255, 255, 255, 0.63);
+        border-radius: 20px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .nameGridBox {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: min-content;
+        overflow-y: scroll;
+    }
+    .nameGridBox::-webkit-scrollbar {
+        width: 5px;
+    }
+    .nameGridBox::-webkit-scrollbar-thumb {
+        height: 10%; /* 스크롤바의 길이 */
+        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
+        border-radius: 10px;
+    }
+    .nameGridBox::-webkit-scrollbar-track {
+        margin: 12px 0 12px 0;
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1024px) {
+
+    .nameGridBox {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: min-content;
+        overflow-y: scroll;
+    }
+    .nameGridBox::-webkit-scrollbar {
+        width: 5px;
+    }
+    .nameGridBox::-webkit-scrollbar-thumb {
+        height: 10%; /* 스크롤바의 길이 */
+        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
+        border-radius: 10px;
+    }
+    .nameGridBox::-webkit-scrollbar-track {
+        margin: 12px 0 12px 0;
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
+}
+
+@media screen and (min-width: 520px) and (max-width: 767px) {
+    .nameContainer {
+        margin-top: 3%;
+        width: 80%;
+        height: 70%;
+        background-color: rgba(255, 255, 255, 0.63);
+        border-radius: 20px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .nameGridBox {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: min-content;
+        overflow-y: scroll;
+    }
+    .nameGridBox::-webkit-scrollbar {
+        width: 5px;
+    }
+    .nameGridBox::-webkit-scrollbar-thumb {
+        height: 10%; /* 스크롤바의 길이 */
+        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
+        border-radius: 10px;
+    }
+    .nameGridBox::-webkit-scrollbar-track {
+        margin: 12px 0 12px 0;
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .nameContainer {
+        margin-top: 3%;
+        width: 80%;
+        height: 70%;
+        background-color: rgba(255, 255, 255, 0.63);
+        border-radius: 20px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .nameGridBox {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: min-content;
+        overflow-y: scroll;
+    }
+    .nameGridBox::-webkit-scrollbar {
+        width: 5px;
+    }
+    .nameGridBox::-webkit-scrollbar-thumb {
+        height: 10%; /* 스크롤바의 길이 */
+        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
+        border-radius: 10px;
+    }
+    .nameGridBox::-webkit-scrollbar-track {
+        margin: 12px 0 12px 0;
+        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+    }
+}
