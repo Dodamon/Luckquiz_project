@@ -21,7 +21,7 @@ public class RedisConfig {
 
     @Value("${spring.cache.redis.port}")
     private int redisPort;
-
+        // update
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
