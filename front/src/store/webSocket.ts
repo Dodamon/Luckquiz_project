@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { client } from "App";
 import { Client } from "@stomp/stompjs";
+import { redirect } from "react-router-dom";
 
 const brokerURL = "ws://k8a707.p.ssafy.io/connect/quiz";
-export const client = new Client({brokerURL: brokerURL});
+export const client = new Client({ brokerURL: brokerURL });
 
 interface SocketState {
-  client: Client,
-};
+  client: Client;
+}
 
 const initialState: SocketState = {
   client: client,
@@ -21,7 +22,9 @@ const socketSlice = createSlice({
       // Connect
       state.client.onConnect = () => {
         console.log(`webSocket connected`);
-        // state.connected = true;
+      };
+      state.client.onDisconnect = () => {
+        alert(`webSocket disconnected`);
       };
       state.client.onWebSocketClose = () => {
         console.log("webSocket Closed");
@@ -30,15 +33,14 @@ const socketSlice = createSlice({
     },
 
     subscribe: (state, actions) => {
-      console.log("아놔")
-      // const client = state.client;
+      console.log("아놔");
       const sender = {
         sender: actions.payload.name,
-        img: actions.payload.img, 
-        type: "ENTER"
+        img: actions.payload.img,
+        type: "ENTER",
       };
 
-      const callback = function(res:any){
+      const callback = function (res: any) {
         if (res.body) console.log(`도착 message: ${res.body}`);
         else console.log("got empty message");
       };
@@ -46,11 +48,9 @@ const socketSlice = createSlice({
       const subscribeURL = `/topic/quiz/${actions.payload.subscribeURL}`;
       // const senderObj = JSON.stringify(sender);
       if (state.client.connected) {
-        state.client.subscribe(subscribeURL, 
-        callback, 
-        { ...sender });
+        state.client.subscribe(subscribeURL, callback, { ...sender });
         console.log("subscribe");
-      };
+      }
     },
 
     // Disconnect
@@ -68,10 +68,10 @@ const socketSlice = createSlice({
       if (state.client) {
         state.client.publish({
           destination: "/app/enter",
-          body: JSON.stringify({sender: actions.payload.name, img: actions.payload.img, type: "ENTER"})
+          body: JSON.stringify({ sender: actions.payload.name, img: actions.payload.img, type: "ENTER" }),
         });
         console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
-      };
+      }
     },
 
     // Send message when submit
@@ -82,8 +82,8 @@ const socketSlice = createSlice({
           body: JSON.stringify(actions.payload),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
-      };
-    }
+      }
+    },
   },
 });
 
