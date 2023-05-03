@@ -39,7 +39,7 @@ export interface getQuizSet {
 }
 
 export interface setQuizSet {
-    name: string,
     hostId: number,
+    templateId:number,
     quizList: setQuizItem[];
 }

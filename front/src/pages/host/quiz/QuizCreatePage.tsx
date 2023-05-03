@@ -23,7 +23,7 @@ const QuizCreatePage: React.FC = () => {
 
                 {
 
-                    quizInfo.length === 0 ? <EmptyContentPage /> : quizInfo[selectInfo]?.quizType === "게임" ? <GameCreateLayout /> : <QuizCreateLayout />
+                    quizInfo.length === 0 ? <EmptyContentPage /> : quizInfo[selectInfo]?.quizType === "game" ? <GameCreateLayout /> : <QuizCreateLayout />
 
                 }
 

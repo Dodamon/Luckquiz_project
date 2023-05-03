@@ -26,8 +26,8 @@ const quizItem: setQuizItem ={
 
 // 전역 로그인 데이터 기본 값 설정
 const initialQuizSet: setQuizSet ={
-    name: "",
-    hostId: 0,
+    hostId: 1,
+    templateId:4,
     quizList:[]
 }
 

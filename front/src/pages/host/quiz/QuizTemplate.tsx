@@ -7,14 +7,21 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
-
-const QuizTemplate= () => {
+type pageNum ={
+    num: number;
+}
+const QuizTemplate= ({ num }: pageNum) => {
     const dispatch = useDispatch();
     const quizList = useSelector((state:RootState)=> state.quiz.quizList);
-    const selectIndex = useSelector((state:RootState)=> state.auth.choiceIndex);
-    const [quiz, setQuiz] = useState(quizList[selectIndex]);
+    // const selectIndex = useSelector((state:RootState)=> state.auth.choiceIndex);
+    const [quiz, setQuiz] = useState(quizList[num]);
   
 
+
+    console.log("여기 왔습니니다.", num, quiz);
+    useEffect(() => {
+        setQuiz(quizList[num]);
+      }, [num, quizList]);
 
     const questionHandler = (e: any)=>{
         setQuiz({ ...quiz, question: e.target.value });
@@ -25,11 +32,11 @@ const QuizTemplate= () => {
     
           const content = quiz;
           if (content.answer || content.one  || content.two || content.three || content.four || content.question) {
-            dispatch(quizAtions.contentsUpdate({index:selectIndex, content: content}))
+            dispatch(quizAtions.contentsUpdate({index:num, content: content}))
           }
         }, 5000);
         return () => clearInterval(intervalId);
-      }, [quiz]);
+      }, [quiz,num,dispatch]);
 
     const imageUploadHandler = async (event: any) => {
         const file = event.target.files[0];
@@ -59,6 +66,10 @@ const QuizTemplate= () => {
             }
 
     }
+
+    const answerHandler= (answer: string)=>{
+        setQuiz({...quiz, answer: answer})
+      }
     return (
         <>
             <div className={styles.content_title}>
@@ -84,22 +95,22 @@ const QuizTemplate= () => {
             </div>
 
             <div className={styles.content_answerbox}>
-                <div className={styles.content_answer}>
+                <div className={styles.content_answer} onClick={()=> answerHandler('one')} style={quiz.answer==='one'? {border:"4px solid blue"}:{}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}><div><Icon icon="material-symbols:circle-outline" /></div></div>
                     <div className={styles.content_input}><input type="text" value={quiz.one} onChange={(e)=>answerInputHandler(e,"one")}/></div>
                 </div>
 
-                <div className={styles.content_answer}>
+                <div className={styles.content_answer}  onClick={()=> answerHandler('two')} style={quiz.answer==='two'? {border:"4px solid blue"}:{}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}><div><Icon icon="ph:triangle-bold" /></div></div>
                     <div className={styles.content_input}><input type="text"  value={quiz.two}  onChange={(e)=>answerInputHandler(e,"two")}/></div>
                 </div>
 
-                <div className={styles.content_answer}>
+                <div className={styles.content_answer}  onClick={()=> answerHandler('three')} style={quiz.answer==='three'? {border:"4px solid blue"}:{}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}><div><Icon icon="ph:x-bold" /></div></div>
                     <div className={styles.content_input}><input type="text" value={quiz.three}  onChange={(e)=>answerInputHandler(e,"three")} /></div>
                 </div>
 
-                <div className={styles.content_answer}>
+                <div className={styles.content_answer}  onClick={()=> answerHandler('four')} style={quiz.answer==='four'? {border:"4px solid blue"}:{}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}><div><Icon icon="material-symbols:square-outline-rounded" /></div></div>
                     <div className={styles.content_input}><input type="text" value={quiz.four} onChange={(e)=>answerInputHandler(e,"four")} /></div>
                 </div>

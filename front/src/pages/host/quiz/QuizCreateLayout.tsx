@@ -6,6 +6,7 @@ import { RootState } from 'store';
 import QuizOxTemplate from './QuizOxTemplate';
 import QuizShortTemplate from './QuizShortTemplate';
 
+
 const QuizCreateLayout = () => {
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
@@ -18,7 +19,7 @@ const QuizCreateLayout = () => {
             <QuizSelectMenu/>
             {
                 
-               quizInfo[selectInfo]?.quiz==="four"? <QuizTemplate/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate/>:<QuizShortTemplate/>
+               quizInfo[selectInfo]?.quiz==="four"? <QuizTemplate num={selectInfo}/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate num={selectInfo}/>:<QuizShortTemplate num={selectInfo}/>
             }
            
         </>

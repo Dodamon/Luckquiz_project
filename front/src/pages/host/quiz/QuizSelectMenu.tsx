@@ -9,6 +9,8 @@ import axios from "axios"
 const QuizSelectMenu = () => {
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+    const template = useSelector((state: RootState) => state.quiz);
+    
     const [selectedQuizOption, setSelectedQuizOption] = useState(quizInfo[selectInfo].quiz);
     const [selectedGameOption, setSelectedGameOption] = useState(quizInfo[selectInfo].game);
     const [selectedTimeOption, setSelectedTimeOption] = useState(quizInfo[selectInfo].timer);
@@ -33,11 +35,11 @@ const QuizSelectMenu = () => {
 
     useEffect(()=>{
 
-        if(quizInfo[selectInfo]?.quizType==="게임"){
+        if(quizInfo[selectInfo]?.quizType==="game"){
             setSelectedGameOption(quizInfo[selectInfo].game);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
 
-        }else if(quizInfo[selectInfo]?.quizType==="퀴즈"){
+        }else if(quizInfo[selectInfo]?.quizType==="quiz"){
             setSelectedQuizOption(quizInfo[selectInfo].quiz);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
         }
@@ -45,8 +47,9 @@ const QuizSelectMenu = () => {
     }, [quizInfo, selectInfo])
 
     const temporarySaveHandler = ()=>{
+        console.log(template);
         
-        axios.get("https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=1&hostId=1").then(res=>{
+        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create",template).then(res=>{
             console.log(res);
             
         })
@@ -63,7 +66,7 @@ const QuizSelectMenu = () => {
 
                 {
 
-                    quizInfo[selectInfo]?.quizType === "퀴즈" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
+                    quizInfo[selectInfo]?.quizType === "quiz" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
                         <option value="four">사지선다</option>
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>

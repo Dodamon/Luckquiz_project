@@ -3,22 +3,30 @@ import styles from "./QuizShortTemplate.module.css"
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { quizAtions } from 'store/quiz';
+type pageNum ={
+  num: number;
+}
+const QuizShortTemplate = ({ num }: pageNum) => {
+  const dispatch = useDispatch();
+  // const selectIndex = useSelector((state: RootState)=> state.auth.choiceIndex);
+  const quizList = useSelector((state: RootState)=> state.quiz.quizList);
+  const [quiz, setQuiz] = useState(quizList[num]);
 
-const QuizShortTemplate = () => {
-
-  const [quiz, setQuiz] = useState({
-    question: "",
-    answerList: [""],
-    answer: "",
-    image: "",
-  });
+  console.log("여기 왔습니니다.", num, quiz);
+  useEffect(() => {
+      setQuiz(quizList[num]);
+    }, [num, quizList]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
 
-      const { question, answerList, answer, image } = quiz;
-      if (question || answerList.every((option) => option !== "") || answer || image) {
-        console.log(quiz);
+      const content = quiz;
+      if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl) {
+        dispatch(quizAtions.contentsUpdate({index:num, content: content}))
       }
     }, 5000);
     return () => clearInterval(intervalId);
@@ -40,7 +48,7 @@ const QuizShortTemplate = () => {
  
     try {
       const response = await axios.post('https://k8a707.p.ssafy.io/api/quiz/upload', formData);
-      setQuiz({ ...quiz, image: response.data });
+      setQuiz({ ...quiz, quizUrl: response.data });
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +75,7 @@ const QuizShortTemplate = () => {
         <input type="text" value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
       </div>
 
-      <div className={styles.content_images} style={quiz.image?{backgroundImage: `url(${quiz.image})`, backgroundSize: "contain",   backgroundPosition: 'center center',backgroundRepeat:"no-repeat" }:{}}>
+      <div className={styles.content_images} style={quiz.quizUrl?{backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain",   backgroundPosition: 'center center',backgroundRepeat:"no-repeat" }:{}}>
         <div className={styles.plus_font} ><div>
         <label htmlFor="file-upload"   className={styles.plus_comment}>
           <Icon icon="ic:round-plus" />
@@ -96,7 +104,7 @@ const QuizShortTemplate = () => {
           })
         }
 
-
+ 
 
       </div>
     </>
