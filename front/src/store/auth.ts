@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // 전역 로그인 데이터 타입 설정
 interface AuthState {
     isAuthenticated: boolean;
-    nickname: string;
+    userId: string;
     connected: boolean;
 }
 
@@ -12,7 +12,7 @@ interface AuthState {
 // 전역 로그인 데이터 기본 값 설정
 const initialAuth: AuthState ={
     isAuthenticated: false,
-    nickname: "",
+    userId: "",
     connected: false,
 }
 
@@ -26,17 +26,20 @@ reducers:{
 
     login:(state, action)=>{
         state.isAuthenticated =true;
-        state.nickname = action.payload.name;
+        state.userId = action.payload.id;
+        sessionStorage.setItem("accessToken", action.payload.token);
     },
     logout:(state)=>{
         state.isAuthenticated = false;
-        state.nickname = "";
+        state.userId = "";
+        // sessionStorage.removeItem("accessToken")
+        // 왜 안지워져 ;;
     }
 }
 })
 
 // slice안에 있는 action들 뽑아내
-export const authAtions = authSlice.actions;
+export const authActions = authSlice.actions;
 // reducer 속성을 추출하여, 이를 해당 모듈의 기본 내보내기
 export default authSlice.reducer;
 

@@ -27,14 +27,14 @@ const Quiz = () => {
 
   return (
 
-      <div className={`${styles[`content`]}`}>
-        <div className={`${styles[`title`]}`}>내가 만든 퀴즈</div>
-        <div className={`${styles[`list-col-frame`]}`}>
+      <div className={styles.content}>
+        <div className={styles.title}>내가 만든 퀴즈</div>
+        <div className={styles.listColFrame}>
           {myQuizList.map((quiz, index) => (
             <HomeListCard key={index} menu={0} quiz={quiz}/>
           ))}
           <Link to={"/quiz/create"}>
-            <Icon icon="material-symbols:add-circle-outline-rounded" className={`${styles[`add-icon`]}`} />
+            <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
           </Link>
         </div>
       </div>

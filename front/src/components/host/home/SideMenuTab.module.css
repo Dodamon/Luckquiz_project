@@ -1,9 +1,12 @@
-.side-tab {
+.sideTab {
   width: 70%;
   background-color: #F2EFFF;
   border-radius: 20px;
   box-sizing: border-box;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .menu {
@@ -21,13 +24,13 @@
   padding: 9%;
   font-size: 17px;
 }
-.profile-name {
+.profileName {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.profile-img {
+.profileImg {
   width: 35%;
   border-radius: 50%;
 }

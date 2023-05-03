@@ -10,10 +10,10 @@ interface Props {
 const ButtonWithLogo = (props: Props) => {
   const { name, color, fontSize } = props;
   return (
-    <div className={`${styles[`btn-box`]}`}>
-      <div className={`${styles[`logo-box`]}`}>{/* <img src={orange_logo} alt="" /> */}</div>
-      <div className={`${styles[`name-box`]}`} style={{ backgroundColor: color }}>
-        <div className={`${styles[`name`]}`} style={{ fontSize: fontSize }}>
+    <div className={styles.btnBox}>
+      <div className={styles.logoBox}>{/* <img src={orange_logo} alt="" /> */}</div>
+      <div className={styles.nameBox} style={{ backgroundColor: color }}>
+        <div className={styles.name} style={{ fontSize: fontSize }}>
           {name}
         </div>
       </div>

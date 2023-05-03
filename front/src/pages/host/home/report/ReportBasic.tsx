@@ -44,37 +44,37 @@ const ReportBasic = () => {
   // getReportBasic
 
   return (
-    <div className={`${styles[`content`]}`}>
-      <div className={`${styles[`title`]}`}>{reportBasic.title}</div>
+    <div className={styles.content}>
+      <div className={styles.title}>{reportBasic.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
-      <div className={`${styles[`report-content`]}`} style={{ backgroundColor: "white" }}>
+      <div className={styles.reportContent} style={{ backgroundColor: "white" }}>
         <ul>
           <li>
-            <Icon icon="iconoir:user" className={`${styles[`icon-style`]}`} />
-            <div className={`${styles[`text-style`]}`}>참여자 수</div>: {reportBasic.parti} 명
+            <Icon icon="iconoir:user" className={styles.iconStyle} />
+            <div className={styles.textStyle}>참여자 수</div>: {reportBasic.parti} 명
           </li>
           <li>
-            <Icon icon="iconoir:question-mark-circle" className={`${styles[`icon-style`]}`} />
-            <div className={`${styles[`text-style`]}`}>퀴즈 개수</div>: {reportBasic.quizs} 개
+            <Icon icon="iconoir:question-mark-circle" className={styles.iconStyle} />
+            <div className={styles.textStyle}>퀴즈 개수</div>: {reportBasic.quizs} 개
           </li>
           <li>
-            <Icon icon="iconoir:gamepad" className={`${styles[`icon-style`]}`} />
-            <div className={`${styles[`text-style`]}`}>게임 개수</div>: {reportBasic.games} 개
+            <Icon icon="iconoir:gamepad" className={styles.iconStyle} />
+            <div className={styles.textStyle}>게임 개수</div>: {reportBasic.games} 개
           </li>
           <li>
-            <Icon icon="iconoir:alarm" className={`${styles[`icon-style`]}`} />
-            <div className={`${styles[`text-style`]}`}>소요 시간</div>: {Math.floor(reportBasic.times / 60)}분{" "}
+            <Icon icon="iconoir:alarm" className={styles.iconStyle} />
+            <div className={styles.textStyle}>소요 시간</div>: {Math.floor(reportBasic.times / 60)}분{" "}
             {reportBasic.times % 60}초
           </li>
         </ul>
-        <div className={`${styles[`chart-container`]}`}>
+        <div className={styles.chartContainer}>
           <img src={report_logo} alt="" width={"50%"} style={{ marginRight: "20px" }} />
-          <div className={`${styles[`chart-box`]}`}>
+          <div className={styles.chartBox}>
             <div style={{display:"flex", alignItems:"center"}}>
-              <div className={`${styles[`text-style`]}`}>총 정답률</div>
-              <div className={`${styles[`text-style`]}`}>{reportBasic.percentage}%</div>
+              <div className={styles.textStyle}>총 정답률</div>
+              <div className={styles.textStyle}>{reportBasic.percentage}%</div>
             </div>
-            <div className={`${styles[`pie-style`]}`}>
+            <div className={styles.pieStyle}>
             <Doughnut data={data} />
             </div>
           </div>
