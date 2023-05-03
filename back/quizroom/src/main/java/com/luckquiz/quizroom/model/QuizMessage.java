@@ -14,7 +14,7 @@ public class QuizMessage {
     private MessageType type;
     private String roomId;
     private String sender;
-    private String senderUrl;
+    private int img;
 
     private String message;
 
@@ -34,7 +34,7 @@ public class QuizMessage {
         this.message = message;
     }
 
-    public void setSenderUrl(String senderUrl) {
-        this.senderUrl = senderUrl;
+    public void setImg(int img) {
+        this.img = img;
     }
 }

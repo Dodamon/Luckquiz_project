@@ -22,10 +22,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -35,12 +32,8 @@ public class MessageController {
     private final SimpMessageSendingOperations sendingOperations;
     private final Map<String, SessionContext> sessionContextMap = new ConcurrentHashMap<>();
     private  final StringRedisTemplate stringRedisTemplate;
-    private final SessionUsers sessionUsers= new SessionUsers();
     private final Gson gson;
-    private static final String TOPIC = "json_01";
-
-    private final KafkaTemplate<String, QuizMessage> kafkaTemplate;
-
+    private final SubmitProducerService submitProducerService;
 
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {
@@ -52,12 +45,21 @@ public class MessageController {
             String roomId = message.getRoomId();
             message.setMessage(message.getSender() + "님이 입장하였습니다.");
             grade.setPlayerName(message.getSender());
-
+            grade.setPlayerImg(message.getImg());
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
 
             zSetOperations.add(roomId+"rank",message.getSender(),30d);
         }
-        Set all =zSetOperations.range(message.getRoomId()+"rank", 0,-1);
+        Map all = hashOperations.entries(message.getRoomId()+"p");
+        all.get("playerName");
+        all.get("playerImg");
+        Iterator<String> keys = all.keySet().iterator();
+        while (keys.hasNext()){
+
+        }
+
+        System.out.println(all.get("p"));
+
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), message.getMessage());
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(),all);
     }
@@ -66,23 +68,9 @@ public class MessageController {
     public void submit(QuizMessage message) {
         System.out.println(message.getType());
         if (QuizMessage.MessageType.SUBMIT.equals(message.getType())) {
-            message.setMessage(message.getSender() + "님의 제출.");
-
-            ListenableFuture<SendResult<String, QuizMessage>> future = kafkaTemplate.send(TOPIC, "key1", message);
-            future.addCallback(new ListenableFutureCallback<SendResult<String, QuizMessage>>() {
-                @Override
-                public void onSuccess(SendResult<String, QuizMessage> result) {
-                    log.info(String.format("Produced event to topic %s: key = %-10s value = %s", TOPIC, "key1", message));
-                }
-                @Override
-                public void onFailure(Throwable ex) {
-                    ex.printStackTrace();
-                }
-            });
-
+            submitProducerService.clientSubmit(gson.toJson(message));
+            System.out.println("제출되었읍니다....");
         }
-        kafkaTemplate.flush();
-        log.info("=====producerTest end=====");
     }
 
     @MessageMapping("/quiz/start")
