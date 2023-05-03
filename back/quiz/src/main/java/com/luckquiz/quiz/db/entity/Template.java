@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name="template")
@@ -21,7 +22,7 @@ public class Template {
     @Column(name = "name", nullable = true)
     private String name;
     @Column(name = "host_id", nullable = false)
-    private int hostId;
+    private UUID hostId;
 
     @Column(name = "numbering", nullable = true)
     private String numbering;

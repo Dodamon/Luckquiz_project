@@ -29,6 +29,7 @@ import java.nio.charset.Charset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -68,7 +69,7 @@ public class TemplateService {
         return result;
     }
 
-    public TemplateDetailResponse findTemplateDetail(int templateId, int hostId) throws Exception {
+    public TemplateDetailResponse findTemplateDetail(int templateId, UUID hostId) throws Exception {
         Template template = templateRepository.findTemplateByIdAndHostId(templateId, hostId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         // template 을 조회를 해 있는거겠지 그러니까 그 다음에도 있어야해?
         List<QuizGame> quizList = quizGameRepository.findQuizGamesByTemplateId(templateId);

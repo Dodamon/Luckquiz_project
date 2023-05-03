@@ -8,6 +8,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class RedisTransService {
@@ -15,13 +18,13 @@ public class RedisTransService {
     private final TemplateService templateService;
     private Gson gson = new Gson();
     @Transactional
-    public void redisTest(int templateId, int hostId) throws Exception{
+    public void redisTest(int templateId, UUID hostId) throws Exception{
         System.out.println("테스트 시작");
         // 템플릿 가져오기.
         TemplateDetailResponse templateDetailResponse = templateService.findTemplateDetail(templateId, hostId);
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
         int temp = templateDetailResponse.getId();
-        int host = templateDetailResponse.getHostId();
+        UUID host = templateDetailResponse.getHostId();
         String keyVal = temp+"-"+host;
 
         String value = gson.toJson(templateDetailResponse);

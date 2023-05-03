@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -54,8 +55,9 @@ public class QuizController {
     }
 
     @GetMapping("/template/info")
-    public ResponseEntity<TemplateDetailResponse> templateInfo(@RequestParam int templateId,int hostId) throws Exception{
-        return ResponseEntity.ok(templateService.findTemplateDetail(templateId,hostId));
+    public ResponseEntity<TemplateDetailResponse> templateInfo(@RequestParam int templateId, String hostId) throws Exception{
+        UUID hostUUID = UUID.fromString(hostId);
+        return ResponseEntity.ok(templateService.findTemplateDetail(templateId,hostUUID));
     }
 
     @PostMapping("/redisShoot")
