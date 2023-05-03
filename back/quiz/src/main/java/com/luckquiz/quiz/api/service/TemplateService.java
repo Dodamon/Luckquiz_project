@@ -149,7 +149,7 @@ public class TemplateService {
         // 템플릿에 게임 순서 저장
 
         // 퀴즈들을 저장하자.
-        List<QGame> qGames = qgcr.getContents();
+        List<QGame> qGames = qgcr.getQuizList();
         for (QGame a : qGames) {
             String game = "";
             if (a.getType().equals(QuizType.quiz)) {

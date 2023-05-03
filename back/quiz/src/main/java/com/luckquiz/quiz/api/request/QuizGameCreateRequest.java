@@ -15,6 +15,6 @@ public class QuizGameCreateRequest {
     private int templateId;
     private int hostId;
     private List<Integer> numbering;
-    private List<QGame> contents;
+    private List<QGame> quizList;
     private int timer;
 }
