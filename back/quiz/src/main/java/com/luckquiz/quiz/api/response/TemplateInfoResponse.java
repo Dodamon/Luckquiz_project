@@ -72,4 +72,8 @@ public class TemplateInfoResponse {
     public void setGame(String game) {
         this.game = game;
     }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
 }

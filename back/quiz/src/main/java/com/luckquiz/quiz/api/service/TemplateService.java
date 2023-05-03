@@ -81,19 +81,19 @@ public class TemplateService {
             switch (a.getType()) {
                 case ox:
                     qgr.setId(a.getId());
-                    qgr.setQuiz(quizDummy[0]);
+                    qgr.setQuestion(quizDummy[0]);
                     qgr.setQuizUrl(quizDummy[1]);
                     qgr.setAnswer(quizDummy[2]);
                     break;
                 case text:
                     String[] asList = quizDummy[3].split("₩₩");
-                    qgr.setQuiz(quizDummy[0]);
+                    qgr.setQuestion(quizDummy[0]);
                     qgr.setQuizUrl(quizDummy[1]);
                     qgr.setAnswer(quizDummy[2]);
                     qgr.setAnswerList(asList);
                     break;
                 case four:
-                    qgr.setQuiz(quizDummy[0]);
+                    qgr.setQuestion(quizDummy[0]);
                     qgr.setQuizUrl(quizDummy[1]);
                     qgr.setOne(quizDummy[2]);
                     qgr.setTwo(quizDummy[3]);
@@ -103,9 +103,9 @@ public class TemplateService {
                     break;
             }
             qgr.setTimer(a.getTimer());
-            if(a.getType().equals(QuizType.egg)){
+            if(a.getType().equals(QuizType.game)){
                 qgr.setQuizType(QuizType.game);
-                qgr.setGame(a.getType().toString());
+                qgr.setGame(quizDummy[0]);
             }else {
                 qgr.setQuizType(QuizType.quiz);
                 qgr.setQuiz(a.getType().toString());
@@ -136,7 +136,6 @@ public class TemplateService {
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
-
         List<Integer> numb = qgcr.getNumbering();  // 이 순서로 무한스크롤을 해야하는데 방법을 모르겠음
         String forNumb = "";
         for (int i = 0; i < numb.size(); i++) {
@@ -149,18 +148,17 @@ public class TemplateService {
         temp.setNumbering(forNumb);
         // 템플릿에 게임 순서 저장
 
-
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getContents();
         for (QGame a : qGames) {
             String game = "";
             if (a.getType().equals(QuizType.quiz)) {
-                switch (a.getType()) {  // game or quiz
+                switch (a.getQuiz()) {  // game or quiz
                     case ox:
-                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
+                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
                         break;
                     case four:
-                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getOne()
+                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getOne()
                                 + "``" + a.getTwo() + "``" + a.getThree() + "``" + a.getFour()
                                 + "``" + a.getAnswer();
                         break;
@@ -173,16 +171,21 @@ public class TemplateService {
                                 al += a.getAnswerList().get(i);
                             }
                         }
-                        game += a.getQuiz() + "``" + a.getQuizUrl() + "``" + a.getAnswer()
+                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getAnswer()
                                 + "``" + al;
                         break;
                 }
+            } else if (a.getType().equals(QuizType.game)) {
+                game += a.getGame();
+                
             }
-
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = game.getBytes(charset);
+            if(a.getGame()!= null){
+                a.setQuiz(QuizType.game);
+            }
             QuizGame qgame = QuizGame.builder()
-                    .templateId(qgcr.getTemplateId())
+                    .templateId(temp.getId())
                     .timer(qgcr.getTimer())
                     .quiz(bytes)
                     .type(a.getQuiz())
