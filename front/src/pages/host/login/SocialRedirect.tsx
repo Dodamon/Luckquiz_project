@@ -18,7 +18,7 @@ const SocialRedirect = () => {
 
   useEffect(() => {
     const accessToken = token || "";
-    dispatch(authActions.login({ id: userId, token: accessToken }));
+    dispatch(authActions.login({ token: accessToken }));
     if (accessToken === sessionStorage.getItem("accessToken")) {
       alert("로그인성공");
       navigate("/home");
