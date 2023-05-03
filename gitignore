@@ -1,3 +1,6 @@
 .DS_store
 
 application.properties
+
+
+*.yml
