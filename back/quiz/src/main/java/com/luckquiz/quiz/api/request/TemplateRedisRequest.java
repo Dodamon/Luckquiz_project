@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor
 public class TemplateRedisRequest {
     private int templateId;
-    private int hostId;
+    private UUID hostId;
 
 }

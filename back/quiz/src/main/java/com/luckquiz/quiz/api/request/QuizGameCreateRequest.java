@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 public class QuizGameCreateRequest {
     private int templateId;
-    private int hostId;
+    private UUID hostId;
     private List<Integer> numbering;
     private List<QGame> quizList;
     private int timer;
