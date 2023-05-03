@@ -20,6 +20,7 @@ import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
 import ReportBasic from "pages/host/home/report/ReportBasic";
 import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
+import SocialRedirect from "pages/host/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 
 const router = createBrowserRouter([
@@ -141,6 +142,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path:"oauth/redirect",
+        element: <SocialRedirect/>
+      }
     ],
   },
 ]);

@@ -54,10 +54,10 @@ const parti = {
 const ReportPart = () => {
   const { report_id } = useParams();
   return (
-    <div className={`${styles[`content`]}`}>
-      <div className={`${styles[`title`]}`}>{parti.title}</div>
+    <div className={styles.content}>
+      <div className={styles.title}>{parti.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
-      <div className={`${styles[`report-content`]}`} style={{ backgroundColor: "var(--point-color)", display:'flex', flexDirection: "column", justifyContent:"start"  }}>
+      <div className={styles.reportContent} style={{ backgroundColor: "var(--point-color)", display:'flex', flexDirection: "column", justifyContent:"start"  }}>
         <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={parti.list} />
       </div>
     </div>

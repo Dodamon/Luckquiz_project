@@ -1,0 +1,40 @@
+.container {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10%;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width:40%;
+  min-width:260px;
+  margin-bottom:100px;
+}
+
+.loginBtn {
+  display: flex;
+  width: 170px;
+  /* height: 24px; */
+  padding: 6% 15% 6% 15%;
+  border-radius: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15%;
+  margin-bottom: 5%;
+}
+
+.font {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

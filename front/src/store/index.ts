@@ -8,7 +8,7 @@ import guestSocketReducer from "./webSocket";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: [ "nickname","isAuthenticated","connected"],
+  // whitelist: [ "useId","isAuthenticated","connected"],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);

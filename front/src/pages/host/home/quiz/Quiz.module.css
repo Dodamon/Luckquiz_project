@@ -10,7 +10,7 @@
   font-size: 28px;
 }
 
-.list-col-frame {
+.listColFrame {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +18,7 @@
   padding: 0% 6% 6% 6%;
 }
 
-.add-icon {
+.addIcon {
   color: var(--placeholder-text);
   font-size: 40px;
 }

@@ -1,4 +1,4 @@
-.quiz-box {
+.quizBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,7 +13,7 @@
   box-sizing: border-box;
 }
 
-.quiz-row-frame {
+.quizRowFrame {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,19 +31,19 @@
   color: white;
 }
 
-.logo-img-container {
+.logoImgContainer {
   width: fit-content;
   height: 100px;
   display: flex;
   align-items: flex-end;
 }
 
-.logo-img {
+.logoImg {
   height: 50%;
   margin-right: 30px;
 }
 
-.quiz-title {
+.quizTitle {
   font-size: 25px;
   margin-bottom: 10px;
 }
@@ -52,7 +52,7 @@
   color: var(--placeholder-text);
 }
 
-.add-icon {
+.addIcon {
   color: var(--placeholder-text);
   font-size: 40px;
 }
