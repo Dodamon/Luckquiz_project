@@ -116,14 +116,12 @@ public class TemplateService {
         }
 
 
-        String[] numb = template.getNumbering().split("``");
 
         TemplateDetailResponse result = TemplateDetailResponse.builder()
                 .id(template.getId())
                 .hostId(template.getHostId())
                 .name(template.getName())
                 .quizList(quizs)
-                .numbering(numb)
                 .build();
 
         return result;
@@ -137,17 +135,6 @@ public class TemplateService {
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
-        List<Integer> numb = qgcr.getNumbering();  // 이 순서로 무한스크롤을 해야하는데 방법을 모르겠음
-        String forNumb = "";
-        for (int i = 0; i < numb.size(); i++) {
-            if (i < numb.size() - 1) {
-                forNumb += numb.get(i) + "``";
-            } else {
-                forNumb += numb.get(i);
-            }
-        }// 게임 순서를 string 으로 받아서 저장
-        temp.setNumbering(forNumb);
-        // 템플릿에 게임 순서 저장
 
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getQuizList();

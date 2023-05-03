@@ -60,11 +60,5 @@ public class QuizController {
         return ResponseEntity.ok(templateService.findTemplateDetail(templateId,hostUUID));
     }
 
-    @PostMapping("/redisShoot")
-    public ResponseEntity<String> toRedis(@RequestBody TemplateRedisRequest trr) throws Exception{
-        redisTransService.redisTest(trr.getTemplateId(),trr.getHostId());
-        return ResponseEntity.status(HttpStatus.CREATED).body("ok");
-    }
-
 
 }
