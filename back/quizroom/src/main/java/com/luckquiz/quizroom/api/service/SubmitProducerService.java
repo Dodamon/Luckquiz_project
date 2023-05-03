@@ -14,7 +14,7 @@ import java.util.Properties;
 public class SubmitProducerService {
     private static Properties configs = new Properties();
     public SubmitProducerService() {
-        configs.put("bootstrap.servers", "http://k8a707.p.ssafy.io:9091, http://k8a707.p.ssafy.io:9092, http://k8a707.p.ssafy.io:9093");
+        configs.put("bootstrap.servers", "http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093");
         configs.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         configs.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
     }
