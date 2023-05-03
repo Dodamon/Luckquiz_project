@@ -61,7 +61,7 @@ const socketSlice = createSlice({
         console.log("webSocket Disconnected");
       }
     },
-
+    
     // Send message when enter
     sendEnterMessage: (state, actions) => {
       // const client = state.client;
