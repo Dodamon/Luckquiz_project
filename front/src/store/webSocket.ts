@@ -52,7 +52,7 @@ const socketSlice = createSlice({
         console.log("subscribe");
       };
     },
-    
+
     // Disconnect
     disconnect: (state) => {
       // const client = state.client;
@@ -71,18 +71,18 @@ const socketSlice = createSlice({
           body: JSON.stringify({sender: actions.payload.name, img: actions.payload.img, type: "ENTER"})
         });
         console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
-      }
+      };
     },
 
     // Send message when submit
     sendAnswerMessage: (state, actions) => {
       if (state.client) {
         state.client.publish({
-          destination: "",
-          body: JSON.stringify({}),
+          destination: "/app/submit",
+          body: JSON.stringify(actions.payload),
+          // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
       };
-      
     }
   },
 });

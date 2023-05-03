@@ -1,6 +1,6 @@
 import styles from "./QuizGameTitle.module.css";
 import React from "react";
-import BalloonGame from "components/game/BalloonGame";
+import BalloonGame from "components/game/balloon/BalloonGame";
 import logoCat from "assets/images/logoCharacter.png";
 
 interface Props {
