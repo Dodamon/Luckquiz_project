@@ -80,7 +80,7 @@ public class TemplateService {
         List<TemplateInfoResponse> quizs = new ArrayList<>();
         for (QuizGame a : quizList) {
             TemplateInfoResponse qgr = new TemplateInfoResponse();
-            QuizType type = a.getType();
+            QuizType type = a.getType(); //
             String quizDumb = new String(a.getQuiz(), "UTF-8");
             QGame gameinfo = gson.fromJson(quizDumb, QGame.class);
             switch (a.getType()) {
@@ -147,9 +147,7 @@ public class TemplateService {
         for (QGame a : qGames) {
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = gson.toJson(a).getBytes(charset);
-            if(a.getGame()!= null){
-                a.setQuiz(QuizType.game);
-            }
+
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())

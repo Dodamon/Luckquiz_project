@@ -63,7 +63,7 @@ public class TemplateInfoResponse {
         this.four = four;
     }
 
-    public void setAnswerList(String[] answerList) {
+    public void setAnswerList(List<String> answerList) {
         this.answerList = answerList;
     }
 
