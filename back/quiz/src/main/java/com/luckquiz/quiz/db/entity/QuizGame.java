@@ -26,7 +26,7 @@ public class QuizGame {
     @Column(name = "timer", nullable = false)
     private int timer;
 
-    @Column(name = "quiz", nullable = false)
+    @Column(name = "quiz", nullable = true)
     private byte[] quiz;
 
 }
