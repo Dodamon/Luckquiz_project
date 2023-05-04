@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QGame {
-    private QuizType type;
-    private QuizType quiz;
+    private QuizType type; // game 인지 quiz 인지
+    private QuizType quiz; // quiz 일때 3종류 중 뭔지
     private String question;
     private String quizUrl;
     private String answer;

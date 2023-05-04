@@ -23,6 +23,7 @@ public class QuizGame {
     @Column(name = "type",nullable = true)
     @Enumerated(EnumType.STRING)
     private QuizType type;
+
     @Column(name = "timer", nullable = false)
     private int timer;
 

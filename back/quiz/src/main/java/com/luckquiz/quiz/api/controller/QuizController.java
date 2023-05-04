@@ -9,6 +9,7 @@ import com.luckquiz.quiz.api.response.TemplateDetailResponse;
 import com.luckquiz.quiz.api.service.GcpService;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.api.service.TemplateService;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.UUID;
 
-@Api
+@Api(tags = {"API 정보를 제공하는 Controller"})
 @RestController
 @RequestMapping("/api/quiz")
 @AllArgsConstructor
