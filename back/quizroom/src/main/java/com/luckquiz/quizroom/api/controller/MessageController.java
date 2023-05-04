@@ -54,14 +54,7 @@ public class MessageController {
             zSetOperations.add(roomId+"rank",message.getSender(),30d);
         }
         Map all = hashOperations.entries(message.getRoomId()+"p");
-        all.get("playerName");
-        all.get("playerImg");
-        Iterator<String> keys = all.keySet().iterator();
-        while (keys.hasNext()){
 
-        }
-
-        System.out.println(all.get("p"));
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), message.getMessage());
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(),all);
