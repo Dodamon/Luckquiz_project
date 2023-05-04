@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { socketActions } from "store/webSocket";
+import { WebSocketConnection } from "utils/socket";
+import { Client, Stomp } from "@stomp/stompjs";
+// import { client } from "utils/socket";
 
 interface Props {
   menu: number;
@@ -20,12 +23,54 @@ const HomeListCard = (props: Props) => {
   const { menu, quiz, report } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const hostInfo = useSelector((state: RootState) => state.auth);
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const client = useSelector((state: RootState) => state.socket.client);
+  const clientState = useSelector((state: RootState) => state.socket.client);
   const { data, status, sendHostRequest } = useHostAxios();
 
+  // const WebSocketConnection = (props: { roomId: Number }) => {
+  //   const { roomId } = props;
+  //   const client = new Client({
+  //     brokerURL: "ws://k8a707.p.ssafy.io/connect/quiz",
+
+  //     // connect시, 구독 시도 -> redux client 갱신
+  //     onConnect: () => {
+  //       console.log("Connected to WebSocket");
+  //       // const sender = {
+  //       //   sender: hostInfo.nickname,
+  //       //   img: hostInfo.image_url,
+  //       //   type: "ENTER",
+  //       // };
+  //       // const callback = function (res: any) {
+  //       //   if (res.body) console.log(`도착 message: ${res.body}`);
+  //       //   else console.log("got empty message");
+  //       //   // dispatch(socketActions.setSocketClient(client));
+  //       // };
+
+  //       // const subscribeURL = `/topic/quiz/${roomId}`;
+  //       // const senderObj = JSON.stringify(sender);
+  //       // if (clientState?.connected) {
+  //       // console.log("subscribe");
+  //       // client.subscribe(subscribeURL, callback, { ...sender });
+  //       dispatch(socketActions.setSocketClient(client));
+  //       // }
+  //     },
+  //     onStompError: (frame) => {
+  //       console.log("Broker reported error: " + frame.headers["message"]);
+  //       console.log("Additional details: " + frame.body);
+  //       dispatch(socketActions.setSocketClient(client));
+  //     },
+  //     onWebSocketClose: () => {
+  //       console.log("WebSocket closed");
+  //     },
+  //   });
+  //   client.activate();
+  // };
+
+  // 퀴즈시작 버튼 클릭시, pin번호 받아오기
   const startQuiz = () => {
     // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
+    console.log("start?");
     sendHostRequest({
       url: `/api/quizroom/room`,
       method: "POST",
@@ -33,20 +78,26 @@ const HomeListCard = (props: Props) => {
     });
   };
 
+  // pin번호를 받아오면, socket connect 시도
   useEffect(() => {
     if (data) {
-      if (!client.connected) {
-        dispatch(socketActions.connect());
-        navigate(`/host/quiz/${data?.roomId}`);
-  
-        // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
-        //   if (data && client.connected) {
-        //     navigate(`/host/quiz/${data?.roomId}`);
-        //   }
-        // }
-      }
+      console.log("goPin");
+      console.log(data);
+      WebSocketConnection({ roomId: data.roomId, dispatch });
+      // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+      //   if (data && client.connected) {
+      //     navigate(`/host/quiz/${data?.roomId}`);
+      //   }
     }
   }, [data]);
+
+  // 정상 connected시, 퀴즈방으로 이동
+  useEffect(() => {
+    if (clientState?.connected && data) {
+      console.log(clientState?.connected);
+      navigate(`/host/quiz/${data?.roomId}`);
+    }
+  }, [clientState]);
 
   return (
     <div className={styles.quizBox}>

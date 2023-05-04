@@ -8,22 +8,30 @@ import { RootState } from "store";
 import { socketActions } from "store/webSocket";
 
 const ShowPin = () => {
+  const { quiz_id } = useParams();
   const dispatch = useDispatch();
-  const hostInfo = useSelector((state: RootState) => state.auth)
-  const client = useSelector((state: RootState) => state.socket.client);
+  const hostInfo = useSelector((state: RootState) => state.auth);
+  const clientState = useSelector((state: RootState) => state.socket.client);
 
   useEffect(() => {
-    if (!client.connected) {
+    console.log(clientState?.connected)
+    if (clientState?.connected) {
       const socketProps = {
         name: hostInfo.nickname,
         img: hostInfo.image_url,
-        subscribeURL: 123,
+        subscribeURL: quiz_id,
       };
-      dispatch(socketActions.subscribe(socketProps));
+    //   setTimeout(() => {
+        dispatch(socketActions.subscribe(socketProps));
+    //   }, 1000);
     }
-  },[]);
+  }, []);
 
-  const { quiz_id } = useParams();
+  useEffect(() =>{
+    console.log('sendEnter')
+    dispatch(socketActions.sendEnterMessage({name : hostInfo.nickname, img : hostInfo.image_url}))
+  },[clientState])
+
   return (
     <div className={styles.container}>
       <img src={logo} alt="" className={styles.logo} />

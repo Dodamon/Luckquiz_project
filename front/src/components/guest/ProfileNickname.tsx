@@ -49,7 +49,7 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
+  // const client = useSelector<RootState, Client>((state) => state.socket.client);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -79,8 +79,8 @@ const ProfileNickname: React.FC = () => {
       img: imgIdx, 
       subscribeURL: 123,
     };
-    dispatch(socketActions.subscribe(socketProps));
-    dispatch(socketActions.sendEnterMessage(socketProps));
+    // dispatch(socketActions.subscribe(socketProps));
+    // dispatch(socketActions.sendEnterMessage(socketProps));
 
     navigate('/guest/quiz/lobby');
   };
