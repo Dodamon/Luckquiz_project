@@ -15,13 +15,16 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -73,6 +76,12 @@ public class MessageController {
         }
     }
 
+    @MessageMapping("/quiz/private/{sender}")
+    // 각각의 사용자에게 채점 결과를 보내주는 메소드
+    public void quizSpread(@Payload QuizMessage message, @DestinationVariable String sender, Principal principal) {
+        // 메시지를 수신자에게 전송
+        sendingOperations.convertAndSendToUser(sender, "/queue/private", message);
+    }
     @MessageMapping("/quiz/start")
     public void start(QuizMessage message) {
         //세션 시작시 정보 할당해주기
