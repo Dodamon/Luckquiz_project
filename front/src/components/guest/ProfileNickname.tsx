@@ -23,6 +23,7 @@ import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
 import { socketActions } from "store/webSocket";
 import { Client } from "@stomp/stompjs";
+
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -49,7 +50,8 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
+  // const client = useSelector<RootState, Client>((state) => state.socket.client);
+  
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -77,7 +79,7 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 123,
+      subscribeURL: 8894101,
     };
     dispatch(socketActions.subscribe(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
