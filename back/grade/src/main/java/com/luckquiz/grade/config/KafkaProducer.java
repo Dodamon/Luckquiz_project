@@ -114,4 +114,19 @@ public class KafkaProducer {
 		kafkaStringTemplate.flush();
 	}
 
+	public void quizEnd(String roomId) {
+		ListenableFuture<SendResult<String, String >> future = kafkaStringTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.quiz_end.toString(), roomId);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+			@Override
+			public void onSuccess(SendResult<String, String> result) {
+				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_grade.toString(), SignToGradeKey.quiz_end.toString() , roomId));
+			}
+			@Override
+			public void onFailure(Throwable ex) {
+				ex.printStackTrace();
+			}
+		});
+		kafkaStringTemplate.flush();
+	}
+
 }
