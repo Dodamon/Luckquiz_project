@@ -19,6 +19,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
     }
 
+    // adasd
     // "/queue", "/topic" 이 두 경로가 prefix(api 경로 맨 앞)에 붙은 경우, messageBroker가 잡아서 해당 채팅방을 구독하고 있는 클라이언트에게 메시지를 전달해줌
     // 주로 "/queue"는 1대1 메시징, "/topic"은 1대다 메시징일 때 주로 사용함.
     @Override
