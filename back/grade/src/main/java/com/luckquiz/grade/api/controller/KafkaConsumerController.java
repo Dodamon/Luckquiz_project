@@ -22,7 +22,6 @@ public class KafkaConsumerController {
 	@KafkaListener(topics = "grade" , groupId = "grade_group")
 	public void gradingConsumer(KafkaGradeRequest message, @Header(KafkaHeaders.RECEIVED_TOPIC) Topic topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
-		System.out.println("에러");
 		if(key.equals("grade")){
 			gradeService.grade(message);
 		} else {
@@ -33,6 +32,7 @@ public class KafkaConsumerController {
 	@KafkaListener(topics = "sign_to_grade", groupId = "grade_sign_group")
 	public void signHandleConsumer(String roomId, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) SignToGradeKey key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
+		System.out.println("헬로");
 		switch(key){
 			case rollback:
 				gradeService.rollback(roomId);

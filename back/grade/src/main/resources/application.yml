@@ -14,7 +14,7 @@ spring:
       bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
     consumer:
       group-id: foo
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
