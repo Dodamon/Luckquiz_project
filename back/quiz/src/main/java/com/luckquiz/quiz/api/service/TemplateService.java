@@ -16,6 +16,7 @@ import com.luckquiz.quiz.db.entity.Template;
 import com.luckquiz.quiz.db.repository.QuizGameRepository;
 import com.luckquiz.quiz.db.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.el.util.ReflectionUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -35,6 +36,7 @@ import java.util.UUID;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 // 템플랫 생성, 조회, 다수조회, 퀴즈추가
 public class TemplateService {
     private final TemplateRepository templateRepository;
@@ -130,17 +132,18 @@ public class TemplateService {
     // 구분자는 모두 `` 으로 나눴고 인정답안은 ₩₩ 으로 구분하였다.
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
-    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception {
+    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception{
+        log.info("퀴즈 게임 생성 시작");
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
-
+        log.info("퀴즈 게임 저장 시작");
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getQuizList();
         for (QGame a : qGames) {
             String game = "";
-            if (a.getType().equals(QuizType.quiz)) {
+            if (QuizType.quiz.equals(a.getType())) {
                 switch (a.getQuiz()) {  // game or quiz
                     case ox:
                         game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
@@ -163,15 +166,18 @@ public class TemplateService {
                                 + "``" + al;
                         break;
                 }
-            } else if (a.getType().equals(QuizType.game)) {
+            } else if (QuizType.game.equals(a.getType())) {
                 game += a.getGame();
                 
             }
+
+            log.info("game에 담겼는지"+ game);
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = game.getBytes(charset);
             if(a.getGame()!= null){
                 a.setQuiz(QuizType.game);
             }
+            log.info("temp.getId():   "+temp.getId()+"      qgcr.getTimer():    "+ qgcr.getTimer() + "      bytes      "+bytes+"    type:      "+ bytes);
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())
@@ -179,8 +185,9 @@ public class TemplateService {
                     .type(a.getQuiz())
                     .build();
             quizGameRepository.save(qgame);
-        }
 
+        }
+        log.info("temp.getId():     "+ temp.getId()+"  temp.getHostId():    "+temp.getHostId());
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
 
