@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "assets/images/logo.png";
@@ -17,10 +17,10 @@ const EnterPin: React.FC = () => {
     e.preventDefault();
     const enteredPin = inputRef.current!.value;
     if (enteredPin.length === 0) {
-      alert("핀 번호를 입력하세요.")
+      alert("핀 번호를 입력하세요.");
       inputRef.current?.focus();
-      return
-    } 
+      return;
+    }
     // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요.") inputRef.current?.focus(); return}
     if (!client.connected) dispatch(socketActions.connect());
     navigate("/guest/nickname");

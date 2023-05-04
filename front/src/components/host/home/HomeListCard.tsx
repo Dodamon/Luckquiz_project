@@ -4,6 +4,11 @@ import { Icon } from "@iconify/react";
 import main_logo from "assets/images/main_logo.png";
 import { Quiz } from "pages/host/home/quiz/Quiz";
 import { Report } from "pages/host/home/report/Report";
+import useHostAxios from "hooks/useHostAxios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { socketActions } from "store/webSocket";
 
 interface Props {
   menu: number;
@@ -12,7 +17,36 @@ interface Props {
 }
 
 const HomeListCard = (props: Props) => {
+  const { menu, quiz, report } = props;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.auth.userId);
+  const client = useSelector((state: RootState) => state.socket.client);
+  const { data, status, sendHostRequest } = useHostAxios();
+
+  const startQuiz = () => {
+    // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
+    sendHostRequest({
+      url: `/api/quizroom/room`,
+      method: "POST",
+      data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
+    });
+  };
+
+  useEffect(() => {
+    if (data) {
+      if (!client.connected) {
+        dispatch(socketActions.connect());
+        navigate(`/host/quiz/${data?.roomId}`);
+  
+        // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+        //   if (data && client.connected) {
+        //     navigate(`/host/quiz/${data?.roomId}`);
+        //   }
+        // }
+      }
+    }
+  }, [data]);
 
   return (
     <div className={styles.quizBox}>
@@ -22,15 +56,15 @@ const HomeListCard = (props: Props) => {
         </div>
         <div>
           {/* quiz에서 쓰이는 경우 (menu = 0)*/}
-          {props.menu === 0 ? (
+          {menu === 0 ? (
             <>
-              <div className={styles.quizTitle}>{props.quiz?.title}</div>
-              <div className={styles.placeholder}>{props.quiz?.date}</div>
+              <div className={styles.quizTitle}>{quiz?.title}</div>
+              <div className={styles.placeholder}>{quiz?.date}</div>
             </>
           ) : (
             <>
-              <div className={styles.quizTitle}>{props.report?.title}</div>
-              <div className={styles.placeholder}>{props.report?.date}</div>
+              <div className={styles.quizTitle}>{report?.title}</div>
+              <div className={styles.placeholder}>{report?.date}</div>
             </>
           )}
         </div>
@@ -38,7 +72,7 @@ const HomeListCard = (props: Props) => {
 
       <div className={styles.quizRowFrame}>
         {/* quiz에서 쓰이는 경우 (menu = 0)*/}
-        {props.menu === 0 ? (
+        {menu === 0 ? (
           <>
             <button className={styles.button}>
               <Icon
@@ -55,7 +89,9 @@ const HomeListCard = (props: Props) => {
                 icon="iconoir:play-outline"
                 className={styles.btn}
                 style={{ backgroundColor: "var(--select-four)" }}
-                onClick={() => {}}
+                onClick={() => {
+                  startQuiz();
+                }}
               />
             </button>
             <button className={styles.button}>
@@ -69,7 +105,7 @@ const HomeListCard = (props: Props) => {
           </>
         ) : (
           // report에서 쓰이는 경우 (menu = 1)
-          <div className={styles.parti}>참여자 {props.report?.participants}명</div>
+          <div className={styles.parti}>참여자 {report?.participants}명</div>
         )}
       </div>
     </div>

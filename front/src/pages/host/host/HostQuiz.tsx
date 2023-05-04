@@ -4,7 +4,7 @@ const HostQuiz = () => {
 
   return (
     <>
-      <h1>HostQuiz</h1>
+      {/* <h1>HostQuiz</h1> */}
       <Outlet></Outlet>
     </>
   );

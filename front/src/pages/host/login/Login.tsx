@@ -9,8 +9,8 @@ interface Provider {
 
 const socialLogin = (props: Provider) => {
   const { provider } = props;
-  // window.location.href = `api/oauth/oauth2/authorize/${provider}?redirect_uri=${redirect_uri}`
-  window.location.href = `https://k8a707.p.ssafy.io/api/auth/oauth2/authorize/${provider}?redirect_uri=http://localhost:3000/oauth/redirect`
+  
+  window.location.href = `${process.env.REACT_APP_HOST}/api/auth/oauth2/authorize/${provider}?redirect_uri=${process.env.REACT_APP_REDIRECT_URL}`
 };
 
 
