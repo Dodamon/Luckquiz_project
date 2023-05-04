@@ -20,7 +20,7 @@ public class QuizGame {
     private int id;
     @Column(name = "template_id", nullable = true)
     private int templateId;
-    @Column(name = "type",nullable = false)
+    @Column(name = "type",nullable = true)
     @Enumerated(EnumType.STRING)
     private QuizType type;
     @Column(name = "timer", nullable = false)
