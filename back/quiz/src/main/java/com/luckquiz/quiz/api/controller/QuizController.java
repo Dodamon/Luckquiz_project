@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.UUID;
 
+@Api
 @RestController
 @RequestMapping("/api/quiz")
 @AllArgsConstructor

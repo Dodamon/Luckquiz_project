@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Getter
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class TemplateInfoResponse {
     private String two;
     private String three;
     private String four;
-    private String[] answerList;
+    private List<String> answerList;
     private String game;
     private Integer timer;
 
