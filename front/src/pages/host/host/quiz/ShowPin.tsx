@@ -12,16 +12,16 @@ const ShowPin = () => {
   const hostInfo = useSelector((state: RootState) => state.auth)
   const client = useSelector((state: RootState) => state.socket.client);
 
-  // useEffect(() => {
-  //   if (!client.connected) {
-  //     const socketProps = {
-  //       name: hostInfo.nickname,
-  //       img: hostInfo.image_url,
-  //       subscribeURL: 123,
-  //     };
-  //     dispatch(socketActions.subscribe(socketProps));
-  //   }
-  // },[]);
+  useEffect(() => {
+    if (!client.connected) {
+      const socketProps = {
+        name: hostInfo.nickname,
+        img: hostInfo.image_url,
+        subscribeURL: 123,
+      };
+      dispatch(socketActions.subscribe(socketProps));
+    }
+  },[]);
 
   const { quiz_id } = useParams();
   return (
