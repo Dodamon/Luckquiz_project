@@ -1,5 +1,6 @@
 package com.luckquiz.quiz.api.service;
 
+import com.google.gson.Gson;
 import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.request.QuizGameCreateRequest;
 import com.luckquiz.quiz.api.request.TemplateCreateRequest;
@@ -42,6 +43,7 @@ public class TemplateService {
     private final TemplateRepository templateRepository;
 
     private final QuizGameRepository quizGameRepository;
+    private final Gson gson;
 
     @Transactional
     public int createTemplate(TemplateCreateRequest tcr) {
@@ -80,35 +82,38 @@ public class TemplateService {
             TemplateInfoResponse qgr = new TemplateInfoResponse();
             QuizType type = a.getType();
             String quizDumb = new String(a.getQuiz(), "UTF-8");
-            String[] quizDummy = quizDumb.split("``");
+            QGame gameinfo = gson.fromJson(quizDumb, QGame.class);
             switch (a.getType()) {
                 case ox:
                     qgr.setId(a.getId());
-                    qgr.setQuestion(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setAnswer(quizDummy[2]);
+                    qgr.setQuestion(gameinfo.getQuestion());
+                    qgr.setQuizUrl(gameinfo.getQuizUrl());
+                    qgr.setAnswer(gameinfo.getAnswer());
                     break;
                 case text:
-                    String[] asList = quizDummy[3].split("₩₩");
-                    qgr.setQuestion(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setAnswer(quizDummy[2]);
-                    qgr.setAnswerList(asList);
+                    qgr.setQuestion(gameinfo.getQuestion());
+                    qgr.setQuizUrl(gameinfo.getQuizUrl());
+                    qgr.setAnswer(gameinfo.getAnswer());
+                    qgr.setAnswerList(gameinfo.getAnswerList());
                     break;
                 case four:
-                    qgr.setQuestion(quizDummy[0]);
-                    qgr.setQuizUrl(quizDummy[1]);
-                    qgr.setOne(quizDummy[2]);
-                    qgr.setTwo(quizDummy[3]);
-                    qgr.setThree(quizDummy[4]);
-                    qgr.setFour(quizDummy[5]);
-                    qgr.setAnswer(quizDummy[6]);
+                    qgr.setQuestion(gameinfo.getQuestion());
+                    qgr.setQuizUrl(gameinfo.getQuizUrl());
+                    qgr.setOne(gameinfo.getOne());
+                    qgr.setTwo(gameinfo.getTwo());
+                    qgr.setThree(gameinfo.getThree());
+                    qgr.setFour(gameinfo.getFour());
+                    qgr.setAnswer(gameinfo.getAnswer());
+                    break;
+                default:
+                    log.info("디폴트 타입 : " +a.getType().toString());
+                    log.info("디폴트");
                     break;
             }
             qgr.setTimer(a.getTimer());
             if(a.getType().equals(QuizType.game)){
                 qgr.setQuizType(QuizType.game);
-                qgr.setGame(quizDummy[0]);
+                qgr.setGame(gameinfo.getGame());
             }else {
                 qgr.setQuizType(QuizType.quiz);
                 qgr.setQuiz(a.getType().toString());
@@ -133,51 +138,18 @@ public class TemplateService {
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
     public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception{
-        log.info("퀴즈 게임 생성 시작");
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
-        log.info("퀴즈 게임 저장 시작");
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getQuizList();
         for (QGame a : qGames) {
-            String game = "";
-            if (QuizType.quiz.equals(a.getType())) {
-                switch (a.getQuiz()) {  // game or quiz
-                    case ox:
-                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getAnswer();
-                        break;
-                    case four:
-                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getOne()
-                                + "``" + a.getTwo() + "``" + a.getThree() + "``" + a.getFour()
-                                + "``" + a.getAnswer();
-                        break;
-                    case text:
-                        String al = "";
-                        for (int i = 0; i < a.getAnswerList().size(); i++) {
-                            if (i < a.getAnswerList().size() - 1) {
-                                al += a.getAnswerList().get(i) + "₩₩";
-                            } else {
-                                al += a.getAnswerList().get(i);
-                            }
-                        }
-                        game += a.getQuestion() + "``" + a.getQuizUrl() + "``" + a.getAnswer()
-                                + "``" + al;
-                        break;
-                }
-            } else if (QuizType.game.equals(a.getType())) {
-                game += a.getGame();
-                
-            }
-
-            log.info("game에 담겼는지"+ game);
             Charset charset = Charset.forName("UTF-8");
-            byte[] bytes = game.getBytes(charset);
+            byte[] bytes = gson.toJson(a).getBytes(charset);
             if(a.getGame()!= null){
                 a.setQuiz(QuizType.game);
             }
-            log.info("temp.getId():   "+temp.getId()+"      qgcr.getTimer():    "+ qgcr.getTimer() + "      bytes      "+bytes+"    type:      "+ bytes);
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())
@@ -187,7 +159,6 @@ public class TemplateService {
             quizGameRepository.save(qgame);
 
         }
-        log.info("temp.getId():     "+ temp.getId()+"  temp.getHostId():    "+temp.getHostId());
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
 
