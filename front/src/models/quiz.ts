@@ -1,6 +1,6 @@
 export interface getQuizItem {
     id: number,
-    quizType: string,
+    type: string,
     quiz: string,
     quizUrl: string,
     answer: string,
@@ -15,8 +15,8 @@ export interface getQuizItem {
 }
 
 export interface setQuizItem {
-    id: number,
-    quizType: string,
+
+    type: string,
     quiz: string,
     quizUrl: string,
     answer: string,
@@ -32,14 +32,14 @@ export interface setQuizItem {
 
 
 export interface getQuizSet {
-    id: number,
+
     name: string,
     hostId: number,
     quizList: getQuizItem[];
 }
 
 export interface setQuizSet {
-    hostId: number,
-    templateId:number,
+    hostId:string,
+    templateId: number,
     quizList: setQuizItem[];
 }

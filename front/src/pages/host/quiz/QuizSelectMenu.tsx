@@ -19,12 +19,12 @@ const QuizSelectMenu = () => {
     const dispatch = useDispatch();
     const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedQuizOption(event.target.value);
-        dispatch(quizAtions.quizTypeUpdate({index: selectInfo, quizType: event.target.value}))
+        dispatch(quizAtions.quizTypeUpdate({index: selectInfo, type: event.target.value}))
     };
 
     const gameTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedGameOption(event.target.value);
-        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, gameType: event.target.value}))
+        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, type: event.target.value}))
     };
 
     const quizTimeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -35,11 +35,11 @@ const QuizSelectMenu = () => {
 
     useEffect(()=>{
 
-        if(quizInfo[selectInfo]?.quizType==="game"){
+        if(quizInfo[selectInfo]?.type==="game"){
             setSelectedGameOption(quizInfo[selectInfo].game);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
 
-        }else if(quizInfo[selectInfo]?.quizType==="quiz"){
+        }else if(quizInfo[selectInfo]?.type==="quiz"){
             setSelectedQuizOption(quizInfo[selectInfo].quiz);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
         }
@@ -49,7 +49,7 @@ const QuizSelectMenu = () => {
     const temporarySaveHandler = ()=>{
         console.log(template);
         
-        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create",template).then(res=>{
+        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res=>{
             console.log(res);
             
         })
@@ -66,7 +66,7 @@ const QuizSelectMenu = () => {
 
                 {
 
-                    quizInfo[selectInfo]?.quizType === "quiz" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
+                    quizInfo[selectInfo]?.type === "quiz" ? <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
                         <option value="four">사지선다</option>
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>

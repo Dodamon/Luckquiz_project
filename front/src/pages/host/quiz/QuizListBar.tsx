@@ -8,8 +8,8 @@ import { setQuizItem } from "models/quiz";
 import { authAtions } from 'store/auth';
 
 const newQuizItem: setQuizItem = {
-    id:0,
-    quizType: "quiz",
+
+    type: "quiz",
     quiz: "four",
     quizUrl: "",
     answer: "",
@@ -24,8 +24,8 @@ const newQuizItem: setQuizItem = {
 }
 
 const newGameItem: setQuizItem = {
-    id:0,
-    quizType: "game",
+  
+    type: "game",
     quiz: "",
     quizUrl: "",
     answer: "",
@@ -96,7 +96,7 @@ const QuizListBar = () => {
                                                 {...provided.dragHandleProps}
                                             >
                                                 <div className={styles.quiz_sub}>
-                                                    <div className={styles.quiz_title} style={item.quizType === "quiz" ? { backgroundColor: `var(--point-color)` } : { backgroundColor: `var(--button-two)` }}>{item.quizType} {index + 1}</div>
+                                                    <div className={styles.quiz_title} style={item.type === "quiz" ? { backgroundColor: `var(--point-color)` } : { backgroundColor: `var(--button-two)` }}>{item.type} {index + 1}</div>
                                                     <div className={styles.quiz_delete} onClick={() => deleteContentHandler(index)}>x</div>
                                                 </div>
                                                 <div className={styles.quiz_content} style={index===focusedItem?{backgroundColor:"var(--select-four)"}:{} } onClick={()=>itemSelectHandler(index)}>

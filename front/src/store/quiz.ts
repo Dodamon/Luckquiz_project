@@ -5,8 +5,8 @@ import { setQuizItem } from "models/quiz";
 
 
 const quizItem: setQuizItem ={
-    id:0,
-    quizType: "",
+   
+    type: "",
     // 'quiz', 'game'
     quiz: "",
     // 'text, four, ox,
@@ -23,11 +23,10 @@ const quizItem: setQuizItem ={
     timer: 0
 }
 
-
 // 전역 로그인 데이터 기본 값 설정
 const initialQuizSet: setQuizSet ={
-    hostId: 1,
-    templateId:4,
+    hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644",
+    templateId: 7,
     quizList:[]
 }
 
@@ -57,10 +56,10 @@ reducers:{
         });
     },
     quizTypeUpdate:(state, action)=>{
-        const { index, quizType } = action.payload;
+        const { index, type } = action.payload;
 
         state.quizList = produce(state.quizList, draftList => {
-            draftList[index].quiz = quizType;
+            draftList[index].quiz = type;
         });
     },
     quizTimeUpdate:(state, action)=>{
