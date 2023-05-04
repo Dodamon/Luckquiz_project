@@ -37,7 +37,6 @@ const Quiz = () => {
           <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
         </Link>
       </div>
-      <Podium/>
     </div>
   );
 };

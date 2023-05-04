@@ -5,6 +5,8 @@ import { createSlice } from "@reduxjs/toolkit";
 interface AuthState {
     isAuthenticated: boolean;
     userId: string;
+    nickname: string;
+    image_url: string;
     connected: boolean;
 }
 
@@ -13,6 +15,8 @@ interface AuthState {
 const initialAuth: AuthState ={
     isAuthenticated: false,
     userId: "",
+    nickname: "",
+    image_url:"",
     connected: false,
 }
 
@@ -26,14 +30,17 @@ reducers:{
 
     login:(state, action)=>{
         state.isAuthenticated =true;
-        state.userId = action.payload.id;
         sessionStorage.setItem("accessToken", action.payload.token);
     },
     logout:(state)=>{
         state.isAuthenticated = false;
-        state.userId = "";
+        state.nickname = "";
         // sessionStorage.removeItem("accessToken")
-        // 왜 안지워져 ;;
+    },
+    updateInfo:(state, action)=>{
+        state.nickname = action.payload.nickname;
+        state.userId = action.payload.userId;
+        state.image_url = action.payload.image_url;
     }
 }
 })

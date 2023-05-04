@@ -2,9 +2,12 @@ import styles from "./SideMenuTab.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import profile_sample from "assets/images/profile_sample.png";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 const SideMenuTab = () => {
   const { pathname } = useLocation()
+  const userInfo = useSelector((state: RootState)=>state.auth)
 
   // menu[quiz, report] 선택에 따라 달라지는 탭 색깔을 url에 따라 별도지정.
   const bgcolor = pathname.includes('report') ? ['', "var(--side-bar)"] : ["var(--side-bar)",'']
@@ -12,8 +15,8 @@ const SideMenuTab = () => {
   return (
     <div className={styles.sideTab}>
       <div className={styles.profile}>
-        <img className={styles.profileImg} src={profile_sample} alt="" />
-        <div className={styles.profileName}>무지개꽃잎이</div>
+        <img className={styles.profileImg} src={userInfo.image_url} alt="" />
+        <div className={styles.profileName}>{userInfo.nickname}</div>
       </div>
       <Link to={"/home"}>
         <div className={styles.menu} style={{ backgroundColor: bgcolor[0] }}>
