@@ -7,15 +7,14 @@
     align-items: center;
     padding-left: 0;
     list-style: none;
+   
+    /* background-color: red; */
 }
 
 .quiz_item {
     margin-bottom: 20px;
 }
 
-.quiz_item:hover{
-  
-}
 
 .quiz_title {
     margin-left: 10px;
@@ -52,8 +51,8 @@
 }
 
 .quiz_content:hover{
-    background-color: var(--select-four);
-    /* padding: 5px; */
+    /* background-color: var(--select-four); */
+    background-color: skyblue; 
 }
 
 

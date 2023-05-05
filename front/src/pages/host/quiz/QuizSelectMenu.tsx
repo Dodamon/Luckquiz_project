@@ -6,55 +6,57 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
 import axios from "axios"
+
+
 const QuizSelectMenu = () => {
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
     const template = useSelector((state: RootState) => state.quiz);
-    
+
     const [selectedQuizOption, setSelectedQuizOption] = useState(quizInfo[selectInfo].quiz);
     const [selectedGameOption, setSelectedGameOption] = useState(quizInfo[selectInfo].game);
     const [selectedTimeOption, setSelectedTimeOption] = useState(quizInfo[selectInfo].timer);
-    
-    
+
+
     const dispatch = useDispatch();
     const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedQuizOption(event.target.value);
-        dispatch(quizAtions.quizTypeUpdate({index: selectInfo, type: event.target.value}))
+        dispatch(quizAtions.quizTypeUpdate({ index: selectInfo, type: event.target.value }))
     };
 
     const gameTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedGameOption(event.target.value);
-        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, type: event.target.value}))
+        dispatch(quizAtions.gameTypeUpdate({ index: selectInfo, type: event.target.value }))
     };
 
     const quizTimeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedTimeOption(parseInt(event.target.value));
-        dispatch(quizAtions.quizTimeUpdate({index: selectInfo, time: event.target.value}))
+        dispatch(quizAtions.quizTimeUpdate({ index: selectInfo, time: event.target.value }))
     };
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(quizInfo[selectInfo]?.type==="game"){
+        if (quizInfo[selectInfo]?.type === "game") {
             setSelectedGameOption(quizInfo[selectInfo].game);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
 
-        }else if(quizInfo[selectInfo]?.type==="quiz"){
+        } else if (quizInfo[selectInfo]?.type === "quiz") {
             setSelectedQuizOption(quizInfo[selectInfo].quiz);
             setSelectedTimeOption(quizInfo[selectInfo].timer);
         }
-      
+
     }, [quizInfo, selectInfo])
 
-    const temporarySaveHandler = ()=>{
+    const temporarySaveHandler = () => {
         console.log(template);
-        
-        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res=>{
+
+        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res => {
             console.log(res);
-            
+
         })
 
-        
+
     }
 
 

@@ -29,13 +29,16 @@ justify-content: space-between;
     border-radius: 20px;
     background-color: var(  --white-color);
     display: flex;
+    font-size: 18px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     word-break: keep-all;
+    font-weight: bold;
 }
 
 .select_form{
     padding-left: 15px;
-    font-size: 18px
+    font-size: 18px;
+    font-weight: bold;
 }

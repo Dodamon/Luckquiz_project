@@ -13,6 +13,7 @@
 }
 
 .content_images{
+    z-index: 0;
     background-color: var(--white-color);
     width: 400px;
     height: 200px;
