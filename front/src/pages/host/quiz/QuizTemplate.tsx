@@ -7,36 +7,36 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
-type pageNum ={
+type pageNum = {
     num: number;
 }
-const QuizTemplate= ({ num }: pageNum) => {
+const QuizTemplate = ({ num }: pageNum) => {
     const dispatch = useDispatch();
-    const quizList = useSelector((state:RootState)=> state.quiz.quizList);
+    const quizList = useSelector((state: RootState) => state.quiz.quizList);
     // const selectIndex = useSelector((state:RootState)=> state.auth.choiceIndex);
     const [quiz, setQuiz] = useState(quizList[num]);
-  
+
 
 
     console.log("여기 왔습니니다.", num, quiz);
     useEffect(() => {
         setQuiz(quizList[num]);
-      }, [num, quizList]);
+    }, [num, quizList]);
 
-    const questionHandler = (e: any)=>{
+    const questionHandler = (e: any) => {
         setQuiz({ ...quiz, question: e.target.value });
     }
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-    
-          const content = quiz;
-          if (content.answer || content.one  || content.two || content.three || content.four || content.question) {
-            dispatch(quizAtions.contentsUpdate({index:num, content: content}))
-          }
+
+            const content = quiz;
+            if (content.answer || content.one || content.two || content.three || content.four || content.question) {
+                dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
+            }
         }, 5000);
         return () => clearInterval(intervalId);
-      }, [quiz,num,dispatch]);
+    }, [quiz, num, dispatch]);
 
     const imageUploadHandler = async (event: any) => {
         const file = event.target.files[0];
@@ -53,23 +53,23 @@ const QuizTemplate= ({ num }: pageNum) => {
         }
     };
 
-    const answerInputHandler = (e:any,num:string)=>{
- 
-            if(num === 'one'){
-                setQuiz({...quiz, one: e.target.value })
-            }else if(num ==='two'){
-                setQuiz({...quiz, two: e.target.value })
-            }else if(num === 'three'){
-                setQuiz({...quiz, three: e.target.value })
-            }else if(num === 'four'){
-                setQuiz({...quiz, four: e.target.value })
-            }
+    const answerInputHandler = (e: any, num: string) => {
+
+        if (num === 'one') {
+            setQuiz({ ...quiz, one: e.target.value })
+        } else if (num === 'two') {
+            setQuiz({ ...quiz, two: e.target.value })
+        } else if (num === 'three') {
+            setQuiz({ ...quiz, three: e.target.value })
+        } else if (num === 'four') {
+            setQuiz({ ...quiz, four: e.target.value })
+        }
 
     }
 
-    const answerHandler= (answer: string)=>{
-        setQuiz({...quiz, answer: answer})
-      }
+    const answerHandler = (answer: string) => {
+        setQuiz({ ...quiz, answer: answer })
+    }
     return (
         <>
             <div className={styles.content_title}>
@@ -95,24 +95,24 @@ const QuizTemplate= ({ num }: pageNum) => {
             </div>
 
             <div className={styles.content_answerbox}>
-                <div className={styles.content_answer} onClick={()=> answerHandler('one')} style={quiz.answer==='one'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('one')} style={quiz.answer === 'one' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}><div><Icon icon="material-symbols:circle-outline" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.one} onChange={(e)=>answerInputHandler(e,"one")}/></div>
+                    <div className={styles.content_input}><input type="text" value={quiz.one} onChange={(e) => answerInputHandler(e, "one")} /></div>
                 </div>
 
-                <div className={styles.content_answer}  onClick={()=> answerHandler('two')} style={quiz.answer==='two'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('two')} style={quiz.answer === 'two' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}><div><Icon icon="ph:triangle-bold" /></div></div>
-                    <div className={styles.content_input}><input type="text"  value={quiz.two}  onChange={(e)=>answerInputHandler(e,"two")}/></div>
+                    <div className={styles.content_input}><input type="text" value={quiz.two} onChange={(e) => answerInputHandler(e, "two")} /></div>
                 </div>
 
-                <div className={styles.content_answer}  onClick={()=> answerHandler('three')} style={quiz.answer==='three'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('three')} style={quiz.answer === 'three' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}><div><Icon icon="ph:x-bold" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.three}  onChange={(e)=>answerInputHandler(e,"three")} /></div>
+                    <div className={styles.content_input}><input type="text" value={quiz.three} onChange={(e) => answerInputHandler(e, "three")} /></div>
                 </div>
 
-                <div className={styles.content_answer}  onClick={()=> answerHandler('four')} style={quiz.answer==='four'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('four')} style={quiz.answer === 'four' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}><div><Icon icon="material-symbols:square-outline-rounded" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.four} onChange={(e)=>answerInputHandler(e,"four")} /></div>
+                    <div className={styles.content_input}><input type="text" value={quiz.four} onChange={(e) => answerInputHandler(e, "four")} /></div>
                 </div>
             </div>
         </>

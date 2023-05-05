@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from "./GameEmotionTemplate.module.css"
 import emotions from '../../../assets/images/emotion_game.png'
 import { Icon } from '@iconify/react';
 const GameEmotionTemplate = () => {
+
+    const [emotion, setEmotion] = useState("");
+
+
+
+
+
+    const emotionSelectHandler = (item: string) => {
+        setEmotion(item);
+    }
+
+
+
+
+
     return (
         <>
             <div className={styles.emotion_content}>
@@ -19,27 +34,27 @@ const GameEmotionTemplate = () => {
                 <div className={styles.emotion_select}>
 
                     <ul className={styles.emotion_grid}>
-                        <li>
+                        <li onClick={() => emotionSelectHandler("happy")} style={emotion === 'happy' ? { opacity: "70%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-two)" }} ><Icon icon="ri:emotion-line" /></div>
                             <div className={styles.emotion_ment}>기쁨</div>
                         </li>
 
-                        <li>
+                        <li onClick={() => emotionSelectHandler("sad")} style={emotion === 'sad' ? { opacity: "70%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-four)" }} ><Icon icon="ri:emotion-sad-line" /></div>
                             <div className={styles.emotion_ment}>슬픔</div>
                         </li>
 
-                        <li>
+                        <li onClick={() => emotionSelectHandler("scared")} style={emotion === 'scared' ? { opacity: "70%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-three)" }}><Icon icon="ri:emotion-2-line" /></div>
                             <div className={styles.emotion_ment}>두려움</div>
                         </li>
 
-                        <li>
+                        <li onClick={() => emotionSelectHandler("angry")} style={emotion === 'angry' ? { opacity: "70%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var( --select-one)" }}><Icon icon="ri:emotion-unhappy-line" /></div>
                             <div className={styles.emotion_ment}>분노</div>
                         </li>
 
-                        <li>
+                        <li onClick={() => emotionSelectHandler("aversion")} style={emotion === 'aversion' ? { opacity: "70%" } : {}}>
                             <div className={styles.emotion_box} ><Icon icon="ri:emotion-laugh-line" /></div>
                             <div className={styles.emotion_ment}>혐오</div>
                         </li>

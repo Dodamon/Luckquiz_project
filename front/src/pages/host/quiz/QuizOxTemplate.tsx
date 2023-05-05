@@ -7,31 +7,31 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
-type pageNum ={
+type pageNum = {
     num: number;
 }
 const QuizOxTemplate = ({ num }: pageNum) => {
     const dispatch = useDispatch();
-    const quizList = useSelector((state:RootState)=> state.quiz.quizList);
+    const quizList = useSelector((state: RootState) => state.quiz.quizList);
     const [quiz, setQuiz] = useState(quizList[num]);
 
 
     console.log("여기 왔습니니다.", num, quiz);
     useEffect(() => {
         setQuiz(quizList[num]);
-      }, [num, quizList]);
+    }, [num, quizList]);
 
 
-      useEffect(() => {
+    useEffect(() => {
         const intervalId = setInterval(() => {
-    
-          const content = quiz;
-          if (content.answer || content.question) {
-            dispatch(quizAtions.contentsUpdate({index:num, content: content}))
-          }
+
+            const content = quiz;
+            if (content.answer || content.question) {
+                dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
+            }
         }, 5000);
         return () => clearInterval(intervalId);
-      }, [quiz,num,dispatch]);
+    }, [quiz, num, dispatch]);
 
 
     const imageUploadHandler = async (event: any) => {
@@ -43,24 +43,24 @@ const QuizOxTemplate = ({ num }: pageNum) => {
 
         try {
             const response = await axios.post('https://k8a707.p.ssafy.io/api/quiz/upload', formData);
-            setQuiz({ ...quiz, quizUrl: response.data  });
+            setQuiz({ ...quiz, quizUrl: response.data });
         } catch (error) {
             console.error(error);
         }
     };
 
-    const questionHandler = (e: any)=>{
+    const questionHandler = (e: any) => {
         setQuiz({ ...quiz, question: e.target.value });
-      }
-    
-      const answerHandler= (answer: string)=>{
-        setQuiz({...quiz, answer: answer})
-      }
+    }
+
+    const answerHandler = (answer: string) => {
+        setQuiz({ ...quiz, answer: answer })
+    }
 
     return (
         <>
             <div className={styles.content_title}>
-                <input  type="text" value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요"  />
+                <input type="text" value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
             </div>
 
             <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
@@ -82,12 +82,12 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             </div>
 
             <div className={styles.content_answerbox}>
-                <div className={styles.content_answer} onClick={()=> answerHandler('o')} style={quiz.answer==='o'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('o')} style={quiz.answer === 'o' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}><div><Icon icon="material-symbols:circle-outline" /></div></div>
                     <div className={styles.content_input}><input type="text" value={"맞다"} disabled /></div>
                 </div>
 
-                <div className={styles.content_answer} onClick={()=> answerHandler('x')} style={quiz.answer==='x'? {border:"4px solid blue"}:{}}>
+                <div className={styles.content_answer} onClick={() => answerHandler('x')} style={quiz.answer === 'x' ? { opacity: "70%" } : {}}>
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}><div><Icon icon="ph:x-bold" /></div></div>
                     <div className={styles.content_input}><input type="text" value={"아니다"} disabled /></div>
                 </div>

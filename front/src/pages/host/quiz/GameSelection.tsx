@@ -14,10 +14,10 @@ const GameSelection = () => {
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
     const dispatch = useDispatch();
 
-    const gameSelectHandler = (gameType: string) =>{
-        dispatch(quizAtions.gameTypeUpdate({index: selectInfo, gameType: gameType}));
+    const gameSelectHandler = (gameType: string) => {
+        dispatch(quizAtions.gameTypeUpdate({ index: selectInfo, gameType: gameType }));
     }
-    
+
 
 
     return (
@@ -25,7 +25,7 @@ const GameSelection = () => {
             <div className={styles.game_content}>
 
                 <ul className={styles.game_list}>
-                    <li className={styles.game_item} onClick={()=> gameSelectHandler("emotion")}>
+                    <li className={styles.game_item} onClick={() => gameSelectHandler("egg")}>
                         <header className={styles.game_title}><h4>셀카 감정분석게임</h4></header>
                         <section className={styles.game_img} ><img src={emotion} alt="감정분석" /></section>
                         <footer className={styles.game_setting}><div className={styles.game_btnbox}>
@@ -35,7 +35,7 @@ const GameSelection = () => {
                         </footer>
                     </li>
 
-                    <li className={styles.game_item} onClick={()=> gameSelectHandler("wakeup")}>
+                    <li className={styles.game_item} onClick={() => gameSelectHandler("wakeup")}>
                         <header className={styles.game_title} ><h4>일어나 럭퀴야 학교가자</h4></header>
                         <section className={styles.game_img} ><img src={wakeup} alt="감정분석" /></section>
                         <footer className={styles.game_setting}><div className={styles.game_btnbox}>
