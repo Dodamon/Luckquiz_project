@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class QuizGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private int id;
     @Column(name = "template_id", nullable = true)
     private int templateId;
@@ -24,10 +24,13 @@ public class QuizGame {
     @Enumerated(EnumType.STRING)
     private QuizType type;
 
-    @Column(name = "timer", nullable = false)
+    @Column(name = "timer", nullable = true)
     private int timer;
 
     @Column(name = "quiz", nullable = true)
     private byte[] quiz;
 
+    public void setType(QuizType type) {
+        this.type = type;
+    }
 }

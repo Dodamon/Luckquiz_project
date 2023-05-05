@@ -1,5 +1,6 @@
 package com.luckquiz.quiz.api.response;
 
+import com.luckquiz.quiz.api.request.QGame;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class TemplateDetailResponse {
     private int id;
     private String name;
     private UUID hostId;
-    private List<TemplateInfoResponse> quizList;
+    private List<QGame> quizList;
     private String[] numbering;
 
 
