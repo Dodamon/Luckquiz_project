@@ -77,58 +77,18 @@ public class TemplateService {
         Template template = templateRepository.findTemplateByIdAndHostId(templateId, hostId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         // template 을 조회를 해 있는거겠지 그러니까 그 다음에도 있어야해?
         List<QuizGame> quizList = quizGameRepository.findQuizGamesByTemplateId(templateId);
-        List<TemplateInfoResponse> quizs = new ArrayList<>();
-        for (QuizGame a : quizList) {
-            TemplateInfoResponse qgr = new TemplateInfoResponse();
-            QuizType type = a.getType(); //
+        List<QGame> quizgame = new ArrayList<>();
+        for(QuizGame a : quizList){
             String quizDumb = new String(a.getQuiz(), "UTF-8");
             QGame gameinfo = gson.fromJson(quizDumb, QGame.class);
-            switch (a.getType()) {
-                case ox:
-                    qgr.setId(a.getId());
-                    qgr.setQuestion(gameinfo.getQuestion());
-                    qgr.setQuizUrl(gameinfo.getQuizUrl());
-                    qgr.setAnswer(gameinfo.getAnswer());
-                    break;
-                case text:
-                    qgr.setQuestion(gameinfo.getQuestion());
-                    qgr.setQuizUrl(gameinfo.getQuizUrl());
-                    qgr.setAnswer(gameinfo.getAnswer());
-                    qgr.setAnswerList(gameinfo.getAnswerList());
-                    break;
-                case four:
-                    qgr.setQuestion(gameinfo.getQuestion());
-                    qgr.setQuizUrl(gameinfo.getQuizUrl());
-                    qgr.setOne(gameinfo.getOne());
-                    qgr.setTwo(gameinfo.getTwo());
-                    qgr.setThree(gameinfo.getThree());
-                    qgr.setFour(gameinfo.getFour());
-                    qgr.setAnswer(gameinfo.getAnswer());
-                    break;
-                default:
-                    log.info("디폴트 타입 : " +a.getType().toString());
-                    log.info("디폴트");
-                    break;
-            }
-            qgr.setTimer(a.getTimer());
-            if(a.getType().equals(QuizType.game)){
-                qgr.setQuizType(QuizType.game);
-                qgr.setGame(gameinfo.getGame());
-            }else {
-                qgr.setQuizType(QuizType.quiz);
-                qgr.setQuiz(a.getType().toString());
-            }
-            qgr.setId(a.getId());
-            quizs.add(qgr);
+            gameinfo.setId(a.getId());
+            quizgame.add(gameinfo);
         }
-
-
-
         TemplateDetailResponse result = TemplateDetailResponse.builder()
                 .id(template.getId())
                 .hostId(template.getHostId())
                 .name(template.getName())
-                .quizList(quizs)
+                .quizList(quizgame)
                 .build();
 
         return result;
@@ -147,15 +107,16 @@ public class TemplateService {
         for (QGame a : qGames) {
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = gson.toJson(a).getBytes(charset);
-
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())
                     .quiz(bytes)
                     .type(a.getQuiz())
                     .build();
+            if(QuizType.game.equals(a.getType())){
+                qgame.setType(QuizType.game);
+            }
             quizGameRepository.save(qgame);
-
         }
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }

@@ -15,7 +15,6 @@ import java.util.UUID;
 public class QuizGameCreateRequest {
     private int templateId;
     private UUID hostId;
-    private List<Integer> numbering;
     private List<QGame> quizList;
     private int timer;
 }

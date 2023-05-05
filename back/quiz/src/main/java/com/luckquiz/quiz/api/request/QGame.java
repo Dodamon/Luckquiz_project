@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Getter
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class QGame {
+    private int id;
     private QuizType type; // game 인지 quiz 인지
     private QuizType quiz; // quiz 일때 3종류 중 뭔지
     private String question;
@@ -25,11 +27,17 @@ public class QGame {
     private String four;
     private String game;
 
+    private Integer timer;
+
     public void setType(QuizType type) {
         this.type = type;
     }
 
     public void setQuiz(QuizType quiz) {
         this.quiz = quiz;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
