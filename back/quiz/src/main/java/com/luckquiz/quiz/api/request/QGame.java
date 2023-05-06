@@ -26,7 +26,6 @@ public class QGame {
     private String three;
     private String four;
     private String game;
-
     private Integer timer;
 
     public void setType(QuizType type) {

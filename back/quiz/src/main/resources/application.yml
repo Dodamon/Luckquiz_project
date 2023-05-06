@@ -30,9 +30,9 @@ spring:
 
   kafka:
     bootstrap-servers:
-      - http://54.180.165.36:9091
+      - http://513.125.215.143:9092
+      - http://554.180.139.100:9092
       - http://54.180.165.36:9092
-      - http://k8a707.p.ssafy.io:9093
     consumer:
       group-id: test
       auto-offset-reset: latest
