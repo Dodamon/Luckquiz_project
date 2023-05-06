@@ -5,10 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class SessionContext {
     private String sessionId;
-    private int quiz_num;
-    private int total_quiz_count;
+    private int quizNum;
+    private int totalQuizCount;
     private TemplateDetailResponse templateDetailResponse;
+
+    public void setQuizNum(int quizNum) {
+        this.quizNum = quizNum;
+    }
 }
