@@ -8,21 +8,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuizMessage {
-    public enum MessageType{
-        ENTER,SUBMIT
-    }
-    private MessageType type;
-    private String roomId;
+    private String type;
+    private int roomId;
     private String sender;
     private String img;
 
     private String message;
 
-    public void setType(MessageType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 

@@ -14,7 +14,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class QuizService {
     private Map<String, QuizRoom> quizRoomMap;
-    private final SubmitProducerService submitProducerService;
+    private final ToQuizProducer toQuizProducer;
 
     @PostConstruct
     //의존관게 주입완료되면 실행되는 코드
@@ -27,7 +27,6 @@ public class QuizService {
         //방 최근 생성 순으로 반환
         List<QuizRoom> result = new ArrayList<>(quizRoomMap.values());
         Collections.reverse(result);
-
         return result;
     }
 
@@ -40,9 +39,7 @@ public class QuizService {
     public QuizRoom createRoom(QuizRoomStartRequest qsr) {
         QuizRoom quizRoom = QuizRoom.create();
         quizRoomMap.put(quizRoom.getRoomId(), quizRoom);
-        submitProducerService.callQuizTemp(qsr.getHostId()+" "+quizRoom.getRoomId()+" "+qsr.getTemplateId());
+        toQuizProducer.callQuizTemp(qsr.getHostId()+" "+quizRoom.getRoomId()+" "+qsr.getTemplateId());
         return quizRoom;
     }
-
-
 }

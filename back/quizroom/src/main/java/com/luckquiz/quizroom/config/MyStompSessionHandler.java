@@ -13,8 +13,8 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     private final String sender;
 
-    public MyStompSessionHandler(String recipient) {
-        this.sender = recipient;
+    public MyStompSessionHandler(String sender) {
+        this.sender = sender;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
     }
 
     public void sendMessage(String message) throws Exception{
-        StompSession session = connect("ws://localhost:8080/connect/quiz").get();
+        StompSession session = connect("wss://k8a707.p.ssafy.io/connect/quiz").get();
         session.send("/app/quiz/private/" + sender, message);
         session.disconnect();
     }
