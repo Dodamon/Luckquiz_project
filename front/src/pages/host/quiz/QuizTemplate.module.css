@@ -66,10 +66,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 .content_color>div{
     display: flex;
-    font-size: 32px;
+    font-size: 44px;
+    /* font-weight: bold; */
     color: var(--white-color);
 }
 

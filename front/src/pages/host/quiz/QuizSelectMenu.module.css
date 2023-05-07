@@ -12,9 +12,10 @@ justify-content: space-between;
 }
 
 .nav_left>select{
-    width: 150px;
-    height: 50px;
+    width: 160px;
+    height: 60px;
     border-radius: 20px;
+    font-size: 22px;
 }
 
 .nav_right{
@@ -24,12 +25,12 @@ justify-content: space-between;
 }
 
 .nav_right>div{
-    width: 150px;
-    height: 50px;
+    width: 160px;
+    height: 60px;
     border-radius: 20px;
     background-color: var(  --white-color);
     display: flex;
-    font-size: 18px;
+    font-size: 22px;
     justify-content: center;
     align-items: center;
     cursor: pointer;

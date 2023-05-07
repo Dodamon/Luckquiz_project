@@ -73,8 +73,9 @@ const QuizSelectMenu = () => {
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>
                     </select> : <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
-                        <option value="egg">감정 셀카 게임</option>
-                        <option value="wakeup">쿼카야 일어나 게임</option>
+                        <option value="egg">emotion</option>
+                        <option value="wakeup">wakeup</option>
+                        <option value="balloon">balloon</option>
                     </select>
 
                 }

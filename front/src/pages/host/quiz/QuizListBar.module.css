@@ -20,7 +20,8 @@
     margin-left: 10px;
     background-color: var( --button-two);
     color: var(--white-color);
-    width: 60px;
+    width: 65px;
+    height: 21px;
     font-size: 16px;
     text-align: center;
     border-top-left-radius: 5px;
@@ -49,6 +50,14 @@
     align-items: center;
     cursor: pointer;
 }
+
+.quiz_content>img {
+    width: 95%;
+    height: 95%;
+    border-radius: 10px;
+}
+
+
 
 .quiz_content:hover{
     /* background-color: var(--select-four); */

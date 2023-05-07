@@ -45,9 +45,9 @@ const GameSelection = () => {
                         </footer>
                     </li>
 
-                    <li className={styles.game_item}>
+                    <li className={styles.game_item} onClick={() => gameSelectHandler("balloon")}>
                         <header className={styles.game_title}><h4>풍선 터뜨리기</h4></header>
-                        <section className={styles.game_img} ><img src={wakeup} alt="감정분석" /></section>
+                        <section className={styles.game_img} ><img src={pop} alt="감정분석" /></section>
                         <footer className={styles.game_setting}><div className={styles.game_btnbox}>
                             <div className={styles.game_btn} style={{ backgroundColor: "var( --button-two)" }}><Icon icon="akar-icons:triangle-right" /></div>
                             <div className={styles.game_btn} style={{ backgroundColor: "var( --button-one)" }}><Icon icon="ic:round-plus" /></div>

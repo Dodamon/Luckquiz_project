@@ -90,7 +90,7 @@
 
 .content_color>div {
     display: flex;
-    font-size: 38px;
+    font-size: 44px;
     color: var(--white-color);
     font-weight: bold;
 }

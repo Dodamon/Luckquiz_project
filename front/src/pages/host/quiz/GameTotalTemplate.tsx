@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import GameEmotionTemplate from './GameEmotionTemplate';
 import GameWakeupTemplate from './GameWakeupTemplate';
+import GameBalloonTemplate from './GameBalloonTemplate';
 // 게임 재사용 페이지
 const GameTotalTemplate = () => {
 
@@ -13,7 +14,8 @@ const GameTotalTemplate = () => {
     return (
         <>
             {
-                quizInfo[selectInfo].game === "egg" ? <GameEmotionTemplate /> : quizInfo[selectInfo].game === "wakeup" ? <GameWakeupTemplate /> : <></>
+                quizInfo[selectInfo].game === "egg" ? <GameEmotionTemplate /> : quizInfo[selectInfo].game === "wakeup" ? <GameWakeupTemplate /> :
+                    quizInfo[selectInfo].game === "balloon" ? <GameBalloonTemplate /> : <></>
             }
         </>
     );
