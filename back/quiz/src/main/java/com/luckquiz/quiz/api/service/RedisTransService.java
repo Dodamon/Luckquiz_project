@@ -19,6 +19,7 @@ public class RedisTransService {
     private final TemplateService templateService;
     private Gson gson = new Gson();
     @Transactional
+    // 퀴즈 정보를 전달한다.
     public void quizRedisTrans(int roomId, UUID hostId, int templateId) throws Exception{
         System.out.println("테스트 시작");
         // 템플릿 가져오기.
@@ -45,9 +46,7 @@ public class RedisTransService {
     public void roomTempTrans(int roomId, UUID hostId, int templateId) throws Exception{
         System.out.println("템플릿과 룸아이디 조회");
         // 템플릿 가져오기.
-
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
-
         String keyVal = hostId+"";
         TemplateAndRoomId val = TemplateAndRoomId.builder()
                 .roomId(roomId)
