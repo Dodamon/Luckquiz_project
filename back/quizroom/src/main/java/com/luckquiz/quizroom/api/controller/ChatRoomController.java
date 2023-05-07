@@ -1,6 +1,7 @@
 package com.luckquiz.quizroom.api.controller;
 
-import com.luckquiz.quizroom.api.request.QuizRoomStartRequest;
+import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
+import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.service.QuizService;
 import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,22 +29,24 @@ public class ChatRoomController { // for controller update
         return quizService.findAllRoom();
     }
     // 채팅방 생성
-    @PostMapping("/room")
+    @PostMapping("/create")
     @ResponseBody
-    public QuizRoom createRoom(@RequestBody QuizRoomStartRequest qsr) {
+    public QuizRoom createRoom(@RequestBody QuizRoomEnterRequest qsr) {
         return quizService.createRoom(qsr);
     }
-    // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
-    }
-    // 특정 채팅방 조회
-    @GetMapping("/room/{roomId}")
+
+    // 호스트가 튕겼을 경우를 대비해서 다시 방을 찾는다.
+    @GetMapping("/redirect")
     @ResponseBody
-    public QuizRoom roomInfo(@PathVariable String roomId) {
-        return quizService.findById(roomId);
+    public Integer roomInfo(@RequestParam String hostId) {
+        UUID rId = UUID.fromString(hostId);
+        return quizService.findById(rId);
+    }
+
+    @PostMapping("/start")
+    @ResponseBody
+    public void quizStart(@RequestBody QuizStartRequest quizStartRequest){
+        quizService.startQuiz(quizStartRequest);
     }
 
 }

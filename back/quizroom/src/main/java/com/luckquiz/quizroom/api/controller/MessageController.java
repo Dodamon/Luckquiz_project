@@ -3,6 +3,9 @@ package com.luckquiz.quizroom.api.controller;
 
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
+import com.luckquiz.quizroom.api.request.QuizStartRequest;
+import com.luckquiz.quizroom.api.response.QGame;
+import com.luckquiz.quizroom.api.service.QuizService;
 import com.luckquiz.quizroom.api.service.ToGradeProducer;
 import com.luckquiz.quizroom.model.*;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -28,6 +32,8 @@ public class MessageController {
     private  final StringRedisTemplate stringRedisTemplate;
     private final Gson gson;
     private final ToGradeProducer toGradeProducer;
+
+    private final QuizService quizService;
 
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {
@@ -74,28 +80,30 @@ public class MessageController {
         System.out.println("private here");
         sendingOperations.convertAndSendToUser(sender, "/queue/"+roomId+"/private/", message);
     }
+    // 퀴즈가 시작 요청이 오면 맨 처음 문제를 반환한다.
+    // 이 때 quizNum 이 0으로 초기화된다.
     @MessageMapping("/quiz/start")
-    public void start(QuizMessage message) {
-        //세션 시작시 정보 할당해주기
-        SessionContext sessionContext = new SessionContext();
-
+    public void start(QuizStartRequest quizStartRequest) {
+        QGame result = quizService.startQuiz(quizStartRequest);
+        sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), result);
     }
-
     @MessageMapping("/quiz/next")
-    public void next(NextMessage message) {
+    public void next(NextMessage nextMessage) {
+        QGame result = quizService.nextQuiz(nextMessage);
+        sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), result);
         //퀴즈 다음페이지 넘기기.
 
     }
-
-    //    @MessageMapping("/quiz/submit")
-//    public void submit(QuizMessage message){
-//        SessionContext sessionContext = sessionContextMap.get(message.getRoomId());
-//        submitProducerService.producerTest(message.getMessage());
-//
-//    }
     @MessageMapping("/quiz/finish")
     public void finish(QuizMessage message) {
 //        세션 끝내면 저장한것도 삭제
+    }
+
+    @MessageMapping("/quiz/currentCount")
+    public void currentParticipent(CurrentParticipent currentParticipent){
+        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+        Map all = hashOperations.entries(currentParticipent.getRoomId()+"p");
+        sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size());
     }
 
 }
