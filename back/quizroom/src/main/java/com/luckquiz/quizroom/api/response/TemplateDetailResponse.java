@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.kafka.clients.producer.ProducerConfig;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -14,10 +16,11 @@ import java.util.List;
 public class TemplateDetailResponse {
     private int id;
     private String name;
-    private int hostId;
-    private List<TemplateInfoResponse> quizList;
-    private String[] numbering;
-
-
+    private UUID hostId;
+    private List<QGame> quizList;
+    private int quizNum;
+    public void setQuizNum(int quizNum) {
+        this.quizNum = quizNum;
+    }
 }
 
