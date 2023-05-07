@@ -1,6 +1,7 @@
 .content_title{
     width: 90%;
-    margin: 30px;
+    margin-top: 5%;
+    margin-bottom: 5%;
 }
 
 .content_title input{
@@ -25,6 +26,7 @@
     justify-content: center;
     align-items: center;
     color: var( --placeholder-text);
+    margin-bottom: 3%;
 }
 
 .plus_font{

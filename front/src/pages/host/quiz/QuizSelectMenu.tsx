@@ -26,7 +26,7 @@ const QuizSelectMenu = () => {
 
     const gameTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedGameOption(event.target.value);
-        dispatch(quizAtions.gameTypeUpdate({ index: selectInfo, type: event.target.value }))
+        dispatch(quizAtions.gameTypeUpdate({ index: selectInfo, gameType: event.target.value }))
     };
 
     const quizTimeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,7 +73,7 @@ const QuizSelectMenu = () => {
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>
                     </select> : <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
-                        <option value="emotion">감정 셀카 게임</option>
+                        <option value="egg">감정 셀카 게임</option>
                         <option value="wakeup">쿼카야 일어나 게임</option>
                     </select>
 
