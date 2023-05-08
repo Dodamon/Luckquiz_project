@@ -111,9 +111,13 @@ public class MessageController {
     }
 
     @MessageMapping("/quiz/execute")
-    public void execute(){
+    public void execute(ShutDownRequest shutDownRequest){
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
-
+        String hashKey = shutDownRequest.getRoomId()+"p";
+        String zsetKey = shutDownRequest.getRoomId()+"rank";
+        stringRedisTemplate.delete(shutDownRequest.getRoomId().toString());
+        stringRedisTemplate.delete(hashKey);
+        stringRedisTemplate.delete(zsetKey);
     }
 
     @MessageMapping("/quiz/rollback")
