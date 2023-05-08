@@ -17,6 +17,5 @@ public class TemplateDetailResponse {
 	private String name;
 	private UUID hostId;
 	private List<TemplateInfoResponse> quizList;
-	private String[] numbering;
-
+	private Integer quizNum;
 }

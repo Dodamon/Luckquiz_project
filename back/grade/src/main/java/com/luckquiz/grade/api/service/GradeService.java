@@ -15,6 +15,8 @@ import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.response.TemplateDetailResponse;
 import com.luckquiz.grade.config.KafkaProducer;
 import com.luckquiz.grade.db.entity.Grade;
+import com.luckquiz.grade.db.entity.GradeFinish;
+import com.luckquiz.grade.db.entity.QuizStart;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +54,7 @@ public class GradeService {
 		String answer = gradeRequest.getAnswer();
 		if(correctAnswer.equals(answer)){
 			//순위에 따른 점수 더해주기
-			Long scoreGet = 1000*(1-valueOperations.get(roomId+"cnt")/count);
+			Long scoreGet = (long)(1000*(1-valueOperations.get(roomId+"cnt").doubleValue()/count));
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
 			//얻은 점수 기록해두기
@@ -87,6 +89,7 @@ public class GradeService {
 	// 	return grades;
 	// }
 
+	//카프카에서 enter 메시지가 왔을때 실행하는 함수
 	public void enter(KafkaGradeRequest gradeRequest){
 		String roomId = gradeRequest.getRoomId();
 		Grade grade = Grade.builder().
@@ -108,7 +111,10 @@ public class GradeService {
 	// 	return grade;
 	// }
 
-	public void rollback(String roomId) {
+	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
+	public void rollback(Object message) {
+		QuizStart quizStartMessage = (QuizStart) message;
+		String roomId = quizStartMessage.getRoomId().toString();
 
 		Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
 		Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
@@ -120,10 +126,13 @@ public class GradeService {
 			value.setScoreGet(0);
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
-		kafkaProducer.rollbackFinish(roomId);
+		kafkaProducer.rollbackFinish(quizStartMessage);
 	}
 
-	public void quizEnd(String roomId) {
+	//카프카에서 quiz_end 메시지가 올때 실행하는 함수
+	public void quizEnd(Object message) {
+		QuizStart quizStartMessage = (QuizStart) message;
+		Integer roomId = quizStartMessage.getRoomId();
 		// Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		//점수 반영
 		// hashmap.forEach((key, value)->{
@@ -132,11 +141,21 @@ public class GradeService {
 		//초기화
 		// valueOperations.set(roomId+"cnt",0);
 		//채점끝
-		kafkaProducer.gradeEnd(roomId);
+		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId),
+			TemplateDetailResponse.class);
+		Integer quizNum = templateDetailResponse.getQuizNum();
+		Long count = hashGradeOperations.size(roomId+"p");
+		Integer solvedCount = valueOperations.get(roomId+"cnt");
+		//정답률
+		Double percent = solvedCount.doubleValue()/count;
+		GradeFinish gradeFinish = GradeFinish.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue())
+			.build();
+		kafkaProducer.gradeEnd(gradeFinish);
 	}
-
-	public void quizStart(String roomId) {
-
+	//카프카에서 quiz_start 메시지가 올때 실행하는 함수
+	public void quizStart(Object message) {
+		QuizStart quizStartMessage = (QuizStart) message;
+		String roomId = quizStartMessage.getRoomId().toString();
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		// 현재 등수 이전 등수로 만들기, 이전 문제에서 얻은점수 썻으니 0으로 만들어주기
 		hashmap.forEach((key, value)->{
@@ -147,7 +166,7 @@ public class GradeService {
 		//정답 맞춘 사람수 0으로 초기화
 		valueOperations.set(roomId+"cnt",0);
 		//채점 시작한다고 신호주기
-		kafkaProducer.gradeStart(roomId);
+		kafkaProducer.gradeStart(quizStartMessage);
 	}
 
 }

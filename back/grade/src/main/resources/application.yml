@@ -11,18 +11,24 @@ spring:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+      bootstrap-servers: http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092
     consumer:
-      group-id: foo
+      group-id: grade_sign_group
       auto-offset-reset: latest
-      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+      bootstrap-servers: http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring:
           json:
             trusted:
               packages: '*'
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            add:
+              type:
+                headers: 'false'
+
+
   jpa:
     generate-ddl: 'true'
     hibernate:
@@ -48,3 +54,6 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: 'false'
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
