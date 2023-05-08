@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./QuizTemplate.module.css"
+import styles from "./QuizFourTemplate.module.css"
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -10,7 +10,7 @@ import { quizAtions } from 'store/quiz';
 type pageNum = {
     num: number;
 }
-const QuizTemplate = ({ num }: pageNum) => {
+const QuizFourTemplate = ({ num }: pageNum) => {
     const dispatch = useDispatch();
     const quizList = useSelector((state: RootState) => state.quiz.quizList);
     // const selectIndex = useSelector((state:RootState)=> state.auth.choiceIndex);
@@ -119,4 +119,4 @@ const QuizTemplate = ({ num }: pageNum) => {
     );
 };
 
-export default QuizTemplate;
+export default QuizFourTemplate;

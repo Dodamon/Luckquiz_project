@@ -1,6 +1,6 @@
 import React from 'react';
 import QuizSelectMenu from './QuizSelectMenu';
-import QuizTemplate from './QuizTemplate';
+import QuizFourTemplate from './QuizFourTemplate';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import QuizOxTemplate from './QuizOxTemplate';
@@ -19,7 +19,7 @@ const QuizCreateLayout = () => {
             <QuizSelectMenu/>
             {
                 
-               quizInfo[selectInfo]?.quiz==="four"? <QuizTemplate num={selectInfo}/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate num={selectInfo}/>:<QuizShortTemplate num={selectInfo}/>
+               quizInfo[selectInfo]?.quiz==="four"? <QuizFourTemplate num={selectInfo}/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate num={selectInfo}/>:<QuizShortTemplate num={selectInfo}/>
             }
            
         </>
