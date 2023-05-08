@@ -41,14 +41,14 @@ public class MessageController {
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         System.out.println("entered:  "+message.getType()+", sender:    "+message.getSender());
-        if ("enter".equals(message.getType())) {
+
             int roomId = message.getRoomId();
             message.setMessage(message.getSender() + "님이 입장하였습니다.");
             grade.setPlayerName(message.getSender());
             grade.setPlayerImg(message.getImg());
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
             zSetOperations.add(roomId+"rank",message.getSender(),0);
-        }
+
         Map all = hashOperations.entries(message.getRoomId()+"p");
         List<String> users = new ArrayList<>(all.values());
         List<UserL> userLList = new ArrayList<>();
@@ -67,10 +67,9 @@ public class MessageController {
     @MessageMapping("/submit")
     public void submit(QuizMessage message) {
         System.out.println("submited:   "+message.getType()+", sender:    "+message.getSender());
-        if ("submit".equals(message.getType())) {
             toGradeProducer.clientSubmit(gson.toJson(message));
             System.out.println("제출되었읍니다....");
-        }
+
     }
 
     @MessageMapping("/{roomId}/private/{sender}")
@@ -85,6 +84,7 @@ public class MessageController {
     @MessageMapping("/quiz/start")
     public void start(QuizStartRequest quizStartRequest) {
         QGame result = quizService.startQuiz(quizStartRequest);
+        toGradeProducer.quizStart(gson.toJson(quizStartRequest));
         sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), result);
     }
     @MessageMapping("/quiz/next")
