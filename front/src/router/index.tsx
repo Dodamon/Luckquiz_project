@@ -9,7 +9,7 @@ import Quiz from "pages/host/home/quiz/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
-import Create from "pages/host/quiz/Create";
+import QuizCreatePage from "pages/host/quiz/QuizCreatePage";
 import Edit from "pages/host/quiz/Edit";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
@@ -22,6 +22,8 @@ import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "pages/host/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
+import WakeUpGameWeb from "components/game/wakeup/WakeUpGameWeb";
+import WakeUpGameMobile from "components/game/wakeup/WakeUpGameMobile";
 
 const router = createBrowserRouter([
   {
@@ -66,7 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: "quiz/create",
-        element: <Create />,
+        element: <QuizCreatePage/>,
       },
       {
         path: "quiz/:quiz_id/edit",
@@ -125,8 +127,9 @@ const router = createBrowserRouter([
 
           {
             // 지워야 됨
-            path: "quiz/balloon",
-            element: <PlayBalloonGame/>,
+            path: "quiz/egg",
+            element: <WakeUpGameMobile/>,
+            // element: <WakeUpGameWeb/>,
           },
           {
             // 지워야 됨
