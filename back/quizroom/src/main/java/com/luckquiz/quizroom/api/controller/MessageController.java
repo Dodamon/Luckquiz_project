@@ -5,8 +5,10 @@ import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.QGame;
+import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
 import com.luckquiz.quizroom.api.service.QuizService;
 import com.luckquiz.quizroom.api.service.ToGradeProducer;
+import com.luckquiz.quizroom.api.service.ToQuizProducer;
 import com.luckquiz.quizroom.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,7 @@ public class MessageController {
     private final Gson gson;
     private final ToGradeProducer toGradeProducer;
 
+    private final ToQuizProducer toQuizProducer;
     private final QuizService quizService;
 
     @MessageMapping("/enter")
@@ -42,12 +45,11 @@ public class MessageController {
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         System.out.println("entered:  "+message.getType()+", sender:    "+message.getSender());
 
-            int roomId = message.getRoomId();
-            message.setMessage(message.getSender() + "님이 입장하였습니다.");
-            grade.setPlayerName(message.getSender());
-            grade.setPlayerImg(message.getImg());
-            hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
-            zSetOperations.add(roomId+"rank",message.getSender(),0);
+        int roomId = message.getRoomId();
+        grade.setPlayerName(message.getSender());
+        grade.setPlayerImg(message.getImg());
+        hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
+        zSetOperations.add(roomId+"rank",message.getSender(),0);
 
         Map all = hashOperations.entries(message.getRoomId()+"p");
         List<String> users = new ArrayList<>(all.values());
@@ -60,7 +62,6 @@ public class MessageController {
             userLList.add(u);
         }
 
-        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), message.getMessage());
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), userLList);
     }
 
@@ -69,7 +70,6 @@ public class MessageController {
         System.out.println("submited:   "+message.getType()+", sender:    "+message.getSender());
             toGradeProducer.clientSubmit(gson.toJson(message));
             System.out.println("제출되었읍니다....");
-
     }
 
     @MessageMapping("/{roomId}/private/{sender}")
@@ -84,7 +84,11 @@ public class MessageController {
     @MessageMapping("/quiz/start")
     public void start(QuizStartRequest quizStartRequest) {
         QGame result = quizService.startQuiz(quizStartRequest);
-        toGradeProducer.quizStart(gson.toJson(quizStartRequest));
+        ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
+                .quizNum(result.getQuizNum())
+                .roomId(quizStartRequest.getRoomId())
+                .build();
+        toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
         sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), result);
     }
     @MessageMapping("/quiz/next")
@@ -92,11 +96,11 @@ public class MessageController {
         QGame result = quizService.nextQuiz(nextMessage);
         sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), result);
         //퀴즈 다음페이지 넘기기.
-
     }
-    @MessageMapping("/quiz/finish")
-    public void finish(QuizMessage message) {
+    @MessageMapping("/quiz/end")
+    public void quizEnd(QuizMessage message) {
 //        세션 끝내면 저장한것도 삭제
+        toQuizProducer.QuizEnd(gson.toJson(message));
     }
 
     @MessageMapping("/quiz/currentCount")
@@ -104,6 +108,17 @@ public class MessageController {
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         Map all = hashOperations.entries(currentParticipent.getRoomId()+"p");
         sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size());
+    }
+
+    @MessageMapping("/quiz/execute")
+    public void execute(){
+        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+
+    }
+
+    @MessageMapping("/quiz/rollback")
+    public void rollBack(RollBackRequest rollBackRequest){
+       toGradeProducer.rollBack(gson.toJson(rollBackRequest));
     }
 
 }

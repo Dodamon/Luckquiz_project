@@ -18,7 +18,14 @@ public class ToQuizProducer {
     // server_message
     public void callQuizTemp(String request){
         KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
-        ProducerRecord record = new ProducerRecord<String,String>("server_message",request);
+        ProducerRecord record = new ProducerRecord<String,String>("server_message","start",request);
+        producer.send(record);
+        producer.close();
+    }
+
+    public void QuizEnd(String request){
+        KafkaProducer<String,String> producer = new KafkaProducer(configs);
+        ProducerRecord record = new ProducerRecord<String,String>("server_message","end",request);
         producer.send(record);
         producer.close();
     }

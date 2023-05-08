@@ -1,20 +1,16 @@
-package com.luckquiz.quizroom.api.request;
+package com.luckquiz.quizroom.api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.UUID;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuizStartRequest {
+public class ToGradeStartMessage {
     private Integer roomId;
-    private UUID hostId;
-
     private int quizNum;
+
 }
