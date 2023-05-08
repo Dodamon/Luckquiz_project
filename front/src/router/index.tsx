@@ -25,6 +25,7 @@ import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGameWeb";
 import WakeUpGameMobile from "components/game/wakeup/WakeUpGameMobile";
+import QuizContent from "pages/guest/quiz/QuizContent";
 
 const router = createBrowserRouter([
   {
@@ -119,7 +120,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/play",
-            element: <></>,
+            element: <QuizContent/>,
           },
           {
             path: "quiz/emotion",
