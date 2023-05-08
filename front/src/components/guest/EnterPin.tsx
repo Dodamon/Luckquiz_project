@@ -32,6 +32,7 @@ const EnterPin: React.FC = () => {
       <div className={styles.container}>
         <form onSubmit={formSubmitHandler} className={styles.formBox}>
           <div className={styles.enterTxt}>퀴즈 참여하러 가기</div>
+          <hr className={styles.border}/>
           <input type="text" ref={inputRef} className={styles.inputBox} placeholder="핀 번호를 입력하세요." />
           <button className={styles.enterBtn}>참여하기</button>
         </form>
