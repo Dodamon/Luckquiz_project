@@ -77,10 +77,10 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 123,
+      roomId: 123
     };
-    // dispatch(socketActions.subscribe(socketProps));
-    // dispatch(socketActions.sendEnterMessage(socketProps));
+    dispatch(socketActions.subscribe(socketProps));
+    dispatch(socketActions.sendEnterMessage(socketProps));
 
     navigate('/guest/quiz/lobby');
   };

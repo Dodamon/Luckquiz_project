@@ -19,7 +19,7 @@ const ShowPin = () => {
       const socketProps = {
         name: hostInfo.nickname,
         img: hostInfo.image_url,
-        subscribeURL: quiz_id,
+        roomId: quiz_id
       };
     //   setTimeout(() => {
         dispatch(socketActions.subscribe(socketProps));

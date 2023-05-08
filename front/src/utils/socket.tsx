@@ -1,8 +1,8 @@
 import { Client, Stomp } from "@stomp/stompjs";
 import { socketActions } from "store/webSocket";
 
-export const WebSocketConnection = (props: { roomId: Number, dispatch: Function, header?: string }) => {
-  const { roomId, dispatch, header } = props;
+export const WebSocketConnection = (props: { dispatch: Function, header?: string }) => {
+  const { dispatch, header } = props;
   const client = new Client({
     brokerURL: "ws://k8a707.p.ssafy.io/connect/quiz",
 

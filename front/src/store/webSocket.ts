@@ -28,6 +28,7 @@ const socketSlice = createSlice({
         sender: action.payload.name,
         img: action.payload.img,
         type: "ENTER",
+        roomId: action.payload.roomId,
       };
 
       const callback = function (res: any) {

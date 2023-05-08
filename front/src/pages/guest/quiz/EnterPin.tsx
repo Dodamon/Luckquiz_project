@@ -6,12 +6,13 @@ import styles from "./EnterPin.module.css";
 import { socketActions } from "store/webSocket";
 import { RootState } from "store";
 import { Client } from "@stomp/stompjs";
+import { WebSocketConnection } from "utils/socket";
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  // const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const client = useSelector((state : RootState) => state.socket.client);
 
   const formSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,8 +22,8 @@ const EnterPin: React.FC = () => {
       inputRef.current?.focus();
       return;
     }
-    // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요.") inputRef.current?.focus(); return}
-    // if (!client.connected) dispatch(socketActions.connect());
+    // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요."); inputRef.current?.focus(); return}
+    if (!client?.connected) WebSocketConnection({ dispatch });
     navigate("/guest/nickname");
   };
 

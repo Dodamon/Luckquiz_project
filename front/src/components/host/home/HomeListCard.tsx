@@ -83,7 +83,7 @@ const HomeListCard = (props: Props) => {
     if (data) {
       console.log("goPin");
       console.log(data);
-      WebSocketConnection({ roomId: data.roomId, dispatch });
+      WebSocketConnection({ dispatch });
       // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
       //   if (data && client.connected) {
       //     navigate(`/host/quiz/${data?.roomId}`);
