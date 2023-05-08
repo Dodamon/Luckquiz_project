@@ -11,7 +11,7 @@ public class QuizMessage {
     private String type;
     private int roomId;
     private String sender;
-    private String img;
+    private int img;
 
     private String message;
 
@@ -31,7 +31,7 @@ public class QuizMessage {
         this.message = message;
     }
 
-    public void setImg(String img) {
+    public void setImg(int img) {
         this.img = img;
     }
 }

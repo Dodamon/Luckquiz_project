@@ -5,13 +5,13 @@ import lombok.Getter;
 @Getter
 public class UserL {
     private String sender;
-    private String img;
+    private int img;
 
     public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public void setImg(String img) {
+    public void setImg(int img) {
         this.img = img;
     }
 }

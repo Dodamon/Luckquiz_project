@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @NoArgsConstructor
 public class Grade {
     private String playerName;
-    private String playerImg;
+    private int playerImg;
     private int score_get = 0;
     private int rank_pre = 0;
     private int rank_now = 0;
@@ -30,7 +30,7 @@ public class Grade {
         this.rank_now = rank_now;
     }
 
-    public void setPlayerImg(String playerImg) {
+    public void setPlayerImg(int playerImg) {
         this.playerImg = playerImg;
     }
 }
