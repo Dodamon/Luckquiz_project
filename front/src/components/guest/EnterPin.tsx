@@ -27,12 +27,15 @@ const EnterPin: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerWrapper}>
       <img src={logo} alt="" className={styles.logo} />
-      <form onSubmit={formSubmitHandler} className={styles.formBox}>
-        <input type="text" ref={inputRef} className={styles.inputBox} placeholder="핀 번호를 입력하세요." />
-        <button className={styles.enterBtn}>참여하기</button>
-      </form>
+      <div className={styles.container}>
+        <form onSubmit={formSubmitHandler} className={styles.formBox}>
+          <div className={styles.enterTxt}>퀴즈 참여하러 가기</div>
+          <input type="text" ref={inputRef} className={styles.inputBox} placeholder="핀 번호를 입력하세요." />
+          <button className={styles.enterBtn}>참여하기</button>
+        </form>
+      </div>
     </div>
   );
 };

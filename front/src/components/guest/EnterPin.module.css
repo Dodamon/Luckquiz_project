@@ -1,15 +1,23 @@
 @media screen and (min-width:767px) {
-    .container {
+    .containerWrapper {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        
+    }
+
+    .container {
+        /* display: flex;
+        flex-direction: column; */
+        /* justify-content: center;
+        align-items: center; */
+        margin-top: 20px;
     }
 
     .logo {
         height: 180px;
         width: 400px;
         object-fit: fill;
+        margin-top: -10%;
     }
     
     .formBox {
@@ -17,15 +25,22 @@
         width: 400px;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        gap: 10px;
         align-items: center;
         margin-top: 20px;
-        background-color: var(--white-color);
+        background-color: white;
         border-radius: 20px;
     }
     
+    .enterTxt {
+        margin-top: 30px;
+        margin-bottom: -20px;
+        font-size: 20px;
+
+    }
+
     .inputBox {
-        height: 40px;
+        height: 45px;
         width: 352.8px;
         border-radius: 15px;
         border: 2px solid var(--grey-color);
@@ -36,7 +51,7 @@
     }
     
     .enterBtn {
-        height: 40px;
+        height: 43px;
         width: 360px;
         border-radius: 15px;
         border: none;
