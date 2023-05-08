@@ -19,25 +19,26 @@ const WakeUpGameMobile = (props: Props) => {
   const [isBroken, setIsBroken] = useState(false);
   const [showluckqui, setShowLuckqui] = useState(false);
   const eggRef = useRef<HTMLImageElement>(null);
-  const [ySpeed, setYSpeed] = useState(0);
+  const [xSpeed, setXSpeed] = useState(0);
+  let lastShakeTimestamp: number = Date.now();
+  let shakeThreshold: number = 10; // 흔들림을 감지하는 임계값 (10도)
 
-  let shakeThreshold = 100; // set the shake threshold = 10cm
-  let lastUpdate = 0;
-  let x = 0,
-    y = 0,
-    z = 0;
-  let lastX = 0,
-    lastY = 0,
-    lastZ = 0;
-
-  const handleShake = (event: { accelerationIncludingGravity: any }) => {
-    // console.log(event);
-
+  const handleShake = (event: any) => {
+    console.log(event);
+    let shakeThreshold = 10; // set the shake threshold = 10cm
+    let lastUpdate = 0;
+    let x = 0,
+      y = 0,
+      z = 0;
+    let lastX = 0,
+      lastY = 0,
+      lastZ = 0;
 
     let acceleration = event.accelerationIncludingGravity;
+
     let curTime = new Date().getTime();
 
-    if (curTime - lastUpdate > 1000) {
+    if (curTime - lastUpdate > 100) {
       let diffTime = curTime - lastUpdate;
       lastUpdate = curTime;
 
@@ -47,16 +48,16 @@ const WakeUpGameMobile = (props: Props) => {
 
       let speed = (Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime) * 10000;
 
-      let yDiff = Math.abs(y - lastY);
+      let xDiff = Math.abs(x - lastX);
       // if (speed > shakeThreshold) {
-      if (yDiff > shakeThreshold) {
+      if (xDiff > shakeThreshold) {
         console.log("shaked");
         setIsShaking(true);
         setShakeCount(shakeCount + 1);
       }
 
-      let yspeed = (yDiff / diffTime) * 10000; // calculate x-axis speed
-      setYSpeed(yspeed); // update x-axis speed state
+      let xspeed = (xDiff / diffTime) * 10000; // calculate x-axis speed
+      setXSpeed(xspeed); // update x-axis speed state
 
       // 0.5초 이내에 이벤트가 없으면 isShaking -> false
       setTimeout(() => {
@@ -68,12 +69,32 @@ const WakeUpGameMobile = (props: Props) => {
       lastZ = z;
     }
   };
+
+  const handleOrientation = (event: any) => {
+    console.log(event);
+    const { beta, gamma } = event;
+
+    // X축 회전 값 (beta)과 Y축 회전 값 (gamma)이 모두 0이 아닐 때
+    if (beta && gamma) {
+      // 마지막으로 흔들림을 감지한 시간으로부터 1초가 지난 경우
+      if (Date.now() - lastShakeTimestamp > 100) {
+        // X축 회전 값 (beta)이 흔들림 임계값보다 큰 경우
+        if (Math.abs(beta) > shakeThreshold) {
+          // shakeCount 값을 1 증가시키고 마지막으로 흔들림을 감지한 시간을 업데이트함
+          console.log('plus')
+          setShakeCount((prev)=> prev + 1);
+          lastShakeTimestamp = Date.now();
+        }
+      }
+    }
+  };
   useEffect(() => {
     window.addEventListener("devicemotion", handleShake);
-    return () => {
-      window.removeEventListener("devicemotion", handleShake);
-    };
-  }, [shakeCount]);
+    window.addEventListener("deviceorientation", handleOrientation);
+    // return () => {
+    //   window.removeEventListener("devicemotion", handleShake);
+    // };
+  }, []);
 
   useEffect(() => {
     // brokenNum을 아직 못채웠을 때, 흔들면
@@ -174,7 +195,7 @@ const WakeUpGameMobile = (props: Props) => {
           <div className={isShaking ? styles.shakingEgg : styles.egg}></div>
           <div className={isShaking ? styles.shakingEggShadow : styles.eggShadow}></div>
           <p>You shook your device {shakeCount} times!</p>
-          <p>Y-axis speed: {ySpeed} m/s²</p>
+          <p>X-axis speed: {xSpeed} m/s²</p>
         </div>
       )}
     </div>
