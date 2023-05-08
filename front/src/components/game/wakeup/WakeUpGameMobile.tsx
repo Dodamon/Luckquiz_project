@@ -19,8 +19,10 @@ const WakeUpGameMobile = (props: Props) => {
   const [isBroken, setIsBroken] = useState(false);
   const [showluckqui, setShowLuckqui] = useState(false);
   const eggRef = useRef<HTMLImageElement>(null);
+  const [xSpeed, setXSpeed] = useState(0);
 
   const handleShake = (event: { accelerationIncludingGravity: any }) => {
+    // console.log(event);
     let shakeThreshold = 1000; // set the shake threshold
     let lastUpdate = 0;
     let x = 0,
@@ -48,6 +50,11 @@ const WakeUpGameMobile = (props: Props) => {
         setIsShaking(true);
         setShakeCount(shakeCount + 1);
       }
+
+      let xDiff = Math.abs(x - lastX);
+      let xspeed = (xDiff / diffTime) * 10000; // calculate x-axis speed
+      setXSpeed(xspeed); // update x-axis speed state
+
       // 0.5초 이내에 이벤트가 없으면 isShaking -> false
       setTimeout(() => {
         setIsShaking(false);
@@ -60,11 +67,10 @@ const WakeUpGameMobile = (props: Props) => {
   };
   useEffect(() => {
     window.addEventListener("devicemotion", handleShake);
-
-    return () => {
-      window.removeEventListener("devicemotion", handleShake);
-    };
-  }, [shakeCount]);
+    // return () => {
+    //   window.removeEventListener("devicemotion", handleShake);
+    // };
+  }, []);
 
   useEffect(() => {
     // brokenNum을 아직 못채웠을 때, 흔들면
@@ -164,6 +170,8 @@ const WakeUpGameMobile = (props: Props) => {
         <div className={styles.eggContainer}>
           <div className={isShaking ? styles.shakingEgg : styles.egg}></div>
           <div className={isShaking ? styles.shakingEggShadow : styles.eggShadow}></div>
+          <p>You shook your device {shakeCount} times!</p>
+          <p>X-axis speed: {xSpeed} m/s²</p>
         </div>
       )}
     </div>

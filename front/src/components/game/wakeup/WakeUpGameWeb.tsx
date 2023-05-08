@@ -25,7 +25,7 @@ const WakeUpGameWeb = (props : Props) => {
       event.preventDefault();
       console.log("shaked");
       setIsShaking(true);
-      setShakeCount((prev) => prev + 1);
+      setShakeCount(shakeCount + 1);
     }
     setTimeout(() => {
       setIsShaking(false);
@@ -44,10 +44,7 @@ const WakeUpGameWeb = (props : Props) => {
 
   useEffect(() => {
     window.addEventListener("keydown", handleShake);
-    return () => {
-      window.removeEventListener("keydown", handleShake);
-    };
-  }, [handleShake]);
+  }, []);
 
   useEffect(() => {
     if (isBroken) {
