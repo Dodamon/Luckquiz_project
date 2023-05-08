@@ -1,7 +1,7 @@
 .content_title{
     width: 90%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-top: 2%;
+    margin-bottom: 3%;
 }
 
 .content_title input{
@@ -25,7 +25,7 @@
     justify-content: center;
     align-items: center;
     color: var( --placeholder-text);
-    margin-bottom: 5%;
+    margin-bottom: 1%;
 }
 
 .plus_font{
