@@ -6,7 +6,13 @@ import egg_bottom from "assets/images/egg_bottom.png";
 import luckqui from "assets/images/luckqui2.png";
 import styles from "./WakeUpGame.module.css";
 
-const WakeUpGame = () => {
+interface Props {
+  breakNum? : number
+}
+
+const WakeUpGameWeb = (props : Props) => {
+  const { breakNum } = props
+  // const [brokenNum, setBrokenNum] = useState(breakNum);
   const [brokenNum, setBrokenNum] = useState(23);
   const [shakeCount, setShakeCount] = useState(0);
   const [isShaking, setIsShaking] = useState(false);
@@ -52,13 +58,6 @@ const WakeUpGame = () => {
     }
   }, [isBroken, setShowLuckqui]);
 
-  // 계란 이미지의 초기 위치
-  const initialPosition = {
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  };
-
   return (
     <div className={styles.container}>
       {/* <h1>Shake the Egg!</h1> */}
@@ -100,4 +99,4 @@ const WakeUpGame = () => {
   );
 };
 
-export default WakeUpGame;
+export default WakeUpGameWeb;
