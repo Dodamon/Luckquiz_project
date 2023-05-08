@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { quizAtions } from "store/quiz";
 import { setQuizItem } from "models/quiz";
-import { authAtions } from 'store/auth';
+import { authActions } from 'store/auth';
 import ox from '../../../assets/images/ox.png';
 import four from '../../../assets/images/four.png';
 import text from '../../../assets/images/text.png';
@@ -51,7 +51,7 @@ const QuizListBar = () => {
     const [focusedItem, setFocusedItem] = useState(0);
 
     const itemSelectHandler = (quiznum: number) => {
-        dispatch(authAtions.selectIndex(quiznum));
+        dispatch(authActions.selectIndex(quiznum));
         setFocusedItem(quiznum);
     }
 
@@ -63,7 +63,7 @@ const QuizListBar = () => {
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
         setFocusedItem(result.destination.index);
-        dispatch(authAtions.selectIndex(result.destination.index));
+        dispatch(authActions.selectIndex(result.destination.index));
         dispatch(quizAtions.locationUpdate(items))
     }
 
@@ -86,7 +86,7 @@ const QuizListBar = () => {
 
     const deleteContentHandler = (idx: number) => {
         if (focusedItem >= idx && focusedItem !== 0) {
-            dispatch(authAtions.selectIndex(focusedItem - 1));
+            dispatch(authActions.selectIndex(focusedItem - 1));
             setFocusedItem(focusedItem - 1);
         }
         dispatch(quizAtions.removeQuiz(idx));
