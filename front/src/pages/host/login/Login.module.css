@@ -13,18 +13,32 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
-.logo {
-  width:40%;
-  min-width:260px;
+.hostTxt {
+  text-align: center;
+}
+
+.loginBtnWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 3%;
+}
+
+.border {
+  width: 250px;
+  /* border: 0.3; */
+  /* color: black; */
 }
 
 .loginBtn {
   display: flex;
-  width: 170px;
+  width: 180px;
   /* height: 24px; */
-  padding: 6% 15% 6% 15%;
+  padding: 10px 15px 10px 15px;
   border-radius: 20px;
   justify-content: flex-start;
   align-items: center;

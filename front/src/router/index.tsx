@@ -11,7 +11,6 @@ import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "pages/host/login/Login";
 import Create from "pages/host/quiz/Create";
 import Edit from "pages/host/quiz/Edit";
-import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
@@ -101,7 +100,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <EnterPin />,
+            element: <></>,
           },
           {
             path: "nickname",
