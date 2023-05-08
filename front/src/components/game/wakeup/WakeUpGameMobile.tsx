@@ -23,7 +23,7 @@ const WakeUpGameMobile = (props: Props) => {
 
   const handleShake = (event: { accelerationIncludingGravity: any }) => {
     // console.log(event);
-    let shakeThreshold = 1000; // set the shake threshold
+    let shakeThreshold = 10; // set the shake threshold = 10cm
     let lastUpdate = 0;
     let x = 0,
       y = 0,
@@ -45,13 +45,14 @@ const WakeUpGameMobile = (props: Props) => {
 
       let speed = (Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime) * 10000;
 
-      if (speed > shakeThreshold) {
+      let xDiff = Math.abs(x - lastX);
+      // if (speed > shakeThreshold) {
+      if (xDiff > shakeThreshold) {
         console.log("shaked");
         setIsShaking(true);
         setShakeCount(shakeCount + 1);
       }
 
-      let xDiff = Math.abs(x - lastX);
       let xspeed = (xDiff / diffTime) * 10000; // calculate x-axis speed
       setXSpeed(xspeed); // update x-axis speed state
 
