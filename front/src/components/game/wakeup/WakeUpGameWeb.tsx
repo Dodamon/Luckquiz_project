@@ -47,7 +47,7 @@ const WakeUpGameWeb = (props: Props) => {
     return (() => {
       window.removeEventListener("keydown", handleShake);
     })
-  }, [handleShake]);
+  }, [shakeCount]);
 
   useEffect(() => {
     if (isBroken) {

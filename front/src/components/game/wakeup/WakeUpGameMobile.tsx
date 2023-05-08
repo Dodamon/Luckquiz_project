@@ -21,16 +21,18 @@ const WakeUpGameMobile = (props: Props) => {
   const eggRef = useRef<HTMLImageElement>(null);
   const [ySpeed, setYSpeed] = useState(0);
 
+  let shakeThreshold = 100; // set the shake threshold = 10cm
+  let lastUpdate = 0;
+  let x = 0,
+    y = 0,
+    z = 0;
+  let lastX = 0,
+    lastY = 0,
+    lastZ = 0;
+
   const handleShake = (event: { accelerationIncludingGravity: any }) => {
     // console.log(event);
-    let shakeThreshold = 100; // set the shake threshold = 10cm
-    let lastUpdate = 0;
-    let x = 0,
-      y = 0,
-      z = 0;
-    let lastX = 0,
-      lastY = 0,
-      lastZ = 0;
+
 
     let acceleration = event.accelerationIncludingGravity;
     let curTime = new Date().getTime();
@@ -71,7 +73,7 @@ const WakeUpGameMobile = (props: Props) => {
     return () => {
       window.removeEventListener("devicemotion", handleShake);
     };
-  }, [handleShake]);
+  }, [shakeCount]);
 
   useEffect(() => {
     // brokenNum을 아직 못채웠을 때, 흔들면
