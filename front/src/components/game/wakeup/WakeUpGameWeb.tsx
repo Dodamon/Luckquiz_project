@@ -7,11 +7,11 @@ import luckqui from "assets/images/luckqui2.png";
 import styles from "./WakeUpGame.module.css";
 
 interface Props {
-  breakNum? : number
+  breakNum?: number;
 }
 
-const WakeUpGameWeb = (props : Props) => {
-  const { breakNum } = props
+const WakeUpGameWeb = (props: Props) => {
+  const { breakNum } = props;
   // const [brokenNum, setBrokenNum] = useState(breakNum);
   const [brokenNum, setBrokenNum] = useState(23);
   const [shakeCount, setShakeCount] = useState(0);
@@ -44,7 +44,10 @@ const WakeUpGameWeb = (props : Props) => {
 
   useEffect(() => {
     window.addEventListener("keydown", handleShake);
-  }, []);
+    return (() => {
+      window.removeEventListener("keydown", handleShake);
+    })
+  }, [handleShake]);
 
   useEffect(() => {
     if (isBroken) {
