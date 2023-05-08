@@ -2,14 +2,9 @@
     .containerWrapper {
         display: flex;
         flex-direction: column;
-        
     }
 
     .container {
-        /* display: flex;
-        flex-direction: column; */
-        /* justify-content: center;
-        align-items: center; */
         margin-top: 20px;
     }
 
@@ -17,11 +12,11 @@
         height: 180px;
         width: 400px;
         object-fit: fill;
-        margin-top: -10%;
+        /* margin-top: -10%; */
     }
     
     .formBox {
-        height: 200px;
+        height: 220px;
         width: 400px;
         display: flex;
         flex-direction: column;
@@ -39,12 +34,17 @@
 
     }
 
+    .border {
+        width: 250px;
+        margin-top: 20px;
+    }
+
     .inputBox {
         height: 45px;
         width: 352.8px;
         border-radius: 15px;
         border: 2px solid var(--grey-color);
-        margin-top: 8%;
+        /* margin-top: 8%; */
         text-align: center;
         outline: none;
         font-size: 18px;
