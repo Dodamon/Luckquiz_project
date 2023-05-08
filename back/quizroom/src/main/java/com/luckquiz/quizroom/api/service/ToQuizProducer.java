@@ -11,7 +11,7 @@ import java.util.Properties;
 public class ToQuizProducer {
     private static Properties configs = new Properties();
     public ToQuizProducer() {
-        configs.put("bootstrap.servers", "http://513.125.215.143:9092, http://554.180.139.100:9092, http://54.180.165.36:9092");
+        configs.put("bootstrap.servers", "http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092");
         configs.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         configs.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
     }
