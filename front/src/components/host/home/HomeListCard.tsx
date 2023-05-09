@@ -1,14 +1,14 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./HomeListCard.module.css";
 import { Icon } from "@iconify/react";
 import main_logo from "assets/images/main_logo.png";
 import { Quiz } from "pages/host/home/quiz/Quiz";
 import { Report } from "pages/host/home/report/Report";
 import useHostAxios from "hooks/useHostAxios";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { socketActions } from "store/webSocket";
+import { connectAndSubscribe, socketActions } from "store/webSocket";
+import { client } from "store/webSocket";
 
 interface Props {
   menu: number;
@@ -21,15 +21,14 @@ const HomeListCard = (props: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const client = useSelector((state: RootState) => state.socket.client);
-  const { data, status, sendHostRequest } = useHostAxios();
+  const { data, sendHostRequest } = useHostAxios();
 
   const connectSocket = () => {
     console.log(data)
     console.log('then')
     if (data) {
-      if (!client.connected) {
-        dispatch(socketActions.connect());
+      if (!client?.connected) {
+        connectAndSubscribe(data!.roomId, dispatch);
         navigate(`/host/quiz/${data?.roomId}`);
 
         // if (window.confirm("퀴즈를 진행하시겠습니까?")) {

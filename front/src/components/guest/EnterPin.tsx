@@ -1,17 +1,14 @@
-import React, { FormEvent, useEffect, useRef } from "react";
+import React, { FormEvent, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import logo from "assets/images/logo.png";
 import styles from "./EnterPin.module.css";
-import { socketActions } from "store/webSocket";
-import { RootState } from "store";
-import { Client } from "@stomp/stompjs";
+import { connectAndSubscribe, socketActions } from "store/webSocket";
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
 
   const formSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,10 +22,10 @@ const EnterPin: React.FC = () => {
       inputRef.current?.focus();
       return;
     }
-    dispatch(socketActions.updatePinNum(enteredPin));
 
-    // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요.") inputRef.current?.focus(); return}
-    if (!client.connected) dispatch(socketActions.connect());
+    // pin 번호 리덕스에 저장
+    dispatch(socketActions.updatePinNum(enteredPin));
+    connectAndSubscribe(enteredPin, dispatch);
     navigate("/guest/nickname");
   };
 

@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
-import { client, socketActions } from "store/webSocket";
+import {  client, socketActions } from "store/webSocket";
+// import { client } from "App";
 import { RootState } from "store";
 
 const EmotionGame: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
-  const [isFacingModeUser, setIsFacingModeUser] = useState<boolean>(true);
+  const [isFacingModeUser] = useState<boolean>(true);
   const [img, setImg] = useState<string | null | undefined>();
   const sender = useSelector<RootState, string>((state) => state.guest.nickname);
 
@@ -80,13 +81,12 @@ const EmotionGame: React.FC = () => {
     };
 
     dispatch(socketActions.sendAnswerMessage(selfie));
-    
-  };
 
+  };
 
   useEffect(() => {
     console.log(client.connected)
-  }, []);
+  }, [])
 
   return (
     <div className={styles.emotionGameContainer}>
