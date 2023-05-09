@@ -13,7 +13,6 @@ import java.util.UUID;
 @Builder
 public class ToGradeStartMessage {
     private Integer roomId;
-
     private UUID hostId;
     private int quizNum;
 

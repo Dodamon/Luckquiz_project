@@ -1,6 +1,7 @@
 package com.luckquiz.quizroom.api.service;
 
 import com.google.gson.Gson;
+import com.luckquiz.quizroom.api.request.QuizRoomCreateRequest;
 import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.request.RTSearch;
@@ -53,10 +54,11 @@ public class QuizService {
 
     //방 생성
     @Transactional
-    public QuizRoom createRoom(QuizRoomEnterRequest qsr) {
+    public QuizRoom createRoom(QuizRoomCreateRequest qrc) {
         QuizRoom quizRoom = QuizRoom.create();
         quizRoomMap.put(quizRoom.getRoomId(), quizRoom);
-        toQuizProducer.callQuizTemp(qsr.getHostId()+" "+quizRoom.getRoomId()+" "+qsr.getTemplateId());
+
+        toQuizProducer.callQuizTemp(qrc.getHostId()+" "+quizRoom.getRoomId()+" "+qrc.getTemplateId());
         return quizRoom;
     }
 
