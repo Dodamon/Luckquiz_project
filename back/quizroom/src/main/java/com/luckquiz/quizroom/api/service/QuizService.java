@@ -12,6 +12,8 @@ import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 public class QuizService {
+    private final SimpMessageSendingOperations sendingOperations;
     private Map<String, QuizRoom> quizRoomMap;
     private final Gson gson;
     private final ToQuizProducer toQuizProducer;
@@ -77,6 +80,7 @@ public class QuizService {
     }
     @Transactional
     public QGame nextQuiz(NextMessage nextMessage) {
+        // host가 받을 다음 문제
         String room = stringRedisTemplate.opsForValue().get(nextMessage.getRoomId().toString());
         TemplateDetailResponse templateDetailResponse = gson.fromJson(room,TemplateDetailResponse.class);
         QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum()+1);
@@ -85,7 +89,28 @@ public class QuizService {
         stringRedisTemplate.opsForValue().set(nextMessage.getRoomId().toString(),newVal);
         nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
         nextQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
+
         return nextQuiz;
+    }
+
+    // 참가자들이 받을 보기
+    public void serveQuiz(QGame question,Integer roomId){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+        for(String name : rank){
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,question);
+        }
+    }
+
+    // 수정해야됨 결과를 알려주는
+    public void serveResult(QGame question,Integer roomId){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+        for(String name : rank){
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,question);
+        }
     }
 
 
