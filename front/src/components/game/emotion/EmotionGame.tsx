@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
-import { socketActions } from "store/webSocket";
+import { client, socketActions } from "store/webSocket";
 import { RootState } from "store";
 
 interface WebcamProps {
@@ -95,8 +95,8 @@ const EmotionGame: React.FC = () => {
 
 
   useEffect(() => {
-
-  }, [img])
+    console.log(client.connected)
+  }, []);
 
   return (
     <div className={styles.emotionGameContainer}>

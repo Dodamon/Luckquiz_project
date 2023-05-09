@@ -96,7 +96,7 @@
 
     .inputBox {
         height: 40px;
-        width: 230px;
+        width: 220px;
         border-radius: 13px;
         border: 2px solid var(--grey-color);
         margin-top: 3%;
@@ -107,7 +107,7 @@
     
     .enterBtn {
         height: 40px;
-        width: 237px;
+        width: 227px;
         border-radius: 13px;
         border: none;
         background-color: var(--button-two);
