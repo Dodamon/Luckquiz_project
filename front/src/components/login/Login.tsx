@@ -1,8 +1,7 @@
-import logo from "assets/images/logo.png";
 import kakao from "assets/images/kakao_logo.png";
 import google from "assets/images/google_logo.png";
 import styles from "./Login.module.css";
-import EnterPin from "components/guest/EnterPin";
+
 
 interface Provider {
   provider: string;
@@ -16,8 +15,7 @@ const socialLogin = (props: Provider) => {
 
 const Login = () => {
   return (
-      <div className={styles.container}>
-        <EnterPin />
+      <>
         <div className={styles.buttonContainer}>
           <div className={styles.hostTxt}>퀴즈 출제하러 가기</div>
           <hr className={styles.border}/>
@@ -45,7 +43,7 @@ const Login = () => {
 
           </div>
         </div>
-      </div>
+      </>
   );
 };
 
