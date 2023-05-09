@@ -2,9 +2,10 @@ package com.luckquiz.quizroom.model;
 
 import lombok.Getter;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.UUID;
 
 @Getter
-public class ShutDownRequest {
+public class TotalRank {
     private Integer roomId;
+    private UUID hostId;
 }

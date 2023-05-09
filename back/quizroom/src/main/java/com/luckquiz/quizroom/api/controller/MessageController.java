@@ -12,7 +12,6 @@ import com.luckquiz.quizroom.api.service.ToQuizProducer;
 import com.luckquiz.quizroom.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.streams.processor.To;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -20,7 +19,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
@@ -86,6 +84,7 @@ public class MessageController {
         QGame result = quizService.startQuiz(quizStartRequest);
         ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                 .quizNum(result.getQuizNum())
+                .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
         toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
@@ -112,7 +111,6 @@ public class MessageController {
 
     @MessageMapping("/quiz/execute")
     public void execute(ShutDownRequest shutDownRequest){
-        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         String hashKey = shutDownRequest.getRoomId()+"p";
         String zsetKey = shutDownRequest.getRoomId()+"rank";
         stringRedisTemplate.delete(shutDownRequest.getRoomId().toString());
@@ -122,7 +120,38 @@ public class MessageController {
 
     @MessageMapping("/quiz/rollback")
     public void rollBack(RollBackRequest rollBackRequest){
-       toGradeProducer.rollBack(gson.toJson(rollBackRequest));
+        if(rollBackRequest.getRoomId() != null) toGradeProducer.rollBack(gson.toJson(rollBackRequest));
+    }
+
+    @MessageMapping("/quiz/middlerank")
+    public void rollBack(MiddleRank middleRank){
+        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+        Map all = hashOperations.entries(middleRank.getRoomId()+"p");
+        List<String> users = new ArrayList<>(all.values());
+        List<UserR> userLList = new ArrayList<>();
+        for(String user: users){
+            Grade a = gson.fromJson(user,Grade.class);
+            UserR u = new UserR();
+            u.setImg(a.getPlayerImg());
+            u.setSender(a.getPlayerName());
+            u.setRank(a.getRank_now());
+            userLList.add(u);
+        }
+        Collections.sort(userLList);
+        sendingOperations.convertAndSend("/topic/quiz/" + middleRank.getRoomId(), userLList);
+    }
+
+    @MessageMapping("quiz/ranking")
+    public void totalRank (TotalRank totalRank){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set all = zSetOperations.range(totalRank.toString()+"rank",0,-1);
+        Iterator itr = all.iterator();
+        List<String> rank = new ArrayList<>();
+        while (itr.hasNext()){
+            rank.add(itr.next().toString());
+            System.out.println(itr.next().toString());
+        }
+
     }
 
 }
