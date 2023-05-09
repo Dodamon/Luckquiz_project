@@ -23,8 +23,6 @@ import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "pages/host/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
-import WakeUpGameWeb from "components/game/wakeup/WakeUpGameWeb";
-import WakeUpGameMobile from "components/game/wakeup/WakeUpGameMobile";
 import BalloonGame from "components/game/balloon/BalloonGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 
@@ -134,7 +132,7 @@ const router = createBrowserRouter([
           {
             // 지워야 됨
             path: "quiz/egg",
-            element: <WakeUpGameMobile/>,
+            element: <WakeUpGame/>,
           },
           {
             // 지워야 됨

@@ -256,7 +256,8 @@
   width: 91%;
   left: 5%;
   top: 0%;
-  animation: moveup 0.3s linear forwards;
+  animation: moveup 0.5s linear forwards;
+  animation-delay: 0.5s;
 }
 
 .eggBottom {
