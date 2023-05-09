@@ -49,15 +49,19 @@ const QuizSelectMenu = () => {
     }, [quizInfo, selectInfo])
 
     const temporarySaveHandler = () => {
+        // dispatch(quizAtions.contentsUpdate({ index: selectInfo, content: template }))
         console.log(template);
-
+        
         axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res => {
             console.log(res);
 
         })
 
-
+                
     }
+
+
+    
 
 
 
@@ -93,7 +97,7 @@ const QuizSelectMenu = () => {
                     <div onClick={temporarySaveHandler}>임시저장</div>
                 </div>
                 <div>
-                    <div>저장</div><Icon icon="ic:round-log-out" />
+                    <div  onClick={temporarySaveHandler}>저장</div><Icon icon="ic:round-log-out" />
                 </div>
             </div>
         </nav>

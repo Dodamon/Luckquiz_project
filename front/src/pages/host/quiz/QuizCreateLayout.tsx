@@ -13,6 +13,7 @@ const QuizCreateLayout = () => {
     console.log(selectInfo);
     
     console.log(quizInfo);
+    console.log(quizInfo[selectInfo]?.quiz);
     
     return (
         <>

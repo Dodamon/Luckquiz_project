@@ -1,32 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 import { setQuizSet } from "models/quiz";
-import { setQuizItem } from "models/quiz";
 
 
-const quizItem: setQuizItem ={
-   
-    type: "",
-    // 'quiz', 'game'
-    quiz: "",
-    // 'text, four, ox,
-    quizUrl: "",
-    answer: "",
-    one: "",
-    two:"",
-    three: "",
-    four: "",
-    question: "",
-    answerList: [], 
-    game: "",
-    //balloon, wakeup, emotion
-    timer: 0
-}
+
+
 
 // 전역 로그인 데이터 기본 값 설정
 const initialQuizSet: setQuizSet ={
     hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644",
-    templateId: 7,
+    templateId: 2,
     quizList:[]
 }
 
@@ -73,6 +56,10 @@ reducers:{
         state.quizList = produce(state.quizList, draftList => {
             draftList[index]= content;
         });
+    },
+
+    receiveUpdate:(state, action)=>{
+     state = action.payload;
     },
 }
     

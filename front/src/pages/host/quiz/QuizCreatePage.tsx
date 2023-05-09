@@ -11,8 +11,8 @@ import EmptyContentPage from "./EmptyContentPage";
 const QuizCreatePage: React.FC = () => {
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
-    // console.log(quizInfo);
-
+    console.log(quizInfo);
+    console.log(selectInfo);
     return (
         <div className={styles.QuizCreate}>
             <section className={styles.left_side} >

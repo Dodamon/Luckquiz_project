@@ -15,7 +15,7 @@ export interface getQuizItem {
 }
 
 export interface setQuizItem {
-
+    id?:number,
     type: string,
     quiz: string,
     quizUrl: string,
@@ -39,6 +39,8 @@ export interface getQuizSet {
 }
 
 export interface setQuizSet {
+    id?:number,
+    name?:string,
     hostId:string,
     templateId: number,
     quizList: setQuizItem[];

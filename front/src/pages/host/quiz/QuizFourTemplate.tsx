@@ -7,13 +7,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
+import { async } from 'q';
 type pageNum = {
     num: number;
 }
 const QuizFourTemplate = ({ num }: pageNum) => {
     const dispatch = useDispatch();
     const quizList = useSelector((state: RootState) => state.quiz.quizList);
-    // const selectIndex = useSelector((state:RootState)=> state.auth.choiceIndex);
+    const template = useSelector((state: RootState)=> state.quiz)
     const [quiz, setQuiz] = useState(quizList[num]);
 
 
@@ -28,15 +29,22 @@ const QuizFourTemplate = ({ num }: pageNum) => {
     }
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
+        const intervalId = setInterval(async() => {
 
             const content = quiz;
             if (content.answer || content.one || content.two || content.three || content.four || content.question) {
                 dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
+                const item = template;
+                const res = await axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", item);
+                // const data = res.data;
+
+                
             }
-        }, 5000);
+        }, 2000);
         return () => clearInterval(intervalId);
-    }, [quiz, num, dispatch]);
+
+        
+    }, [quiz, num,dispatch, template]);
 
     const imageUploadHandler = async (event: any) => {
         const file = event.target.files[0];
@@ -70,6 +78,8 @@ const QuizFourTemplate = ({ num }: pageNum) => {
     const answerHandler = (answer: string) => {
         setQuiz({ ...quiz, answer: answer })
     }
+
+    
     return (
         <>
             <div className={styles.content_title}>
