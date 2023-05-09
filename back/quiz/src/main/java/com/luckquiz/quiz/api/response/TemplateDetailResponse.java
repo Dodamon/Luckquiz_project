@@ -19,6 +19,10 @@ public class TemplateDetailResponse {
     private UUID hostId;
     private List<QGame> quizList;
     private String[] numbering;
+    private int quizNum;
 
+    public void setQuizNum(int quizNum){
+        this.quizNum = quizNum;
+    }
 
 }
