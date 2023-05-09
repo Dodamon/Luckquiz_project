@@ -105,18 +105,22 @@ public class TemplateService {
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getQuizList();
         for (QGame a : qGames) {
+
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = gson.toJson(a).getBytes(charset);
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())
                     .quiz(bytes)
-                    .type(QuizType.valueOf(a.getQuiz()))
+                    .type(a.getType())
                     .build();
             if(QuizType.game.equals(a.getType())){
+                System.out.println("is Game");
                 qgame.setType(QuizType.game);
             }
+            System.out.println("2");
             quizGameRepository.save(qgame);
+            System.out.println("save success");
         }
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
