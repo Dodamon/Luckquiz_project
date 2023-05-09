@@ -48,7 +48,13 @@ const ProfileNickname: React.FC = () => {
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
+<<<<<<<<< Temporary merge branch 1
+  // const client = useSelector<RootState, Client>((state) => state.socket.client);
+=========
+  const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const appDispatch = useAppDispatch();
+  
+>>>>>>>>> Temporary merge branch 2
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -71,19 +77,21 @@ const ProfileNickname: React.FC = () => {
     }
     nicknameRef.current?.blur();
     dispatch(guestActions.updateGuestNickname(enteredTxt));
-    
+
     // websocket subscribe, publish
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      // subscribeURL: "8963127",
-      subscribeURL: pinNum,
+      subscribeURL: 123,
     };
-   
-    // appDispatch(subscribeThunk(socketProps));
+    // dispatch(socketActions.subscribe(socketProps));
+<<<<<<<<< Temporary merge branch 1
+    // dispatch(socketActions.sendEnterMessage(socketProps));
+=========
+    appDispatch(subscribeThunk(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 
-    navigate('/guest/quiz/lobby');
+    navigate("/guest/quiz/lobby");
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -99,7 +107,6 @@ const ProfileNickname: React.FC = () => {
     }
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
-
   useEffect(() => {
     console.log("핀넘버:", pinNum);
     console.log(client.connected);

@@ -17,6 +17,12 @@ const initialState: SocketState = {
   guestList: [{ sender: "", img: 0 }],
 };
 
+
+// const initialState: SocketState = {
+//   client: client,
+//   guestList: [{ sender: "", img: 0 }],
+// };
+
 const socketSlice = createSlice({
   name: "socket",
   initialState: initialState,
