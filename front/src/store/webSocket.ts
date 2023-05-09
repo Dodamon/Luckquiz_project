@@ -3,16 +3,18 @@ import { Client } from "@stomp/stompjs";
 import { GuestType, SocketPropsType } from "models/guest";
 import { AppThunk } from "store";
 
-const brokerURL = "ws://k8a707.p.ssafy.io/connect/quiz";
-export const client = new Client({ brokerURL: brokerURL });
+const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
+export const client = new Client({brokerURL: brokerURL});
 
 interface SocketState {
   client: Client;
+  pinNum: number;
   guestList: GuestType[];
 }
 
 const initialState: SocketState = {
   client: client,
+  pinNum: 0,
   guestList: [{ sender: "", img: 0 }],
 };
 
@@ -24,6 +26,7 @@ const socketSlice = createSlice({
       // Connect
       client.onConnect = () => {
         console.log(`webSocket connected`);
+        // state.connected = true;
       };
       client.onDisconnect = () => {
         alert(`webSocket disconnected`);
@@ -33,38 +36,6 @@ const socketSlice = createSlice({
       };
       client.activate();
     },
-
-    // subscribe: (state, actions) => {
-    //   console.log("아놔");
-    //   const sender = {
-    //     sender: actions.payload.name,
-    //     img: actions.payload.img,
-    //     type: "enter",
-    //     roomId: 123,
-    //   };
-
-    //   const callback = async (res: any) => {
-    //     if (res.body) {
-    //       const data = JSON.parse(res.body)
-    //       console.log('data: ', data)
-    //       // console.log(`도착 message: ${res.body}`);
-    //       // console.log(typeof res.body)
-    //       // console.log(res.body[0]);
-    //       console.log('1',state.guestList)
-    //       state.guestList = data 
-    //       console.log('2',state.guestList)
-    //     } else {
-    //       console.log("got empty message");
-    //     }
-    //   };
-
-    //   const subscribeURL = `/topic/quiz/${actions.payload.subscribeURL}`;
-    //   const senderObj = JSON.stringify(sender);
-    //   if (client.connected) {
-    //     console.log('3',state.guestList)
-    //     client.subscribe(subscribeURL, callback, { sender: senderObj });
-    //   }
-    // },
 
     // Disconnect
     disconnect: (state) => {
@@ -84,7 +55,7 @@ const socketSlice = createSlice({
           body: JSON.stringify({ sender: actions.payload.name, img: actions.payload.img, type: "enter" }),
         });
         console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
-      }
+      };
     },
 
     // Send message when submit
@@ -100,8 +71,11 @@ const socketSlice = createSlice({
 
     changeGuestList: (state, actions) => {
       state.guestList = actions.payload;
-
     },
+
+    updatePinNum: (state, actions) => {
+      state.pinNum = actions.payload;
+    }
   },
 });
 

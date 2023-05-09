@@ -49,11 +49,9 @@ const ProfileNickname: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
-  const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
   const appDispatch = useAppDispatch();
-  
+  const pinNum = useSelector<RootState, number>((state) => state.socket.pinNum);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -81,9 +79,10 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 123,
+      subscribeURL: 8963127,
+      // subscribeURL: pinNum,
     };
-    // dispatch(socketActions.subscribe(socketProps));
+   
     appDispatch(subscribeThunk(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 

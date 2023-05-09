@@ -20,7 +20,13 @@ const EnterPin: React.FC = () => {
       alert("핀 번호를 입력하세요.");
       inputRef.current?.focus();
       return;
+    } else if (enteredPin.length !== 7) {
+      alert("올바른 핀 번호를 입력하세요");
+      inputRef.current?.focus();
+      return;
     }
+    dispatch(socketActions.updatePinNum(enteredPin));
+
     // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요.") inputRef.current?.focus(); return}
     if (!client.connected) dispatch(socketActions.connect());
     navigate("/guest/nickname");
