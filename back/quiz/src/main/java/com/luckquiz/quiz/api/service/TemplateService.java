@@ -111,7 +111,7 @@ public class TemplateService {
                     .templateId(temp.getId())
                     .timer(qgcr.getTimer())
                     .quiz(bytes)
-                    .type(a.getQuiz())
+                    .type(QuizType.valueOf(a.getQuiz()))
                     .build();
             if(QuizType.game.equals(a.getType())){
                 qgame.setType(QuizType.game);
