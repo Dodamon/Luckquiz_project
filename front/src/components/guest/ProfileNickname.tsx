@@ -21,10 +21,8 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { socketActions, subscribeThunk } from "store/webSocket";
-import { Client } from "@stomp/stompjs";
+import { client, socketActions } from "store/webSocket";
 import { useAppDispatch } from "hooks/useAppDispatch";
-import { GuestType } from "models/guest";
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -50,8 +48,7 @@ const ProfileNickname: React.FC = () => {
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const appDispatch = useAppDispatch();
-  const pinNum = useSelector<RootState, number>((state) => state.socket.pinNum);
+  const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -105,6 +102,7 @@ const ProfileNickname: React.FC = () => {
 
   useEffect(() => {
     console.log("핀넘버:", pinNum);
+    console.log(client.connected);
   }, []);
   
   return (

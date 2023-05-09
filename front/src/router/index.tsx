@@ -127,8 +127,8 @@ const router = createBrowserRouter([
             element: <BalloonGame/>,
           },
           {
-            path: "quiz/balloon",
-            element: <BalloonGame/>,
+            path: "quiz/emotion",
+            element: <EmotionGame/>,
           },
           {
             // 지워야 됨
