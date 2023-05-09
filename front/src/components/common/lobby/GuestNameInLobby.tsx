@@ -18,7 +18,7 @@ import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 
 type GuestItemType = {
-  name: string;
+  sender: string;
   img: number;
 };
 
@@ -51,7 +51,7 @@ const GuestNameInLobby: React.FC<ItemProps> = ({ item }) => {
       <div>
         <img src={IMAGES[item.img - 1]} alt="" className={styles.profileImg} />
       </div>
-      <div className={styles.guestName}>{item.name}</div>
+      <div className={styles.guestName}>{item.sender}</div>
     </div>
   );
 };

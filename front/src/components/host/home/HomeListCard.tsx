@@ -29,7 +29,7 @@ const HomeListCard = (props: Props) => {
     console.log('then')
     if (data) {
       if (!client.connected) {
-        dispatch(socketActions.connect());
+        dispatch(socketActions.connect(data!.roomId));
         navigate(`/host/quiz/${data?.roomId}`);
 
         // if (window.confirm("퀴즈를 진행하시겠습니까?")) {

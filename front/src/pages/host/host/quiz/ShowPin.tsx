@@ -11,20 +11,16 @@ import { useAppDispatch } from "hooks/useAppDispatch";
 const ShowPin = () => {
   const hostInfo = useSelector((state: RootState) => state.auth)
   const client = useSelector((state: RootState) => state.socket.client);
+  const { quiz_id } = useParams();
   const appDispatch = useAppDispatch();
 
   useEffect(() => {
     if (!client.connected) {
-      const socketProps = {
-        name: hostInfo.nickname,
-        img: hostInfo.image_url,
-        subscribeURL: 123,
-      };
-      appDispatch(subscribeThunk(socketProps));
+      if (typeof quiz_id === "string") appDispatch(subscribeThunk(quiz_id));
     }
   },[]);
 
-  const { quiz_id } = useParams();
+
   return (
     <div className={styles.container}>
       <img src={logo} alt="" className={styles.logo} />

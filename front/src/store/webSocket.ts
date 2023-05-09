@@ -4,7 +4,7 @@ import { GuestType, SocketPropsType } from "models/guest";
 import { AppThunk } from "store";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
-export const client = new Client({brokerURL: brokerURL});
+export const client = new Client({ brokerURL: brokerURL });
 
 interface SocketState {
   client: Client;
@@ -25,8 +25,7 @@ const socketSlice = createSlice({
     connect: (state) => {
       // Connect
       client.onConnect = () => {
-        console.log(`webSocket connected`);
-        // state.connected = true;
+        console.log("connected")
       };
       client.onDisconnect = () => {
         alert(`webSocket disconnected`);
@@ -55,7 +54,7 @@ const socketSlice = createSlice({
           body: JSON.stringify({ sender: actions.payload.name, img: actions.payload.img, type: "enter" }),
         });
         console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
-      };
+      }
     },
 
     // Send message when submit
@@ -75,42 +74,80 @@ const socketSlice = createSlice({
 
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
-    }
+    },
   },
 });
 
-export const subscribeThunk = (socketProps: SocketPropsType): AppThunk =>
+export const subscribeThunk = (enteredPin: string): AppThunk =>
   async (dispatch) => {
-
-    const callback = (res:any) =>{
+    console.log("thunk")
+    const callback = (res: any) => {
       if (res.body) {
-        const data = JSON.parse(res.body)
-        console.log('data: ', data)
+        const data = JSON.parse(res.body);
+        console.log("data: ", data);
         // console.log(`도착 message: ${res.body}`);
         // console.log(typeof res.body)
         // console.log(res.body[0]);
-        dispatch(socketActions.changeGuestList(data))
+        dispatch(socketActions.changeGuestList(data));
       } else {
         console.log("got empty message");
       }
-    }
+    };
 
     try {
       const sender = {
-        sender: socketProps.name,
-        img: socketProps.img,
         type: "enter",
-        roomId: 123,
-      }
-      const URL = `/topic/quiz/${socketProps.subscribeURL}`
+        roomId: "8345119",
+      };
+      const URL = `/topic/quiz/${enteredPin}`;
       const Obj = JSON.stringify(sender);
-      if(client.connected){
-        client.subscribe(URL, callback, {sender: Obj})
+      if (client.connected) {
+        client.subscribe(URL, callback, { sender: Obj });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
+
+export const connectThunk = (enteredPin:string): AppThunk =>
+  async (dispatch) => {
+    // dispatch(socketActions.connect());
+    client.activate();
+    client.onDisconnect = () => {
+      alert("websocket Disconnected")
+    }
+    client.onWebSocketClose = () => {
+      console.log("webSocket Closed");
+    };
+    client.onConnect = () => {
+      console.log("websocket connected")
+      const callback = (res: any) => {
+        if (res.body) {
+          const data = JSON.parse(res.body);
+          console.log("data: ", data);
+          // console.log(`도착 message: ${res.body}`);
+          // console.log(typeof res.body)
+          // console.log(res.body[0]);
+          dispatch(socketActions.changeGuestList(data));
+        } else {
+          console.log("got empty message");
+        }
+      };
+  
+      try {
+        const sender = {
+          type: "enter",
+          roomId: "8345119",
+        };
+        const URL = `/topic/quiz/${enteredPin}`;
+        const Obj = JSON.stringify(sender);
+        client.subscribe(URL, callback, { sender: Obj });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
 
 export const socketActions = socketSlice.actions;
 export default socketSlice.reducer;

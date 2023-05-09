@@ -79,11 +79,11 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 8963127,
-      // subscribeURL: pinNum,
+      // subscribeURL: "8963127",
+      subscribeURL: pinNum,
     };
    
-    appDispatch(subscribeThunk(socketProps));
+    // appDispatch(subscribeThunk(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 
     navigate('/guest/quiz/lobby');
@@ -103,6 +103,10 @@ const ProfileNickname: React.FC = () => {
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
 
+  useEffect(() => {
+    console.log("핀넘버:", pinNum);
+  }, []);
+  
   return (
     <div className={styles.profileNicknameContainer}>
       <div className={styles.imgWrapper}>
