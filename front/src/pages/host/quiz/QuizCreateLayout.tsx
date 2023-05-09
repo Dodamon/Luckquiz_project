@@ -1,12 +1,27 @@
 import React from 'react';
 import QuizSelectMenu from './QuizSelectMenu';
-import QuizTemplate from './QuizTemplate';
+import QuizFourTemplate from './QuizFourTemplate';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import QuizOxTemplate from './QuizOxTemplate';
+import QuizShortTemplate from './QuizShortTemplate';
+
 
 const QuizCreateLayout = () => {
+    const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
+    const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
+    console.log(selectInfo);
+    
+    console.log(quizInfo);
+    
     return (
         <>
             <QuizSelectMenu/>
-            <QuizTemplate/>
+            {
+                
+               quizInfo[selectInfo]?.quiz==="four"? <QuizFourTemplate num={selectInfo}/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate num={selectInfo}/>:<QuizShortTemplate num={selectInfo}/>
+            }
+           
         </>
     );
 };

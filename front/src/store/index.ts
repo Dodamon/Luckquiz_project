@@ -1,7 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth";
+import quizReducer from "./quiz";
 import guestReducer from "./guest";
 import guestSocketReducer from "./webSocket";
 
@@ -16,6 +17,7 @@ const persistedGuestReducer = persistReducer(persistConfig, guestReducer);
 
 const store = configureStore({
   reducer: {
+    quiz: quizReducer,
     auth: persistedReducer,
     guest: persistedGuestReducer,
     socket: guestSocketReducer,
@@ -27,6 +29,13 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

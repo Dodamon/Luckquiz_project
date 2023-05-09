@@ -28,7 +28,6 @@ const HomeMain = () => {
 
 useEffect(() => {
   if (data) {
-    // console.log(data)
     dispatch(authActions.updateInfo({ nickname: data.name, userId: data.id, image_url: data.image_url }));
   }
 }, [data]);

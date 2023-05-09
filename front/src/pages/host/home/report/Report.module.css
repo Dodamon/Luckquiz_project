@@ -27,6 +27,21 @@
   box-shadow: 5px 5px #00000015;
 }
 
+.reportContentList {
+  list-style: none;
+  /* padding-left: 0px; */
+  /* padding-bottom: 0px; */
+  /* margin: 0px; */
+  font-size: 20px;
+}
+
+.reportContentList > li {
+  margin: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .quizBox {
   display: flex;
   justify-content: space-between;
@@ -70,21 +85,6 @@
 .iconStyle {
   font-size: 35px;
   margin-right: 20px;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0px;
-  padding-bottom: 0px;
-  margin: 0px;
-  font-size: 20px;
-}
-
-li {
-  margin: 3vh;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .chartContainer {

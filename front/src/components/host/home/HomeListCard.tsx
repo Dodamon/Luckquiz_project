@@ -27,7 +27,7 @@ const HomeListCard = (props: Props) => {
   const startQuiz = () => {
     // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
     sendHostRequest({
-      url: `/api/quizroom/room`,
+      url: `/api/quizroom/create`,
       method: "POST",
       data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
     });
