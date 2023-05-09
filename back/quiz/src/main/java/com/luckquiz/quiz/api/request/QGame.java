@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.api.request;
 
 import com.luckquiz.quiz.db.entity.QuizType;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

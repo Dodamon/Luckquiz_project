@@ -53,6 +53,7 @@ public class QuizController {
     @PostMapping("/template/contents-create")
     @ResponseBody
     public ResponseEntity<TemplateDetailResponse> insertQuizGame(@RequestBody QuizGameCreateRequest qcr)throws Exception{
+        System.out.println(qcr.getQuizList().get(0).getType());
         return ResponseEntity.status(HttpStatus.CREATED).body(templateService.quizGameCreate(qcr));
     }
 
