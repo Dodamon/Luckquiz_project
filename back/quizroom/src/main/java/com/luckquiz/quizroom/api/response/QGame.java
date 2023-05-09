@@ -1,5 +1,6 @@
 package com.luckquiz.quizroom.api.response;
 
+import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 public class QGame {
     private int id;
     private QuizType type; // game 인지 quiz 인지
-    private QuizType quiz; // quiz 일때 3종류 중 뭔지
+    private String quiz; // quiz 일때 3종류 중 뭔지
     private String question;
     private String quizUrl;
     private String answer;
@@ -32,7 +33,7 @@ public class QGame {
         this.type = type;
     }
 
-    public void setQuiz(QuizType quiz) {
+    public void setQuiz(String quiz) {
         this.quiz = quiz;
     }
 
@@ -47,4 +48,21 @@ public class QGame {
     public void setQuizSize(Integer quizSize) {
         this.quizSize = quizSize;
     }
+
+    public static QGame serveQgame(QGame q){
+        QGame qgame = new QGame();
+        qgame.game = q.getGame();
+        qgame.one = q.getOne();
+        qgame.two = q.getTwo();
+        qgame.three = q.getThree();
+        qgame.four = q.getFour();
+        qgame.question = q.getQuestion();
+        qgame.quizUrl = q.getQuizUrl();
+        qgame.timer = q.getTimer();
+        qgame.quizNum = q.getQuizNum();
+        qgame.quiz = q.getQuiz();
+        qgame.type = q.getType();
+        return qgame;
+    }
+
 }
