@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
-import { async } from 'q';
+
 type pageNum = {
     num: number;
 }
@@ -30,15 +30,11 @@ const QuizFourTemplate = ({ num }: pageNum) => {
 
     useEffect(() => {
         const intervalId = setInterval(async() => {
-
             const content = quiz;
-            if (content.answer || content.one || content.two || content.three || content.four || content.question) {
+            if (content.answer||content.quizUrl || content.one || content.two || content.three || content.four || content.question) {
                 dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
-                const item = template;
-                const res = await axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", item);
-                // const data = res.data;
-
-                
+                // const item = template;
+                // const res = await axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", item);                
             }
         }, 2000);
         return () => clearInterval(intervalId);

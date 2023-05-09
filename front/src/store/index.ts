@@ -9,16 +9,18 @@ import guestSocketReducer from "./webSocket";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: [ "userId","nickname","image_url","isAuthenticated","connected"],
+  whitelist: [ "userId","nickname","image_url","isAuthenticated","connected", "hostId", "quizList", "templateId"],
 };
 
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
 const persistedGuestReducer = persistReducer(persistConfig, guestReducer);
+const persistedQuizReducer = persistReducer(persistConfig, quizReducer);
+
 
 const store = configureStore({
   reducer: {
-    quiz: quizReducer,
+    quiz: persistedQuizReducer,
     auth: persistedReducer,
     guest: persistedGuestReducer,
     socket: guestSocketReducer,

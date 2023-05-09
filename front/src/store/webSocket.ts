@@ -81,7 +81,7 @@ const socketSlice = createSlice({
       if (client) {
         client.publish({
           destination: "/app/enter",
-          body: JSON.stringify({ sender: actions.payload.name, img: actions.payload.img, type: "enter" }),
+          body: JSON.stringify({ sender: actions.payload.name, img: actions.payload.img, type: "enter", roomId:"8345119" }),
         });
         console.log(`publish : send name - ${actions.payload.name} / send img - ${actions.payload.img}`);
       }

@@ -28,7 +28,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl) {
         dispatch(quizAtions.contentsUpdate({index:num, content: content}))
       }
-    }, 5000);
+    }, 2000);
     return () => clearInterval(intervalId);
   }, [quiz]);
 

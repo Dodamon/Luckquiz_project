@@ -1,0 +1,150 @@
+.close {
+    display: none;
+    animation: modal-close 0.3s;
+}
+
+.modal {
+    z-index: 10;
+    width: 90%;
+    height: 80%;
+    position: absolute;
+    animation: modal-show 0.3s;
+    /* background-color: rgba(0, 0, 0, 0.6); */
+}
+
+.modal>section {
+    width: 30%;
+    height: 40%;
+    margin-top: 15%;
+    margin-left: 35%;
+    border-radius: 0.5rem;
+    background: #f2f2f2;
+}
+
+.modal>section>header {
+    width: 100%;
+    height: 19%;
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    background-color: var(--point-color);
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border-bottom: 1px solid #D3D3D3;
+    color: var( --white-color);
+}
+
+.modal>section>header>div {
+    width: 80%;
+    padding-left: 5%;
+    line-height: 74.16px;
+}
+
+.modal>section>header>button {
+    width: 20%;
+    border: 0px;
+    transition: 0.3s;
+    line-height: 74.16px;
+    background-color: #D3D3D3;
+    border-top-right-radius: 0.5rem;
+}
+
+.modal>section>header>button:hover {
+    cursor: pointer;
+    background-color: #838282;
+}
+
+.modal>section>main {
+    height: 60%;
+    width: 100%;
+    border-bottom: 1px solid #D3D3D3;
+}
+
+.modal>section>main>div {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    text-align: center;
+}
+
+.modal>section>main>div>div {
+    width: 30%;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10%;
+}
+
+.modal>section>main>div>input {
+    width: 60%;
+    height: 20%;
+    border: 0px;
+    margin-top: 7%;
+    padding-left: 15px;
+    border-radius: 0.5rem;
+    transform: translateY(50%);
+}
+
+.modal>section>main>div>select {
+    width: 40%;
+    height: 20%;
+    border: 0px;
+    margin-top: 7%;
+    border-radius: 0.5rem;
+    transform: translateY(60%);
+}
+
+.modal>section>footer {
+    height: 20%;
+    padding-right: 5%;
+    text-align: right;
+    line-height: 74.95px;
+}
+
+.btn-left {
+    border: 0px;
+    width: 70px;
+    height: 40px;
+    font-size: 12px;
+    transition: 0.3s;
+    font-weight: bold;
+    background-color: #D3D3D3;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.btn-left:hover,
+.btn-right:hover {
+    cursor: pointer;
+    background-color: #838282;
+}
+
+.btn-right {
+    border: 0px;
+    width: 70px;
+    height: 40px;
+    font-size: 12px;
+    transition: 0.3s;
+    font-weight: bold;
+    background-color: #D3D3D3;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+@keyframes modal-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-close {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

@@ -4,6 +4,8 @@ import { Icon } from "@iconify/react";
 import HomeListCard from "components/host/home/HomeListCard";
 import SubmitChart from "components/host/quiz/SubmitChart";
 import Podium from "components/common/Podium";
+import { useState } from "react";
+import Modal from "components/host/quiz/Modal";
 
 export interface Quiz {
   id: number;
@@ -13,6 +15,7 @@ export interface Quiz {
 
 const Quiz = () => {
   // const getMyQuizList = () => {}
+  const [isModal, setIsModal] = useState(false);
   const myQuizList: Quiz[] = [
     {
       id: 0,
@@ -33,9 +36,10 @@ const Quiz = () => {
         {myQuizList.map((quiz, index) => (
           <HomeListCard key={index} menu={0} quiz={quiz} />
         ))}
-        <Link to={"/quiz/create"}>
-          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />
-        </Link>
+        <Modal isModal={isModal} setIsModal={setIsModal} />
+        {/* <Link to={"/quiz/create"}> */}
+          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={()=>setIsModal(true)} />
+        {/* </Link> */}
       </div>
     </div>
   );

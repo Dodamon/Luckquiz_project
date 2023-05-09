@@ -24,12 +24,11 @@ const QuizOxTemplate = ({ num }: pageNum) => {
 
     useEffect(() => {
         const intervalId = setInterval(() => {
-
             const content = quiz;
-            if (content.answer || content.question) {
+            if (content.answer || content.question || content.quizUrl) {
                 dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
             }
-        }, 5000);
+        }, 2000);
         return () => clearInterval(intervalId);
     }, [quiz, num, dispatch]);
 
