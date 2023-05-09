@@ -49,7 +49,7 @@ const ReportBasic = () => {
       <div className={styles.title}>{reportBasic.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
       <div className={styles.reportContent} style={{ backgroundColor: "white" }}>
-        <ul>
+        <ul className={styles.reportContentList}>
           <li>
             <Icon icon="iconoir:user" className={styles.iconStyle} />
             <div className={styles.textStyle}>참여자 수</div>: {reportBasic.parti} 명

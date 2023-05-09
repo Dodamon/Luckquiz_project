@@ -3,14 +3,15 @@ import styles from "./ShowPin.module.css";
 import { useParams } from "react-router";
 import qr_sample from "assets/images/qr_sample.png";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { socketActions } from "store/webSocket";
+import { subscribeThunk } from "store/webSocket";
+import { useAppDispatch } from "hooks/useAppDispatch";
 
 const ShowPin = () => {
-  const dispatch = useDispatch();
   const hostInfo = useSelector((state: RootState) => state.auth)
   const client = useSelector((state: RootState) => state.socket.client);
+  const appDispatch = useAppDispatch();
 
   useEffect(() => {
     if (!client.connected) {
@@ -19,7 +20,7 @@ const ShowPin = () => {
         img: hostInfo.image_url,
         subscribeURL: 123,
       };
-      dispatch(socketActions.subscribe(socketProps));
+      appDispatch(subscribeThunk(socketProps));
     }
   },[]);
 

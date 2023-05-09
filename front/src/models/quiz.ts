@@ -1,6 +1,6 @@
-export interface QuizItem {
+export interface getQuizItem {
     id: number,
-    quizType: string,
+    type: string,
     quiz: string,
     quizUrl: string,
     answer: string,
@@ -8,15 +8,38 @@ export interface QuizItem {
     two: string,
     three: string,
     four: string,
+    question: string,
+    answerList: string[],
+    game: string,
+    timer: number,
+}
+
+export interface setQuizItem {
+
+    type: string,
+    quiz: string,
+    quizUrl: string,
+    answer: string,
+    one: string,
+    two: string,
+    three: string,
+    four: string,
+    question: string,
     answerList: string[],
     game: string,
     timer: number,
 }
 
 
-export interface QuizSet {
-    id: number,
+export interface getQuizSet {
+
     name: string,
     hostId: number,
-    quizList: QuizItem[];
+    quizList: getQuizItem[];
+}
+
+export interface setQuizSet {
+    hostId:string,
+    templateId: number,
+    quizList: setQuizItem[];
 }

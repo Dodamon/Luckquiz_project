@@ -8,10 +8,9 @@ import HomeMain from "pages/host/home/HomeMain";
 import Quiz from "pages/host/home/quiz/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
-import Login from "pages/host/login/Login";
-import Create from "pages/host/quiz/Create";
+import Login from "components/login/Login";
+import QuizCreatePage from "pages/host/quiz/QuizCreatePage";
 import Edit from "pages/host/quiz/Edit";
-import EnterPin from "pages/guest/quiz/EnterPin";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
@@ -20,9 +19,13 @@ import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
 import ReportBasic from "pages/host/home/report/ReportBasic";
 import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
-import SocialRedirect from "pages/host/login/SocialRedirect";
+import SocialRedirect from "components/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
+
+import BalloonGame from "components/game/balloon/BalloonGame";
+import WakeUpGame from "components/game/wakeup/WakeUpGame";
+import MainLanding from "pages/common/MainLanding";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +34,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Login />,
+        element: <MainLanding />,
       },
       {
         path: "home",
@@ -67,7 +70,7 @@ const router = createBrowserRouter([
       },
       {
         path: "quiz/create",
-        element: <Create />,
+        element: <QuizCreatePage/>,
       },
       {
         path: "quiz/:quiz_id/edit",
@@ -101,7 +104,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <EnterPin />,
+            element: <></>,
           },
           {
             path: "nickname",
@@ -120,14 +123,17 @@ const router = createBrowserRouter([
             element: <></>,
           },
           {
-            path: "quiz/emotion",
-            element: <EmotionGame/>,
+            path: "quiz/balloon",
+            element: <BalloonGame/>,
           },
-
+          {
+            path: "quiz/balloon",
+            element: <BalloonGame/>,
+          },
           {
             // 지워야 됨
-            path: "quiz/balloon",
-            element: <PlayBalloonGame/>,
+            path: "quiz/egg",
+            element: <WakeUpGame/>,
           },
           {
             // 지워야 됨

@@ -20,19 +20,29 @@ const EnterPin: React.FC = () => {
       alert("핀 번호를 입력하세요.");
       inputRef.current?.focus();
       return;
+    } else if (enteredPin.length !== 7) {
+      alert("올바른 핀 번호를 입력하세요");
+      inputRef.current?.focus();
+      return;
     }
+    dispatch(socketActions.updatePinNum(enteredPin));
+
     // else if (enteredPin !== "들어가야 할 핀번호") { alert("올바른 핀 번호를 입력하세요.") inputRef.current?.focus(); return}
     if (!client.connected) dispatch(socketActions.connect());
     navigate("/guest/nickname");
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerWrapper}>
       <img src={logo} alt="" className={styles.logo} />
-      <form onSubmit={formSubmitHandler} className={styles.formBox}>
-        <input type="text" ref={inputRef} className={styles.inputBox} placeholder="핀 번호를 입력하세요." />
-        <button className={styles.enterBtn}>참여하기</button>
-      </form>
+      <div className={styles.container}>
+        <form onSubmit={formSubmitHandler} className={styles.formBox}>
+          <div className={styles.enterTxt}>퀴즈 참여하러 가기</div>
+          <hr className={styles.border}/>
+          <input type="text" ref={inputRef} className={styles.inputBox} placeholder="핀 번호를 입력하세요." />
+          <button className={styles.enterBtn}>참여하기</button>
+        </form>
+      </div>
     </div>
   );
 };

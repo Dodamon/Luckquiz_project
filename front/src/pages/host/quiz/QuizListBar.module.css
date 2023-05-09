@@ -1,0 +1,95 @@
+/* 누적 퀴즈 리스트 */
+.quiz_list {
+    width: 100%;
+    /* height: 100%; */
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    list-style: none;
+   
+    /* background-color: red; */
+}
+
+.quiz_item {
+    margin-bottom: 20px;
+    /* display: block; */
+
+}
+
+
+.quiz_title {
+    margin-left: 10px;
+    background-color: var( --button-two);
+    color: var(--white-color);
+    width: 65px;
+    height: 21px;
+    font-size: 16px;
+    text-align: center;
+    border-top-left-radius: 5px;
+}
+.quiz_sub{
+    display: flex;
+}
+.quiz_delete{
+    background-color: var( --select-one);
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    color: var(--white-color);
+    border-top-right-radius: 5px;
+}
+
+.quiz_content {
+    /* width: 305px; */
+    width: 225px;
+    /* height: 210px; */
+    height: 145px;
+    border-radius: 10px;
+    background-color: var(--wrong-answer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.quiz_content>img {
+    width: 95%;
+    height: 95%;
+    border-radius: 10px;
+}
+
+
+
+.quiz_content:hover{
+    /* background-color: var(--select-four); */
+    background-color: skyblue; 
+}
+
+
+.quiz_add{
+   width: 305px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+  
+}
+
+.quiz_add>button{
+    display: block;
+    border-style: none;
+    width: 120px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 15px;
+    color: var(--white-color);
+    font-size: 18px;
+}
+
+.game_add_btn{
+    background-color: var(--button-one);
+}
+.quiz_add_btn{
+    background-color: var( --button-two);
+}
