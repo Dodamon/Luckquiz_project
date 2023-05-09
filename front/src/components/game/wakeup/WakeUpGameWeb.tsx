@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import egg from "assets/images/balloongame.png";
 import brokenegg from "assets/images/luckqui.png";
 import egg_top from "assets/images/egg_top.png";
@@ -18,7 +18,6 @@ const WakeUpGameWeb = (props: Props) => {
   const [isShaking, setIsShaking] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
   const [showluckqui, setShowLuckqui] = useState(false);
-  const eggRef = useRef<HTMLImageElement>(null);
 
   const handleShake = (event: KeyboardEvent) => {
     if (event.code === "Space" && !isBroken) {
@@ -93,6 +92,7 @@ const WakeUpGameWeb = (props: Props) => {
         <div className={styles.eggContainer}>
           <div className={isShaking ? styles.shakingEgg : styles.egg}></div>
           <div className={isShaking ? styles.shakingEggShadow : styles.eggShadow}></div>
+          <p>{shakeCount}번</p>
         </div>
       )}
     </div>
