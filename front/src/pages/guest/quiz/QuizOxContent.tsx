@@ -26,7 +26,7 @@ const QuizOxContent= ({ content }: QuizOxContentProps)  => {
             </div>
 
             <div className={styles.content_images}>
-                <img src={content.quizUrl} alt='좋아' />
+                <img src={"https://image.hmall.com/static/0/0/32/88/2088320002_1.jpg?RS=600x600&AR=0"} alt='좋아' />
             </div>
 
             <div className={styles.content_answerbox}>
