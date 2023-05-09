@@ -7,12 +7,15 @@ interface Props {
   height?: string;
   color?: string;
   fontSize?: string;
+  callback?: Function
 }
 
 const ButtonWithLogo = (props: Props) => {
-  const { name, height, color, fontSize } = props;
+  const { name, height, color, fontSize, callback } = props;
   return (
-    <div className={styles.btnBox} style={{ height: height }}>
+    <div className={styles.btnBox} style={{ height: height }} onClick={
+      () => {callback}
+    }>
       <div className={styles.logoBox}></div>
       <div className={styles.nameBox} style={{ backgroundColor: color }}>
         <div className={styles.name} style={{ fontSize: fontSize }}>
