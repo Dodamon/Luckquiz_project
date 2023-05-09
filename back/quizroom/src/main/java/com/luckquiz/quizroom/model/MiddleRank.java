@@ -2,9 +2,9 @@ package com.luckquiz.quizroom.model;
 
 import lombok.Getter;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 
 @Getter
-public class ShutDownRequest {
+public class MiddleRank {
     private Integer roomId;
 }
