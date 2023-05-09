@@ -8,13 +8,18 @@
     align-items: center;
     /* justify-content: ; */
     /* justify-content: space-around; */
+    margin-top: 2%;
+}
+ul{
+    padding-left: 0px;
 }
 
 .emotion_intro{
     display: flex;
     background-color: white;
+    min-width: 940px;
     width: 100%;
-    min-width: 1160px;
+    /* min-width: 500px; */
     height: 300px;
     justify-content: space-between;
     border-radius: 20px;
@@ -34,13 +39,13 @@
     min-width: 250px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    background-color: red;
+    /* background-color: red; */
 }
 
 .intro_explain{
     /* background-color: blue; */
     width: 100%;
-    
+    /* word-break: keep-all;  */
     padding: 20px;
     font-size: 38px;
     display: flex;
@@ -51,11 +56,13 @@
 
 .intro_comment{
     width: 100%;
-    min-width: 900px;
+    word-break: keep-all;
+    /* min-width: 900px; */
     height: 100%;
+    font-size: 2rem;
     /* background-color: red; */
     text-align: center;
-    word-break: keep-all;
+    /* word-break: keep-all; */
 }
 
 .emotion_select{
