@@ -2,7 +2,11 @@ import React from "react";
 import styles from "./LoadingSpinner.module.css";
 import { ColorRing } from "react-loader-spinner";
 
-const LoadingSpinner: React.FC = () => {
+interface TextProps {
+  text: string
+};
+
+const LoadingSpinner: React.FC<TextProps> = ({ text }) => {
   return (
     <div className={styles.loadingSpinnerContainer}>
       <ColorRing
@@ -15,7 +19,7 @@ const LoadingSpinner: React.FC = () => {
         colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
       />
       <div className={styles.waitTxt}>
-        잠시만 기다려 주세요
+        { text }
       </div>
     </div>
   );

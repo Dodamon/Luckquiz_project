@@ -21,8 +21,10 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { socketActions } from "store/webSocket";
+import { socketActions, subscribeThunk } from "store/webSocket";
 import { Client } from "@stomp/stompjs";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { GuestType } from "models/guest";
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -49,7 +51,8 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  // const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const appDispatch = useAppDispatch();
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -72,17 +75,19 @@ const ProfileNickname: React.FC = () => {
     }
     nicknameRef.current?.blur();
     dispatch(guestActions.updateGuestNickname(enteredTxt));
-    
+
     // websocket subscribe, publish
     const socketProps = {
       name: enteredTxt,
-      img: imgIdx, 
-      roomId: 123
+      img: imgIdx,
+      subscribeURL: 8963127,
+      // subscribeURL: pinNum,
     };
-    dispatch(socketActions.subscribe(socketProps));
+    // dispatch(socketActions.subscribe(socketProps));
+    appDispatch(subscribeThunk(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 
-    navigate('/guest/quiz/lobby');
+    navigate("/guest/quiz/lobby");
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {

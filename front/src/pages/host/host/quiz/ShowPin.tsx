@@ -3,15 +3,19 @@ import styles from "./ShowPin.module.css";
 import { useParams } from "react-router";
 import qr_sample from "assets/images/qr_sample.png";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { socketActions } from "store/webSocket";
+import { socketActions, subscribeThunk } from "store/webSocket";
+import { useAppDispatch } from "hooks/useAppDispatch";
+import { useDispatch } from "react-redux";
 
 const ShowPin = () => {
   const { quiz_id } = useParams();
   const dispatch = useDispatch();
-  const hostInfo = useSelector((state: RootState) => state.auth);
   const clientState = useSelector((state: RootState) => state.socket.client);
+  const hostInfo = useSelector((state: RootState) => state.auth)
+  const appDispatch = useAppDispatch();
+  const subscribeURL = quiz_id?
 
   useEffect(() => {
     console.log(clientState?.connected)
@@ -19,11 +23,9 @@ const ShowPin = () => {
       const socketProps = {
         name: hostInfo.nickname,
         img: hostInfo.image_url,
-        roomId: quiz_id
+        subscribeURL: subscribeURL * 1
       };
-    //   setTimeout(() => {
-        dispatch(socketActions.subscribe(socketProps));
-    //   }, 1000);
+      appDispatch(subscribeThunk(socketProps));
     }
   }, []);
 

@@ -16,7 +16,7 @@ const ReadyGame: React.FC = () => {
         <ReadyWakeupGame/>
       </div>
       <div>
-        <LoadingSpinner/>
+        <LoadingSpinner text="잠시만 기다려 주세요"/>
       </div>
     </div>
   );

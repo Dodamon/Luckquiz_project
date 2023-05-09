@@ -10,10 +10,10 @@ interface Props {
 const QuizGameTitle = (props: Props) => {
   const { title } = props
   return (
-    <>
+    <div className={styles.titleContainer}>
       <img src={logoCat} alt="" className={styles.logoCatImg} />
       <div className={styles.gameTitle}>{title}</div>
-    </>
+    </div>
   );
 };
 

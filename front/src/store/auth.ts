@@ -8,6 +8,8 @@ interface AuthState {
     nickname: string;
     image_url: string;
     connected: boolean;
+    choiceIndex: number;
+    // quizType: string;
 }
 
 
@@ -18,6 +20,8 @@ const initialAuth: AuthState ={
     nickname: "",
     image_url:"",
     connected: false,
+    choiceIndex: 0,
+    // quizType: ""
 }
 
 // Redux Toolkit에서 제공하는 함수 중 하나
@@ -42,6 +46,13 @@ reducers:{
         state.userId = action.payload.userId;
         state.image_url = action.payload.image_url;
     }
+    ,
+    selectIndex:(state, action)=>{
+        state.choiceIndex=action.payload;
+    },
+    // selectQuizType:(state, action)=>{
+    //     state.quizType=action.payload;
+    // },
 }
 })
 

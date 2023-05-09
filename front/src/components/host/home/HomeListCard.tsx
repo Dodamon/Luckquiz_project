@@ -89,7 +89,47 @@ const HomeListCard = (props: Props) => {
       //     navigate(`/host/quiz/${data?.roomId}`);
       //   }
     }
-  }, [data]);
+  });
+  // const connectSocket = () => {
+  //   console.log(data)
+  //   console.log('then')
+  //   if (data) {
+  //     if (!client.connected) {
+  //       dispatch(socketActions.connect());
+  //       navigate(`/host/quiz/${data?.roomId}`);
+
+  //       // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+  //       //   if (data && client.connected) {
+  //       //     navigate(`/host/quiz/${data?.roomId}`);
+  //       //   }
+  //       // }
+  //     }
+  //   }
+  // };
+
+  // const startQuiz = () => {
+  //   // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
+  //   sendHostRequest({
+  //     url: `/api/quizroom/create`,
+  //     method: "POST",
+  //     data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
+  //   }).then(connectSocket);
+  // };
+
+  // useEffect(() => {
+  //   if (data) {
+  //     if (!client.connected) {
+  //       dispatch(socketActions.connect());
+  //       navigate(`/host/quiz/${data?.roomId}`);
+
+  //       // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+  //       //   if (data && client.connected) {
+  //       //     navigate(`/host/quiz/${data?.roomId}`);
+  //       //   }
+  //       // }
+  //     }
+  //   }
+  // }, [data]);
 
   // 정상 connected시, 퀴즈방으로 이동
   useEffect(() => {
