@@ -1,33 +1,21 @@
 import logo from "assets/images/logo.png";
 import styles from "./ShowPin.module.css";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import qr_sample from "assets/images/qr_sample.png";
-
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { useEffect } from "react";
+import LobbyComp from "components/common/lobby/LobbyComp";
 
 const ShowPin = () => {
   const { quiz_id } = useParams();
-  // const dispatch = useDispatch();
-  // const hostInfo = useSelector((state: RootState) => state.auth);
-  // const clientState = useSelector((state: RootState) => state.socket.client);
-
-  // useEffect(() => {
-  //   console.log(clientState?.connected)
-  //   if (clientState?.connected) {
-  //     const socketProps = {
-  //       name: hostInfo.nickname,
-  //       img: hostInfo.image_url,
-  //       subscribeURL: quiz_id,
-  //     };
-  //   //   setTimeout(() => {
-  //       dispatch(socketActions.subscribe(socketProps));
-  //   //   }, 1000);
-  //   }
-  // }, []);
-
-  // useEffect(() =>{
-  //   console.log('sendEnter')
-  //   dispatch(socketActions.sendEnterMessage({name : hostInfo.nickname, img : hostInfo.image_url}))
-  // },[clientState])
+  const guestList = useSelector((state: RootState) => state.socket.guestList);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (guestList.length >= 2) {
+      navigate(`/host/quiz/${quiz_id}/lobby`);
+    }
+  }, guestList);
 
   return (
     <div className={styles.container}>

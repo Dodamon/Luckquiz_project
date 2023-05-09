@@ -30,8 +30,6 @@ const SideMenuTab = () => {
           레포트
         </div>
       </Link>
-
-      
     </div>
   );
 };

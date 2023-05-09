@@ -23,9 +23,8 @@
   width: fit-content;
   display: flex;
   align-items: center;
-
   border-radius: 0px 10px 10px 0px;
-  background-color: var(-Button-two);
+  background-color: var(--button-two);
   background-size: contain;
   background-position: center;
   box-shadow: 4px 4px #00000015;

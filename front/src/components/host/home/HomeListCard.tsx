@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { connectAndSubscribe, socketActions } from "store/webSocket";
 import { client } from "store/webSocket";
+import { useEffect } from "react";
 
 interface Props {
   menu: number;
@@ -22,37 +23,26 @@ const HomeListCard = (props: Props) => {
   const dispatch = useDispatch();
   const hostInfo = useSelector((state: RootState) => state.auth);
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const clientState = useSelector((state: RootState) => state.socket.client);
   const { data, status, sendHostRequest } = useHostAxios();
 
-  const connectSocket = () => {
-    console.log(data)
-    console.log('then')
+  useEffect(() => {
     if (data) {
-      if (!client?.connected) {
-        // 정상 connectedAndSubscribe시, 퀴즈방으로 이동
-        connectAndSubscribe(data!.roomId, dispatch);
-        navigate(`/host/quiz/${data?.roomId}`);
-
-        // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
-        //   if (data && client.connected) {
-        //     navigate(`/host/quiz/${data?.roomId}`);
-        //   }
-        // }
-      }
+      // 정상 connectedAndSubscribe시, 퀴즈방으로 이동
+      connectAndSubscribe(data!.roomId, dispatch);
+      navigate(`/host/quiz/${data?.roomId}`);
     }
-  };
+  }, [data]);
 
   // 퀴즈시작 버튼 클릭시, pin번호 받아오기
-  const startQuiz = () => {
-    // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
-    sendHostRequest({
-      url: `/api/quizroom/create`,
-      method: "POST",
-      data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
-    }).then(connectSocket);
+  const startQuiz = (title : string) => {
+    if (window.confirm(`⭐${title}⭐ 를 지금 바로 진행하시겠습니까?`)) {
+      sendHostRequest({
+        url: `/api/quizroom/create`,
+        method: "POST",
+        data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
+      });
+    }
   };
-
 
   return (
     <div className={styles.quizBox}>
@@ -96,7 +86,7 @@ const HomeListCard = (props: Props) => {
                 className={styles.btn}
                 style={{ backgroundColor: "var(--select-four)" }}
                 onClick={() => {
-                  startQuiz();
+                  props.quiz?.title && startQuiz(props.quiz?.title);
                 }}
               />
             </button>

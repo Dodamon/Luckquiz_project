@@ -26,6 +26,7 @@ import EmotionGame from "components/game/emotion/EmotionGame";
 import BalloonGame from "components/game/balloon/BalloonGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
+import HostLobby from "pages/host/host/quiz/HostLobby";
 
 const router = createBrowserRouter([
   {
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
           },
           {
             path: "lobby",
-            element: <></>,
+            element: <HostLobby/>,
           },
           {
             path: "play",
