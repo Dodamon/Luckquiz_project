@@ -16,7 +16,7 @@ import java.util.List;
 public class QGame {
     private int id;
     private QuizType type; // game 인지 quiz 인지
-    private QuizType quiz; // quiz 일때 3종류 중 뭔지
+    private String quiz; // quiz 일때 3종류 중 뭔지
     private String question;
     private String quizUrl;
     private String answer;
@@ -32,7 +32,7 @@ public class QGame {
         this.type = type;
     }
 
-    public void setQuiz(QuizType quiz) {
+    public void setQuiz(String quiz) {
         this.quiz = quiz;
     }
 
