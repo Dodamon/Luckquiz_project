@@ -41,7 +41,7 @@ public class MessageController {
         Grade grade = new Grade();
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
-        System.out.println("entered:  "+message.getType()+", sender:    "+message.getSender());
+        System.out.println("entered:  "+message.getSender());
 
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
@@ -134,7 +134,7 @@ public class MessageController {
             UserR u = new UserR();
             u.setImg(a.getPlayerImg());
             u.setSender(a.getPlayerName());
-            u.setRank(a.getRank_now());
+            u.setRank(a.getRankNow());
             userLList.add(u);
         }
         Collections.sort(userLList);

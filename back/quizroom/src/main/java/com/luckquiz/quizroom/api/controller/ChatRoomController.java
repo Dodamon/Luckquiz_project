@@ -1,5 +1,6 @@
 package com.luckquiz.quizroom.api.controller;
 
+import com.luckquiz.quizroom.api.request.QuizRoomCreateRequest;
 import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.service.QuizService;
@@ -31,7 +32,7 @@ public class ChatRoomController { // for controller update
     // 채팅방 생성
     @PostMapping("/create")
     @ResponseBody
-    public QuizRoom createRoom(@RequestBody QuizRoomEnterRequest qsr) {
+    public QuizRoom createRoom(@RequestBody QuizRoomCreateRequest qsr) {
         return quizService.createRoom(qsr);
     }
 

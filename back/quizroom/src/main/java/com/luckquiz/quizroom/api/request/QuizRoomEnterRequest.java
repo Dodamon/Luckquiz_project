@@ -14,5 +14,4 @@ import java.util.UUID;
 public class QuizRoomEnterRequest {
     private UUID hostId;
     private int templateId;
-    private int roomId;
 }

@@ -10,24 +10,25 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 public class Grade {
     private String playerName;
     private int playerImg;
-    private int score_get = 0;
-    private int rank_pre = 0;
-    private int rank_now = 0;
+    private int scoreGet = 0;
+    private int rankPre = 0;
+    private int rankNow = 0;
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public void setScore_get(int score_get) {
-        this.score_get = score_get;
+    public void setScore_get(int scoreGet) {
+        this.scoreGet = scoreGet;
     }
 
-    public void setRank_pre(int rank_pre) {
-        this.rank_pre = rank_pre;
+    public void setRank_pre(int rankPre) {
+        this.rankPre = rankPre;
     }
 
-    public void setRank_now(int rank_now) {
-        this.rank_now = rank_now;
+
+    public void setRank_now(int rankNow) {
+        this.rankNow = rankNow;
     }
 
     public void setPlayerImg(int playerImg) {

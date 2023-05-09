@@ -28,7 +28,7 @@ public class ToGradeProducer {
 
     public void clientSubmit(String request){
         KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
-        ProducerRecord record = new ProducerRecord<String,String>("sign_to_grade","grade",request);
+        ProducerRecord record = new ProducerRecord<String,String>("grade","grade",request);
         producer.send(record);
         producer.close();
     }
