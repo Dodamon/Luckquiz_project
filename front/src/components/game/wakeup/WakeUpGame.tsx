@@ -99,7 +99,7 @@ const WakeUpGame = (props: Props) => {
         {isBroken ? (
           showluckqui ? (
             <>
-              <div className={styles.eggContainer} style={{marginTop:"100px",}}>
+              <div className={styles.eggContainer} style={{ marginTop: "100px" }}>
                 <div className={styles.eggImg}>
                   <img src={egg_top} alt="" className={styles.eggTop} />
                   <img src={luckqui} alt="" className={styles.luckqui} />
