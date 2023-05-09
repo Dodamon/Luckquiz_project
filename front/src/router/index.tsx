@@ -26,7 +26,6 @@ import EmotionGame from "components/game/emotion/EmotionGame";
 import BalloonGame from "components/game/balloon/BalloonGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
-import BalloonGame from "components/game/balloon/BalloonGame";
 
 const router = createBrowserRouter([
   {

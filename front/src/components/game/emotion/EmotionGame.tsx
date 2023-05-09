@@ -6,16 +6,6 @@ import styles from "./EmotionGame.module.css";
 import { client, socketActions } from "store/webSocket";
 import { RootState } from "store";
 
-interface WebcamProps {
-  audio: boolean;
-  style: React.CSSProperties;
-  screenshotFormat: string;
-  videoConstraints: {
-    facingMode: string;
-  };
-  onUserMediaError: () => void;
-}
-
 const EmotionGame: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const [isFacingModeUser, setIsFacingModeUser] = useState<boolean>(true);
