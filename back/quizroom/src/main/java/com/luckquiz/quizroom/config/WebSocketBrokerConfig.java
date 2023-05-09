@@ -1,12 +1,14 @@
 package com.luckquiz.quizroom.config;
 
 import com.luckquiz.quizroom.model.QuizMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
@@ -33,6 +35,20 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         // 메시지 핸들러로 라우팅되는 prefix
         // 클라이언트가 메시지를 보낼 때 경로 맨앞에 "/app"이 붙어있으면 Broker로 보내짐.
 //        registry.setUserDestinationPrefix("/user");
+    }
+
+//    @Override
+//    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+//        registry.setMessageSizeLimit(1024*3000);
+//        WebSocketMessageBrokerConfigurer.super.configureWebSocketTransport(registry);
+//    }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        // 내가 추가함
+        registration.setMessageSizeLimit(3000*1024);
+        registration.setSendBufferSizeLimit(5*3000*1024);
+        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
 
 }
