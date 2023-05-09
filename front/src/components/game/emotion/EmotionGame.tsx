@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
-import AnalyzeEmotion from "./AnalyzeEmotion";
 import { socketActions } from "store/webSocket";
 import { RootState } from "store";
 
@@ -132,7 +131,7 @@ const EmotionGame: React.FC = () => {
           </button>
         </>
       )}
-      <AnalyzeEmotion />
+
     </div>
   );
 };
