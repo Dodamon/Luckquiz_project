@@ -58,14 +58,13 @@ public class MessageController {
 
         String allList = stringStringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
-        List<EnterUser> before = new ArrayList();
+        List<EnterUser> result = new ArrayList();
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            before.add(a);
+            result.add(a);
         }
 
-        List<EnterUser> result = new ArrayList<>();
-        LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(before);
+        LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(result);
         result.clear();
         result.addAll(li);
 
