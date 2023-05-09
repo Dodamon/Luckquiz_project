@@ -20,31 +20,6 @@
         height: 130px;
         object-fit: fill;
     }
-    
-    .nameContainer {
-        margin-top: 3%;
-        width: 80%;
-        height: 70%;
-        background-color: rgba(255, 255, 255, 0.63);
-        border-radius: 20px;
-        padding: 15px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: min-content;
-        overflow-y: scroll;
-    }
-    .nameContainer::-webkit-scrollbar {
-        width: 5px;
-    }
-    .nameContainer::-webkit-scrollbar-thumb {
-        height: 10%; /* 스크롤바의 길이 */
-        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
-        border-radius: 10px;
-    }
-    .nameContainer::-webkit-scrollbar-track {
-        margin: 12px 0 12px 0;
-        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
-    }
 }
 
 @media screen and (min-width: 767px) and (max-width: 1024px) {
@@ -69,31 +44,6 @@
         height: 130px;
         object-fit: fill;
         
-    }
-    
-    .nameContainer {
-        margin-top: 3%;
-        width: 80%;
-        height: 70%;
-        background-color: rgba(255, 255, 255, 0.63);
-        border-radius: 20px;
-        padding: 15px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: min-content;
-        overflow-y: scroll;
-    }
-    .nameContainer::-webkit-scrollbar {
-        width: 5px;
-    }
-    .nameContainer::-webkit-scrollbar-thumb {
-        height: 10%; /* 스크롤바의 길이 */
-        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
-        border-radius: 10px;
-    }
-    .nameContainer::-webkit-scrollbar-track {
-        margin: 12px 0 12px 0;
-        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
     }
 }
 
@@ -120,32 +70,6 @@
         object-fit: fill;
         
     }
-    
-    .nameContainer {
-        margin-top: 3%;
-        width: 80%;
-        height: 70%;
-        background-color: rgba(255, 255, 255, 0.63);
-        border-radius: 20px;
-        padding: 15px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: min-content;
-        overflow-y: scroll;
-    }
-    .nameContainer::-webkit-scrollbar {
-        width: 5px;
-    }
-    .nameContainer::-webkit-scrollbar-thumb {
-        height: 10%; /* 스크롤바의 길이 */
-        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
-        border-radius: 10px;
-    }
-    .nameContainer::-webkit-scrollbar-track {
-        margin: 12px 0 12px 0;
-        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
-    }
-    
 }
 
 @media screen and (max-width: 520px) {
@@ -166,35 +90,8 @@
     }
     
     .logo {
-        width: 280px;
-        height: 130px;
+        width: 200px;
+        height: 90px;
         object-fit: fill;
-        
     }
-    
-    .nameContainer {
-        margin-top: 3%;
-        width: 80%;
-        height: 70%;
-        background-color: rgba(255, 255, 255, 0.63);
-        border-radius: 20px;
-        padding: 15px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: min-content;
-        overflow-y: scroll;
-    }
-    .nameContainer::-webkit-scrollbar {
-        width: 5px;
-    }
-    .nameContainer::-webkit-scrollbar-thumb {
-        height: 10%; /* 스크롤바의 길이 */
-        background: rgba(49, 95, 160, 0.538); /* 스크롤바의 색상 */
-        border-radius: 10px;
-    }
-    .nameContainer::-webkit-scrollbar-track {
-        margin: 12px 0 12px 0;
-        background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
-    }
-
 }

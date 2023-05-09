@@ -5,7 +5,7 @@ import logo from "assets/images/logo.png";
 import ProfileNickname from "components/guest/ProfileNickname";
 
 const Nickname:React.FC = () => {
-
+  
   return (
     <>
       <Default>

@@ -21,8 +21,8 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { socketActions } from "store/webSocket";
-import { Client } from "@stomp/stompjs";
+import { client, socketActions } from "store/webSocket";
+import { useAppDispatch } from "hooks/useAppDispatch";
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -47,9 +47,8 @@ const ProfileNickname: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
-  const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  // const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -77,10 +76,12 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 123,
+      // subscribeURL: "8963127",
+      subscribeURL: pinNum,
     };
-    // dispatch(socketActions.subscribe(socketProps));
-    // dispatch(socketActions.sendEnterMessage(socketProps));
+   
+    // appDispatch(subscribeThunk(socketProps));
+    dispatch(socketActions.sendEnterMessage(socketProps));
 
     navigate('/guest/quiz/lobby');
   };
@@ -99,6 +100,11 @@ const ProfileNickname: React.FC = () => {
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
 
+  useEffect(() => {
+    console.log("핀넘버:", pinNum);
+    console.log(client.connected);
+  }, []);
+  
   return (
     <div className={styles.profileNicknameContainer}>
       <div className={styles.imgWrapper}>

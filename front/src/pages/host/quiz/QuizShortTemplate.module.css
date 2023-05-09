@@ -1,6 +1,7 @@
 .content_title{
     width: 90%;
-    margin: 30px;
+    margin-top: 2%;
+    margin-bottom: 3%;
 }
 
 .content_title input{
@@ -13,9 +14,11 @@
 }
 
 .content_images{
+    z-index: 0;
     background-color: var(--white-color);
     width: 400px;
     height: 200px;
+    min-height: 200px;
     border-radius: 20px;
     opacity: 90%;
     display: flex;
@@ -23,14 +26,19 @@
     justify-content: center;
     align-items: center;
     color: var( --placeholder-text);
+    /* margin-bottom: 1%; */
 }
 
 .plus_font{
-    font-size: 48px;
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .plus_comment{
-    font-size: 28px;
+    font-size: 48px;
+    cursor: pointer;
 }
 
 .content_answerbox{
@@ -45,11 +53,11 @@
 
 .content_answer{
     background-color: var(--white-color);
-    height: 90px;
+    height: 65px;
     border-radius: 20px;
     display: flex;
     align-items: center;
-    width: 600px;
+    width: 460px;
     margin-bottom: 20px;
 }
 
@@ -91,7 +99,7 @@
 
 
 .content_add{
-    background-color: var(--white-color);
+    /* background-color: var(--white-color); */
     font-size: 48px;
     display: flex;
     text-align: center;
@@ -103,3 +111,4 @@
 .content_add:hover{
    color: var(--black-color)
 }
+

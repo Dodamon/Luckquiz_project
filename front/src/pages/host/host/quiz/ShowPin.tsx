@@ -2,35 +2,32 @@ import logo from "assets/images/logo.png";
 import styles from "./ShowPin.module.css";
 import { useParams } from "react-router";
 import qr_sample from "assets/images/qr_sample.png";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
-import { socketActions } from "store/webSocket";
+
 
 const ShowPin = () => {
   const { quiz_id } = useParams();
-  const dispatch = useDispatch();
-  const hostInfo = useSelector((state: RootState) => state.auth);
-  const clientState = useSelector((state: RootState) => state.socket.client);
+  // const dispatch = useDispatch();
+  // const hostInfo = useSelector((state: RootState) => state.auth);
+  // const clientState = useSelector((state: RootState) => state.socket.client);
 
-  useEffect(() => {
-    console.log(clientState?.connected)
-    if (clientState?.connected) {
-      const socketProps = {
-        name: hostInfo.nickname,
-        img: hostInfo.image_url,
-        subscribeURL: quiz_id,
-      };
-    //   setTimeout(() => {
-        dispatch(socketActions.subscribe(socketProps));
-    //   }, 1000);
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log(clientState?.connected)
+  //   if (clientState?.connected) {
+  //     const socketProps = {
+  //       name: hostInfo.nickname,
+  //       img: hostInfo.image_url,
+  //       subscribeURL: quiz_id,
+  //     };
+  //   //   setTimeout(() => {
+  //       dispatch(socketActions.subscribe(socketProps));
+  //   //   }, 1000);
+  //   }
+  // }, []);
 
-  useEffect(() =>{
-    console.log('sendEnter')
-    dispatch(socketActions.sendEnterMessage({name : hostInfo.nickname, img : hostInfo.image_url}))
-  },[clientState])
+  // useEffect(() =>{
+  //   console.log('sendEnter')
+  //   dispatch(socketActions.sendEnterMessage({name : hostInfo.nickname, img : hostInfo.image_url}))
+  // },[clientState])
 
   return (
     <div className={styles.container}>
