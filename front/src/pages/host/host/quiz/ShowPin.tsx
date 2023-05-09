@@ -15,7 +15,6 @@ const ShowPin = () => {
   const clientState = useSelector((state: RootState) => state.socket.client);
   const hostInfo = useSelector((state: RootState) => state.auth)
   const appDispatch = useAppDispatch();
-  const subscribeURL = quiz_id?
 
   useEffect(() => {
     console.log(clientState?.connected)
@@ -23,11 +22,11 @@ const ShowPin = () => {
       const socketProps = {
         name: hostInfo.nickname,
         img: hostInfo.image_url,
-        subscribeURL: subscribeURL * 1
+        subscribeURL: quiz_id!==undefined ? parseInt(quiz_id) : 0
       };
       appDispatch(subscribeThunk(socketProps));
     }
-  }, []);
+  }, [])
 
   useEffect(() =>{
     console.log('sendEnter')

@@ -51,7 +51,7 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nickname = useSelector<RootState, string>((state) => state.guest.nickname);
   const nicknameRef = useRef<HTMLInputElement>(null);
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
+  const client = useSelector((state: RootState) => state.socket.client);
   const appDispatch = useAppDispatch();
 
   // 프로필 사진 수정
