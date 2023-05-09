@@ -25,7 +25,7 @@ const WakeUpGameWeb = (props: Props) => {
       event.preventDefault();
       console.log("shaked");
       setIsShaking(true);
-      setShakeCount(shakeCount + 1);
+      setShakeCount((prev) => prev + 1);
     }
     setTimeout(() => {
       setIsShaking(false);

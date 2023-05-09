@@ -25,7 +25,7 @@ const WakeUpGameMobile = (props: Props) => {
 
   const handleShake = (event: any) => {
     console.log(event);
-    let shakeThreshold = 10; // set the shake threshold = 10cm
+    let shakeThreshold = 50; // set the shake threshold = 10cm
     let lastUpdate = 0;
     let x = 0,
       y = 0,
@@ -81,8 +81,8 @@ const WakeUpGameMobile = (props: Props) => {
         // X축 회전 값 (beta)이 흔들림 임계값보다 큰 경우
         if (Math.abs(beta) > shakeThreshold) {
           // shakeCount 값을 1 증가시키고 마지막으로 흔들림을 감지한 시간을 업데이트함
-          console.log('plus')
-          setShakeCount((prev)=> prev + 1);
+          console.log("plus");
+          setShakeCount((prev) => prev + 1);
           lastShakeTimestamp = Date.now();
         }
       }
@@ -90,10 +90,11 @@ const WakeUpGameMobile = (props: Props) => {
   };
   useEffect(() => {
     window.addEventListener("devicemotion", handleShake);
-    window.addEventListener("deviceorientation", handleOrientation);
-    // return () => {
-    //   window.removeEventListener("devicemotion", handleShake);
-    // };
+    // window.addEventListener("deviceorientation", handleOrientation);
+    return () => {
+      window.removeEventListener("devicemotion", handleShake);
+      // window.removeEventListener("deviceorientation", handleOrientation);
+    };
   }, []);
 
   useEffect(() => {
