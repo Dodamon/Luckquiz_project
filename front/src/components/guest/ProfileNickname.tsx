@@ -48,13 +48,7 @@ const ProfileNickname: React.FC = () => {
   const dispatch = useDispatch();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
-<<<<<<<<< Temporary merge branch 1
-  // const client = useSelector<RootState, Client>((state) => state.socket.client);
-=========
-  const client = useSelector<RootState, Client>((state) => state.socket.client);
-  const appDispatch = useAppDispatch();
-  
->>>>>>>>> Temporary merge branch 2
+  const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -82,13 +76,11 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: enteredTxt,
       img: imgIdx, 
-      subscribeURL: 123,
+      // subscribeURL: "8963127",
+      subscribeURL: pinNum,
     };
-    // dispatch(socketActions.subscribe(socketProps));
-<<<<<<<<< Temporary merge branch 1
-    // dispatch(socketActions.sendEnterMessage(socketProps));
-=========
-    appDispatch(subscribeThunk(socketProps));
+   
+    // appDispatch(subscribeThunk(socketProps));
     dispatch(socketActions.sendEnterMessage(socketProps));
 
     navigate("/guest/quiz/lobby");
@@ -107,6 +99,7 @@ const ProfileNickname: React.FC = () => {
     }
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
+
   useEffect(() => {
     console.log("핀넘버:", pinNum);
     console.log(client.connected);

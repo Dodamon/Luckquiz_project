@@ -3,14 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import logo from "assets/images/logo.png";
 import styles from "./EnterPin.module.css";
-<<<<<<< HEAD
 import { connectAndSubscribe, socketActions } from "store/webSocket";
-=======
-import { socketActions } from "store/webSocket";
-import { RootState } from "store";
-import { Client } from "@stomp/stompjs";
-import { WebSocketConnection } from "utils/socket";
->>>>>>> 9f89aa473e981e4dc1a3845692262fa1e0107fdf
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
