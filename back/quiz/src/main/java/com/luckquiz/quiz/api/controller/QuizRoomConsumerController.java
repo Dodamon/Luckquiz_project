@@ -23,6 +23,7 @@ public class QuizRoomConsumerController {
         System.out.println("came here?");
         System.out.println(key);
         if("start".equals(key)){
+            System.out.println("start 로 왔니");
             UUID hostId = UUID.fromString(in.split(" ")[0]);
             int roomId = Integer.parseInt(in.split(" ")[1]);
             int templateId = Integer.parseInt(in.split(" ")[2]);
