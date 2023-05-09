@@ -1,4 +1,4 @@
-package com.luckquiz.grade.db.entity;
+package com.luckquiz.grade.api.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class GradeFinish {
+public class KafkaGradeEndResponse {
 	Integer roomId;
 	Integer count;
 	Integer solvedCount;

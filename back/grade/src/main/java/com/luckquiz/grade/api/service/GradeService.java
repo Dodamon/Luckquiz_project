@@ -1,6 +1,7 @@
 package com.luckquiz.grade.api.service;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.redis.core.HashOperations;
@@ -12,11 +13,17 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
+import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
+import com.luckquiz.grade.api.request.KafkaQuizRollbackRequest;
+import com.luckquiz.grade.api.request.KafkaQuizStartRequest;
+import com.luckquiz.grade.api.response.KafkaGradeEndResponse;
+import com.luckquiz.grade.api.response.KafkaGradeStartResponse;
+import com.luckquiz.grade.api.response.KafkaRollbackFinishResponse;
 import com.luckquiz.grade.api.response.TemplateDetailResponse;
 import com.luckquiz.grade.config.KafkaProducer;
 import com.luckquiz.grade.db.entity.Grade;
-import com.luckquiz.grade.db.entity.GradeFinish;
-import com.luckquiz.grade.db.entity.QuizStart;
+
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,18 +52,22 @@ public class GradeService {
 	}
 
 	public void grade(KafkaGradeRequest gradeRequest){
-		String roomId = gradeRequest.getRoomId();
+		Integer roomId = gradeRequest.getRoomId();
 		String playerName = gradeRequest.getPlayerName();
+		// 총 참여자 수
 		Long count = hashGradeOperations.size(roomId+"p");
-		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId),
+		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
-		String correctAnswer = templateDetailResponse.getQuizList().get(Integer.parseInt(gradeRequest.getQuizNum())-1).getAnswer();
+		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
 		String answer = gradeRequest.getAnswer();
-		if(correctAnswer.equals(answer)){
+	//정답이 맞으며, 퀴즈 번호가 같다면.
+		if(correctAnswer.equals(answer) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
 			//순위에 따른 점수 더해주기
-			Long scoreGet = (long)(1000*(1-valueOperations.get(roomId+"cnt").doubleValue()/count));
+			Integer rank = valueOperations.get(roomId+"cnt");
+			Long scoreGet = (long)(1000*(1-rank.doubleValue()/count));
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
+			userGrade.setRankNow(rank+1);
 			//얻은 점수 기록해두기
 			hashGradeOperations.put(roomId+"p", playerName, userGrade);
 			//맞힌 사람 수 +1
@@ -90,14 +101,15 @@ public class GradeService {
 	// }
 
 	//카프카에서 enter 메시지가 왔을때 실행하는 함수
-	public void enter(KafkaGradeRequest gradeRequest){
-		String roomId = gradeRequest.getRoomId();
+	public void enter(String message){
+		KafkaGradeRequest gradeRequest = gson.fromJson(message,KafkaGradeRequest.class);
+		Integer roomId = gradeRequest.getRoomId();
 		Grade grade = Grade.builder().
 			playerName(gradeRequest.getPlayerName())
 			.rankPre(0)
 			.rankNow(0)
 			.scoreGet(0)
-			.build(); ;
+			.build();
 		Double score = 0d;
 		//해쉬 현재 점수, 순위 정보
 		hashGradeOperations.put(roomId+"p", gradeRequest.getPlayerName(), grade);
@@ -113,25 +125,28 @@ public class GradeService {
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
 	public void rollback(Object message) {
-		QuizStart quizStartMessage = (QuizStart) message;
-		String roomId = quizStartMessage.getRoomId().toString();
+		KafkaQuizRollbackRequest quizRollbackRequest = (KafkaQuizRollbackRequest) message;
+		Integer roomId = quizRollbackRequest.getRoomId();
 
-		Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
-		Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
+		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
+		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
-
+		//랭킹점수 받았던거 다시 줄이기.
 		hashmap.forEach((key, value)->{
 			value.setRankNow(value.getRankPre());
 			zSetOperations.incrementScore(roomId+"rank",value.getPlayerName(),-value.getScoreGet());
 			value.setScoreGet(0);
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
-		kafkaProducer.rollbackFinish(quizStartMessage);
+
+		KafkaRollbackFinishResponse kafkaRollbackFinishResponse = (KafkaRollbackFinishResponse) message;
+		kafkaProducer.rollbackFinish(gson.toJson(kafkaRollbackFinishResponse));
 	}
 
 	//카프카에서 quiz_end 메시지가 올때 실행하는 함수
 	public void quizEnd(Object message) {
-		QuizStart quizStartMessage = (QuizStart) message;
+
+		KafkaQuizEndRequest quizStartMessage = (KafkaQuizEndRequest) message;
 		Integer roomId = quizStartMessage.getRoomId();
 		// Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		//점수 반영
@@ -141,21 +156,25 @@ public class GradeService {
 		//초기화
 		// valueOperations.set(roomId+"cnt",0);
 		//채점끝
-		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId),
+		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
 		Integer quizNum = templateDetailResponse.getQuizNum();
 		Long count = hashGradeOperations.size(roomId+"p");
 		Integer solvedCount = valueOperations.get(roomId+"cnt");
 		//정답률
 		Double percent = solvedCount.doubleValue()/count;
-		GradeFinish gradeFinish = GradeFinish.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue())
+		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue())
 			.build();
-		kafkaProducer.gradeEnd(gradeFinish);
+		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
 	//카프카에서 quiz_start 메시지가 올때 실행하는 함수
 	public void quizStart(Object message) {
-		QuizStart quizStartMessage = (QuizStart) message;
-		String roomId = quizStartMessage.getRoomId().toString();
+		KafkaQuizStartRequest quizStartMessage = (KafkaQuizStartRequest) message;
+		Integer roomId = quizStartMessage.getRoomId();
+		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()), TemplateDetailResponse.class);
+
+		templateDetailResponse.setQuizNum(quizStartMessage.getQuizNum());
+		redisTemplate.opsForValue().set(roomId.toString(), gson.toJson(templateDetailResponse));
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		// 현재 등수 이전 등수로 만들기, 이전 문제에서 얻은점수 썻으니 0으로 만들어주기
 		hashmap.forEach((key, value)->{
@@ -166,7 +185,9 @@ public class GradeService {
 		//정답 맞춘 사람수 0으로 초기화
 		valueOperations.set(roomId+"cnt",0);
 		//채점 시작한다고 신호주기
-		kafkaProducer.gradeStart(quizStartMessage);
+		KafkaGradeStartResponse gradeStartResponse = new KafkaGradeStartResponse();
+		gradeStartResponse.setRoomId(roomId);
+		kafkaProducer.gradeStart(gson.toJson(gradeStartResponse));
 	}
 
 }

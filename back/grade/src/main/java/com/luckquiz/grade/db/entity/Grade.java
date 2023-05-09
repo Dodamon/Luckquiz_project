@@ -18,5 +18,6 @@ public class Grade implements Serializable{
 	private int scoreGet;
 	private int rankPre;
 	private int rankNow;
+	private int playerImg;
 
 }

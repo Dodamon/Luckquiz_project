@@ -8,10 +8,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.luckquiz.grade.api.common.enums.SignToGradeKey;
 import com.luckquiz.grade.api.common.enums.Topic;
-import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.common.enums.SignToQuizKey;
-import com.luckquiz.grade.db.entity.GradeFinish;
-import com.luckquiz.grade.db.entity.QuizStart;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaProducer {
 
-	private final KafkaTemplate<String, Object> kafkaTemplate;
-	private final KafkaTemplate<String, Object> kafkaStringTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-	public void rollbackFinish(QuizStart message) {
-		ListenableFuture<SendResult<String, Object>> future = kafkaStringTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.rollback_finish.toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void rollbackFinish(String message) {
+
+		ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.rollback_finish.toString(), message);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_quiz.toString(), SignToQuizKey.rollback_finish.toString(), message));
 			}
 			@Override
@@ -36,14 +33,14 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
-	public void gradeStart(QuizStart message) {
-		ListenableFuture<SendResult<String, Object >> future = kafkaStringTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.grade_start.toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void gradeStart(String message) {
+		ListenableFuture<SendResult<String, String >> future = kafkaTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.grade_start.toString(), message);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_quiz.toString(), SignToQuizKey.grade_start.toString(), message));
 			}
 			@Override
@@ -51,14 +48,14 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
-	public void gradeEnd(GradeFinish gradeFinish) {
-		ListenableFuture<SendResult<String, Object >> future = kafkaStringTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.grade_end.toString(), gradeFinish);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void gradeEnd(String gradeFinish) {
+		ListenableFuture<SendResult<String, String >> future = kafkaTemplate.send(Topic.sign_to_quiz.toString(), SignToQuizKey.grade_end.toString(), gradeFinish);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_quiz.toString(), SignToQuizKey.grade_end.toString() , gradeFinish));
 			}
 			@Override
@@ -66,14 +63,14 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
-	public void gradeTest(KafkaGradeRequest kafkaGradeRequest) {
-		ListenableFuture<SendResult<String, Object >> future = kafkaTemplate.send(Topic.grade.toString(),"grade", kafkaGradeRequest);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void gradeTest(String kafkaGradeRequest) {
+		ListenableFuture<SendResult<String, String >> future = kafkaTemplate.send(Topic.grade.toString(),"grade", kafkaGradeRequest);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.grade.toString(), "grade" , kafkaGradeRequest));
 			}
 			@Override
@@ -81,16 +78,16 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
 
 	//---------------------------------------------0-테스트
-	public void rollback(QuizStart message) {
-		ListenableFuture<SendResult<String, Object>> future = kafkaStringTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.rollback.toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void rollback(String message) {
+		ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.rollback.toString(), message);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_grade.toString(), SignToGradeKey.rollback.toString() , message));
 			}
 			@Override
@@ -98,14 +95,14 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
-	public void quizStart(QuizStart message) {
-		ListenableFuture<SendResult<String, Object >> future = kafkaStringTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.quiz_start.toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void quizStart(String message) {
+		ListenableFuture<SendResult<String, String >> future = kafkaTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.quiz_start.toString(), message);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_grade.toString(), SignToGradeKey.quiz_start.toString() , message));
 			}
 			@Override
@@ -113,14 +110,14 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
-	public void quizEnd(QuizStart message) {
-		ListenableFuture<SendResult<String, Object >> future = kafkaStringTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.quiz_end.toString(), message);
-		future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+	public void quizEnd(String message) {
+		ListenableFuture<SendResult<String, String >> future = kafkaTemplate.send(Topic.sign_to_grade.toString(), SignToGradeKey.quiz_end.toString(), message);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			@Override
-			public void onSuccess(SendResult<String, Object> result) {
+			public void onSuccess(SendResult<String, String> result) {
 				log.info(String.format("Produced event to topic %s: key = %-10s value = %s", Topic.sign_to_grade.toString(), SignToGradeKey.quiz_end.toString() , message));
 			}
 			@Override
@@ -128,7 +125,7 @@ public class KafkaProducer {
 				ex.printStackTrace();
 			}
 		});
-		kafkaStringTemplate.flush();
+		kafkaTemplate.flush();
 	}
 
 }

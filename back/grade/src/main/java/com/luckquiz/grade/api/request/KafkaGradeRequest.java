@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class KafkaGradeRequest {
-	private String roomId;
+	private Integer roomId;
 	private String playerName;
-	private String quizNum;
+	private Integer quizNum;
 	private String answer;
 }

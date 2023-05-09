@@ -18,4 +18,8 @@ public class TemplateDetailResponse {
 	private UUID hostId;
 	private List<TemplateInfoResponse> quizList;
 	private Integer quizNum;
+
+	public void setQuizNum(Integer quizNum) {
+		this.quizNum = quizNum;
+	}
 }

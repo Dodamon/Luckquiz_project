@@ -1,9 +1,5 @@
 package com.luckquiz.grade.api.controller;
 
-import java.util.HashMap;
-
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.errors.SerializationException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -13,8 +9,10 @@ import com.google.gson.Gson;
 import com.luckquiz.grade.api.common.enums.Topic;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.common.enums.SignToGradeKey;
+import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
+import com.luckquiz.grade.api.request.KafkaQuizRollbackRequest;
+import com.luckquiz.grade.api.request.KafkaQuizStartRequest;
 import com.luckquiz.grade.api.service.GradeService;
-import com.luckquiz.grade.db.entity.QuizStart;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,21 +24,20 @@ public class KafkaConsumerController {
 	private final GradeService gradeService;
 	private final Gson gson;
 
-	@KafkaListener(topics = "grade" , groupId = "grade_group")
+	@KafkaListener(topics = "grade" , groupId = "grade_group", properties = {})
 	public void gradingConsumer(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) Topic topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
 		KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
 		if(key.equals("grade")){
+			System.out.println("채점하기");
 			gradeService.grade(gradeRequest);
 		} else {
 			System.out.println("값이 다릅니다.");
 		}
 	}
 
-	@KafkaListener(topics = "sign_to_grade", groupId = "grade_sign_group", properties = {"spring.json.use.type.headers=false"})
+	@KafkaListener(topics = "sign_to_grade", groupId = "grade_sign_group", properties = {})
 	public void signHandleConsumer(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) SignToGradeKey key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class)
-		System.out.println("헬로");
-		System.out.println(message);
 		// ConsumerRecord record = (ConsumerRecord) message;
 		// if("rollback".equals(record.key())){
 		// 	System.out.println("같다 rollback과");
@@ -49,15 +46,19 @@ public class KafkaConsumerController {
 		// }
 		switch(key){
 			case rollback:
-				gradeService.rollback(message);
+				KafkaQuizRollbackRequest quizRollbackRequest = gson.fromJson(message, KafkaQuizRollbackRequest.class);
+				gradeService.rollback(quizRollbackRequest);
 				break;
 			case quiz_end:
-				gradeService.quizEnd(message);
+				KafkaQuizEndRequest quizEndRequest = gson.fromJson(message, KafkaQuizEndRequest.class);
+				gradeService.quizEnd(quizEndRequest);
 				break;
 			case quiz_start:
-				gradeService.quizStart(message);
+				KafkaQuizStartRequest quizStartRequest = gson.fromJson(message, KafkaQuizStartRequest.class);
+				gradeService.quizStart(quizStartRequest);
 				break;
 			default:
+				log.info("없는 키값입니다.");
 				break;
 		}
 	}
