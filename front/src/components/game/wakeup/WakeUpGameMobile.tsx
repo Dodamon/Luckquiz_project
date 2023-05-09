@@ -20,10 +20,12 @@ const WakeUpGameMobile = (props: Props) => {
   const [showluckqui, setShowLuckqui] = useState(false);
   const eggRef = useRef<HTMLImageElement>(null);
   const [xSpeed, setXSpeed] = useState(0);
+  let lastShakeTimestamp: number = Date.now();
+  let shakeThreshold: number = 10; // 흔들림을 감지하는 임계값 (10도)
 
-  const handleShake = (event: { accelerationIncludingGravity: any }) => {
-    // console.log(event);
-    let shakeThreshold = 10; // set the shake threshold = 10cm
+  const handleShake = (event: any) => {
+    console.log(event);
+    let shakeThreshold = 50; // set the shake threshold = 10cm
     let lastUpdate = 0;
     let x = 0,
       y = 0,
@@ -33,6 +35,7 @@ const WakeUpGameMobile = (props: Props) => {
       lastZ = 0;
 
     let acceleration = event.accelerationIncludingGravity;
+
     let curTime = new Date().getTime();
 
     if (curTime - lastUpdate > 100) {
@@ -66,11 +69,32 @@ const WakeUpGameMobile = (props: Props) => {
       lastZ = z;
     }
   };
+
+  const handleOrientation = (event: any) => {
+    console.log(event);
+    const { beta, gamma } = event;
+
+    // X축 회전 값 (beta)과 Y축 회전 값 (gamma)이 모두 0이 아닐 때
+    if (beta && gamma) {
+      // 마지막으로 흔들림을 감지한 시간으로부터 1초가 지난 경우
+      if (Date.now() - lastShakeTimestamp > 100) {
+        // X축 회전 값 (beta)이 흔들림 임계값보다 큰 경우
+        if (Math.abs(beta) > shakeThreshold) {
+          // shakeCount 값을 1 증가시키고 마지막으로 흔들림을 감지한 시간을 업데이트함
+          console.log("plus");
+          setShakeCount((prev) => prev + 1);
+          lastShakeTimestamp = Date.now();
+        }
+      }
+    }
+  };
   useEffect(() => {
     window.addEventListener("devicemotion", handleShake);
-    // return () => {
-    //   window.removeEventListener("devicemotion", handleShake);
-    // };
+    // window.addEventListener("deviceorientation", handleOrientation);
+    return () => {
+      window.removeEventListener("devicemotion", handleShake);
+      // window.removeEventListener("deviceorientation", handleOrientation);
+    };
   }, []);
 
   useEffect(() => {

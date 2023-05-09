@@ -71,29 +71,35 @@
     }
 
     .logo {
-        height: 130px;
-        width: 300px;
+        height: 110px;
+        width: 250px;
         object-fit: fill;
+        margin-top: 20%;
     }
     
     .formBox {
-        height: 150px;
-        width: 300px;
+        height: 170px;
+        width: 250px;
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
-        margin-top: 10px;
+        margin-top: 25px;
         background-color: var(--white-color);
         border-radius: 20px;
     }
-    
+
+    .border {
+        width: 200px;
+        margin-top: 10px;
+    }
+
     .inputBox {
         height: 40px;
-        width: 250px;
-        border-radius: 15px;
+        width: 230px;
+        border-radius: 13px;
         border: 2px solid var(--grey-color);
-        margin-top: 8%;
+        margin-top: 3%;
         text-align: center;
         outline: none;
         font-size: 18px;
@@ -101,12 +107,13 @@
     
     .enterBtn {
         height: 40px;
-        width: 257.2px;
-        border-radius: 15px;
+        width: 237px;
+        border-radius: 13px;
         border: none;
         background-color: var(--button-two);
-        margin-bottom: 8%;
+        margin-top: 5px;
         cursor: pointer;
         font-size: 18px;
     }
 }
+
