@@ -1,9 +1,10 @@
+@media screen and (min-width: 747px) {
 .quizBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 100px;
+  /* height: 100px; */
   background-color: white;
   box-shadow: 2px 2px 3px 3px #66666625;
   border-radius: 20px;
@@ -11,6 +12,24 @@
   padding-left: 7%;
   padding-right: 7%;
   box-sizing: border-box;
+}
+}
+@media screen and (max-width: 747px) {
+  .quizBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 480px;
+  /* height: 100px; */
+  background-color: white;
+  box-shadow: 2px 2px 3px 3px #66666625;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  padding-left: 7%;
+  padding-right: 7%;
+  box-sizing: border-box;
+}
 }
 
 .quizRowFrame {
