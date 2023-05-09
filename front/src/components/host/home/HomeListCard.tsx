@@ -24,21 +24,14 @@ const HomeListCard = (props: Props) => {
   const client = useSelector((state: RootState) => state.socket.client);
   const { data, status, sendHostRequest } = useHostAxios();
 
-  const startQuiz = () => {
-    // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
-    sendHostRequest({
-      url: `/api/quizroom/create`,
-      method: "POST",
-      data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
-    });
-  };
-
-  useEffect(() => {
+  const connectSocket = () => {
+    console.log(data)
+    console.log('then')
     if (data) {
       if (!client.connected) {
         dispatch(socketActions.connect());
         navigate(`/host/quiz/${data?.roomId}`);
-  
+
         // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
         //   if (data && client.connected) {
         //     navigate(`/host/quiz/${data?.roomId}`);
@@ -46,7 +39,31 @@ const HomeListCard = (props: Props) => {
         // }
       }
     }
-  }, [data]);
+  };
+
+  const startQuiz = () => {
+    // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
+    sendHostRequest({
+      url: `/api/quizroom/create`,
+      method: "POST",
+      data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
+    }).then(connectSocket);
+  };
+  
+  // useEffect(() => {
+  //   if (data) {
+  //     if (!client.connected) {
+  //       dispatch(socketActions.connect());
+  //       navigate(`/host/quiz/${data?.roomId}`);
+  
+  //       // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+  //       //   if (data && client.connected) {
+  //       //     navigate(`/host/quiz/${data?.roomId}`);
+  //       //   }
+  //       // }
+  //     }
+  //   }
+  // }, [data]);
 
   return (
     <div className={styles.quizBox}>
