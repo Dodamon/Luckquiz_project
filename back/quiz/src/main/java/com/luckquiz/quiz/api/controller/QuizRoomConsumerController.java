@@ -31,10 +31,9 @@ public class QuizRoomConsumerController {
         }
     }
 
-    @KafkaListener(topics = "server_message",groupId = "test",
-            properties = {"key.deserializer=org.apache.kafka.common.serialization.StringDeserializer"})
-    public void quizEnd(ConsumerRecord<String , String> in) throws Exception{
-        if("end".equals(in.key())){
+    @KafkaListener(topics = "server_message",groupId = "test")
+    public void quizEnd(ConsumerRecord<String , String> in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
+        if("end".equals(key)){
             String value = in.value();
             Integer roomId = Integer.parseInt(value);
             String roomInfo = stringRedisTemplate.opsForValue().get(roomId);
