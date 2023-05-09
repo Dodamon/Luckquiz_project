@@ -47,7 +47,7 @@ public class MessageController {
         grade.setPlayerName(message.getSender());
         grade.setPlayerImg(message.getImg());
         hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
-        zSetOperations.add(roomId+"rank",message.getSender(),0);
+        zSetOperations.add(roomId+"rank",message.getSender()+" "+message.getImg(),0);
 
         Map all = hashOperations.entries(message.getRoomId()+"p");
         List<String> users = new ArrayList<>(all.values());
@@ -141,17 +141,23 @@ public class MessageController {
         sendingOperations.convertAndSend("/topic/quiz/" + middleRank.getRoomId(), userLList);
     }
 
-    @MessageMapping("quiz/ranking")
+    @MessageMapping("/quiz/ranking")
     public void totalRank (TotalRank totalRank){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
-        Set all = zSetOperations.range(totalRank.toString()+"rank",0,-1);
-        Iterator itr = all.iterator();
-        List<String> rank = new ArrayList<>();
-        while (itr.hasNext()){
-            rank.add(itr.next().toString());
-            System.out.println(itr.next().toString());
+        Set<String> all = zSetOperations.range(totalRank.getRoomId()+"rank",0,zSetOperations.size(totalRank.getRoomId()+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+        List<UserR> result = new ArrayList<>();
+        int rankNum = 1;
+        for(String name : rank){
+            UserR tempU = new UserR();
+            String uName = name.split(" ")[0];
+            int img = Integer.parseInt(name.split(" ")[1]);
+            tempU.setSender(name);
+            tempU.setImg(img);
+            tempU.setRank(rankNum);
+            rankNum ++;
         }
-
+        sendingOperations.convertAndSend("/topic/quiz/" + totalRank.getRoomId(),result);
     }
 
 }
