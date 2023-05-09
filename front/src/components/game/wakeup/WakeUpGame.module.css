@@ -6,6 +6,35 @@
   --orange: #f3943d;
 }
 
+@media screen and (min-width: 767px) {
+  #content {
+    width: 80%;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;   
+    background-color: rgba(255, 255, 255, 0.271);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media screen and (max-width: 767px) {
+  #content {
+    width: 80%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;   
+    background-color: rgba(255, 255, 255, 0.271);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .container {
   width: 100%;
   height: 100%;
@@ -20,7 +49,8 @@
   position: relative;
   height: 300px;
   width: 300px;
-  margin-top: 150px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -117,7 +147,7 @@
   border: solid 3px black;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   box-shadow: inset 0px -20px 0px 0px var(--egg-shadow);
-  animation: wobble 0.15s;
+  animation: shake 0.15s;
 }
 
 .shakingEggShadow {
@@ -226,7 +256,8 @@
   width: 91%;
   left: 5%;
   top: 0%;
-  animation: moveup 0.3s linear forwards;
+  animation: moveup 0.5s linear forwards;
+  animation-delay: 0.5s;
 }
 
 .eggBottom {
