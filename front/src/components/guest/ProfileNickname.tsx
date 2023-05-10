@@ -21,8 +21,8 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { client, socketActions } from "store/webSocket";
-import { useAppDispatch } from "hooks/useAppDispatch";
+import { client, connectAndSubscribe } from "store/webSocket";
+
 Object.assign(global, { WebSocket });
 
 const ProfileNickname: React.FC = () => {
@@ -75,14 +75,13 @@ const ProfileNickname: React.FC = () => {
     // websocket subscribe, publish
     const socketProps = {
       name: enteredTxt,
-      img: imgIdx, 
-      // subscribeURL: "8963127",
-      subscribeURL: pinNum,
+      img: imgIdx,
+      roomNum: pinNum,
+      isHost: false,
     };
-   
-    // appDispatch(subscribeThunk(socketProps));
-    dispatch(socketActions.sendEnterMessage(socketProps));
 
+    // appDispatch(subscribeThunk(socketProps));
+    connectAndSubscribe(socketProps, dispatch);
     navigate("/guest/quiz/lobby");
   };
 
@@ -100,11 +99,6 @@ const ProfileNickname: React.FC = () => {
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
 
-  useEffect(() => {
-    console.log("핀넘버:", pinNum);
-    console.log(client.connected);
-  }, []);
-  
   return (
     <div className={styles.profileNicknameContainer}>
       <div className={styles.imgWrapper}>
