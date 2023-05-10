@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import styles from "./HomeMain.module.css";
 import mypage_logo from "assets/images/mypage_logo.png";
 import { Icon } from "@iconify/react";
@@ -7,6 +7,7 @@ import useHostAxios from "hooks/useHostAxios";
 import { useDispatch } from "react-redux";
 import { authActions } from "store/auth";
 import { useEffect, useState } from "react";
+import Logout from "components/common/Logout";
 
 interface Data {
   id: string;
@@ -18,6 +19,7 @@ interface Data {
 
 const HomeMain = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { data, status, sendHostRequest } = useHostAxios();
 
  useEffect(() => {
@@ -35,7 +37,7 @@ useEffect(() => {
   return (
     <div className={styles.background}>
       <div className={styles.header}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={()=>{navigate('/home')}}>
           <div className={styles.logoImgContainer}>
             <img className={styles.logoImg} src={mypage_logo} alt="" />
           </div>
@@ -48,6 +50,7 @@ useEffect(() => {
       <div className={`${styles[`container`]}`}>
         <div className={`${styles[`side`]}`}>
           <SideMenuTab />
+          <Logout />
         </div>
         <Outlet></Outlet>
       </div>

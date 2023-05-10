@@ -22,10 +22,12 @@ import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "components/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
-import QuizContent from "pages/guest/quiz/QuizContent";
+import GuestPlayQuiz from "pages/guest/quiz/GuestPlayQuiz";
 import BalloonGame from "components/game/balloon/BalloonGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
+import HostLobby from "pages/host/host/quiz/HostLobby";
+import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 
 
 const router = createBrowserRouter([
@@ -87,11 +89,11 @@ const router = createBrowserRouter([
           },
           {
             path: "lobby",
-            element: <></>,
+            element: <HostLobby/>,
           },
           {
             path: "play",
-            element: <></>,
+            element: <HostPlayQuiz/>,
           },
           {
             path: "awards",
@@ -121,7 +123,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/play",
-            element: <QuizContent/>,
+            element: <GuestPlayQuiz/>,
           },
           {
             path: "quiz/balloon",
