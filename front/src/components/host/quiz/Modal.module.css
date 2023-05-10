@@ -5,7 +5,9 @@
 
 .modal {
     z-index: 10;
-    position: absolute;
+    position: fixed;
+    top: 40%;
+    left: 45%;
     margin-top: 5%;
     animation: modal-show 0.3s;
 }

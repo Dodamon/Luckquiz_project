@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import styles from "./Quiz.module.css";
 import { Icon } from "@iconify/react";
 import HomeListCard from "components/host/home/HomeListCard";
@@ -13,9 +13,15 @@ export interface Quiz {
   date: string;
 }
 
+
 const Quiz = () => {
-  // const getMyQuizList = () => {}
-  const [isModal, setIsModal] = useState(false);
+
+   const [isModal, setIsModal]=useState(false);
+
+  
+  
+  
+  
   const myQuizList: Quiz[] = [
     {
       id: 0,
@@ -38,7 +44,7 @@ const Quiz = () => {
         ))}
         <Modal isModal={isModal} setIsModal={setIsModal} />
         {/* <Link to={"/quiz/create"}> */}
-          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={()=>setIsModal(true)} />
+          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={()=>setIsModal(!isModal)} />
         {/* </Link> */}
       </div>
     </div>
