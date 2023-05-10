@@ -30,7 +30,7 @@ const Quiz = () => {
   ];
 
   return (
-    <div className={styles.content}>
+    <div className={styles.content} style={isModal? { backgroundColor:"darkgray"}:{}}>
       <div className={styles.title}>내가 만든 퀴즈</div>
       <div className={styles.listColFrame}>
         {myQuizList.map((quiz, index) => (

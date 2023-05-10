@@ -1,9 +1,12 @@
 import React from 'react';
 import styles from "./EmptyContentPage.module.css"
 import logo from "./../../../assets/images/logo.png"
+import { useNavigate } from 'react-router-dom';
+
 
 
 const EmptyContentPage = () => {
+    const navigate = useNavigate();
     return (
         <div className={styles.EmptyContentPage}>
 
@@ -11,7 +14,7 @@ const EmptyContentPage = () => {
 
                 <div className={styles.exit_btn} >
 
-                    <div className={styles.btn_comment} >나가기</div>
+                    <div className={styles.btn_comment} onClick={()=> navigate(-1)}>나가기</div>
                 </div>
 
             </div>

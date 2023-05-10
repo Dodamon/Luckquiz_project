@@ -1,42 +1,86 @@
 
+import { useState } from "react";
 import styles from "./Modal.module.css";
+import { Icon } from '@iconify/react';
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { quizAtions } from "store/quiz";
+import { setQuizSet } from "models/quiz";
 type ModalProps = {
     isModal: boolean;
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
-  };
-const Modal = ( { isModal, setIsModal }: ModalProps) => {
+};
+const Modal = ({ isModal, setIsModal }: ModalProps) => {
     const [isModals, setIsModals] = [isModal, setIsModal];
+    const [name, setName] = useState("");
 
-    function onClickClose () {
+
+    const authInfo = useSelector((state: RootState) => state.auth.userId)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    function onClickClose() {
         setIsModals(false);
     }
 
-    function onClickCreate () {
+    function onClickCreate() {
+        const template = {
+            name: name,
+            hostId: authInfo,
+        }
 
-        // ...
-        setIsModals(false);
+        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/regist", template).then(res => {
+            setIsModals(false);
+            setName("");
+
+
+            const state: setQuizSet = {
+                hostId: authInfo,
+                templateId: res.data,
+                quizList: []
+            }
+            dispatch(quizAtions.receiveUpdate(state))
+            navigate("/quiz/create");
+
+
+
+        }
+        )
+
     }
-    
+
+    const nameChangeHandler = (e: any) => {
+        setName(e.target.value);
+    }
+
     return (
         <div className={(isModals) ? styles['modal'] : styles['close']}>
             <section>
-                <header>
-                    <div>퀴즈 템플릿 만들기</div>
-                    <button onClick={onClickClose}>X</button>
+                <header className={styles.header_section}>
+                    <div className={styles.header_title}>퀴즈 템플릿 만들기</div>
+
+                    <div className={styles.header_btn}>
+                        <button onClick={onClickClose}><Icon icon="ph:x-bold" /></button>
+                    </div>
+
                 </header>
-                <main>
-                    <div>
-                        <div>Room Name</div>
-                    </div>
-                    <div>
-                        <div>Member</div>
-                        <select disabled></select>
-                    </div>
+
+                <main className={styles.main_section}>
+
+                    <div className={styles.input_name}>TEMPLATE</div>
+                    <div className={styles.input_box}><input type="text" value={name} onChange={e => nameChangeHandler(e)} placeholder="Please Enter the template name" /></div>
                 </main>
-                <footer>
-                    <button className={styles['btn-left']} onClick={onClickCreate}>Create</button>
-                    <button className={styles['btn-right']} onClick={onClickClose}>Close</button>
-                </footer>
+
+                <div className={styles.footer_section}>
+                    <div>
+                        <button className={styles['btn-left']} onClick={onClickCreate}>Create</button>
+                        <button className={styles['btn-right']} onClick={onClickClose}>Close</button>
+                    </div>
+                </div>
+
             </section>
         </div>
     );

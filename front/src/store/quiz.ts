@@ -8,8 +8,8 @@ import { setQuizSet } from "models/quiz";
 
 // 전역 로그인 데이터 기본 값 설정
 const initialQuizSet: setQuizSet ={
-    hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644",
-    templateId: 2,
+    hostId: "",
+    templateId: -1,
     quizList:[]
 }
 
@@ -59,7 +59,11 @@ reducers:{
     },
 
     receiveUpdate:(state, action)=>{
-     state = action.payload;
+    console.log(action.payload);
+     state.hostId = action.payload.hostId; 
+     state.templateId = action.payload.templateId; 
+     state.quizList = action.payload.quizList; 
+    //  state = action.payload;
     },
 }
     
