@@ -1,26 +1,17 @@
 .btnBox {
   display: flex;
-  height: 5vh;
-  width: fit-content;
 }
 
 .logoBox {
-  width: max-content;
+  background-color: white;
   height: 100%;
   aspect-ratio: 1/1;
   border-radius: 10px 0px 0px 10px;
-  background-color: white;
-  background-image: url(assets/images/orange_logo.png);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
   box-shadow: 4px 4px #00000015;
   box-sizing: border-box;
 }
 
 .nameBox {
-  height: 100%;
-  width: fit-content;
   display: flex;
   align-items: center;
   border-radius: 0px 10px 10px 0px;
@@ -32,4 +23,5 @@
   padding-right: 0.6em;
   box-sizing: content-box;
   font-size: 30px;
+  white-space: nowrap;
 }

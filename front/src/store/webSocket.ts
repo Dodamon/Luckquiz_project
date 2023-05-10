@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
+import { getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
@@ -9,13 +10,21 @@ interface SocketState {
   client: Client|null;
   pinNum: string;
   guestList: GuestType[];
+  QuizItem: getQuizItem | null
 }
 
 const initialState: SocketState = {
   client: client,
   pinNum: "",
-  guestList: [{sender: "", img: 0}],
+  guestList: [{ sender: "", img: 0 }],
+  QuizItem: null,
 };
+
+
+// const initialState: SocketState = {
+//   client: client,
+//   guestList: [{ sender: "", img: 0 }],
+// };
 
 const socketSlice = createSlice({
   name: "socket",
@@ -24,8 +33,9 @@ const socketSlice = createSlice({
     // Send message when submit
     sendAnswerMessage: (state, actions) => {
       if (client) {
+        console.log('publish')
         client.publish({
-          destination: "/app/submit",
+          destination: "/app/quiz/start",
           body: JSON.stringify(actions.payload),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
@@ -39,7 +49,13 @@ const socketSlice = createSlice({
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
     },
+
+    getQuizItem: (state, actions) => {
+      state.QuizItem = actions.payload
+      console.log(state.QuizItem)
+    }
   },
+
 });
 
 // connect 후에 subscribe하고 enter 메시지 보내기 (비동기 처리)
@@ -65,9 +81,12 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
-    } else {
+      if (data.type === "enterGuestList") { dispatch(socketActions.changeGuestList(data.enterGuestList));
+    } else if (data.type === "getQuizItem") { dispatch(socketActions.getQuizItem(data.getQuizItem))}
+    else {
+
       console.log("got empty message");
+    }
     };
   };
   
@@ -75,6 +94,8 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     type: "enter",
     roomId: socketProps.roomNum,
   };
+  // const URL = `/topic/quiz/${pinNum}`;
+  // const URL = `/topic/quiz/8345119`;
 
   const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);

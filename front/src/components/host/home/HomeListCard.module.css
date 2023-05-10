@@ -41,6 +41,7 @@
 .button {
   border: 0;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .btn {
@@ -48,6 +49,7 @@
   height: 40px;
   border-radius: 10px;
   color: white;
+  cursor: pointer;
 }
 
 .logoImgContainer {
@@ -74,6 +76,7 @@
 .addIcon {
   color: var(--placeholder-text);
   font-size: 40px;
+  cursor: pointer;
 }
 
 .parti {

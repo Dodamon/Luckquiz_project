@@ -1,4 +1,3 @@
-import { height } from "@mui/system";
 import styles from "./ButtonWithLogo.module.css";
 import orange_logo from "assets/images/orange_logo.png";
 
@@ -7,16 +6,20 @@ interface Props {
   height?: string;
   color?: string;
   fontSize?: string;
-  callback?: Function
+  onClick?: Function;
 }
 
 const ButtonWithLogo = (props: Props) => {
-  const { name, height, color, fontSize, callback } = props;
+  const { name, height, color, fontSize, onClick } = props;
   return (
-    <div className={styles.btnBox} style={{ height: height }} onClick={
-      () => {callback}
-    }>
-      <div className={styles.logoBox}></div>
+    <div
+      className={styles.btnBox}
+      style={{ height: height }}
+      onClick={() => {
+        onClick && onClick();
+      }}
+    >
+      <img className={styles.logoBox} src={orange_logo} alt="" />
       <div className={styles.nameBox} style={{ backgroundColor: color }}>
         <div className={styles.name} style={{ fontSize: fontSize }}>
           {name}
