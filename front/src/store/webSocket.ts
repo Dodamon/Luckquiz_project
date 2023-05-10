@@ -7,10 +7,11 @@ const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
 export const client = new Client({ brokerURL: brokerURL });
 
 interface SocketState {
-  client: Client|null;
+  client: Client | null;
   pinNum: string;
   guestList: GuestType[];
-  QuizItem: getQuizItem | null
+  QuizItem: getQuizItem | null;
+  useGuestName: boolean;
 }
 
 const initialState: SocketState = {
@@ -18,8 +19,8 @@ const initialState: SocketState = {
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
   QuizItem: null,
+  useGuestName: false,
 };
-
 
 // const initialState: SocketState = {
 //   client: client,
@@ -33,13 +34,24 @@ const socketSlice = createSlice({
     // Send message when submit
     sendAnswerMessage: (state, actions) => {
       if (client) {
-        console.log('publish')
+        console.log("publish");
         client.publish({
           destination: "/app/quiz/start",
           body: JSON.stringify(actions.payload),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
       }
+    },
+
+    guestNicknameCheck: (state, actions) => {
+      client.publish({
+        destination: "/app/duplicheck",
+        body: JSON.stringify({ sender: actions.payload.name, roomId: actions.payload.roomNum }),
+      });
+    },
+
+    updateUseGuestName: (state, actions) => {
+      state.useGuestName = actions.payload;
     },
 
     changeGuestList: (state, actions) => {
@@ -51,15 +63,14 @@ const socketSlice = createSlice({
     },
 
     getQuizItem: (state, actions) => {
-      state.QuizItem = actions.payload
-      console.log(state.QuizItem)
-    }
+      state.QuizItem = actions.payload;
+      console.log(state.QuizItem);
+    },
   },
-
 });
 
 // connect 후에 subscribe하고 enter 메시지 보내기 (비동기 처리)
-export const connectAndSubscribe = (socketProps:SocketPropsType, dispatch:Function) => {
+export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Function) => {
   client.onConnect = async () => {
     await subscribe(socketProps, dispatch);
     await sendEnterMessage(socketProps);
@@ -71,7 +82,7 @@ export const connectAndSubscribe = (socketProps:SocketPropsType, dispatch:Functi
   client.onWebSocketClose = () => {
     console.log("socket Closed");
   };
-  client.activate(); 
+  client.activate();
 };
 
 const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
@@ -81,15 +92,19 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") { dispatch(socketActions.changeGuestList(data.enterGuestList));
-    } else if (data.type === "getQuizItem") { dispatch(socketActions.getQuizItem(data.getQuizItem))}
-    else {
-
-      console.log("got empty message");
+      if (data.type === "enterGuestList") {
+        dispatch(socketActions.changeGuestList(data.enterGuestList));
+      } else if (data.type === "getQuizItem") {
+        dispatch(socketActions.getQuizItem(data.getQuizItem));
+      } else if (data.type === "checkGuestName") {
+        dispatch(socketActions.updateUseGuestName(data.checkGuestName));
+      }
+      else {
+        console.log("got empty message");
+      }
     }
-    };
   };
-  
+
   const sender = {
     type: "enter",
     roomId: socketProps.roomNum,
@@ -97,7 +112,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
   // const URL = `/topic/quiz/${pinNum}`;
   // const URL = `/topic/quiz/8345119`;
 
-  const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+  const URL = socketProps.isHost
+    ? `/topic/quiz/${socketProps.roomNum}`
+    : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };
@@ -106,7 +123,12 @@ const sendEnterMessage = async (socketProps: SocketPropsType) => {
   if (client) {
     client.publish({
       destination: "/app/enter",
-      body: JSON.stringify({ sender: socketProps.name, img: socketProps.img, type: "enter", roomId: socketProps.roomNum }),
+      body: JSON.stringify({
+        sender: socketProps.name,
+        img: socketProps.img,
+        type: "enter",
+        roomId: socketProps.roomNum,
+      }),
     });
     console.log(`publish : send name - ${socketProps.name} / send img - ${socketProps.img}`);
   }

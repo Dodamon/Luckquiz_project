@@ -21,7 +21,7 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { client, connectAndSubscribe } from "store/webSocket";
+import { client, connectAndSubscribe, socketActions } from "store/webSocket";
 
 Object.assign(global, { WebSocket });
 
@@ -49,6 +49,8 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
   const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
+  const useGuestName = useSelector<RootState, boolean>((state) => state.socket.useGuestName);
+
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -79,10 +81,7 @@ const ProfileNickname: React.FC = () => {
       roomNum: pinNum,
       isHost: false,
     };
-
-    // appDispatch(subscribeThunk(socketProps));
-    connectAndSubscribe(socketProps, dispatch);
-    navigate("/guest/quiz/lobby");
+    dispatch(socketActions.guestNicknameCheck(socketProps));
   };
 
   const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
