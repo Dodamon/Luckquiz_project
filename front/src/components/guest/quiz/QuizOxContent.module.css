@@ -28,7 +28,9 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        margin-bottom: 1%;
+        /* margin-bottom: 1%; */
+        margin-top: 5%;
+        margin-bottom: 5%;
     }
     
     .plus_font{
@@ -130,7 +132,10 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        margin-bottom: 1%;
+        margin-top: 20%;
+        margin-bottom: 20%;
+        /* display: none; */
+        
     }
     
 
