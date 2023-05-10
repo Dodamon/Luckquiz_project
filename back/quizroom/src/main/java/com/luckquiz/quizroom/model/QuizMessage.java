@@ -8,15 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuizMessage {
-    private String type;
+    private String hostId;
     private int roomId;
     private String sender;
     private int img;
-
     private String message;
 
-    public void setType(String type) {
-        this.type = type;
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
     }
 
     public void setRoomId(int roomId) {
