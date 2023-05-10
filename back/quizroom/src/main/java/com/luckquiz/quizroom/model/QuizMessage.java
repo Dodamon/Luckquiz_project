@@ -12,7 +12,9 @@ public class QuizMessage {
     private int roomId;
     private String sender;
     private int img;
+    private int quizNum;
     private String message;
+    private String file;
 
     public void setHostId(String hostId) {
         this.hostId = hostId;
@@ -32,5 +34,9 @@ public class QuizMessage {
 
     public void setImg(int img) {
         this.img = img;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 }
