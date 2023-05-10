@@ -1,13 +1,23 @@
 import React from 'react';
 import styles from './QuizRanking.module.css'
 import crwon from './../../../assets/images/pngwing.png'
+import rank from './../../../assets/images/rank.png'
+
 const QuizRanking = () => {
     const setList = [1,3,4,5,2];
     return (
         <div className={styles.QuizRanking}> 
+        
+        <div className={styles.rank_logo}>
+        
+            <div className={styles.logo}>
+                <img src={rank} alt="logo"/>
+            </div>
+
+        </div>
             <section className={styles.rank_box}>
                 <header className={styles.title}>
-                    <div className={styles.title_text}>게임랭킹</div>
+                    <div className={styles.title_text}>OX 문제</div>
                 </header>
 
                 <main className={styles.crown}>
