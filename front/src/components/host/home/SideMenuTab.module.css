@@ -1,5 +1,6 @@
 .sideTab {
   width: 70%;
+  min-width: 91px;
   background-color: #F2EFFF;
   border-radius: 20px;
   box-sizing: border-box;
