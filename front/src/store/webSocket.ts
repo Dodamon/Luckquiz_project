@@ -75,7 +75,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     type: "enter",
     roomId: socketProps.roomNum,
   };
-
+  
   const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });

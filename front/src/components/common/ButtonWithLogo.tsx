@@ -14,7 +14,7 @@ const ButtonWithLogo = (props: Props) => {
   const { name, height, color, fontSize, callback } = props;
   return (
     <div className={styles.btnBox} style={{ height: height }} onClick={
-      () => {callback}
+      () => {}
     }>
       <div className={styles.logoBox}></div>
       <div className={styles.nameBox} style={{ backgroundColor: color }}>
