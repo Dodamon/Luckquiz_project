@@ -82,7 +82,7 @@ public class MessageController {
         Boolean check = true;
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            if(a.getSender() == message.getSender()){
+            if(a.getSender().equals(message.getSender())){
                 check = false;
             }
         }
