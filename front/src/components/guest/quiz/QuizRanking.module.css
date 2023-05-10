@@ -34,5 +34,87 @@
 }
 
 .ranking{
-    background-color: red;
+    display: flex;
+    /* background-color: red; */
+    flex-direction: column;
+ 
+}
+.ranking_list{
+
+    width: 450px;
+    height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+    
+}
+
+
+
+/* 스크롤바 설정*/
+.ranking_list::-webkit-scrollbar{
+    width: 8px;
+}
+
+/* 스크롤바 막대 설정*/
+.ranking_list::-webkit-scrollbar-thumb{
+    background-color: var( --wrong-answer);
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;    
+}
+
+/* 스크롤바 뒷 배경 설정*/
+.ranking_list::-webkit-scrollbar-track{
+    background-color: rgba(0,0,0,0);
+}
+
+
+
+
+.ranking_item{
+    display: flex;
+    justify-content: space-between;
+    height: 65px;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.item_left{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    /* background-color: red; */
+    width: 60%;
+}
+.item_right{
+    display: flex;
+    /* background-color: red; */
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
+
+
+.item_img{
+    width: 50px;
+    height: 50px;
+    background-color: skyblue;
+    border-radius: 60px;
+}
+
+.user_img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+.item_num{
+    font-size: 28px;
+}
+.item_name{
+    font-size: 24px;
+}
+
+.item_score{
+    font-size: 24px ;
+    color: var(--grey-color);
 }
