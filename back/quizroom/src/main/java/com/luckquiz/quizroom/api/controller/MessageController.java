@@ -4,6 +4,7 @@ package com.luckquiz.quizroom.api.controller;
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
+import com.luckquiz.quizroom.api.response.Duplucheck;
 import com.luckquiz.quizroom.api.response.QGame;
 import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
 import com.luckquiz.quizroom.api.service.QuizService;
@@ -21,7 +22,10 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.BinaryMessage;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @RestController
@@ -79,21 +83,26 @@ public class MessageController {
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
         String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
         String [] arr = allList.split(", ");
-        Boolean check = true;
+        String check = "true";
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
             if(a.getSender().equals(message.getSender())){
-                check = false;
+                check = "false";
             }
         }
-
-        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), check);
+        Duplucheck d = new Duplucheck();
+        d.setType("checkGuestName");
+        d.setCheckGuestName(check);
+        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
     }
 
     @MessageMapping("/submit")
-    public void submit(QuizMessage message) {
-        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
-            toGradeProducer.clientSubmit(gson.toJson(message));
+    public void submit(byte[] message) {
+        System.out.println(message);
+        String msg = new String(message, StandardCharsets.UTF_8);
+        System.out.println(msg);
+//        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+//            toGradeProducer.clientSubmit(gson.toJson(message));
             System.out.println("제출되었읍니다....");
     }
 

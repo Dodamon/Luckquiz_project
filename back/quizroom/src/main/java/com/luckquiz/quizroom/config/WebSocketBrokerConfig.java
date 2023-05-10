@@ -20,7 +20,6 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         registry.addEndpoint("/connect/quiz").setAllowedOriginPatterns("*").addInterceptors(new HttpSessionHandshakeInterceptor());
-
     }
 
     // adasd
@@ -46,9 +45,10 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
-        registration.setMessageSizeLimit(3000*1024);
-        registration.setSendBufferSizeLimit(5*3000*1024);
-        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
+        registration.setMessageSizeLimit(1024*1024*400);
+        registration.setSendBufferSizeLimit(1024*1024*4000);
+        registration.setSendTimeLimit(20 * 1000);
+//        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
 
 }
