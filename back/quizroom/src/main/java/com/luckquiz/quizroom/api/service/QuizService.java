@@ -7,6 +7,9 @@ import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.request.RTSearch;
 import com.luckquiz.quizroom.api.response.QGame;
 import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
+import com.luckquiz.quizroom.message.EnterGuestMessage;
+import com.luckquiz.quizroom.message.QuizStartMessage;
+import com.luckquiz.quizroom.model.EnterUser;
 import com.luckquiz.quizroom.model.NextMessage;
 import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
@@ -93,13 +96,25 @@ public class QuizService {
         return nextQuiz;
     }
 
+    public void serveEntry(EnterGuestMessage egm, Integer roomId){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+
+        for(String name : rank){
+            EnterUser temp = gson.fromJson(name,EnterUser.class);
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+temp.getSender(),egm);
+        }
+    }
+
     // 참가자들이 받을 보기
-    public void serveQuiz(QGame question,Integer roomId){
+    public void serveQuiz(QuizStartMessage question, Integer roomId){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
         List<String> rank = new ArrayList<>(all);
         for(String name : rank){
-            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,question);
+            EnterUser temp = gson.fromJson(name,EnterUser.class);
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+temp.getSender(),question);
         }
     }
 

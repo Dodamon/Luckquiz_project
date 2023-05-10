@@ -9,6 +9,8 @@ import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
 import com.luckquiz.quizroom.api.service.QuizService;
 import com.luckquiz.quizroom.api.service.ToGradeProducer;
 import com.luckquiz.quizroom.api.service.ToQuizProducer;
+import com.luckquiz.quizroom.message.EnterGuestMessage;
+import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +18,10 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.sql.SQLOutput;
 import java.util.*;
 
 @RestController
@@ -68,51 +65,87 @@ public class MessageController {
         result.clear();
         result.addAll(li);
 
-        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), result);
+        EnterGuestMessage egm = EnterGuestMessage.builder()
+                .type("enterGuestList")
+                .enterGuestList(result)
+                .build();
+
+        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
+        quizService.serveEntry(egm,message.getRoomId());
     }
 
     @MessageMapping("/submit")
     public void submit(QuizMessage message) {
-        System.out.println("submited:   "+message.getType()+", sender:    "+message.getSender());
+        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
             toGradeProducer.clientSubmit(gson.toJson(message));
             System.out.println("제출되었읍니다....");
     }
 
-    @MessageMapping("/{roomId}/private/{sender}")
-    // 각각의 사용자에게 채점 결과를 보내주는 메소드
-    public void quizSpread(@Payload QuizMessage message,@DestinationVariable int roomId, @DestinationVariable String sender, Principal principal) {
-        // 메시지를 수신자에게 전송
-        System.out.println("private here");
-        sendingOperations.convertAndSendToUser(sender, "/queue/"+roomId+"/private/", message);
-    }
+//    @MessageMapping("/{roomId}/private/{sender}")
+//    // 각각의 사용자에게 채점 결과를 보내주는 메소드
+//    public void quizSpread(@Payload QuizMessage message,@DestinationVariable int roomId, @DestinationVariable String sender, Principal principal) {
+//        // 메시지를 수신자에게 전송
+//        System.out.println("private here");
+//        sendingOperations.convertAndSendToUser(sender, "/queue/"+roomId+"/private/", message);
+//    }
+
     // 퀴즈가 시작 요청이 오면 맨 처음 문제를 반환한다.
     // 이 때 quizNum 이 0으로 초기화된다.
     @MessageMapping("/quiz/start")
     public void start(QuizStartRequest quizStartRequest) {
-
         QGame result = quizService.startQuiz(quizStartRequest);
         ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                 .quizNum(result.getQuizNum())
                 .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
+        String type = "";
+        if(result.getQuiz() != null){
+            type = result.getQuiz();
+        }else{
+            type = result.getGame();
+        }
+        QuizStartMessage qsm = QuizStartMessage.builder()
+                .type(type)
+                .qgame(result)
+                .build();
         toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
-        sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), result);
+        sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), qsm);
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
-        quizService.serveQuiz(toGuest,quizStartRequest.getRoomId());
+        QuizStartMessage qsmG = QuizStartMessage.builder()
+                .type(type)
+                .qgame(toGuest)
+                .build();
+        quizService.serveQuiz(qsmG,quizStartRequest.getRoomId());
     }
+
     @MessageMapping("/quiz/next")
     public void next(NextMessage nextMessage) {
         QGame result = quizService.nextQuiz(nextMessage);
-        sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), result);
+        String type = "";
+        if(result.getQuiz() != null){
+            type = result.getQuiz();
+        }else{
+            type = result.getGame();
+        }
+        QuizStartMessage qsm = QuizStartMessage.builder()
+                .type(type)
+                .qgame(result)
+                .build();
+        sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), qsm);
         //퀴즈 다음페이지 넘기기.
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
-        quizService.serveQuiz(toGuest,nextMessage.getRoomId());
+        QuizStartMessage qsmG = QuizStartMessage.builder()
+                .type(type)
+                .qgame(toGuest)
+                .build();
+        quizService.serveQuiz(qsmG,nextMessage.getRoomId());
     }
+
     @MessageMapping("/quiz/end")
     public void quizEnd(QuizMessage message) {
 //        세션 끝내면 저장한것도 삭제
@@ -175,6 +208,9 @@ public class MessageController {
             rankNum ++;
         }
         sendingOperations.convertAndSend("/topic/quiz/" + totalRank.getRoomId(),result);
+        sendingOperations.convertAndSend("/queue/quiz/" + totalRank.getRoomId(),result);
     }
+
+
 
 }
