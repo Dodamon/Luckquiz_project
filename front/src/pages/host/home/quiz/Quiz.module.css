@@ -23,4 +23,5 @@
 .addIcon {
     color: var(--placeholder-text);
     font-size: 40px;
+    cursor: pointer;
 }

@@ -24,6 +24,7 @@ const Modal = ({ isModal, setIsModal }: ModalProps) => {
 
     function onClickClose() {
         setIsModals(false);
+        setName("");
     }
 
     function onClickCreate() {
