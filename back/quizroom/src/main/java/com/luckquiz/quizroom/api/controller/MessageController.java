@@ -74,7 +74,7 @@ public class MessageController {
         quizService.serveEntry(egm,message.getRoomId());
     }
 
-    @MessageMapping("/submit")
+    @MessageMapping("/duplicheck")
     public void duplicheck(QuizMessage message) {
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
         String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
