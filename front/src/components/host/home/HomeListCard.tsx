@@ -20,24 +20,32 @@ const HomeListCard = (props: Props) => {
   const { menu, quiz, report } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const userName = useSelector<RootState, string>((state) => state.auth.nickname);
+  const userImg = useSelector<RootState, string>((state) => state.auth.image_url);
+
   const { data, sendHostRequest } = useHostAxios();
 
   const connectSocket = () => {
-    console.log(data)
-    console.log('then')
+    console.log(data);
+    console.log("then");
     if (data) {
-      if (!client?.connected) {
-        connectAndSubscribe(data!.roomId, dispatch);
-        navigate(`/host/quiz/${data?.roomId}`);
 
-        // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
-        //   if (data && client.connected) {
-        //     navigate(`/host/quiz/${data?.roomId}`);
-        //   }
-        // }
-      }
-    }
+      const socketProps = {
+        name: userName,
+        img: userImg,
+        roomNum: data.roomId,
+        isHost: true,
+      };
+
+      connectAndSubscribe(socketProps, dispatch);
+      navigate(`/host/quiz/${data?.roomId}`);
+
+      // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
+      //   if (data && client.connected) {
+      //     navigate(`/host/quiz/${data?.roomId}`);
+      //   }
+      // }
+    };
   };
 
   const startQuiz = () => {
@@ -48,13 +56,13 @@ const HomeListCard = (props: Props) => {
       data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
     }).then(connectSocket);
   };
-  
+
   // useEffect(() => {
   //   if (data) {
   //     if (!client.connected) {
   //       dispatch(socketActions.connect());
   //       navigate(`/host/quiz/${data?.roomId}`);
-  
+
   //       // if (window.confirm("퀴즈를 진행하시겠습니까?")) {
   //       //   if (data && client.connected) {
   //       //     navigate(`/host/quiz/${data?.roomId}`);

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import logo from "assets/images/logo.png";
 import styles from "./EnterPin.module.css";
-import { connectAndSubscribe, socketActions } from "store/webSocket";
+import { socketActions } from "store/webSocket";
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
@@ -25,7 +25,6 @@ const EnterPin: React.FC = () => {
 
     // pin 번호 리덕스에 저장
     dispatch(socketActions.updatePinNum(enteredPin));
-    connectAndSubscribe(enteredPin, dispatch);
     navigate("/guest/nickname");
   };
 

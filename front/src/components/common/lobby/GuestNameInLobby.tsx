@@ -49,7 +49,7 @@ const GuestNameInLobby: React.FC<ItemProps> = ({ item }) => {
   return (
     <div className={styles.guestProfile}>
       <div>
-        <img src={IMAGES[item.img - 1]} alt="" className={styles.profileImg} />
+        <img src={IMAGES[item.img]} alt="" className={styles.profileImg} />
       </div>
       <div className={styles.guestName}>{item.sender}</div>
     </div>
