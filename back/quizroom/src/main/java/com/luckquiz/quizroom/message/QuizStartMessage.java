@@ -15,5 +15,5 @@ import java.util.List;
 @Builder
 public class QuizStartMessage {
     private String type;
-    private QGame qgame;
+    private QGame getQuizItem;
 }

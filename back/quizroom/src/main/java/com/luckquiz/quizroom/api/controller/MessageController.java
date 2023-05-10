@@ -106,8 +106,8 @@ public class MessageController {
             type = result.getGame();
         }
         QuizStartMessage qsm = QuizStartMessage.builder()
-                .type(type)
-                .qgame(result)
+                .type("getQuizItem")
+                .getQuizItem(result)
                 .build();
         toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
         sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), qsm);
@@ -115,8 +115,8 @@ public class MessageController {
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
         QuizStartMessage qsmG = QuizStartMessage.builder()
-                .type(type)
-                .qgame(toGuest)
+                .type("getQuizItem")
+                .getQuizItem(toGuest)
                 .build();
         quizService.serveQuiz(qsmG,quizStartRequest.getRoomId());
     }
@@ -131,8 +131,8 @@ public class MessageController {
             type = result.getGame();
         }
         QuizStartMessage qsm = QuizStartMessage.builder()
-                .type(type)
-                .qgame(result)
+                .type("getQuizItem")
+                .getQuizItem(result)
                 .build();
         sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), qsm);
         //퀴즈 다음페이지 넘기기.
@@ -140,8 +140,8 @@ public class MessageController {
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
         QuizStartMessage qsmG = QuizStartMessage.builder()
-                .type(type)
-                .qgame(toGuest)
+                .type("getQuizItem")
+                .getQuizItem(toGuest)
                 .build();
         quizService.serveQuiz(qsmG,nextMessage.getRoomId());
     }
