@@ -2,8 +2,6 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import logo from '../../../assets/images/timer1.png'
-
-
 import styles from "./QuizFourContent.module.css"
 import { setQuizItem } from 'models/quiz';
 import QuizGameTitle from 'components/common/QuizGameTitle';
@@ -21,9 +19,6 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
     }
     return (
         <div className={styles.QuizFourContent}>
-
-
-        {/* <QuizGameTitle title={"wsdddddddddddddddddd"}/> */}
 
             <div className={styles.content_title}>
                 <input type="text" value={content.game} />

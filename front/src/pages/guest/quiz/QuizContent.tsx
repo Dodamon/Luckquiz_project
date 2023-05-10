@@ -1,8 +1,7 @@
 import React from 'react';
-import QuizFourContent from './QuizFourContent';
 import { setQuizItem } from 'models/quiz';
-import QuizShortContent from './QuizShortContent';
-import QuizOxContent from './QuizOxContent';
+import QuizShortContent from '../../../components/guest/quiz/QuizShortContent';
+
 
 
 
@@ -25,9 +24,11 @@ const QuizContent = () => {
     
     return (
         <div>
-            <QuizFourContent content={newGameItem}/>
-            
-            {/* <QuizShortContent content={newGameItem}/> */}
+
+
+             
+            {/* <QuizFourContent content={newGameItem}/> */}
+            <QuizShortContent content={newGameItem}/>
         </div>
     );
 };
