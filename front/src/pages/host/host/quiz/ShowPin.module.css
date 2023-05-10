@@ -11,7 +11,7 @@
 }
 
 .logo {
-  width: 50%;
+  width: 35%;
   display: flex;
   min-width: 160px;
   justify-self: center;
@@ -19,18 +19,28 @@
 }
 
 .whiteBox {
+  width: max-content;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: white;
   box-sizing: border-box;
 }
 
+.pinBox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 @media screen and (min-width: 767px) {
   .whiteBox {
-    width: 80%;
+    width: 57%;
     flex-direction: row;
-    padding: 3% 10%;
+    padding: 3% 8%;
     border-radius: 10px;
     font-size: 2.5vw;
   }
@@ -44,14 +54,6 @@
     border-radius: 5px;
     font-size: 20px;
   }
-}
-
-.pinBox {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .pinBox > p {

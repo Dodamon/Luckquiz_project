@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
 import { GuestType } from "models/guest";
+import { getQuizItem } from "models/quiz";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
 export const client = new Client({ brokerURL: brokerURL });
@@ -9,12 +10,14 @@ interface SocketState {
   client: Client|null;
   pinNum: string;
   guestList: GuestType[];
+  QuizItem: getQuizItem | null
 }
 
 const initialState: SocketState = {
   client: client,
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
+  QuizItem: null,
 };
 
 
@@ -42,7 +45,7 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         client.publish({
-          destination: "/app/submit",
+          destination: "/app/quiz/start",
           body: JSON.stringify(actions.payload),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
@@ -56,6 +59,10 @@ const socketSlice = createSlice({
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
     },
+
+    getQuizItem: (state, actions) => {
+      state.QuizItem = actions.payload
+    }
   },
 
 });
@@ -78,17 +85,22 @@ export const connectAndSubscribe = (pinNum: string, dispatch:Function) => {
 const subscribe = async (pinNum: string, dispatch: Function) => {
   console.log("제발 subscribe 실행됐다고 해줘")
   const callback = (res: any) => {
-    if (res.body) {
+    if (res.body.sender) {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       dispatch(socketActions.changeGuestList(data));
-    } else {
+    } else if (res.body.quiz) {
+      const data = JSON.parse(res.body)
+      console.log("다음 게임:", data)
+      dispatch(socketActions.getQuizItem(data))
+    }
+    else {
       console.log("got empty message");
     };
   };
   const sender = {
     type: "enter",
-    roomId: "8345119",
+    roomId: pinNum,
   };
   const URL = `/topic/quiz/${pinNum}`;
   const Obj = JSON.stringify(sender);
