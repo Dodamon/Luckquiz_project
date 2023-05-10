@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
+import styles from "./HostQuiz.module.css"
 
 const HostQuiz = () => {
 
   return (
-    <>
-      {/* <h1>HostQuiz</h1> */}
+    <div className={styles.hostQuizContainer}>
       <Outlet></Outlet>
-    </>
+    </div>
   );
 };
 
