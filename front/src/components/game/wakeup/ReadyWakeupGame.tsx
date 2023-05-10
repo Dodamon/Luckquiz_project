@@ -11,7 +11,7 @@ const ReadyWakeupGame: React.FC = () => {
       <div className={styles.gameDescriptionWrapper}>
         <div className={styles.gameName}>일어나 럭퀴야 학교 가야지</div>
         <div className={styles.gameDescription}>
-          힘껏 흔들어서 알 속의 럭퀴를 깨워주세요! PC의 경우 마우스로 럭퀴를 마구 흔들면 됩니다. 럭퀴를 가장 많이 흔든 사람부터 순차적으로 점수가 부여됩니다.
+          알 속의 럭퀴를 깨워주세요! 럭퀴를 가장 많이 흔든 사람부터 순차적으로 점수가 부여됩니다.
         </div>
       </div>
     </>
