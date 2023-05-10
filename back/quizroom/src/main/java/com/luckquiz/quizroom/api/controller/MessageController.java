@@ -74,6 +74,22 @@ public class MessageController {
         quizService.serveEntry(egm,message.getRoomId());
     }
 
+    @MessageMapping("/duplicheck")
+    public void duplicheck(QuizMessage message) {
+        ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+        String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
+        String [] arr = allList.split(", ");
+        Boolean check = true;
+        for(String user: arr){
+            EnterUser a = gson.fromJson(user,EnterUser.class);
+            if(a.getSender() == message.getSender()){
+                check = false;
+            }
+        }
+
+        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), check);
+    }
+
     @MessageMapping("/submit")
     public void submit(QuizMessage message) {
         System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
