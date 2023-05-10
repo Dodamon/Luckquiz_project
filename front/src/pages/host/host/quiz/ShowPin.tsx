@@ -15,7 +15,7 @@ const ShowPin = () => {
     if (guestList.length >= 2) {
       navigate(`/host/quiz/${quiz_id}/lobby`);
     }
-  }, guestList);
+  }, [guestList.length, navigate, quiz_id]);
 
   return (
     <div className={styles.container}>
@@ -25,7 +25,9 @@ const ShowPin = () => {
           <p>퀴즈 입장 pin번호</p>
           <p>{quiz_id}</p>
         </div>
-        <img src={qr_sample} alt="" />
+        {/* <img src={qr_sample} alt="" onClick={() => {navigate(`/host/quiz/${quiz_id}/lobby`)}}/> */}
+        <img src={qr_sample} alt="" onClick={() => {navigate(`/host/quiz/8345119/lobby`)}}/>
+        
       </div>
     </div>
   );

@@ -44,6 +44,7 @@ const socketSlice = createSlice({
     // Send message when submit
     sendAnswerMessage: (state, actions) => {
       if (client) {
+        console.log('publish')
         client.publish({
           destination: "/app/quiz/start",
           body: JSON.stringify(actions.payload),
@@ -62,6 +63,7 @@ const socketSlice = createSlice({
 
     getQuizItem: (state, actions) => {
       state.QuizItem = actions.payload
+      console.log(state.QuizItem)
     }
   },
 
@@ -85,12 +87,12 @@ export const connectAndSubscribe = (pinNum: string, dispatch:Function) => {
 const subscribe = async (pinNum: string, dispatch: Function) => {
   console.log("제발 subscribe 실행됐다고 해줘")
   const callback = (res: any) => {
-    if (res.body.sender) {
-      const data = JSON.parse(res.body);
+    console.log(res.body)
+    const data = JSON.parse(res.body);
+    if (data.sender) {
       console.log("구독 메세지 data:", data);
       dispatch(socketActions.changeGuestList(data));
-    } else if (res.body.quiz) {
-      const data = JSON.parse(res.body)
+    } else if (data.quizSize) {
       console.log("다음 게임:", data)
       dispatch(socketActions.getQuizItem(data))
     }
@@ -100,9 +102,10 @@ const subscribe = async (pinNum: string, dispatch: Function) => {
   };
   const sender = {
     type: "enter",
-    roomId: pinNum,
+    roomId: "8345119",
   };
-  const URL = `/topic/quiz/${pinNum}`;
+  // const URL = `/topic/quiz/${pinNum}`;
+  const URL = `/topic/quiz/8345119`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };
