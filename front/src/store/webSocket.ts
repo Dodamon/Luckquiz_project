@@ -92,7 +92,7 @@ const subscribe = async (pinNum: string, dispatch: Function) => {
     if (data.sender) {
       console.log("구독 메세지 data:", data);
       dispatch(socketActions.changeGuestList(data));
-    } else if (data.quizSize) {
+    } else if (data.qgame) {
       console.log("다음 게임:", data)
       dispatch(socketActions.getQuizItem(data))
     }

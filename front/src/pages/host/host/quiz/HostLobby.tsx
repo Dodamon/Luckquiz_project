@@ -19,8 +19,10 @@ const HostLobby = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(quizItem)
     quizItem && navigate(`/host/quiz/${quiz_id}/play`)
   }, [navigate, quizItem, quiz_id])
+
   return (
     <div className={styles.container}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>

@@ -5,7 +5,6 @@ import qr_sample from "assets/images/qr_sample.png";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { useEffect } from "react";
-import LobbyComp from "components/common/lobby/LobbyComp";
 
 const ShowPin = () => {
   const { quiz_id } = useParams();

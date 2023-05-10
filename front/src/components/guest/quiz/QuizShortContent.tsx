@@ -2,10 +2,10 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import styles from "./QuizShortContent.module.css"
-import { setQuizItem } from 'models/quiz';
+import { getQuizItem } from 'models/quiz';
 
 type QuizShortContentProps = {
-    content: setQuizItem;
+    content: getQuizItem;
 }
 
 
