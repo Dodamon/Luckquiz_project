@@ -22,10 +22,11 @@ import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "components/login/SocialRedirect";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
-
+import QuizContent from "pages/guest/quiz/QuizContent";
 import BalloonGame from "components/game/balloon/BalloonGame";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
+
 
 const router = createBrowserRouter([
   {
@@ -120,7 +121,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/play",
-            element: <></>,
+            element: <QuizContent/>,
           },
           {
             path: "quiz/balloon",
