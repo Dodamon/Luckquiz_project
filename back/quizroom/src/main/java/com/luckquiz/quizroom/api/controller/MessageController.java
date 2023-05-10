@@ -21,7 +21,10 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.BinaryMessage;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @RestController
@@ -91,9 +94,12 @@ public class MessageController {
     }
 
     @MessageMapping("/submit")
-    public void submit(QuizMessage message) {
-        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
-            toGradeProducer.clientSubmit(gson.toJson(message));
+    public void submit(byte[] message) {
+        System.out.println(message);
+        String msg = new String(message, StandardCharsets.UTF_8);
+        System.out.println(msg);
+//        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+//            toGradeProducer.clientSubmit(gson.toJson(message));
             System.out.println("제출되었읍니다....");
     }
 
