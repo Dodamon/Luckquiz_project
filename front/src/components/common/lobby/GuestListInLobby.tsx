@@ -6,16 +6,16 @@ import { RootState } from "store";
 import { GuestType } from "models/guest";
 
 const GuestListInLobby: React.FC = () => {
-  const scrollRef = useRef<HTMLElement>();
+  const scrollRef = useRef<HTMLDivElement>();
   const quizGuests = useSelector<RootState, GuestType[]>((state) => state.socket.guestList);
 
   const scrollToBottom = useCallback(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-  }, []);
+  }, [scrollRef]);
 
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [quizGuests, scrollToBottom]);
 
   return (
     <>
@@ -23,6 +23,7 @@ const GuestListInLobby: React.FC = () => {
         {quizGuests.map((item, idx) => (
           <GuestNameInLobby item={item} key={idx} />
         ))}
+        <div ref={scrollRef as MutableRefObject<HTMLDivElement>} />
       </div>
     </>
   );
