@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 
 const GuestLobby: React.FC = () => {
   const navigate = useNavigate();
-  const guestList = useSelector<RootState, GuestType[]>((state) => state.socket.guestList);
+  const guestList = useSelector<RootState, GuestType[]|null>((state) => state.socket.guestList);
 
   const onClickGame = () => {
     navigate('/guest/quiz/emotion')
