@@ -1,4 +1,4 @@
-package com.luckquiz.grade.common.exception;
+package com.luckquiz.grade.api.common.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

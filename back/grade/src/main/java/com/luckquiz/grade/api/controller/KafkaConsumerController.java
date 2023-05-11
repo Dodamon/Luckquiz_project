@@ -1,5 +1,7 @@
 package com.luckquiz.grade.api.controller;
 
+import java.util.List;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -24,14 +26,15 @@ public class KafkaConsumerController {
 	private final GradeService gradeService;
 	private final Gson gson;
 
-	@KafkaListener(topics = "grade" , groupId = "grade_group", properties = {})
-	public void gradingConsumer(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) Topic topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
-		KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
-		if(key.equals("grade")){
-			System.out.println("채점하기");
-			gradeService.grade(gradeRequest);
-		} else {
-			System.out.println("값이 다릅니다.");
+	@KafkaListener(topics = "grade" , groupId = "grade_group",properties = {},containerFactory = "kafkaListenerContainerFactory")
+	public void gradingConsumer(List<String> messages, @Header(KafkaHeaders.RECEIVED_TOPIC) List<Topic> topics, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys) {
+		for(int i=0; i<messages.size(); i++){
+			if(keys.get(i).equals("grade")){
+				KafkaGradeRequest gradeRequest = gson.fromJson(messages.get(i), KafkaGradeRequest.class);
+				gradeService.grade(gradeRequest);
+			} else {
+				System.out.println("값이 다릅니다");
+			}
 		}
 	}
 
@@ -39,11 +42,7 @@ public class KafkaConsumerController {
 	public void signHandleConsumer(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) SignToGradeKey key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class)
 		// ConsumerRecord record = (ConsumerRecord) message;
-		// if("rollback".equals(record.key())){
-		// 	System.out.println("같다 rollback과");
-		// 	HashMap hashMap = (HashMap) record.value();
-		// 	System.out.println(hashMap);
-		// }
+
 		switch(key){
 			case rollback:
 				KafkaQuizRollbackRequest quizRollbackRequest = gson.fromJson(message, KafkaQuizRollbackRequest.class);

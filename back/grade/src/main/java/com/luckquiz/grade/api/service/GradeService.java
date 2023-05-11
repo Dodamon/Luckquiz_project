@@ -60,7 +60,7 @@ public class GradeService {
 			TemplateDetailResponse.class);
 		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
 		String answer = gradeRequest.getAnswer();
-	//정답이 맞으며, 퀴즈 번호가 같다면.
+	//정답이 맞으면, 퀴즈 번호가 같다면.
 		if(correctAnswer.equals(answer) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
 			//순위에 따른 점수 더해주기
 			Integer rank = valueOperations.get(roomId+"cnt");
@@ -78,27 +78,38 @@ public class GradeService {
 		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
 		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
 		// Map<String, Grade> hashmap = hashOperations.entries(roomId+"p");
+	}
 
+	public void pictureGrade(KafkaGradeRequest gradeRequest){
+		Integer roomId = gradeRequest.getRoomId();
+		String playerName = gradeRequest.getPlayerName();
+		// 총 참여자 수
+		Long count = hashGradeOperations.size(roomId+"p");
+		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
+			TemplateDetailResponse.class);
+		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
+		String answer = gradeRequest.getAnswer();
+		//정답이 맞으면, 퀴즈 번호가 같다면.
+		if(correctAnswer.equals(answer) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
+			//순위에 따른 점수 더해주기
+			Integer rank = valueOperations.get(roomId+"cnt");
+			Long scoreGet = (long)(1000*(1-rank.doubleValue()/count));
+			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
+			userGrade.setScoreGet(scoreGet.intValue());
+			userGrade.setRankNow(rank+1);
+			//얻은 점수 기록해두기
+			hashGradeOperations.put(roomId+"p", playerName, userGrade);
+			//맞힌 사람 수 +1
+			valueOperations.increment(roomId+"cnt",1);
+			//현재 점수 반영
+			zSetOperations.incrementScore(roomId+"rank",playerName,scoreGet);
+		}
+		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
+		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
+		// Map<String, Grade> hashmap = hashOperations.entries(roomId+"p");
 	}
 
 
-
-	// @KafkaListener(topics = "inter_server", groupId = "inter_server")
-	// @Transactional
-	// public void consume2(KafkaGradeRequest message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
-	// 	// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class);
-	// 	System.out.println(key+"확인"+topic);
-	// 	addGrades(message);
-	// }
-	// public ArrayList<Grade> getGrades(){
-	// 	ArrayList<Grade> grades = new ArrayList<Grade>();
-	// 	ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
-	// 	// zSetOperations.add("Key", "Value", 10);
-	// 	// System.out.println(zSetOperations.range("ZKey",0,-1) ) ;
-	//
-	// 	zSetOperations.rangeByScore("ZKey",Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY).forEach((ZSetOperations.TypedTuple e) -> grades.add((Grade)e.getValue()));
-	// 	return grades;
-	// }
 
 	//카프카에서 enter 메시지가 왔을때 실행하는 함수
 	public void enter(String message){
@@ -116,12 +127,7 @@ public class GradeService {
 		// 랭킹 정보
 		zSetOperations.add(roomId+"rank",gradeRequest.getPlayerName(),score);
 	}
-	//
-	// public Grade getGrade(String roomId, String name){
-	// 	Grade grade = gson.fromJson(zSetOperations.popMax(roomId).getValue(), Grade.class);
-	// 	System.out.println(grade);
-	// 	return grade;
-	// }
+
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
 	public void rollback(Object message) {

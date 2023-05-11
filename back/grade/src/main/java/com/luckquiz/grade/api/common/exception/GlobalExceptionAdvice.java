@@ -1,4 +1,4 @@
-package com.luckquiz.grade.common.exception;
+package com.luckquiz.grade.api.common.exception;
 
 
 import lombok.extern.slf4j.Slf4j;
