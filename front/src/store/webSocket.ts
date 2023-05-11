@@ -89,10 +89,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
         dispatch(socketActions.changeGuestList(data.enterGuestList));
       } else if (data.type === "getQuizItem") {
         dispatch(socketActions.getQuizItem(data.getQuizItem));
-      } else if (data.type === "checkGuestName") {
-        dispatch(socketActions.updateUseGuestName(data.checkGuestName));
-      }
-      else {
+      } else {
         console.log("got empty message");
       }
     }
@@ -103,11 +100,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     roomId: socketProps.roomNum,
   };
   // const URL = `/topic/quiz/${pinNum}`;
-  // const URL = `/topic/quiz/8345119`;
+  const URL = `/topic/quiz/3670055`;
 
-  const URL = socketProps.isHost
-    ? `/topic/quiz/${socketProps.roomNum}`
-    : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+  // const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };

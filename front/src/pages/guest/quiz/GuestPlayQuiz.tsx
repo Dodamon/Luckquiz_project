@@ -4,6 +4,8 @@ import QuizShortContent from "../../../components/guest/quiz/QuizShortContent";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
+import QuizOxContent from "components/guest/quiz/QuizOxContent";
+import QuizFourContent from "components/guest/quiz/QuizFourContent";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
@@ -28,12 +30,14 @@ const GuestPlayQuiz = () => {
   // }
 
   return (
-    quizItem && (
-      <>
-        {/* <QuizFourContent content={newGameItem}/> */}
-        <QuizShortContent content={quizItem} />
-      </>
-    )
+    <div>
+        <>
+          {/* <QuizFourContent content={newGameItem}/> */}
+          {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
+          {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
+          {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+        </>
+    </div>
   );
 };
 

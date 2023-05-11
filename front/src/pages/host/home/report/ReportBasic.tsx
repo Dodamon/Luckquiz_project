@@ -5,7 +5,6 @@ import { Icon } from "@iconify/react";
 import report_logo from "assets/images/report_logo.png";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
-import QuizGameTitle from "components/common/QuizGameTitle";
 
 const reportBasic = {
   title: "SSAFY 스타트 캠프 퀴즈",

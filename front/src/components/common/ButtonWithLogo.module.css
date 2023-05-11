@@ -1,5 +1,6 @@
 .btnBox {
   display: flex;
+  cursor: pointer;
 }
 
 .logoBox {
