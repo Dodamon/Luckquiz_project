@@ -9,15 +9,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { socketActions } from "store/webSocket";
+import axios from "axios";
 
 interface Props {
+  quiz: Quiz;
   menu: number;
-  quiz?: Quiz;
-  report?: Report;
+  report?: string;
+  onDeleteQuiz: (quizId: string) => void;
 }
 
+
 const HomeListCard = (props: Props) => {
-  const { menu, quiz, report } = props;
+  const {quiz, menu, report, onDeleteQuiz } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -48,6 +51,17 @@ const HomeListCard = (props: Props) => {
     }
   }, [data]);
 
+  const deleteQuizHandler = () =>{
+    const deleteItem = {
+      id:quiz.templateId,
+      hostId:userId
+  }
+    axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem ).then(res=>{
+      console.log(res.data);
+      onDeleteQuiz(quiz.templateId);
+    })
+  }
+
   return (
     <div className={styles.quizBox}>
       <div className={styles.quizRowFrame}>
@@ -58,13 +72,13 @@ const HomeListCard = (props: Props) => {
           {/* quiz에서 쓰이는 경우 (menu = 0)*/}
           {menu === 0 ? (
             <>
-              <div className={styles.quizTitle}>{quiz?.title}</div>
+              <div className={styles.quizTitle}>{quiz?.name}</div>
               <div className={styles.placeholder}>{quiz?.date}</div>
             </>
           ) : (
             <>
-              <div className={styles.quizTitle}>{report?.title}</div>
-              <div className={styles.placeholder}>{report?.date}</div>
+              {/* <div className={styles.quizTitle}>{report?.title}</div> */}
+              {/* <div className={styles.placeholder}>{report?.date}</div> */}
             </>
           )}
         </div>
@@ -80,7 +94,7 @@ const HomeListCard = (props: Props) => {
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-two)" }}
                 onClick={() => {
-                  navigate(`/quiz/${props.quiz?.id}/edit`);
+                  // navigate(`/quiz/${props.quiz?.id}/edit`);
                 }}
               />
             </button>
@@ -99,13 +113,14 @@ const HomeListCard = (props: Props) => {
                 icon="ic:outline-cancel"
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-delete)" }}
-                onClick={() => {}}
+                onClick={deleteQuizHandler}
               />
             </button>
           </>
         ) : (
           // report에서 쓰이는 경우 (menu = 1)
-          <div className={styles.parti}>참여자 {report?.participants}명</div>
+          <div className={styles.parti}>참여자 </div>
+          // {report?.participants}명
         )}
       </div>
     </div>

@@ -24,8 +24,9 @@ interface Data {
 const HomeMain = () => {
   const dispatch = useDispatch();
   const { data, status, sendHostRequest } = useHostAxios();
-  const [isModal, setIsModal] = useState(false);
+  const [isModals, setIsModal] = useState(false);
   const quizInfo = useSelector((state:RootState) => state.quiz)
+  const authInfo = useSelector((state:RootState) => state.auth)
  useEffect(() => {
   sendHostRequest({
     url: `/api/auth/user/info`,
@@ -39,15 +40,14 @@ useEffect(() => {
 }, [data]);
 
 const testHandler= ()=>{
-  setIsModal(!isModal);
-  console.log(isModal);
-  
-  // axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quizInfo.templateId}&hostId=${quizInfo.hostId}`).then(res=>{
-  //   console.log(res);
-    
-  // })
+ setIsModal(!isModals);
 }
-
+// console.log(quizInfo.templateId,  authInfo.userId);
+  
+// axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${26}&hostId=${authInfo.userId}`).then(res=>{
+//   console.log(res);
+  
+// })
   return (
     <div className={styles.background}>
       <div className={styles.header}>
@@ -57,7 +57,7 @@ const testHandler= ()=>{
           </div>
           LuckQuiz
         </div>
-        <span className={styles.btn} onClick={testHandler}>
+        <span className={styles.btn} onClick={()=>testHandler()} >
           <Icon icon="material-symbols:add-circle-outline-rounded"  className={styles.addIcon} />새 퀴즈 만들기
         </span>
       </div>
@@ -67,8 +67,8 @@ const testHandler= ()=>{
           <SideMenuTab />
         </div>
         
-        <Outlet></Outlet>
-        <Modal isModal={isModal} setIsModal={setIsModal} />
+        <Outlet context={{isModals}}></Outlet>
+        <Modal isModal={isModals} setIsModal={setIsModal} />
       </div>
    
     </div>
