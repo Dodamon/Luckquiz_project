@@ -1,11 +1,19 @@
 package com.luckquiz.quizroom.api.controller;
 
+import com.google.gson.Gson;
+import com.luckquiz.quizroom.api.request.DupliRequest;
 import com.luckquiz.quizroom.api.request.QuizRoomCreateRequest;
 import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
+import com.luckquiz.quizroom.api.response.Duplucheck;
 import com.luckquiz.quizroom.api.service.QuizService;
+import com.luckquiz.quizroom.model.EnterUser;
+import com.luckquiz.quizroom.model.QuizMessage;
 import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +26,10 @@ import java.util.UUID;
 @RequestMapping("/api/quizroom")
 public class ChatRoomController { // for controller update
     private final QuizService quizService;
+
+    private final SimpMessageSendingOperations sendingOperations;
+    private final Gson gson;
+    private  final StringRedisTemplate stringRedisTemplate;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -48,6 +60,25 @@ public class ChatRoomController { // for controller update
     @ResponseBody
     public void quizStart(@RequestBody QuizStartRequest quizStartRequest){
         quizService.startQuiz(quizStartRequest);
+    }
+
+    @PostMapping("/duplicate")
+    @ResponseBody
+    public void nickNameDuplicated(@RequestBody QuizMessage message){
+        ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+        String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
+        String [] arr = allList.split(", ");
+        String check = "true";
+        for(String user: arr){
+            EnterUser a = gson.fromJson(user,EnterUser.class);
+            if(a.getSender().equals(message.getSender())){
+                check = "false";
+            }
+        }
+        Duplucheck d = new Duplucheck();
+        d.setType("checkGuestName");
+        d.setCheckGuestName(check);
+        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
     }
 
 }
