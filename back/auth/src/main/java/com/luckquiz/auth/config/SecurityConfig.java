@@ -28,11 +28,8 @@ public class SecurityConfig {
     // 사용자의 인증 요청을 임시로 보관하는 리포지토리에 대한 설정
     // 인증 과정을 모두 마친 후 리다이렉트할 프론트의 URI가 담겨있다.
     private final CustomOAuth2UserService customOAuth2UserService;
-
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
-
-
     private final CorsConfigurationSource corsConfigurationSource;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
 
     @Bean
@@ -91,7 +88,6 @@ public class SecurityConfig {
 
         // Add our custom Token based authentication filter
         httpSecurity.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return httpSecurity.build();
     }
 }
