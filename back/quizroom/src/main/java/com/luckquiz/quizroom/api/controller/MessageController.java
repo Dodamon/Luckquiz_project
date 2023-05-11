@@ -15,6 +15,7 @@ import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -96,14 +97,28 @@ public class MessageController {
         sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
     }
 
+
+    @MessageMapping("/emotion")
+    public void emotion(QuizMessage message) throws  Exception{
+        byte[] decode = Base64.getDecoder().decode(message.getMessage().split(",")[1]);
+        ClovarVisionService clovarVisionService = new ClovarVisionService(gson);
+        clovarVisionService.naverCheck(decode);
+        GoogleVisionService googleVisionService = new GoogleVisionService(gson);
+        googleVisionService.googleCheck(decode);
+
+//      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+//      toGradeProducer.clientSubmit(gson.toJson(message));
+        System.out.println("제출되었읍니다....");
+//      Object resultRespone = gson.fromJson(result, Object.class);
+//      sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
+    }
+
     @MessageMapping("/submit")
-    public void submit(byte[] message) {
-        System.out.println(message);
-        String msg = new String(message, StandardCharsets.UTF_8);
-        System.out.println(msg);
-//        System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
-//            toGradeProducer.clientSubmit(gson.toJson(message));
-            System.out.println("제출되었읍니다....");
+    public void submit(QuizMessage message) throws  Exception{
+//      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+//      toGradeProducer.clientSubmit(gson.toJson(message));
+//      Object resultRespone = gson.fromJson(result, ResultRes.class);
+//      sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
     }
 
 //    @MessageMapping("/{roomId}/private/{sender}")
