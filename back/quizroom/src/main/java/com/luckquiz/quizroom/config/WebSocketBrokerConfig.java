@@ -2,6 +2,7 @@ package com.luckquiz.quizroom.config;
 
 import com.luckquiz.quizroom.model.QuizMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -9,6 +10,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
@@ -46,9 +48,17 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
         registration.setMessageSizeLimit(1024*1024*400);
-        registration.setSendBufferSizeLimit(1024*1024*4000);
+        registration.setSendBufferSizeLimit(1024*1024*400);
         registration.setSendTimeLimit(20 * 1000);
 //        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
+    }
+
+    @Bean
+    public ServletServerContainerFactoryBean createWebSocketContainer() {
+        ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean(); // (3)
+        container.setMaxTextMessageBufferSize(1024*1024*400); // (4)
+        container.setMaxBinaryMessageBufferSize(1024*1024*400); // (5)
+        return container;
     }
 
 }

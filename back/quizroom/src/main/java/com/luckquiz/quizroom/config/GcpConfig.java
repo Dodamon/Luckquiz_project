@@ -10,8 +10,11 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 
+
+
+
 @Configuration
-public class GcpConfig {
+public class GcpConfig{
     @Value("snappy-analog-384101")
     private String projectId;
 
