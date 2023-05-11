@@ -6,6 +6,8 @@ import styles from "./QuizFourContent.module.css";
 import { getQuizItem, setQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 type QuizFourContentProps = {
   content: getQuizItem;
@@ -13,6 +15,7 @@ type QuizFourContentProps = {
 
 const QuizFourContent = ({ content }: QuizFourContentProps) => {
   const [item, setItem] = useState("");
+  const auth = useSelector((state: RootState) => state.auth.isAuthenticated)
 
   const answerHandler = (answer: string) => {
     setItem(answer);

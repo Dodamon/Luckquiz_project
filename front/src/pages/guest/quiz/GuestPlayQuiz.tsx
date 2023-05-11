@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import QuizOxContent from "components/guest/quiz/QuizOxContent";
 import QuizFourContent from "components/guest/quiz/QuizFourContent";
+import TimerBar from "components/common/TimerBar";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const quizItem = useSelector((state: RootState) => state.socket.QuizItem);
+  const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const dispatch = useDispatch();
   // const newGameItem: setQuizItem = {
 
@@ -31,12 +32,13 @@ const GuestPlayQuiz = () => {
 
   return (
     <div>
-        <>
-          {/* <QuizFourContent content={newGameItem}/> */}
-          {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
-          {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
-          {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
-        </>
+      <>
+        <TimerBar time={20} />
+        {/* <QuizFourContent content={newGameItem}/> */}
+        {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
+        {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
+        {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+      </>
     </div>
   );
 };

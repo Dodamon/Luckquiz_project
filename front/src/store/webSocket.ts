@@ -10,14 +10,15 @@ interface SocketState {
   client: Client | null;
   pinNum: string;
   guestList: GuestType[];
-  QuizItem: getQuizItem | null;
+  quizItem: getQuizItem | null;
+  
 }
 
 const initialState: SocketState = {
   client: client,
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
-  QuizItem: null,
+  quizItem: null,
 };
 
 // const initialState: SocketState = {
@@ -50,8 +51,8 @@ const socketSlice = createSlice({
     },
 
     getQuizItem: (state, actions) => {
-      state.QuizItem = actions.payload;
-      console.log(state.QuizItem);
+      state.quizItem = actions.payload;
+      console.log(state.quizItem);
     },
   },
 });

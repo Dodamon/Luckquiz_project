@@ -15,7 +15,7 @@ const HostLobby = () => {
   const navigate = useNavigate()
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const quizItem = useSelector((state: RootState) => state.socket.QuizItem)
+  const quizItem = useSelector((state: RootState) => state.socket.quizItem)
   const dispatch = useDispatch();
 
   useEffect(() => {

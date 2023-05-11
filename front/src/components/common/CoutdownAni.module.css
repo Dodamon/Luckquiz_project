@@ -1,0 +1,311 @@
+:root {
+  --deg: 120deg;
+
+  --red: #fd3359;
+  --yellow: #f4d302;
+  --blue: #21bdff;
+
+  --size: 140px;
+  --sizeBig: 500px;
+  --pad: 10px;
+  --numSize: 100px;
+  --totalAT: 4s;
+  --contBr: 20px;
+
+  --num1Len: 72.1554946899414;
+  --num2Len: 136.02162170410156;
+  --num3Len: 144.4256591796875;
+  --numJoin1-2: 82.63925170898438;
+  --numJoin2-3: 42.81303787231445;
+  --numJoin3-0: 40;
+  --totalLen: calc(var(--num1Len) + var(--num2Len) + var(--num3Len) + var(--numJoin1-2) + var(--numJoin2-3) +
+    var(--numJoin3-0));
+}
+
+@keyframes contAnim {
+  15%,
+  100% {
+    margin-left: calc(var(--sizeBig) / -2);
+    width: var(--sizeBig);
+  }
+  25%,
+  90% {
+    margin-left: calc(var(--size) / -2);
+    width: var(--size);
+  }
+}
+
+@keyframes numAnim {
+  15% {
+    stroke-dasharray: 0, var(--totalLen);
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  25%,
+  41% {
+    opacity: 1;
+    stroke-dasharray: var(--num3Len), var(--totalLen0);
+    stroke-dashoffset: var(---numJoin3-0);
+  }
+  53%,
+  66% {
+    stroke-dasharray: var(--num2Len), var(--totalLen);
+    stroke-dashoffset: calc(var(---num3Len) - var(--numJoin2-3) - var(--numJoin3-0));
+  }
+  76% {
+    stroke-dasharray: calc(var(--num1Len) + var(--numJoin1-2) / 2), var(--totalLen);
+    stroke-dashoffset: calc(var(---num3Len) - var(--numJoin2-3) - var(--num2Len) - var(--numJoin1-2) - var(--numJoin3-0));
+  }
+  88%,
+  100% {
+    stroke-dasharray: var(--num1Len), var(--totalLen);
+    stroke-dashoffset: calc(var(---num3Len) - var(--numJoin2-3) - var(--num2Len) - var(--numJoin1-2) - var(--numJoin3-0));
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes demoAnim {
+  15% {
+    border-radius: var(--contBr);
+    transform: rotate(0);
+  }
+  30%,
+  43% {
+    border-radius: 50%;
+    transform: rotate(360deg);
+  }
+
+  52%,
+  65% {
+    border-radius: 0;
+    transform: rotate(720deg);
+  }
+
+  78%,
+  90% {
+    border-radius: 50%;
+    transform: rotate(1080deg);
+  }
+
+  100% {
+    border-radius: var(--contBr);
+    transform: rotate(1440deg);
+  }
+}
+
+.demo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--sizeBig);
+  height: var(--size);
+  margin-top: calc(var(--size) / -2);
+  padding: var(--pad);
+  border-radius: 20px;
+  transform: translateX(-50%);
+}
+
+.blocks {
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--sizeBig);
+  height: 100%;
+  margin-left: calc(var(--sizeBig) / -2);
+  padding: var(--pad);
+  border-radius: var(--contBr);
+  perspective: 1000px;
+  animation: demoAnim var(--totalAT) ease-in-out infinite, contAnim var(--totalAT) infinite;
+}
+
+.rotater {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  animation: rotation 1.3s linear infinite;
+}
+
+.textInner {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  background: var(--point-color);
+  border-radius: inherit;
+}
+
+.rotater > div {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300%;
+  height: 300%;
+  transform-origin: 0 0;
+}
+
+.rotater > div:nth-child(1) {
+  /* transform : rotate skewX */
+  --rt: calc(var(--deg) * (1 - 1));
+  --skew: calc(90deg - var(--deg));
+  transform: rotate(var(--rt)) skewX(var(--skew));
+  background-color: var(--red);
+}
+
+.rotater > div:nth-child(2) {
+  --rt: calc(var(--deg) * (2 - 1));
+  --skew: calc(90deg - var(--deg));
+  transform: rotate(var(--rt)) skewX(var(--skew));
+  background-color: var(--yellow);
+}
+
+.rotater > div:nth-child(3) {
+  --rt: calc(var(--deg) * (3 - 1));
+  --skew: calc(90deg - var(--deg));
+  transform: rotate(var(--rt)) skewX(var(--skew));
+  background-color: var(--blue);
+}
+
+.inner {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.numbers {
+  overflow: visible;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--numSize);
+  height: var(--numSize);
+  margin-left: calc(var(--numSize) / -2);
+  margin-top: calc(var(--numSize) / -2);
+}
+
+.numberspath {
+  fill: none;
+  stroke-width: 10px;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 0, var(--totalLen);
+  stroke-dashoffset: 0;
+  animation: numAnim var(--totalAT) ease-in-out infinite;
+  opacity: 0;
+}
+
+.textOne {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--sizeBig);
+  height: 100%;
+  margin-left: calc(var(--sizeBig) / -2);
+  text-align: center;
+  line-height: var(--size);
+  font-size: 100px;
+  color: #fff;
+  letter-spacing: 15px;
+  transform: translateX(10px);
+  animation: hideOne 4s infinite;
+}
+
+.textTwo {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--sizeBig);
+  height: 100%;
+  margin-left: calc(var(--sizeBig) / -2);
+  text-align: center;
+  line-height: var(--size);
+  font-size: 100px;
+  color: #fff;
+  letter-spacing: 15px;
+  transform: translateX(10px);
+  animation: hideTwo 4s infinite;
+}
+
+.textThree {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--sizeBig);
+  height: 100%;
+  margin-left: calc(var(--sizeBig) / -2);
+  text-align: center;
+  line-height: var(--size);
+  font-size: 100px;
+  color: #fff;
+  letter-spacing: 15px;
+  transform: translateX(10px);
+  animation: hideThree 4s infinite;
+}
+
+.textReady {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--sizeBig);
+  height: 100%;
+  margin-left: calc(var(--sizeBig) / -2);
+  text-align: center;
+  line-height: var(--size);
+  font-size: 100px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 15px;
+  transform: translateX(10px);
+  animation: hideReady 4s infinite;
+}
+
+@keyframes hideReady {
+  15%, 100% {
+    opacity: 1;
+  }
+  20%, 96% {
+    opacity: 0;
+  }
+}
+
+@keyframes hideOne {
+  96%, 25% {
+    opacity: 1;
+  }
+  45%, 21% {
+    opacity: 0;
+  }
+}
+
+@keyframes hideTwo {
+  65%, 50% {
+    opacity: 1;
+  }
+  70%, 46% {
+    opacity: 0;
+  }
+}
+
+@keyframes hideThree {
+  90%, 75% {
+    opacity: 1;
+  }
+  45%, 21% {
+    opacity: 0;
+  }
+}
