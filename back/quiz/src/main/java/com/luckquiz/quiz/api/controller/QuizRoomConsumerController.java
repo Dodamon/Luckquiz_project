@@ -3,7 +3,6 @@ package com.luckquiz.quiz.api.controller;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -39,7 +38,6 @@ public class QuizRoomConsumerController {
         if("end".equals(key)){
             Integer roomId = Integer.parseInt(in);
             String roomInfo = stringRedisTemplate.opsForValue().get(roomId);
-
 
         }
     }
