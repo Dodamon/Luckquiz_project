@@ -148,4 +148,23 @@ public class TemplateService {
         return result;
     }
 
+public Boolean checkValid(int templateId) throws  Exception{
+    List<QuizGame> arr = quizGameRepository.findQuizGamesByTemplateId(templateId);
+    for(QuizGame qg : arr){
+        String quizDumb = new String(qg.getQuiz(), "UTF-8");
+        QGame check = gson.fromJson(quizDumb,QGame.class);
+        if ("game".equals(qg.getType())){
+            if(qg.getTimer()!=null && qg.getTemplateId()!=null&& check.getQuestion()!=null&&check.getTimer()!=null&&check.getAnswer()!=null){
+
+            }
+
+        }else if("quiz".equals(qg.getType())){
+
+        }else{
+            return false;
+        }
+    }
+    return true;
+}
+
 }
