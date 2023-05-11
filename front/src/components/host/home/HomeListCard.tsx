@@ -12,6 +12,13 @@ import { socketActions } from "store/webSocket";
 import axios from "axios";
 import { quizAtions } from "store/quiz";
 
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+
 interface Props {
   quiz: Quiz;
   menu: number;
@@ -27,7 +34,7 @@ const HomeListCard = (props: Props) => {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const client = useSelector((state: RootState) => state.socket.client);
   const { data, status, sendHostRequest } = useHostAxios();
-
+  const [open, setOpen] = useState(false);
   const startQuiz = () => {
     // sendHostRequest({ url: `/api/quizroom/room`, method: "POST", data: { hostId: userId, templateId: quiz?.id } });
     sendHostRequest({
@@ -52,18 +59,24 @@ const HomeListCard = (props: Props) => {
     }
   }, [data]);
 
+
+  const handleAlertClose = () => {
+    setOpen(false);
+  };
+
   const deleteQuizHandler = () =>{
     const deleteItem = {
       id:quiz.templateId,
       hostId:userId
   }
-    axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem ).then(res=>{
+
+   axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem ).then(res=>{
       console.log(res.data);
       onDeleteQuiz(quiz.templateId);
+      setOpen(true);
     })
   }
 
- 
 
 
   const dateChangeHandler = (dateValue : string)=>{
@@ -79,6 +92,10 @@ const HomeListCard = (props: Props) => {
       
     })
   }
+ 
+
+
+
 
   return (
     <div className={styles.quizBox}>
@@ -133,7 +150,9 @@ const HomeListCard = (props: Props) => {
                 icon="ic:outline-cancel"
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-delete)" }}
-                onClick={deleteQuizHandler}
+                onClick={()=>{
+                  deleteQuizHandler();
+                }}
               />
             </button>
           </>
@@ -143,6 +162,16 @@ const HomeListCard = (props: Props) => {
           // {report?.participants}명
         )}
       </div>
+
+      <Dialog open={open} onClose={handleAlertClose}>
+        <DialogTitle>알림</DialogTitle>
+        <DialogContent>
+          <DialogContentText>템플릿이 삭제되었습니다.</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>handleAlertClose()}>닫기</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
