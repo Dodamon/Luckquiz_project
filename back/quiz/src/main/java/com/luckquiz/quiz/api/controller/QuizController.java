@@ -3,8 +3,6 @@ package com.luckquiz.quiz.api.controller;
 import com.luckquiz.quiz.api.request.QuizGameCreateRequest;
 import com.luckquiz.quiz.api.request.TemplateCreateRequest;
 import com.luckquiz.quiz.api.request.TemplateDeleteRequest;
-import com.luckquiz.quiz.api.request.TemplateRedisRequest;
-import com.luckquiz.quiz.api.response.QGCreateResponse;
 import com.luckquiz.quiz.api.response.TemplateDetailResponse;
 import com.luckquiz.quiz.api.service.GcpService;
 import com.luckquiz.quiz.api.service.RedisTransService;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.UUID;
 
 @Api(tags = {"API 정보를 제공하는 Controller"})
@@ -27,7 +24,6 @@ public class QuizController {
     // 요청받았을 때 해당하는 템플릿 쏴주는 것
     private final TemplateService templateService;
     private final GcpService gcpService;
-
     private final RedisTransService redisTransService;
 
     // 혹시 모를 자잘한 이미지 업로드가 있을까봐하여 맹글어두었읍니다...
@@ -63,5 +59,9 @@ public class QuizController {
         return ResponseEntity.ok(templateService.findTemplateDetail(templateId,hostUUID));
     }
 
-
+    @GetMapping("/template/list")
+    public ResponseEntity templateList(@RequestParam String hostId){
+        UUID hostUUID = UUID.fromString(hostId);
+        return ResponseEntity.status(HttpStatus.OK).body(templateService.templateList(hostUUID));
+    }
 }
