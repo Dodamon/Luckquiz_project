@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
 import axios from "axios"
+import { useNavigate } from "react-router";
 
 
 const QuizSelectMenu = () => {
@@ -16,7 +17,8 @@ const QuizSelectMenu = () => {
     const [selectedQuizOption, setSelectedQuizOption] = useState(quizInfo[selectInfo].quiz);
     const [selectedGameOption, setSelectedGameOption] = useState(quizInfo[selectInfo].game);
     const [selectedTimeOption, setSelectedTimeOption] = useState(quizInfo[selectInfo].timer);
-
+    
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -50,10 +52,12 @@ const QuizSelectMenu = () => {
 
     const temporarySaveHandler = () => {
         // dispatch(quizAtions.contentsUpdate({ index: selectInfo, content: template }))
-        console.log(template);
+        console.log("뭔데", template);
         
         axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res => {
+            
             console.log(res);
+            navigate("/home");
 
         })
 

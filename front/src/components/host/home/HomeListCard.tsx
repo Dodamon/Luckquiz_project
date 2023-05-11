@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { socketActions } from "store/webSocket";
 import axios from "axios";
+import { quizAtions } from "store/quiz";
 
 interface Props {
   quiz: Quiz;
@@ -62,6 +63,23 @@ const HomeListCard = (props: Props) => {
     })
   }
 
+ 
+
+
+  const dateChangeHandler = (dateValue : string)=>{
+    const data = dateValue;
+    const formattedDate = new Date(data).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+    return formattedDate;
+  }
+
+  
+  const test = ()=>{
+    axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz.templateId}&hostId=${userId}`).then(res=>{
+      console.log(res.data);
+      
+    })
+  }
+
   return (
     <div className={styles.quizBox}>
       <div className={styles.quizRowFrame}>
@@ -73,7 +91,7 @@ const HomeListCard = (props: Props) => {
           {menu === 0 ? (
             <>
               <div className={styles.quizTitle}>{quiz?.name}</div>
-              <div className={styles.placeholder}>{quiz?.date}</div>
+              <div className={styles.placeholder}>{dateChangeHandler(quiz?.date)}</div>
             </>
           ) : (
             <>
@@ -94,7 +112,9 @@ const HomeListCard = (props: Props) => {
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-two)" }}
                 onClick={() => {
-                  // navigate(`/quiz/${props.quiz?.id}/edit`);
+
+                  dispatch(quizAtions.templateIdUpdate(quiz.templateId))
+                  navigate(`/quiz/${quiz.templateId}/edit`);
                 }}
               />
             </button>

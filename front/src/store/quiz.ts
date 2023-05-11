@@ -40,9 +40,14 @@ reducers:{
     },
     quizTypeUpdate:(state, action)=>{
         const { index, type } = action.payload;
-
         state.quizList = produce(state.quizList, draftList => {
             draftList[index].quiz = type;
+        });
+    },
+    emotionTypeUpdate:(state, action)=>{
+        const { index, type } = action.payload;
+        state.quizList = produce(state.quizList, draftList => {
+            draftList[index].answer = type;
         });
     },
     quizTimeUpdate:(state, action)=>{
@@ -51,6 +56,11 @@ reducers:{
             draftList[index].timer = time;
         });
     },
+    templateIdUpdate:(state, action)=>{
+        console.log("맞잖아",action.payload);
+        state.templateId = action.payload;
+    },
+
     contentsUpdate:(state, action)=>{
         const { index, content } = action.payload;
         state.quizList = produce(state.quizList, draftList => {
@@ -59,9 +69,9 @@ reducers:{
     },
 
     receiveUpdate:(state, action)=>{
-    console.log(action.payload);
+    console.log("디스패치 왔는디요",action.payload);
      state.hostId = action.payload.hostId; 
-     state.templateId = action.payload.templateId; 
+     state.templateId = !action.payload.templateId? state.templateId:action.payload.templateId; 
      state.quizList = action.payload.quizList; 
     //  state = action.payload;
     },

@@ -9,6 +9,9 @@ import Modal from "components/host/quiz/Modal";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { useDispatch } from "react-redux";
+import { authActions } from "store/auth";
+import useHostAxios from "hooks/useHostAxios";
 
 
 export interface Quiz {
@@ -32,8 +35,8 @@ const Quiz = () => {
   const authInfo = useSelector((state: RootState) => state.auth)
   const [myQuizList, setMyQuizList] = useState<Quiz[]>([]);
   const [deleteItem, setDeleteItem] = useState("");
-
-
+  const { data, status, sendHostRequest } = useHostAxios();
+  const dispatch = useDispatch()
 
 
 
@@ -45,15 +48,30 @@ const Quiz = () => {
 
 
   useEffect(() => {
+    // sendHostRequest({
+    //   url: `/api/quiz/template/list?hostId=${authInfo.userId}`,
+    // }).then(data =>{
+    //   console.log(data);
+      
+    // })
+    
+
+
+
+
+
     axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
         console.log(res.data);
         const newQuizList = res.data;
         setMyQuizList(newQuizList);
+        dispatch(authActions.selectIndex(0));
       });
   }, [deleteItem])
 
 
+
+  
 
   return (
     <div className={styles.content} style={isModal || isModals ? { backgroundColor: "darkgray" } : {}}>
