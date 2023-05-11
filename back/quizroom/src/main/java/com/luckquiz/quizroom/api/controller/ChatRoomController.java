@@ -64,7 +64,7 @@ public class ChatRoomController { // for controller update
 
     @PostMapping("/duplicate")
     @ResponseBody
-    public void nickNameDuplicated(@RequestBody QuizMessage message){
+    public Duplucheck nickNameDuplicated(@RequestBody QuizMessage message){
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
         String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
         String [] arr = allList.split(", ");
@@ -78,7 +78,7 @@ public class ChatRoomController { // for controller update
         Duplucheck d = new Duplucheck();
         d.setType("checkGuestName");
         d.setCheckGuestName(check);
-        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
+        return d;
     }
 
 }
