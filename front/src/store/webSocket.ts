@@ -11,7 +11,6 @@ interface SocketState {
   pinNum: string;
   guestList: GuestType[];
   QuizItem: getQuizItem | null;
-  useGuestName: boolean;
   getMessage: boolean;
 }
 
@@ -20,7 +19,6 @@ const initialState: SocketState = {
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
   QuizItem: null,
-  useGuestName: false,
   getMessage: false,
 };
 
@@ -42,10 +40,6 @@ const socketSlice = createSlice({
     updateGetMessage: (state, actions) => {
       state.getMessage = actions.payload
     },
-    updateUseGuestName: (state, actions) => {
-      state.useGuestName = actions.payload;
-    },
-
     changeGuestList: (state, actions) => {
       state.guestList = actions.payload;
     },
@@ -85,16 +79,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") {
-        dispatch(socketActions.changeGuestList(data.enterGuestList));
-      } else if (data.type === "getQuizItem") {
-        dispatch(socketActions.getQuizItem(data.getQuizItem));
-      } else if (data.type === "checkGuestName") {
-        dispatch(socketActions.updateUseGuestName(data.checkGuestName));
-      }
-      else {
-        console.log("got empty message");
-      }
+      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
+      else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
+      else console.log("got empty message");
     }
   };
 
