@@ -81,7 +81,7 @@ public class TemplateService {
         // template 을 조회를 해 있는거겠지 그러니까 그 다음에도 있어야해?
         List<QuizGame> quizList = quizGameRepository.findQuizGamesByTemplateId(templateId);
         List<QGame> quizgame = new ArrayList<>();
-        for(QuizGame a : quizList){
+        for (QuizGame a : quizList) {
             String quizDumb = new String(a.getQuiz(), "UTF-8");
             QGame gameinfo = gson.fromJson(quizDumb, QGame.class);
             gameinfo.setId(a.getId());
@@ -100,7 +100,7 @@ public class TemplateService {
     // 구분자는 모두 `` 으로 나눴고 인정답안은 ₩₩ 으로 구분하였다.
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
-    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception{
+    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception {
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         temp.setDate(LocalDateTime.now());
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
@@ -109,7 +109,6 @@ public class TemplateService {
         // 퀴즈들을 저장하자.
         List<QGame> qGames = qgcr.getQuizList();
         for (QGame a : qGames) {
-
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = gson.toJson(a).getBytes(charset);
             QuizGame qgame = QuizGame.builder()
@@ -118,7 +117,7 @@ public class TemplateService {
                     .quiz(bytes)
                     .type(a.getType())
                     .build();
-            if(QuizType.game.equals(a.getType())){
+            if (QuizType.game.equals(a.getType())) {
                 System.out.println("is Game");
                 qgame.setType(QuizType.game);
             }
@@ -129,13 +128,13 @@ public class TemplateService {
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
 
-    public List<TemplateListResponse> templateList(UUID hostId){
+    public List<TemplateListResponse> templateList(UUID hostId) {
         List<Template> before = templateRepository.findAllByHostId(hostId);
         List<TemplateListResponse> result = new ArrayList<>();
-        for(Template a : before){
+        for (Template a : before) {
             String date = "";
             System.out.println(a.getDate());
-            if(a.getDate()!=null){
+            if (a.getDate() != null) {
                 date = a.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             }
             TemplateListResponse temp = TemplateListResponse.builder()
@@ -147,24 +146,4 @@ public class TemplateService {
         }
         return result;
     }
-
-public Boolean checkValid(int templateId) throws  Exception{
-    List<QuizGame> arr = quizGameRepository.findQuizGamesByTemplateId(templateId);
-    for(QuizGame qg : arr){
-        String quizDumb = new String(qg.getQuiz(), "UTF-8");
-        QGame check = gson.fromJson(quizDumb,QGame.class);
-        if ("game".equals(qg.getType())){
-            if(qg.getTimer()!=null && qg.getTemplateId()!=null&& check.getQuestion()!=null&&check.getTimer()!=null&&check.getAnswer()!=null){
-
-            }
-
-        }else if("quiz".equals(qg.getType())){
-
-        }else{
-            return false;
-        }
-    }
-    return true;
-}
-
 }
