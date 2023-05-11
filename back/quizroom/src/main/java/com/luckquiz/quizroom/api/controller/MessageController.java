@@ -1,18 +1,25 @@
 package com.luckquiz.quizroom.api.controller;
 
 
+import com.google.api.gax.core.CredentialsProvider;
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.api.gax.core.GoogleCredentialsProvider;
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.vision.v1.*;
 import com.google.gson.Gson;
+import com.google.protobuf.ByteString;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.Duplucheck;
 import com.luckquiz.quizroom.api.response.QGame;
 import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
-import com.luckquiz.quizroom.api.service.QuizService;
-import com.luckquiz.quizroom.api.service.ToGradeProducer;
-import com.luckquiz.quizroom.api.service.ToQuizProducer;
+import com.luckquiz.quizroom.api.service.*;
 import com.luckquiz.quizroom.message.EnterGuestMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -23,10 +30,14 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.BinaryMessage;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
+// 꾸글
+//
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 @RestController
