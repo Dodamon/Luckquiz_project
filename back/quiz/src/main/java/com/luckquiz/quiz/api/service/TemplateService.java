@@ -29,6 +29,8 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,6 +51,7 @@ public class TemplateService {
     public int createTemplate(TemplateCreateRequest tcr) {
         Template temp = Template.builder()
                 .hostId(tcr.getHostId())
+                .date(LocalDateTime.now())
                 .name(tcr.getName())
                 .build();
         Template a = templateRepository.save(temp);
@@ -99,6 +102,7 @@ public class TemplateService {
     @Transactional
     public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception{
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
+        temp.setDate(LocalDateTime.now());
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
@@ -125,5 +129,23 @@ public class TemplateService {
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
 
+    public List<TemplateListResponse> templateList(UUID hostId){
+        List<Template> before = templateRepository.findAllByHostId(hostId);
+        List<TemplateListResponse> result = new ArrayList<>();
+        for(Template a : before){
+            String date = "";
+            System.out.println(a.getDate());
+            if(a.getDate()!=null){
+                date = a.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            }
+            TemplateListResponse temp = TemplateListResponse.builder()
+                    .date(date)
+                    .templateId(a.getId())
+                    .name(a.getName())
+                    .build();
+            result.add(temp);
+        }
+        return result;
+    }
 
 }
