@@ -13,6 +13,8 @@ import com.luckquiz.quizroom.model.QuizRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +66,7 @@ public class ChatRoomController { // for controller update
 
     @PostMapping("/duplicate")
     @ResponseBody
-    public Duplucheck nickNameDuplicated(@RequestBody QuizMessage message){
+    public ResponseEntity nickNameDuplicated(@RequestBody QuizMessage message){
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
         String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
         String [] arr = allList.split(", ");
@@ -78,7 +80,7 @@ public class ChatRoomController { // for controller update
         Duplucheck d = new Duplucheck();
         d.setType("checkGuestName");
         d.setCheckGuestName(check);
-        return d;
+        return ResponseEntity.status(HttpStatus.OK).body(d);
     }
 
 }
