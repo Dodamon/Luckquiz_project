@@ -85,7 +85,7 @@ const ProfileNickname: React.FC = () => {
       isHost: false,
     };
 
-    connectAndSubscribe(socketProps, dispatch);
+    if (!isLoading && guestName.length > 0 && useOk) connectAndSubscribe(socketProps, dispatch);
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +106,7 @@ const ProfileNickname: React.FC = () => {
       // keyup 1초 후 중복 검사
       console.log("api 요청");
       sendGuestRequest({ url: `/api/quizroom/duplicate/${pinNum}/${guestName}` });
-    }, 800);
+    }, 500);
 
     return () => {
       clearTimeout(identifier);
