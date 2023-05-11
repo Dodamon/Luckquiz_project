@@ -59,9 +59,9 @@ const ReportQuiz = () => {
         className={styles.reportContent}
         style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "start", gap: "6%" }}
       >
-        <ButtonWithLogo name={"가장 어려웠던 문제"} color="var(--select-three)" fontSize="18px" />
+        <ButtonWithLogo name={"가장 어려웠던 문제"} color="var(--select-three)" fontSize="18px" height="40px"/>
         <ReportTable property={[]} data={hardest} />
-        <ButtonWithLogo name={"전체 문제 보기"} color="var(--select-three)" fontSize="18px" />
+        <ButtonWithLogo name={"전체 문제 보기"} color="var(--select-three)" fontSize="18px" height="40px"/>
         <ReportTable property={[]} data={quiz.list} />
       </div>
     </div>

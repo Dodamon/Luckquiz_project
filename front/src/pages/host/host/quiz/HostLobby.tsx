@@ -19,7 +19,6 @@ const HostLobby = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(quizItem)
     quizItem && navigate(`/host/quiz/${quiz_id}/play`)
   }, [navigate, quizItem, quiz_id])
 
@@ -41,7 +40,7 @@ const HostLobby = () => {
         height="40px"
         fontSize="20px"
         // onClick={() => dispatch(socketActions.sendAnswerMessage({ roomId: quiz_id, hostId: userId }))}
-        onClick={() => dispatch(socketActions.sendAnswerMessage({ roomId: "8345119", hostId: userId }))}
+        onClick={() => dispatch(socketActions.sendAnswerMessage({ roomId: "3670055", hostId: userId }))}
       />
     </div>
   );

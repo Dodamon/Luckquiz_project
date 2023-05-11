@@ -25,7 +25,7 @@ const ShowPin = () => {
           <p>{quiz_id}</p>
         </div>
         {/* <img src={qr_sample} alt="" onClick={() => {navigate(`/host/quiz/${quiz_id}/lobby`)}}/> */}
-        <img src={qr_sample} alt="" onClick={() => {navigate(`/host/quiz/8345119/lobby`)}}/>
+        <img src={qr_sample} alt="" onClick={() => {navigate(`/host/quiz/3670055/lobby`)}}/>
         
       </div>
     </div>
