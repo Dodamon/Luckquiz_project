@@ -80,7 +80,7 @@ const EmotionGame: React.FC = () => {
       file: img
     };
 
-    dispatch(socketActions.sendAnswerMessage(selfie));
+    dispatch(socketActions.sendAnswerMessage({destination:"", body: selfie }));
 
   };
 

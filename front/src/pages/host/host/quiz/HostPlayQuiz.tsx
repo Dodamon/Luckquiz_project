@@ -12,7 +12,9 @@ import QuizFourContent from "components/guest/quiz/QuizFourContent";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 import TimerBar from "components/common/TimerBar";
-import CountdownAni from "components/common/CoutdownAni";
+import CountdownAni from "components/common/CountdownAni";
+import SubmitChart from "components/host/quiz/SubmitChart";
+import { socketActions } from "store/webSocket";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
@@ -49,26 +51,20 @@ const HostPlayQuiz = () => {
   //   },
   // };
 
-  // useEffect(() => {
-  //   order === 0 && (
-  //     setTimeout
-  //   )
-  // })
-  
-  
+  // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
+  useEffect(() => {
+    setOrder(0);
+  }, [quizItem]);
 
-  useEffect(() => {}, [quizItem]);
   console.log(quizItem);
   return (
-    <div>
+    quizItem && (
       <>
-        {order === 0 && (
-          <CountdownAni handleOrder={setOrder}/>
-        )}
+        {order === 0 && <CountdownAni handleOrder={setOrder} />}
         {order === 1 && (
-          <>
+          <div>
             <div>
-              <TimerBar time={20} />
+              <TimerBar time={quizItem.timer} handleOrder={setOrder} />
               <div>
                 {quizItem?.quizNum}/{quizItem?.quizSize}
               </div>
@@ -77,16 +73,65 @@ const HostPlayQuiz = () => {
             {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
             {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
             {/* 
-          <div className={styles.submitChart}>
+          <div className={styles.currenSubmitChart}>
             <Doughnut data={chartConfig} />
           </div> */}
             <div className={styles.nextBtn}>
-              <ButtonWithLogo name="건너뛰기" fontSize="18px" height="45px" />
+              <ButtonWithLogo
+                name="건너뛰기"
+                fontSize="18px"
+                height="45px"
+                onClick={() => {
+                  dispatch(socketActions.sendRequest("/app/quiz/rollback"));
+                }}
+              />
             </div>
-          </>
+          </div>
+        )}
+        {order === 2 && (
+          // 랭킹 컴포넌트
+          <div>
+            <div className={styles.submitChart}>
+              <SubmitChart myData={[34, 24]} />
+            </div>
+            {/* 마지막 문제인지 아닌지 */}
+            {quizItem.quizSize - quizItem.quizNum === 1 ? (
+              <div className={styles.nextBtn}>
+                <ButtonWithLogo
+                  name="최종 결과보기"
+                  fontSize="18px"
+                  height="45px"
+                  // onClick={() => {
+                  //   dispatch(
+                  //     socketActions.sendAnswerMessage({
+                  //       destination: "/app/quiz/next",
+                  //       body: { sender: "fufu", img: 2, roomId: "3670055" },
+                  //     }),
+                  //   );
+                  // }}
+                />
+              </div>
+            ) : (
+              <div className={styles.nextBtn}>
+                <ButtonWithLogo
+                  name="다음 퀴즈"
+                  fontSize="18px"
+                  height="45px"
+                  onClick={() => {
+                    dispatch(
+                      socketActions.sendAnswerMessage({
+                        destination: "/app/quiz/next",
+                        body: { sender: "fufu", img: 2, roomId: "3670055" },
+                      }),
+                    );
+                  }}
+                />
+              </div>
+            )}
+          </div>
         )}
       </>
-    </div>
+    )
   );
 };
 export default HostPlayQuiz;

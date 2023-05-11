@@ -35,9 +35,20 @@ const socketSlice = createSlice({
       if (client) {
         console.log("publish");
         client.publish({
-          destination: "/app/quiz/start",
-          body: JSON.stringify(actions.payload),
+          // destination: "/app/quiz/start",
+          destination: actions.payload.destination,
+          body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
+        });
+      }
+    },
+
+    // body 없는 publish
+    sendRequest: (state, actions) => {
+      if (client) {
+        console.log("publish");
+        client.publish({
+          destination: actions.payload,
         });
       }
     },
@@ -86,6 +97,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
         dispatch(socketActions.getQuizItem(data.getQuizItem));
       } else {
         console.log("got empty message");
+        dispatch(socketActions.getQuizItem(data));
       }
     }
   };

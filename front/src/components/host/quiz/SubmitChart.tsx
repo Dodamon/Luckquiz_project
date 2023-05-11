@@ -2,9 +2,19 @@ import { Chart, ChartConfiguration } from "chart.js";
 import { useEffect, useRef } from "react";
 import styles from "./SubmitChart.module.css";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { useDispatch } from "react-redux";
+import { socketActions } from "store/webSocket";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 const SubmitChart = (props: { myData: number[] }) => {
+  // const myData = useSelector((state: RootState) => {state.socket.})
   const { myData } = props;
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(socketActions.sendRequest());
+  // }, []);
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
@@ -15,7 +25,7 @@ const SubmitChart = (props: { myData: number[] }) => {
   const chartConfig: ChartConfiguration = {
     type: "bar",
     data: {
-      labels: [1, 2, 3, 4],
+      labels: myData, // label은 보여주지 않지만 canvas 너비 사이즈를 위해 라벨 갯수를 맞춰야함.
       datasets: [
         {
           label: "# of Votes",

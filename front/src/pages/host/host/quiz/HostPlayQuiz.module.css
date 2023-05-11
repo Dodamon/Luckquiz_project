@@ -7,10 +7,14 @@
   margin-top: 5vh;
 }
 
-.submitChart {
+.currentSubmitChart {
   position: fixed;
   top: 40%;
   right: 10px;
   width: 20%;
   height: 20%;
+}
+
+.submitChart {
+  width: 70%;
 }
