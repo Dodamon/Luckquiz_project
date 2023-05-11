@@ -73,7 +73,7 @@ public class ChatRoomController { // for controller update
         String check = "true";
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            if(a.getSender() != null && a.getSender().equals(message.getSender())){
+            if(a.getSender().equals(message.getSender())){
                 check = "false";
             }
         }
