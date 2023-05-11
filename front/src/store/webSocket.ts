@@ -12,6 +12,7 @@ interface SocketState {
   guestList: GuestType[];
   QuizItem: getQuizItem | null;
   useGuestName: boolean;
+  getMessage: boolean;
 }
 
 const initialState: SocketState = {
@@ -20,12 +21,8 @@ const initialState: SocketState = {
   guestList: [{ sender: "", img: 0 }],
   QuizItem: null,
   useGuestName: false,
+  getMessage: false,
 };
-
-// const initialState: SocketState = {
-//   client: client,
-//   guestList: [{ sender: "", img: 0 }],
-// };
 
 const socketSlice = createSlice({
   name: "socket",
@@ -42,14 +39,9 @@ const socketSlice = createSlice({
         });
       }
     },
-
-    guestNicknameCheck: (state, actions) => {
-      client.publish({
-        destination: "/app/duplicheck",
-        body: JSON.stringify({ sender: actions.payload.name, roomId: actions.payload.roomNum }),
-      });
+    updateGetMessage: (state, actions) => {
+      state.getMessage = actions.payload
     },
-
     updateUseGuestName: (state, actions) => {
       state.useGuestName = actions.payload;
     },
@@ -74,6 +66,7 @@ export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Func
   client.onConnect = async () => {
     await subscribe(socketProps, dispatch);
     await sendEnterMessage(socketProps);
+    await dispatch(socketActions.updateGetMessage(true));
     console.log("socket connected");
   };
   client.onDisconnect = () => {
