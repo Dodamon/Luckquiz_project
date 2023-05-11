@@ -77,10 +77,7 @@ public class ChatRoomController { // for controller update
                 check = "false";
             }
         }
-        Duplucheck d = new Duplucheck();
-        d.setType("checkGuestName");
-        d.setCheckGuestName(check);
-        return ResponseEntity.status(HttpStatus.OK).body(d);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
 }
