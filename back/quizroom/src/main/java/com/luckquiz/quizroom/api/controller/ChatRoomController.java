@@ -66,13 +66,14 @@ public class ChatRoomController { // for controller update
 
     @PostMapping("/duplicate")
     @ResponseBody
-    public ResponseEntity nickNameDuplicated(QuizMessage message){
+    public ResponseEntity nickNameDuplicated(@RequestBody QuizMessage message){
         ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
         String allList = stringStringValueOperations.get(message.getRoomId()+"l",0,-1);
         String [] arr = allList.split(", ");
         String check = "true";
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
+            System.out.println(a.getSender() + "가 기존이고 오른쪽 "+message.getSender());
             if(a.getSender().equals(message.getSender())){
                 check = "false";
             }
