@@ -40,6 +40,12 @@ dependencies {
 	// socket
 	implementation 'org.webjars:sockjs-client:1.0.2'
 	implementation 'org.webjars:stomp-websocket:2.3.3'
+
+	// for google face api
+	implementation 'com.google.cloud:google-cloud-vision:3.14.0'
+	// for microsoft face api
+	implementation 'com.microsoft.azure.cognitiveservices:azure-cognitiveservices-faceapi:1.0.1-beta'
+
 }
 
 tasks.named('test') {
