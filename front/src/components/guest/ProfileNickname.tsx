@@ -21,9 +21,9 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { client, connectAndSubscribe } from "store/webSocket";
-
-Object.assign(global, { WebSocket });
+import { connectAndSubscribe } from "store/webSocket";
+import useGuestAxios from "hooks/useGuestAxios";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ProfileNickname: React.FC = () => {
   const IMAGES = [
@@ -49,6 +49,11 @@ const ProfileNickname: React.FC = () => {
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
   const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
+  const guestName = useSelector<RootState, string>((state) => state.guest.nickname);
+  const gotMessage = useSelector<RootState, boolean>((state) => state.socket.getMessage);
+  const { data, status, isLoading, sendGuestRequest } = useGuestAxios();
+  const [useOk, setUseOk] = useState(false);
+  const [nameLoading, setNameLoading] = useState(false);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -74,30 +79,60 @@ const ProfileNickname: React.FC = () => {
 
     // websocket subscribe, publish
     const socketProps = {
-      name: enteredTxt,
+      name: guestName,
       img: imgIdx,
       roomNum: pinNum,
       isHost: false,
     };
 
-    // appDispatch(subscribeThunk(socketProps));
     connectAndSubscribe(socketProps, dispatch);
-    navigate("/guest/quiz/lobby");
   };
 
-  const enterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    const enteredTxt = nicknameRef.current!.value;
-    if (e.key === "Enter") {
-      if (enteredTxt.length > 6) {
-        alert("닉네임은 6자 이하로 작성하세요.");
-        nicknameRef.current!.value = "";
-        nicknameRef.current?.focus();
-      }
-      nicknameRef.current!.blur();
-      dispatch(guestActions.updateGuestNickname(enteredTxt));
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredTxt = e.target.value;
+    if (enteredTxt.length > 6) {
+      alert("닉네임은 6자 이하로 작성하세요.");
+      nicknameRef.current!.value = "";
+      nicknameRef.current?.focus();
     }
     dispatch(guestActions.updateGuestNickname(enteredTxt));
   };
+
+  useEffect(() => {
+    console.log(guestName);
+    if (guestName.length === 0) return;
+    setNameLoading(true);
+    const identifier = setTimeout(() => {
+      // keyup 1초 후 중복 검사
+      console.log("api 요청");
+      sendGuestRequest({ url: `/api/quizroom/duplicate/${pinNum}/${guestName}` });
+    }, 800);
+
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, [guestName]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!status || status !== 200) return;
+    setNameLoading(false);
+  }, [status, isLoading]);
+
+  useEffect(() => {
+    console.log(data);
+    if (data === true) setUseOk(true);
+    else if (data === false) setUseOk(false);
+  }, [data]);
+
+  useEffect(() => {
+    setNameLoading(false);
+    dispatch(guestActions.updateGuestNickname(""));
+  }, []);
+
+  useEffect(() => {
+    if (gotMessage) navigate("/guest/quiz/lobby");
+  }, [gotMessage]);
 
   return (
     <div className={styles.profileNicknameContainer}>
@@ -107,16 +142,25 @@ const ProfileNickname: React.FC = () => {
           <Icon icon="ph:plus-circle-fill" className={styles.imgEditBtn} onClick={onClickEditImg} />
         </div>
       </div>
-      <div className={styles.nicknameWrapper}>
+      <div className={`${styles.nicknameWrapper} ${!isLoading && guestName.length>0 && !useOk && styles.errorBox}` }>
         <input
           className={styles.nicknameInput}
           type="text"
           ref={nicknameRef}
           placeholder={"닉네임을 입력하세요"}
-          onKeyDown={enterHandler}
+          onChange={changeHandler}
         />
+        {guestName !== "" && nameLoading && (
+          <div className={styles.spinnerContainer}>
+            <CircularProgress className={styles.spinner} />
+          </div>
+        )}
       </div>
-      <div className={styles.nicknameWrapper}>
+      <div className={styles.useOkTxt}>
+        {!isLoading && guestName.length > 0 && useOk && <p className={styles.possible}>사용 가능한 닉네임입니다.</p>}
+        {!isLoading && guestName.length > 0 && !useOk && <p className={styles.impossible}>사용 불가능한 닉네임입니다.</p>}
+      </div>
+      <div className={styles.btnWrapper}>
         <div className={styles.startBtn} onClick={onClickSubmit}>
           참여하기
         </div>

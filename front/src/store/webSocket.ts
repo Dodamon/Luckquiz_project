@@ -11,6 +11,7 @@ interface SocketState {
   pinNum: string;
   guestList: GuestType[];
   QuizItem: getQuizItem | null;
+  getMessage: boolean;
 }
 
 const initialState: SocketState = {
@@ -18,12 +19,8 @@ const initialState: SocketState = {
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
   QuizItem: null,
+  getMessage: false,
 };
-
-// const initialState: SocketState = {
-//   client: client,
-//   guestList: [{ sender: "", img: 0 }],
-// };
 
 const socketSlice = createSlice({
   name: "socket",
@@ -40,7 +37,9 @@ const socketSlice = createSlice({
         });
       }
     },
-
+    updateGetMessage: (state, actions) => {
+      state.getMessage = actions.payload
+    },
     changeGuestList: (state, actions) => {
       state.guestList = actions.payload;
     },
@@ -61,6 +60,7 @@ export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Func
   client.onConnect = async () => {
     await subscribe(socketProps, dispatch);
     await sendEnterMessage(socketProps);
+    await dispatch(socketActions.updateGetMessage(true));
     console.log("socket connected");
   };
   client.onDisconnect = () => {
@@ -79,13 +79,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") {
-        dispatch(socketActions.changeGuestList(data.enterGuestList));
-      } else if (data.type === "getQuizItem") {
-        dispatch(socketActions.getQuizItem(data.getQuizItem));
-      } else {
-        console.log("got empty message");
-      }
+      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
+      else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
+      else console.log("got empty message");
     }
   };
 
