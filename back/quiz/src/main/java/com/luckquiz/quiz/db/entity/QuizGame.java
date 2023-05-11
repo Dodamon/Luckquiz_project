@@ -19,13 +19,13 @@ public class QuizGame {
     @Column(name = "id")
     private int id;
     @Column(name = "template_id", nullable = true)
-    private int templateId;
+    private Integer templateId;
     @Column(name = "type",nullable = true)
     @Enumerated(EnumType.STRING)
     private QuizType type;
 
     @Column(name = "timer", nullable = true)
-    private int timer;
+    private Integer timer;
 
     @Column(name = "quiz", nullable = true)
     private byte[] quiz;
