@@ -16,6 +16,9 @@ import com.luckquiz.quizroom.api.response.Duplucheck;
 import com.luckquiz.quizroom.api.response.QGame;
 import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
 import com.luckquiz.quizroom.api.service.*;
+import com.luckquiz.quizroom.exception.CustomException;
+import com.luckquiz.quizroom.exception.CustomExceptionType;
+import com.luckquiz.quizroom.message.EmotionResultMessage;
 import com.luckquiz.quizroom.message.EnterGuestMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.*;
@@ -50,6 +53,7 @@ public class MessageController {
     private final ToGradeProducer toGradeProducer;
     private final ToQuizProducer toQuizProducer;
     private final QuizService quizService;
+    private final ClovarVisionService clovarVisionService;
 
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {
@@ -111,18 +115,34 @@ public class MessageController {
 
     @MessageMapping("/emotion")
     public void emotion(QuizMessage message) throws  Exception{
-        byte[] decode = Base64.getDecoder().decode(message.getMessage().split(",")[1]);
-        ClovarVisionService clovarVisionService = new ClovarVisionService(gson);
-        clovarVisionService.naverCheck(decode);
-        GoogleVisionService googleVisionService = new GoogleVisionService(gson);
-        googleVisionService.googleCheck(decode);
+        byte[] decode;
+        EmotionResultMessage result;
+        try{
+            decode =  Base64.getDecoder().decode(message.getFile().split(",")[1]);
+            if(decode.length>= 2097152){
+                throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
+            }
+            result = clovarVisionService.naverCheck(decode);
+            sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
+            // 채점결과 채점서버로 message 보내기
+            toGradeProducer.clientSubmit(gson.toJson(message));
+            log.info("제출 했습니다.");
+        } catch (CustomException e){
+            throw new CustomException(CustomExceptionType.NO_PICTURE_ERROR);
+        }
+
+
+        // 구글의 얼굴인식 api
+//        GoogleVisionService googleVisionService = new GoogleVisionService(gson);
+//        googleVisionService.googleCheck(decode);
 
 
 //      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
-//      toGradeProducer.clientSubmit(gson.toJson(message));
-        System.out.println("제출되었읍니다....");
+
+
 //      Object resultRespone = gson.fromJson(result, Object.class);
 //      sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
+//        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
     }
 
     @MessageMapping("/submit")
