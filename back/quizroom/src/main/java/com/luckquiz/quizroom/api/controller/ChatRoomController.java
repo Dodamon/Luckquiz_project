@@ -32,17 +32,6 @@ public class ChatRoomController { // for controller update
     private final SimpMessageSendingOperations sendingOperations;
     private final Gson gson;
     private  final StringRedisTemplate stringRedisTemplate;
-
-    // 채팅 리스트 화면
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "/chat/room";
-    }
-    // 모든 채팅방 목록 반환
-    @GetMapping("/rooms")
-    public List<QuizRoom> room() {
-        return quizService.findAllRoom();
-    }
     // 채팅방 생성
     @PostMapping("/create")
     @ResponseBody
