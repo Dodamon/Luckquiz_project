@@ -71,6 +71,7 @@ const EmotionGame: React.FC = () => {
 
   const onClickSubmit = () => {
     // submit selfie
+    const destination = "/app/emotion";
     const selfie = {
       sender: sender,
       roomId: roomId,
@@ -79,13 +80,12 @@ const EmotionGame: React.FC = () => {
       // quizNum 수정해야됨
       file: img,
     };
-
-    dispatch(socketActions.sendAnswerMessage(selfie));
+    const emotionData = {
+      destination: destination,
+      body: selfie,
+    }
+    dispatch(socketActions.sendAnswerMessage(emotionData));
   };
-
-  useEffect(() => {
-    console.log(img);
-  }, [img]);
 
   return (
     <div className={styles.emotionGameContainer}>
