@@ -23,7 +23,6 @@ const HomeListCard = (props: Props) => {
   const dispatch = useDispatch();
   const hostName = useSelector((state: RootState) => state.auth.nickname);
   const hostImg = useSelector((state: RootState) => state.auth.image_url);
-  const userId = useSelector((state: RootState) => state.auth.userId);
   const { data, status, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
