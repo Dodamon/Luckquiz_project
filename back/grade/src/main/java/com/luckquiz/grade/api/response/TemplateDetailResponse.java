@@ -34,7 +34,8 @@ public class TemplateDetailResponse {
 	}
 
 	public List<TemplateInfoResponse> getQuizList() {
-		if(quizList==null){
+		if(this.quizList==null){
+			System.out.println("야이넘아 퀴즈 리스트 비었다.");
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
 		}
 		return quizList;

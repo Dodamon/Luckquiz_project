@@ -12,6 +12,10 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+import com.luckquiz.grade.api.common.exception.CustomException;
+import com.luckquiz.grade.api.common.exception.CustomExceptionType;
+import com.luckquiz.grade.api.request.KafkaEmotionRequest;
+import com.luckquiz.grade.api.request.KafkaEmotionResult;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
 import com.luckquiz.grade.api.request.KafkaQuizRollbackRequest;
@@ -56,9 +60,16 @@ public class GradeService {
 		String playerName = gradeRequest.getPlayerName();
 		// 총 참여자 수
 		Long count = hashGradeOperations.size(roomId+"p");
+
 		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
-		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
+
+		String correctAnswer;
+		if(templateDetailResponse == null){
+			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
+		} else {
+			correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
+		}
 		String answer = gradeRequest.getAnswer();
 	//정답이 맞으면, 퀴즈 번호가 같다면.
 		if(correctAnswer.equals(answer) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
@@ -80,23 +91,30 @@ public class GradeService {
 		// Map<String, Grade> hashmap = hashOperations.entries(roomId+"p");
 	}
 
-	public void pictureGrade(KafkaGradeRequest gradeRequest){
+	public void pictureGrade(KafkaEmotionRequest gradeRequest){
 		Integer roomId = gradeRequest.getRoomId();
-		String playerName = gradeRequest.getPlayerName();
+		String playerName = gradeRequest.getName();
 		// 총 참여자 수
 		Long count = hashGradeOperations.size(roomId+"p");
 		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
+		if(templateDetailResponse == null){
+			log.warn("템플릿이 비어있네요");
+			return;
+		}
+		System.out.println("123123123");
 		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
-		String answer = gradeRequest.getAnswer();
+		KafkaEmotionResult.ValCon answer = gradeRequest.getResult().getFaces().get(0).emotion;
 		//정답이 맞으면, 퀴즈 번호가 같다면.
-		if(correctAnswer.equals(answer) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
-			//순위에 따른 점수 더해주기
-			Integer rank = valueOperations.get(roomId+"cnt");
-			Long scoreGet = (long)(1000*(1-rank.doubleValue()/count));
+		if(gradeRequest.getQuizNum()!=templateDetailResponse.getQuizNum()){
+			throw new CustomException(CustomExceptionType.QUIZ_NUM_ERROR);
+		}
+		// 받은 결과값의 감정이 정답과 같다면.
+		if(correctAnswer.equals(answer.getValue())){
+
+			Long scoreGet = (long)(1000*answer.getConfidence());
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
-			userGrade.setRankNow(rank+1);
 			//얻은 점수 기록해두기
 			hashGradeOperations.put(roomId+"p", playerName, userGrade);
 			//맞힌 사람 수 +1
@@ -131,6 +149,7 @@ public class GradeService {
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
 	public void rollback(Object message) {
+		System.out.println("롤백 시작");
 		KafkaQuizRollbackRequest quizRollbackRequest = (KafkaQuizRollbackRequest) message;
 		Integer roomId = quizRollbackRequest.getRoomId();
 

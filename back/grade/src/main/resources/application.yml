@@ -58,3 +58,6 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  tomcat:
+    max-http-form-post-size: 3MB
+  port: 8081

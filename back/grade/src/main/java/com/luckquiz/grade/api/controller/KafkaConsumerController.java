@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
 import com.luckquiz.grade.api.common.enums.Topic;
+import com.luckquiz.grade.api.request.KafkaEmotionRequest;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.common.enums.SignToGradeKey;
 import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
@@ -33,7 +34,8 @@ public class KafkaConsumerController {
 				KafkaGradeRequest gradeRequest = gson.fromJson(messages.get(i), KafkaGradeRequest.class);
 				gradeService.grade(gradeRequest);
 			} else {
-				System.out.println("값이 다릅니다");
+				KafkaEmotionRequest kafkaEmotionRequest = gson.fromJson(messages.get(i), KafkaEmotionRequest.class);
+				gradeService.pictureGrade(kafkaEmotionRequest);
 			}
 		}
 	}
