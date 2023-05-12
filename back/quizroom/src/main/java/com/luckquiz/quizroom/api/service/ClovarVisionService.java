@@ -24,29 +24,17 @@ public class ClovarVisionService{
     private String apiURL = "https://openapi.naver.com/v1/vision/face";
     private String LINE_FEED = "\r\n";
     private String fileName = "emotion.jpg";
-    private URL url;
-    private HttpURLConnection con;
-    {
-        try {
-            url = new URL(apiURL);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            con = (HttpURLConnection)url.openConnection();
-            con.setUseCaches(false);
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            con.setRequestProperty("X-Naver-Client-Id", clientId);
-            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     public EmotionResultMessage naverCheck(byte[] decode) throws  Exception{
        // byte[] decode = Base64.getDecoder().decode(message.getMessage().split(",")[1]);
-
+        URL url = new URL(apiURL);;
+        HttpURLConnection con =  (HttpURLConnection)url.openConnection();
+        con.setUseCaches(false);
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestProperty("X-Naver-Client-Id", clientId);
+        con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
         EmotionResult result = new EmotionResult();
         EmotionResultMessage resultMessage = new EmotionResultMessage();
 

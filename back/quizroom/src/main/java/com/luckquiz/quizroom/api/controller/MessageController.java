@@ -113,18 +113,16 @@ public class MessageController {
 
     @MessageMapping("/emotion")
     public void emotion(QuizMessage message) throws  Exception{
-        byte[] decode;
-        EmotionResultMessage result;
         try{
-
-                decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
+                byte[] decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
                 if (decode.length >= 2097152) {
                     throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
                 }
-                result = clovarVisionService.naverCheck(decode);
+                EmotionResultMessage result = clovarVisionService.naverCheck(decode);
                 result.setName(message.getSender());
                 result.setRoomId(message.getRoomId());
                 result.setQuizNum(message.getQuizNum());
+
                 EmotionResponse emotionResponse = new EmotionResponse();
                 emotionResponse.setType(result.getType());
                 if (result.getResult().getFaces() == null) {
