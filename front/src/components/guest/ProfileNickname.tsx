@@ -21,9 +21,10 @@ import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
 import { guestActions } from "store/guest";
-import { connectAndSubscribe } from "store/webSocket";
+import { connectAndSubscribe, socketActions } from "store/webSocket";
 import useGuestAxios from "hooks/useGuestAxios";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useLocation } from "react-router-dom";
 
 const ProfileNickname: React.FC = () => {
   const IMAGES = [
@@ -46,6 +47,7 @@ const ProfileNickname: React.FC = () => {
   ];
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const imgIdx = useSelector<RootState, number>((state) => state.guest.image);
   const nicknameRef = useRef<HTMLInputElement>(null);
   const pinNum = useSelector<RootState, string>((state) => state.socket.pinNum);
@@ -128,6 +130,13 @@ const ProfileNickname: React.FC = () => {
   useEffect(() => {
     setNameLoading(false);
     dispatch(guestActions.updateGuestNickname(""));
+
+    const queryString = location.search;
+    const searchParams = new URLSearchParams(queryString);
+    const value = searchParams.get("pinnum");
+    if (!value) dispatch(socketActions.updatePinNum(value));
+    // 가져온 값 출력 예시
+    console.log(value);
   }, []);
 
   useEffect(() => {
@@ -142,7 +151,7 @@ const ProfileNickname: React.FC = () => {
           <Icon icon="ph:plus-circle-fill" className={styles.imgEditBtn} onClick={onClickEditImg} />
         </div>
       </div>
-      <div className={`${styles.nicknameWrapper} ${!isLoading && guestName.length>0 && !useOk && styles.errorBox}` }>
+      <div className={`${styles.nicknameWrapper} ${!isLoading && guestName.length > 0 && !useOk && styles.errorBox}`}>
         <input
           className={styles.nicknameInput}
           type="text"
@@ -158,7 +167,9 @@ const ProfileNickname: React.FC = () => {
       </div>
       <div className={styles.useOkTxt}>
         {!isLoading && guestName.length > 0 && useOk && <p className={styles.possible}>사용 가능한 닉네임입니다.</p>}
-        {!isLoading && guestName.length > 0 && !useOk && <p className={styles.impossible}>사용 불가능한 닉네임입니다.</p>}
+        {!isLoading && guestName.length > 0 && !useOk && (
+          <p className={styles.impossible}>사용 불가능한 닉네임입니다.</p>
+        )}
       </div>
       <div className={styles.btnWrapper}>
         <div className={styles.startBtn} onClick={onClickSubmit}>
