@@ -22,7 +22,7 @@
       width: 60px;
       height: 63px;
       object-fit: fill;
-      margin-top: 20px;  
+      /* margin-top: 20px;   */
       margin-left: 20px;
   }
 }
@@ -51,7 +51,7 @@
       width: 40px;
       height: 43px;
       object-fit: fill;
-      margin-top: 20px;  
+      /* margin-top: 20px;   */
       margin-left: 20px;
   }
 }

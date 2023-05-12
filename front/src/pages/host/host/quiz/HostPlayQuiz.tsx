@@ -59,23 +59,23 @@ const HostPlayQuiz = () => {
   console.log(quizItem);
   return (
     quizItem && (
-      <>
+      <div className={styles.container}>
         {order === 0 && <CountdownAni handleOrder={setOrder} />}
         {order === 1 && (
-          <div>
-            <div>
+          <>
+            <div className={styles.header}>
               <TimerBar time={quizItem.timer} handleOrder={setOrder} />
-              <div>
-                {quizItem?.quizNum}/{quizItem?.quizSize}
-              </div>
+              {quizItem?.quizNum}/{quizItem?.quizSize}
             </div>
+            <div className={styles.quizContainer}>
             {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
             {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
             {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+            </div>
             {/* 
-          <div className={styles.currenSubmitChart}>
-            <Doughnut data={chartConfig} />
-          </div> */}
+            <div className={styles.currenSubmitChart}>
+              <Doughnut data={chartConfig} />
+            </div> */}
             <div className={styles.nextBtn}>
               <ButtonWithLogo
                 name="건너뛰기"
@@ -86,11 +86,11 @@ const HostPlayQuiz = () => {
                 }}
               />
             </div>
-          </div>
+          </>
         )}
         {order === 2 && (
           // 랭킹 컴포넌트
-          <div>
+          <>
             <div className={styles.submitChart}>
               <SubmitChart myData={[34, 24]} />
             </div>
@@ -128,9 +128,9 @@ const HostPlayQuiz = () => {
                 />
               </div>
             )}
-          </div>
+          </>
         )}
-      </>
+      </div>
     )
   );
 };
