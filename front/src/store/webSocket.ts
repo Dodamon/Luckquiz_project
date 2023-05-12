@@ -10,7 +10,7 @@ interface SocketState {
   client: Client | null;
   pinNum: string;
   guestList: GuestType[];
-  QuizItem: getQuizItem | null;
+  quizItem: getQuizItem | null;
   getMessage: boolean;
 }
 
@@ -18,7 +18,7 @@ const initialState: SocketState = {
   client: client,
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
-  QuizItem: null,
+  quizItem: null,
   getMessage: false,
 };
 
@@ -31,15 +31,28 @@ const socketSlice = createSlice({
       if (client) {
         console.log("publish");
         client.publish({
-          destination: "/app/quiz/start",
-          body: JSON.stringify(actions.payload),
+          // destination: "/app/quiz/start",
+          destination: actions.payload.destination,
+          body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
       }
     },
+
+    // body 없는 publish
+    sendRequest: (state, actions) => {
+      if (client) {
+        console.log("publish");
+        client.publish({
+          destination: actions.payload,
+        });
+      }
+    },
+
     updateGetMessage: (state, actions) => {
       state.getMessage = actions.payload
     },
+
     changeGuestList: (state, actions) => {
       state.guestList = actions.payload;
     },
@@ -49,8 +62,8 @@ const socketSlice = createSlice({
     },
 
     getQuizItem: (state, actions) => {
-      state.QuizItem = actions.payload;
-      console.log(state.QuizItem);
+      state.quizItem = actions.payload;
+      console.log(state.quizItem);
     },
   },
 });
@@ -79,9 +92,14 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
-      else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
-      else console.log("got empty message");
+      if (data.type === "enterGuestList") {
+        dispatch(socketActions.changeGuestList(data.enterGuestList));
+      } else if (data.type === "getQuizItem") {
+        dispatch(socketActions.getQuizItem(data.getQuizItem));
+      } else {
+        console.log("got empty message");
+        // dispatch(socketActions.getQuizItem(data));
+      }
     }
   };
 

@@ -1,0 +1,25 @@
+@keyframes countdown {
+  to {
+    background-position: 100% 50%;
+  }
+}
+.timerBar {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  /* margin-bottom: 20px; */
+  &:after {
+    content: "";
+    position: absolute;
+    /* top: 0.25rem; */
+    right: 0.25rem;
+    left: 0.25rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    background-color: #ddd;
+    background-image: linear-gradient(to right, var(--select-two) 50%, #ddd 50%);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    animation: countdown var(--countdown-time) linear forwards;
+  }
+}
