@@ -119,10 +119,7 @@ const HostPlayQuiz = () => {
                   height="45px"
                   onClick={() => {
                     dispatch(
-                      socketActions.sendAnswerMessage({
-                        destination: "/app/quiz/next",
-                        body: { sender: "fufu", img: 2, roomId: "3670055" },
-                      }),
+                      socketActions.sendRequest("/app/quiz/next"),
                     );
                   }}
                 />
