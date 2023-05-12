@@ -84,11 +84,11 @@ const ProfileNickname: React.FC = () => {
     const socketProps = {
       name: guestName,
       img: imgIdx,
-      roomNum: pinNum,
+      roomNum: paramPin,
       isHost: false,
     };
 
-    if (!isLoading && guestName.length > 0 && useOk) connectAndSubscribe(socketProps, dispatch);
+    if (!isLoading && useOk) connectAndSubscribe(socketProps, dispatch);
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +113,7 @@ const ProfileNickname: React.FC = () => {
     return () => {
       clearTimeout(identifier);
     };
-  }, [guestName]);
+  }, [paramPin, guestName]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -133,6 +133,7 @@ const ProfileNickname: React.FC = () => {
     const queryString = location.search;
     const searchParams = new URLSearchParams(queryString);
     const value = searchParams.get("pinnum");
+    console.log("params: ", value);
     if (typeof value === "string") setParamPin(value);
   }, []);
 
