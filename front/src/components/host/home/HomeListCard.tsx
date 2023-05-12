@@ -45,7 +45,8 @@ const HomeListCard = (props: Props) => {
       sendHostRequest({
         url: `/api/quizroom/create`,
         method: "POST",
-        data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 7 },
+        data: { hostId: "7fb5bc30-c7c6-4cd9-859d-2bb4ef982644", templateId: 1 },
+        // templateId 고쳐야됨
       });
     }
   };
