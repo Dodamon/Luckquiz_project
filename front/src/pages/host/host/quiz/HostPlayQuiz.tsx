@@ -81,9 +81,14 @@ const HostPlayQuiz = () => {
                 name="건너뛰기"
                 fontSize="18px"
                 height="45px"
-                onClick={() => {
-                  dispatch(socketActions.sendRequest("/app/quiz/rollback"));
-                }}
+                onClick={() =>
+                  dispatch(
+                    socketActions.sendAnswerMessage({
+                      destination: "/app/quiz/rollback",
+                      body: { hostId: userId, roomId: quiz_id },
+                    }),
+                  )
+                }
               />
             </div>
           </>
@@ -117,11 +122,14 @@ const HostPlayQuiz = () => {
                   name="다음 퀴즈"
                   fontSize="18px"
                   height="45px"
-                  onClick={() => {
+                  onClick={() =>
                     dispatch(
-                      socketActions.sendRequest("/app/quiz/next"),
-                    );
-                  }}
+                      socketActions.sendAnswerMessage({
+                        destination: "/app/quiz/next",
+                        body: { hostId: userId, roomId: quiz_id },
+                      }),
+                    )
+                  }
                 />
               </div>
             )}
