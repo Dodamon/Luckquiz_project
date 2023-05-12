@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { setQuizItem } from "models/quiz";
-import QuizShortContent from "../../../components/guest/quiz/QuizShortContent";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
+import QuizShortContent from "components/guest/quiz/QuizShortContent";
 import QuizOxContent from "components/guest/quiz/QuizOxContent";
 import QuizFourContent from "components/guest/quiz/QuizFourContent";
 import TimerBar from "components/common/TimerBar";

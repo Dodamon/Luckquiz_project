@@ -68,9 +68,9 @@ const HostPlayQuiz = () => {
               {quizItem?.quizNum}/{quizItem?.quizSize}
             </div>
             <div className={styles.quizContainer}>
-            {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
-            {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
-            {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+              {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
+              {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
+              {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
             </div>
             {/* 
             <div className={styles.currenSubmitChart}>

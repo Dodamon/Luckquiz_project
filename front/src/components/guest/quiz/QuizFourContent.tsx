@@ -1,11 +1,9 @@
-import React from "react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import logo from "../../../assets/images/timer1.png";
 import styles from "./QuizFourContent.module.css";
 import { getQuizItem, setQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
-import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
@@ -54,7 +52,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("one")}
+          onClick={() => !auth && answerHandler("one")}
           style={item === "one" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}>
@@ -69,7 +67,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("two")}
+          onClick={() => !auth && answerHandler("two")}
           style={item === "two" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}>
@@ -84,7 +82,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("three")}
+          onClick={() => !auth && answerHandler("three")}
           style={item === "three" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}>
@@ -99,7 +97,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("four")}
+          onClick={() => !auth && answerHandler("four")}
           style={item === "four" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}>
