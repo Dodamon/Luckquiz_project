@@ -228,7 +228,7 @@ public class MessageController {
     public void currentParticipent(CurrentParticipent currentParticipent){
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         Map all = hashOperations.entries(currentParticipent.getRoomId()+"p");
-        sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size());
+        sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size()-1);
     }
 
     @MessageMapping("/quiz/execute")

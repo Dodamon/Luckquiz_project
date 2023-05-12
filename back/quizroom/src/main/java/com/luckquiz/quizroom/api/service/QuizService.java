@@ -28,25 +28,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class QuizService {
     private final SimpMessageSendingOperations sendingOperations;
-    private Map<String, QuizRoom> quizRoomMap;
     private final Gson gson;
     private final ToQuizProducer toQuizProducer;
 
     private  final StringRedisTemplate stringRedisTemplate;
 
-    @PostConstruct
-    //의존관게 주입완료되면 실행되는 코드
-    private void init() {
-        quizRoomMap = new LinkedHashMap<>();
-    }
-
-    //방 불러오기
-    public List<QuizRoom> findAllRoom() {
-        //방 최근 생성 순으로 반환
-        List<QuizRoom> result = new ArrayList<>(quizRoomMap.values());
-        Collections.reverse(result);
-        return result;
-    }
 
     // 방 하나 불러오기
     // 혹여 host 가 메인 룸에서 튕겼을 때를 대비함.
@@ -62,7 +48,6 @@ public class QuizService {
     @Transactional
     public QuizRoom createRoom(QuizRoomCreateRequest qrc) {
         QuizRoom quizRoom = QuizRoom.create();
-        quizRoomMap.put(quizRoom.getRoomId(), quizRoom);
 
         toQuizProducer.callQuizTemp(qrc.getHostId()+" "+quizRoom.getRoomId()+" "+qrc.getTemplateId());
         return quizRoom;
