@@ -59,6 +59,7 @@ const socketSlice = createSlice({
 
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
+      console.log(actions.payload)
     },
 
     getQuizItem: (state, actions) => {
