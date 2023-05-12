@@ -8,15 +8,17 @@ import { useSelector } from "react-redux";
 
 type QuizShortContentProps = {
   content: getQuizItem;
+  handleAnswer? : Function;
 };
 
-const QuizShortContent = ({ content }: QuizShortContentProps) => {
+const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
   const [item, setItem] = useState("");
-  const auth = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const guest = useSelector((state: RootState) => state.guest.nickname); 
 
 
   const answerHandler = (e: any) => {
     setItem(e.target.value);
+    handleAnswer && handleAnswer(e.target.value)
   };
   return (
     <div className={styles.QuizShortContent}>
@@ -40,8 +42,8 @@ const QuizShortContent = ({ content }: QuizShortContentProps) => {
             </div>
           </div>
           <div className={styles.content_input}>
-            {!auth && <input type="text" value={item} onChange={(e) => answerHandler(e)} />}
-            {auth && <input type="text" value="주관식으로 답을 적어보세요"/>}
+            {guest && <input type="text" value={item} onChange={(e) => answerHandler(e)} />}
+            {!guest && <input type="text" value="주관식으로 답을 적어보세요"/>}
           </div>
         </div>
         {/* <div className={styles.content_submitbox}>
