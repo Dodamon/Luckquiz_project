@@ -73,12 +73,16 @@ public class MessageController {
         }
 
         LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(result);
+        List<EnterUser> finList = new ArrayList<>();
         result.clear();
         result.addAll(li);
+        for (int i = 2; i < result.size(); i++) {
+            finList.add(result.get(i));
+        }
 
         EnterGuestMessage egm = EnterGuestMessage.builder()
                 .type("enterGuestList")
-                .enterGuestList(result)
+                .enterGuestList(finList)
                 .build();
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
