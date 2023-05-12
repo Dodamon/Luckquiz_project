@@ -3,8 +3,8 @@ import { Client } from "@stomp/stompjs";
 import { getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 
-// const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
-const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
+const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
+// const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
 
 export const client = new Client({ brokerURL: brokerURL });
 
