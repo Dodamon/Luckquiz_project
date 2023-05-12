@@ -47,8 +47,6 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
-        registration.setMessageSizeLimit(1024*1024*400);
-        registration.setSendBufferSizeLimit(1024*1024*400);
         registration.setSendTimeLimit(20 * 1000);
 //        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
@@ -56,8 +54,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean(); // (3)
-        container.setMaxTextMessageBufferSize(1024*1024*400); // (4)
-        container.setMaxBinaryMessageBufferSize(1024*1024*400); // (5)
+        container.setMaxTextMessageBufferSize(1024*1024*4); // (4)
+        container.setMaxBinaryMessageBufferSize(1024*1024*4); // (5)
         return container;
     }
 

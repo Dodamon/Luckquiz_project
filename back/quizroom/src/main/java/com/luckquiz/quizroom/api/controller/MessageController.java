@@ -47,7 +47,7 @@ public class MessageController {
     private final ToQuizProducer toQuizProducer;
     private final QuizService quizService;
     //------------------------------------------------------------
-    // private final ClovarVisionService clovarVisionService;
+    private final ClovarVisionService clovarVisionService;
 
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {
@@ -113,37 +113,37 @@ public class MessageController {
 
     @MessageMapping("/emotion")
     public void emotion(QuizMessage message) throws  Exception{
-        // byte[] decode;
-        // EmotionResultMessage result;
-        // try{
-        //
-        //         decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
-        //         if (decode.length >= 2097152) {
-        //             throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
-        //         }
-        //         result = clovarVisionService.naverCheck(decode);
-        //         result.setName(message.getSender());
-        //         result.setRoomId(message.getRoomId());
-        //         result.setQuizNum(message.getQuizNum());
-        //         EmotionResponse emotionResponse = new EmotionResponse();
-        //         emotionResponse.setType(result.getType());
-        //         if (result.getResult().getFaces() == null) {
-        //             System.out.println("1");
-        //             emotionResponse.setEmotion(null);
-        //         } else {
-        //             System.out.println("2");
-        //             emotionResponse.setEmotion(result.getResult().getFaces().get(0).getEmotion());
-        //         }
-        //
-        //
-        //         sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);
-        //         // 채점결과 채점서버로 message 보내기
-        //         toGradeProducer.emotion(gson.toJson(result));
-        //         log.info("제출 했습니다.");
-        //
-        // } catch (CustomException e){
-        //     throw new CustomException(CustomExceptionType.NO_PICTURE_ERROR);
-        // }
+        byte[] decode;
+        EmotionResultMessage result;
+        try{
+
+                decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
+                if (decode.length >= 2097152) {
+                    throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
+                }
+                result = clovarVisionService.naverCheck(decode);
+                result.setName(message.getSender());
+                result.setRoomId(message.getRoomId());
+                result.setQuizNum(message.getQuizNum());
+                EmotionResponse emotionResponse = new EmotionResponse();
+                emotionResponse.setType(result.getType());
+                if (result.getResult().getFaces() == null) {
+                    System.out.println("1");
+                    emotionResponse.setEmotion(null);
+                } else {
+                    System.out.println("2");
+                    emotionResponse.setEmotion(result.getResult().getFaces().get(0).getEmotion());
+                }
+
+
+                sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);
+                // 채점결과 채점서버로 message 보내기
+                toGradeProducer.emotion(gson.toJson(result));
+                log.info("제출 했습니다.");
+
+        } catch (CustomException e){
+            throw new CustomException(CustomExceptionType.NO_PICTURE_ERROR);
+        }
 //---------------------------------------------------------------------------------------------
 
         // 구글의 얼굴인식 api
