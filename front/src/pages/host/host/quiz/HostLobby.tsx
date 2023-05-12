@@ -12,24 +12,30 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HostLobby = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const quizItem = useSelector((state: RootState) => state.socket.quizItem)
+  const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://k8a707.p.ssafy.io/guest/nickname?pinnum=${quiz_id}`;
 
-
   useEffect(() => {
-    quizItem && navigate(`/host/quiz/${quiz_id}/play`)
-  }, [navigate, quizItem, quiz_id])
+    quizItem && navigate(`/host/quiz/${quiz_id}/play`);
+  }, [navigate, quizItem, quiz_id]);
 
   return (
     <div className={styles.container}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <img src={logo} alt="" className={styles.logo} />
         <div className={styles.whiteBox}>
-          <img src={qrCode} alt="" onClick={() => {navigate(`/host/quiz/${quiz_id}/lobby`)}} className={styles.qrCode}/>       
+          <img
+            src={qrCode}
+            alt=""
+            onClick={() => {
+              navigate(`/host/quiz/${quiz_id}/lobby`);
+            }}
+            className={styles.qrCode}
+          />
           <div className={styles.pinBox}>
             <p>퀴즈 입장 pin번호</p>
             <p>{quiz_id}</p>
@@ -41,7 +47,14 @@ const HostLobby = () => {
         name="시작하기"
         height="40px"
         fontSize="20px"
-        onClick={() => dispatch(socketActions.sendRequest("/app/quiz/start"))}
+        onClick={() =>
+          dispatch(
+            socketActions.sendAnswerMessage({
+              destination: "/app/quiz/start",
+              body: { hostId: userId, roomId: quiz_id },
+            }),
+          )
+        }
       />
     </div>
   );

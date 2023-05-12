@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { setQuizItem } from "models/quiz";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import QuizOxContent from "components/guest/quiz/QuizOxContent";
 import QuizFourContent from "components/guest/quiz/QuizFourContent";
 import TimerBar from "components/common/TimerBar";
 import CountdownAni from "components/common/CountdownAni";
+import styles from "../../host/host/quiz/HostPlayQuiz.module.css";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
@@ -19,43 +20,34 @@ const GuestPlayQuiz = () => {
   // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
 
-  // const newGameItem: setQuizItem = {
-
-  //     type: "game",
-  //     quiz: "",
-  //     quizUrl: "",
-  //     answer: "",
-  //     one: "",
-  //     question: "",
-  //     two: "",
-  //     three: "",
-  //     four: "",
-  //     answerList: [],
-  //     game: "",
-  //     timer: 15
-  // }
+  // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
+  useEffect(() => {
+    setOrder(0);
+  }, [quizItem]);
 
   return (
-    <>
-      {order === 0 && <CountdownAni handleOrder={setOrder} />}
-      {order === 1 && (
-        <div>
-          <div>
-            <TimerBar time={20} handleOrder={setOrder} />
-            <div>
+    quizItem && (
+      <div className={styles.container}>
+        {order === 0 && <CountdownAni handleOrder={setOrder} />}
+        {order === 1 && (
+          <>
+            <div className={styles.header}>
+              <TimerBar time={quizItem.timer} handleOrder={setOrder} />
               {quizItem?.quizNum}/{quizItem?.quizSize}
             </div>
-          </div>
-          {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
-          {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
-          {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
-        </div>
-      )}
-      {order === 2 && (
-        // 랭킹 컴포넌트
-        <></>
-      )}
-    </>
+            <div className={styles.quizContainer}>
+              {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
+              {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
+              {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+            </div>
+          </>
+        )}
+        {order === 2 && (
+          // 랭킹 컴포넌트
+          <></>
+        )}
+      </div>
+    )
   );
 };
 

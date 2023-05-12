@@ -107,9 +107,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     roomId: socketProps.roomNum,
   };
   // const URL = `/topic/quiz/${pinNum}`;
-  const URL = `/topic/quiz/5118714`;
+  // const URL = `/topic/quiz/8124499`;
 
-  // const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+  const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };
