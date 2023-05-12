@@ -11,7 +11,7 @@ interface SocketState {
   pinNum: string;
   guestList: GuestType[];
   quizItem: getQuizItem | null;
-  
+  getMessage: boolean;
 }
 
 const initialState: SocketState = {
@@ -19,12 +19,8 @@ const initialState: SocketState = {
   pinNum: "",
   guestList: [{ sender: "", img: 0 }],
   quizItem: null,
+  getMessage: false,
 };
-
-// const initialState: SocketState = {
-//   client: client,
-//   guestList: [{ sender: "", img: 0 }],
-// };
 
 const socketSlice = createSlice({
   name: "socket",
@@ -53,6 +49,10 @@ const socketSlice = createSlice({
       }
     },
 
+    updateGetMessage: (state, actions) => {
+      state.getMessage = actions.payload
+    },
+
     changeGuestList: (state, actions) => {
       state.guestList = actions.payload;
     },
@@ -73,6 +73,7 @@ export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Func
   client.onConnect = async () => {
     await subscribe(socketProps, dispatch);
     await sendEnterMessage(socketProps);
+    await dispatch(socketActions.updateGetMessage(true));
     console.log("socket connected");
   };
   client.onDisconnect = () => {
@@ -97,7 +98,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
         dispatch(socketActions.getQuizItem(data.getQuizItem));
       } else {
         console.log("got empty message");
-        dispatch(socketActions.getQuizItem(data));
+        // dispatch(socketActions.getQuizItem(data));
       }
     }
   };
@@ -107,9 +108,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     roomId: socketProps.roomNum,
   };
   // const URL = `/topic/quiz/${pinNum}`;
-  const URL = `/topic/quiz/3670055`;
+  // const URL = `/topic/quiz/3670055`;
 
-  // const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+  const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };
