@@ -14,7 +14,7 @@ const EmptyContentPage = () => {
 
                 <div className={styles.exit_btn} >
 
-                    <div className={styles.btn_comment} onClick={()=> navigate(-1)}>나가기</div>
+                    <div className={styles.btn_comment} onClick={()=>  navigate("/home",{replace: true})}>나가기</div>
                 </div>
 
             </div>

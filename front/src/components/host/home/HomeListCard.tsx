@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./HomeListCard.module.css";
 import { Icon } from "@iconify/react";
 import main_logo from "assets/images/main_logo.png";
+import ready_logo from "assets/images/ready_logo.png";
+import save_logo from "assets/images/save_logo.png";
 import { Quiz } from "pages/host/home/quiz/Quiz";
 import { Report } from "pages/host/home/report/Report";
 import useHostAxios from "hooks/useHostAxios";
@@ -34,6 +36,10 @@ const HomeListCard = (props: Props) => {
   const { data, status, sendHostRequest } = useHostAxios();
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
+
+
+  console.log(quiz.isValid);
+  
   useEffect(() => {
     if (data) {
       // 정상 connectedAndSubscribe시, 퀴즈방으로 이동
@@ -102,7 +108,7 @@ const HomeListCard = (props: Props) => {
     <div className={styles.quizBox}>
       <div className={styles.quizRowFrame}>
         <div className={styles.logoImgContainer}>
-          <img className={styles.logoImg} src={main_logo} alt="" />
+          <img className={styles.logoImg} src={quiz.isValid? ready_logo: save_logo} alt="" />
         </div>
         <div>
           {/* quiz에서 쓰이는 경우 (menu = 0)*/}
@@ -136,16 +142,19 @@ const HomeListCard = (props: Props) => {
                 }}
               />
             </button>
-            <button className={styles.button}>
-              <Icon
-                icon="iconoir:play-outline"
-                className={styles.btn}
-                style={{ backgroundColor: "var(--select-four)" }}
-                onClick={() => {
-                  startQuiz(quiz.name);
-                }}
-              />
-            </button>
+            {
+             quiz.isValid?  <button  className={styles.button} >
+             <Icon
+               icon="iconoir:play-outline"
+               className={styles.btn}
+               style={{ backgroundColor: "var(--select-four)" }}
+               onClick={() => {
+                 startQuiz(quiz.name);
+               }}
+             />
+           </button>:<div></div> 
+            }
+            
             <button className={styles.button}>
               <Icon
                 icon="ic:outline-cancel"

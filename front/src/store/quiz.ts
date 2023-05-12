@@ -10,7 +10,7 @@ import { setQuizSet } from "models/quiz";
 const initialQuizSet: setQuizSet ={
     hostId: "",
     templateId: -1,
-    is_Valid: false,
+    isValid: false,
     quizList:[]
 }
 

@@ -25,7 +25,7 @@ const newQuizItem: setQuizItem = {
     answerList: [""],
     game: "",
     timer: 15,
-    is_Valid: false,
+    isValid: false,
 }
 
 const newGameItem: setQuizItem = {
@@ -42,7 +42,7 @@ const newGameItem: setQuizItem = {
     answerList: [],
     game: "",
     timer: 15,
-    is_Valid: false,
+    isValid: false,
 }
 
 
