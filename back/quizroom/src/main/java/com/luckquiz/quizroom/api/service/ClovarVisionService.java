@@ -1,6 +1,5 @@
 package com.luckquiz.quizroom.api.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.model.QuizMessage;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
