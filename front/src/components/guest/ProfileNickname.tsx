@@ -133,6 +133,7 @@ const ProfileNickname: React.FC = () => {
     const queryString = location.search;
     const searchParams = new URLSearchParams(queryString);
     const value = searchParams.get("pinnum");
+    console.log(value);
     if (typeof value === "string") setParamPin(value);
   }, []);
 

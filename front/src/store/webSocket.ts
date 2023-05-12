@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
-import { getQuizItem } from "models/quiz";
+import { EmotionResult, getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 
-// const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
-const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
+const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
+// const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
 
 export const client = new Client({ brokerURL: brokerURL });
 
@@ -14,6 +14,7 @@ interface SocketState {
   guestList: GuestType[];
   quizItem: getQuizItem | null;
   getMessage: boolean;
+  emotionResult: EmotionResult | null;
 }
 
 const initialState: SocketState = {
@@ -22,6 +23,7 @@ const initialState: SocketState = {
   guestList: [{ sender: "", img: 0 }],
   quizItem: null,
   getMessage: false,
+  emotionResult: null,
 };
 
 const socketSlice = createSlice({
@@ -38,7 +40,7 @@ const socketSlice = createSlice({
           body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
-      }
+      };
     },
 
     // body 없는 publish
@@ -67,6 +69,10 @@ const socketSlice = createSlice({
     getQuizItem: (state, actions) => {
       state.quizItem = actions.payload;
       console.log(state.quizItem);
+    },
+
+    getEmotionResult: (state, actions) => {
+      state.emotionResult = actions.payload;
     },
   },
 });
@@ -97,19 +103,17 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       // message가 guestList일 때,
       if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
       else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
-      else if (data.type === "emotionResult") {}
+      else if (data.type === "emotion") dispatch(socketActions.getEmotionResult(data.emotion))
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
-    }
+    };
   };
 
   const sender = {
     type: "enter",
     roomId: socketProps.roomNum,
   };
-  // const URL = `/topic/quiz/${pinNum}`;
-  // const URL = `/topic/quiz/3670055`;
-
+  
   const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
