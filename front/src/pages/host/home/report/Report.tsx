@@ -41,7 +41,7 @@ const Report = () => {
         <div className={styles.listColFrame}>
           {myReportList.map((report, index) => (
             <Link key={index} to={`/home/report/${report.id}/basicinfo`} style={{width:"100%"}}>
-              <HomeListCard menu={1} report={report}/>
+              {/* <HomeListCard menu={1} report={report}/> */}
             </Link>
           ))}
         </div>

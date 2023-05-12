@@ -4,6 +4,8 @@ import { getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
+// const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
+
 export const client = new Client({ brokerURL: brokerURL });
 
 interface SocketState {
@@ -58,6 +60,7 @@ const socketSlice = createSlice({
 
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
+      console.log(actions.payload)
     },
 
     getQuizItem: (state, actions) => {
@@ -91,14 +94,11 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") {
-        dispatch(socketActions.changeGuestList(data.enterGuestList));
-      } else if (data.type === "getQuizItem") {
-        dispatch(socketActions.getQuizItem(data.getQuizItem));
-      } else {
-        console.log("got empty message");
-        // dispatch(socketActions.getQuizItem(data));
-      }
+      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
+      else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
+      else if (data.type === "emotionResult") {}
+      else console.log("got empty message");
+      // dispatch(socketActions.getQuizItem(data));
     }
   };
 

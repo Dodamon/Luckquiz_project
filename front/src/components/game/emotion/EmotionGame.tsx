@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
-import {  client, socketActions } from "store/webSocket";
+import { client, socketActions } from "store/webSocket";
 // import { client } from "App";
 import { RootState } from "store";
 
@@ -12,7 +12,7 @@ const EmotionGame: React.FC = () => {
   const [isFacingModeUser] = useState<boolean>(true);
   const [img, setImg] = useState<string | null | undefined>();
   const sender = useSelector<RootState, string>((state) => state.guest.nickname);
-
+  const roomId = useSelector<RootState, string>((state) => state.socket.pinNum);
   const dispatch = useDispatch();
 
   const resizeImage = (img: string, maxSize: number) => {
@@ -24,7 +24,7 @@ const EmotionGame: React.FC = () => {
         if (!ctx) {
           reject("Failed to get canvas context.");
           return;
-        };
+        }
 
         // Resize the canvas to fit the image within the maximum size
         let width = image.width;
@@ -42,7 +42,7 @@ const EmotionGame: React.FC = () => {
         ctx.drawImage(image, 0, 0, width, height);
 
         // Convert the canvas back to an image
-        const resizedImg = canvas.toDataURL("image/jpeg", 0.9);
+        const resizedImg = canvas.toDataURL("image/jpeg", 1);
         resolve(resizedImg);
       };
       image.onerror = () => {
@@ -55,10 +55,10 @@ const EmotionGame: React.FC = () => {
   const capture = async () => {
     const screenshot = webcamRef.current?.getScreenshot();
     if (screenshot) {
-        const maxSize = 1.9 * 1024 * 1024; // 1.9MB in bytes
-        const resizedImg = await resizeImage(screenshot, maxSize);
-        setImg(resizedImg);
-      }
+      const maxSize = 1.9 * 1024 * 1024; // 1.9MB in bytes
+      const resizedImg = await resizeImage(screenshot, maxSize);
+      setImg(resizedImg);
+    }
   };
 
   const handleUserMediaError = () => {
@@ -71,27 +71,26 @@ const EmotionGame: React.FC = () => {
 
   const onClickSubmit = () => {
     // submit selfie
+    const destination = "/app/emotion";
     const selfie = {
       sender: sender,
-      message: "submit",
-      roomId: 123, 
-      type: "SUBMIT",
+      roomId: roomId,
       gameType: "emotion",
-      file: img
+      quizNum: 3,
+      // quizNum 수정해야됨
+      file: img,
     };
-
-    dispatch(socketActions.sendAnswerMessage({destination:"", body: selfie }));
-
+    const emotionData = {
+      destination: destination,
+      body: selfie,
+    }
+    dispatch(socketActions.sendAnswerMessage(emotionData));
   };
-
-  useEffect(() => {
-    console.log(client.connected)
-  }, [])
 
   return (
     <div className={styles.emotionGameContainer}>
       <QuizGameTitle title="오늘만큼은 나도 연기 왕" />
-
+      <div></div>
       {img ? (
         <div className={styles.emotionGameCamera}>
           <img src={img} alt="" className={styles.photoImg} />
@@ -121,7 +120,6 @@ const EmotionGame: React.FC = () => {
           </button>
         </>
       )}
-
     </div>
   );
 };

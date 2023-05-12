@@ -6,7 +6,7 @@ export interface GuestType {
 
 export interface SocketPropsType {
   name: string;
-  img: number|string;
+  img: number;
   roomNum: string;
   isHost: boolean;
 }

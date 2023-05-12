@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, OutletProps} from "react-router-dom";
 import styles from "./HomeMain.module.css";
 import mypage_logo from "assets/images/mypage_logo.png";
 import { Icon } from "@iconify/react";
@@ -8,6 +8,11 @@ import { useDispatch } from "react-redux";
 import { authActions } from "store/auth";
 import { useEffect, useState } from "react";
 import Logout from "components/common/Logout";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import Modal from "components/host/quiz/Modal";
+
 
 interface Data {
   id: string;
@@ -21,7 +26,9 @@ const HomeMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { data, status, sendHostRequest } = useHostAxios();
-
+  const [isModals, setIsModal] = useState(false);
+  const quizInfo = useSelector((state:RootState) => state.quiz)
+  const authInfo = useSelector((state:RootState) => state.auth)
  useEffect(() => {
   sendHostRequest({
     url: `/api/auth/user/info`,
@@ -34,6 +41,15 @@ useEffect(() => {
   }
 }, [data]);
 
+const testHandler= ()=>{
+ setIsModal(!isModals);
+}
+// console.log(quizInfo.templateId,  authInfo.userId);
+  
+// axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${26}&hostId=${authInfo.userId}`).then(res=>{
+//   console.log(res);
+  
+// })
   return (
     <div className={styles.background}>
       <div className={styles.header}>
@@ -43,17 +59,21 @@ useEffect(() => {
           </div>
           LuckQuiz
         </div>
-        <Link to={"/quiz/create"} className={styles.btn}>
-          <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} />새 퀴즈 만들기
-        </Link>
+        <span className={styles.btn} onClick={()=>testHandler()} >
+          <Icon icon="material-symbols:add-circle-outline-rounded"  className={styles.addIcon} />새 퀴즈 만들기
+        </span>
       </div>
+      
       <div className={`${styles[`container`]}`}>
         <div className={`${styles[`side`]}`}>
           <SideMenuTab />
           <Logout />
         </div>
-        <Outlet></Outlet>
+        
+        <Outlet context={{isModals}}></Outlet>
+        <Modal isModal={isModals} setIsModal={setIsModal} />
       </div>
+   
     </div>
   );
 };
