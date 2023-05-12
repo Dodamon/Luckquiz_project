@@ -32,8 +32,6 @@ public class QuizRoomConsumerController {
             int templateId = Integer.parseInt(in.split(" ")[2]);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
-            ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-            stringStringValueOperations.append(roomId+"l",hostId+", ");
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
         }
