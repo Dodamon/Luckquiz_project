@@ -117,6 +117,7 @@ public class MessageController {
         GoogleVisionService googleVisionService = new GoogleVisionService(gson);
         googleVisionService.googleCheck(decode);
 
+
 //      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
 //      toGradeProducer.clientSubmit(gson.toJson(message));
         System.out.println("제출되었읍니다....");
