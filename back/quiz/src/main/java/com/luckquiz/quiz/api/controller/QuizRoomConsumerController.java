@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.api.controller;
 
 import com.google.gson.Gson;
+import com.luckquiz.quiz.api.response.EnterUser;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,13 @@ public class QuizRoomConsumerController {
             int templateId = Integer.parseInt(in.split(" ")[2]);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
+
             ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-            stringStringValueOperations.append(roomId+"l",hostId+", ");
+            EnterUser user = new EnterUser();
+            user.setSender(hostId.toString());
+            user.setImg(0);
+            stringStringValueOperations.append(roomId+"l",gson.toJson(user)+", ");
+
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
         }
