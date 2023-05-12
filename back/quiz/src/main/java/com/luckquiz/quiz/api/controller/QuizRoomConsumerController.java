@@ -33,13 +33,6 @@ public class QuizRoomConsumerController {
             int templateId = Integer.parseInt(in.split(" ")[2]);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
-
-            ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-            EnterUser user = new EnterUser();
-            user.setSender(hostId.toString());
-            user.setImg(0);
-            stringStringValueOperations.append(roomId+"l",gson.toJson(user)+", ");
-
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
         }
