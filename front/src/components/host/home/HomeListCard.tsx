@@ -22,7 +22,6 @@ const HomeListCard = (props: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const hostName = useSelector((state: RootState) => state.auth.nickname);
-  const hostImg = useSelector((state: RootState) => state.auth.image_url);
   const { data, status, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const HomeListCard = (props: Props) => {
       const socketProps = {
         roomNum: data!.roomId,
         name: hostName,
-        img: hostImg,
+        img: 0,
         isHost: true,
       };
       connectAndSubscribe(socketProps, dispatch);

@@ -95,14 +95,11 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       const data = JSON.parse(res.body);
       console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
-      if (data.type === "enterGuestList") {
-        dispatch(socketActions.changeGuestList(data.enterGuestList));
-      } else if (data.type === "getQuizItem") {
-        dispatch(socketActions.getQuizItem(data.getQuizItem));
-      } else {
-        console.log("got empty message");
-        // dispatch(socketActions.getQuizItem(data));
-      }
+      if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
+      else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
+      else if (data.type === "emotionResult") {}
+      else console.log("got empty message");
+      // dispatch(socketActions.getQuizItem(data));
     }
   };
 
