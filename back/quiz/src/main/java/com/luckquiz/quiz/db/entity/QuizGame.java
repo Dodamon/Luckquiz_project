@@ -30,7 +30,12 @@ public class QuizGame {
     @Column(name = "quiz", nullable = true)
     private byte[] quiz;
 
+    @Column(name = "is_valid",nullable = true)
+    private String isValid;
+
     public void setType(QuizType type) {
         this.type = type;
     }
+
+    public void setIsValid(String isValid){this.isValid = isValid;}
 }

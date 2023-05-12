@@ -25,6 +25,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
@@ -85,6 +86,7 @@ public class TemplateService {
             String quizDumb = new String(a.getQuiz(), "UTF-8");
             QGame gameinfo = gson.fromJson(quizDumb, QGame.class);
             gameinfo.setId(a.getId());
+            gameinfo.setIsValid(a.getIsValid());
             quizgame.add(gameinfo);
         }
         TemplateDetailResponse result = TemplateDetailResponse.builder()
@@ -100,31 +102,34 @@ public class TemplateService {
     // 구분자는 모두 `` 으로 나눴고 인정답안은 ₩₩ 으로 구분하였다.
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
-    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception {
+    public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception, CustomException {
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         temp.setDate(LocalDateTime.now());
+        QuizGameCreateRequest newQg = checkValid(qgcr,temp);
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
         // 퀴즈들을 저장하자.
-        List<QGame> qGames = qgcr.getQuizList();
+
+        List<QGame> qGames = newQg.getQuizList();
         for (QGame a : qGames) {
             Charset charset = Charset.forName("UTF-8");
             byte[] bytes = gson.toJson(a).getBytes(charset);
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
-                    .timer(qgcr.getTimer())
+                    .timer(newQg.getTimer())
                     .quiz(bytes)
+                    .isValid(a.getIsValid())
                     .type(a.getType())
                     .build();
             if (QuizType.game.equals(a.getType())) {
-                System.out.println("is Game");
                 qgame.setType(QuizType.game);
             }
-            System.out.println("2");
             quizGameRepository.save(qgame);
-            System.out.println("save success");
+
         }
+
+
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
 
@@ -141,9 +146,75 @@ public class TemplateService {
                     .date(date)
                     .templateId(a.getId())
                     .name(a.getName())
+                    .isValid(a.getIsValid())
                     .build();
             result.add(temp);
         }
         return result;
     }
+
+    public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest, Template temp) {
+        List<QGame> qGames = quizGameCreateRequest.getQuizList();
+        List<QGame> result = new ArrayList<>();
+        temp.setIsValid("false");
+        for (QGame check : qGames) {
+            check.setIsValid("true");
+
+            if (QuizType.quiz.equals(check.getType())) {
+                switch (check.getQuiz()) {
+                    case "ox":
+                        if (StringUtils.isEmpty(check.getQuestion())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        } else if (StringUtils.isEmpty(check.getAnswer())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        }
+                        break;
+
+                    case "four":
+                        if (StringUtils.isEmpty(check.getQuestion())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        } else if (StringUtils.isEmpty(check.getAnswer())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        } else if (StringUtils.isEmpty(check.getOne()) || StringUtils.isEmpty(check.getTwo())
+                                || StringUtils.isEmpty(check.getThree()) || StringUtils.isEmpty(check.getFour())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        }
+                        break;
+
+                    case "text":
+                        if (StringUtils.isEmpty(check.getQuestion())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        } else if (StringUtils.isEmpty(check.getAnswerList())) {
+                            check.setIsValid("false");
+                            temp.setIsValid("false");
+                        }
+                        break;
+                }
+            } else {
+                if (StringUtils.isEmpty(check.getGame())) {
+                    check.setIsValid("false");
+                    temp.setIsValid("false");
+                }
+                if (check.getGame().equals("emotion")) {
+                    if (StringUtils.isEmpty(check.getAnswer())) {
+                        check.setIsValid("false");
+                        temp.setIsValid("false");
+                    }
+                }
+                break;
+
+            }
+            result.add(check);
+        }
+        quizGameCreateRequest.setQuizList(result);
+        return quizGameCreateRequest;
+    }
+
+
 }

@@ -17,4 +17,10 @@ public class QuizGameCreateRequest {
     private UUID hostId;
     private List<QGame> quizList;
     private int timer;
+
+    public void setQuizList(List<QGame> quizList){
+        this.quizList = quizList;
+    }
+
+
 }

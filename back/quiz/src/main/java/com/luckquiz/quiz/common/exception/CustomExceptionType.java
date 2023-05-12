@@ -14,7 +14,9 @@ public enum CustomExceptionType {
     NO_ANSWER_ERROR(HttpStatus.NOT_ACCEPTABLE,"107","답안을 입력안했읍니다."),
     NO_FOUR_ERROR(HttpStatus.NOT_ACCEPTABLE,"108","4지선다 보기를 입력안했읍니다."),
     NO_ANSWERLIST_ERROR(HttpStatus.NOT_ACCEPTABLE,"109","인정답안 목록을 입력안했읍니다."),
-    NO_GAME_ERROR(HttpStatus.NOT_ACCEPTABLE,"110","어떤 게임인지 안정했읍니다.");
+    NO_GAME_ERROR(HttpStatus.NOT_ACCEPTABLE,"110","어떤 게임인지 안정했읍니다."),
+    KAFKA_SERIALIZE_ERROR(HttpStatus.BAD_REQUEST,"110","카프카 SERIALIZE가 안됩니다."),
+    NULL_VALUE_ERROR(HttpStatus.BAD_REQUEST,"111","필요한 값중 하나가 빈 값입니다.");
     private final HttpStatus httpStatus;
     private final String code;
     private String message;

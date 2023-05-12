@@ -10,8 +10,8 @@ spring:
       fail-on-empty-beans: false
   jpa:
     open-in-view: false
-    generate-ddl: true
-    show-sql: true
+    generate-ddl: false
+    show-sql: false
     hibernate:
       ddl-auto: none
 
@@ -54,3 +54,5 @@ spring:
 app:
   cors:
     allowedOrigins: http://localhost:3000
+server:
+  port: 8081

@@ -13,5 +13,6 @@ public class TemplateListResponse {
     private String name;
     private int templateId;
     private String date;
+    private String isValid;
     
 }

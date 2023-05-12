@@ -26,6 +26,7 @@ public class TemplateInfoResponse {
     private List<String> answerList;
     private String game;
     private Integer timer;
+    private String isValid;
 
     public void setId(Integer id) {
         this.id = id;
