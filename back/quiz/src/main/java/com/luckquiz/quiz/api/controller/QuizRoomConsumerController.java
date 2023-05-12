@@ -23,7 +23,7 @@ public class QuizRoomConsumerController {
     private final StringRedisTemplate stringRedisTemplate;
     @KafkaListener(topics = "server_message",groupId = "test")
     public void quizStart(String in, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
-
+        EnterUser u = new EnterUser();
         System.out.println("came here?");
         System.out.println(key);
         if("start".equals(key)){
@@ -32,7 +32,9 @@ public class QuizRoomConsumerController {
             int roomId = Integer.parseInt(in.split(" ")[1]);
             int templateId = Integer.parseInt(in.split(" ")[2]);
             ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-            stringStringValueOperations.append(roomId+"l",hostId+", ");
+            u.setSender(hostId.toString());
+            u.setImg(0);
+            stringStringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
