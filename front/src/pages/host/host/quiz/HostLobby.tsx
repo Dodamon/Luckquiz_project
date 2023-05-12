@@ -15,7 +15,7 @@ const HostLobby = () => {
   const navigate = useNavigate()
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const quizItem = useSelector((state: RootState) => state.socket.QuizItem)
+  const quizItem = useSelector((state: RootState) => state.socket.quizItem)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const HostLobby = () => {
         height="40px"
         fontSize="20px"
         // onClick={() => dispatch(socketActions.sendAnswerMessage({ roomId: quiz_id, hostId: userId }))}
-        onClick={() => dispatch(socketActions.sendAnswerMessage({ roomId: "3670055", hostId: userId }))}
+        onClick={() => dispatch(socketActions.sendAnswerMessage({ destination: "/app/quiz/start" ,body: { roomId: "3670055", hostId: userId } }))}
       />
     </div>
   );

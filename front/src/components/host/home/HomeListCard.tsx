@@ -21,14 +21,20 @@ const HomeListCard = (props: Props) => {
   const { menu, quiz, report } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const hostInfo = useSelector((state: RootState) => state.auth);
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const hostName = useSelector((state: RootState) => state.auth.nickname);
+  const hostImg = useSelector((state: RootState) => state.auth.image_url);
   const { data, status, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
     if (data) {
       // 정상 connectedAndSubscribe시, 퀴즈방으로 이동
-      connectAndSubscribe(data!.roomId, dispatch);
+      const socketProps = {
+        roomNum: data!.roomId,
+        name: hostName,
+        img: hostImg,
+        isHost: true,
+      };
+      connectAndSubscribe(socketProps, dispatch);
       navigate(`/host/quiz/${data?.roomId}`);
     }
   }, [data]);

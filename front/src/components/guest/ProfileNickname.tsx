@@ -56,6 +56,7 @@ const ProfileNickname: React.FC = () => {
   const { data, status, isLoading, sendGuestRequest } = useGuestAxios();
   const [useOk, setUseOk] = useState(false);
   const [nameLoading, setNameLoading] = useState(false);
+  const [paramPin, setParamPin] = useState(pinNum);
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
@@ -101,13 +102,12 @@ const ProfileNickname: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(guestName);
     if (guestName.length === 0) return;
     setNameLoading(true);
     const identifier = setTimeout(() => {
       // keyup 1초 후 중복 검사
       console.log("api 요청");
-      sendGuestRequest({ url: `/api/quizroom/duplicate/${pinNum}/${guestName}` });
+      sendGuestRequest({ url: `/api/quizroom/duplicate/${paramPin}/${guestName}` });
     }, 500);
 
     return () => {
@@ -122,7 +122,6 @@ const ProfileNickname: React.FC = () => {
   }, [status, isLoading]);
 
   useEffect(() => {
-    console.log(data);
     if (data === true) setUseOk(true);
     else if (data === false) setUseOk(false);
   }, [data]);
@@ -134,9 +133,7 @@ const ProfileNickname: React.FC = () => {
     const queryString = location.search;
     const searchParams = new URLSearchParams(queryString);
     const value = searchParams.get("pinnum");
-    if (!value) dispatch(socketActions.updatePinNum(value));
-    // 가져온 값 출력 예시
-    console.log(value);
+    if (typeof value === "string") setParamPin(value);
   }, []);
 
   useEffect(() => {

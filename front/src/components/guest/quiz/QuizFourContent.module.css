@@ -42,6 +42,7 @@
         color: var( --placeholder-text);
         margin-top: 5%;
         margin-bottom: 5%;
+        object-fit: cover;
     }
     
     .plus_font{
@@ -62,12 +63,12 @@
         row-gap: 20px;
         column-gap: 100px;
         width: 100%;
-        margin-top: 30px;
+        /* margin-top: 30px; */
     }
     
     .content_answer{
         background-color: var(--white-color);
-        height: 90px;
+        height: 70px;
         border-radius: 20px;
         display: flex;
         align-items: center;
@@ -150,6 +151,7 @@
         color: var( --placeholder-text);
         margin-top: 5%;
         margin-bottom: 5%;
+        object-fit: cover;
     }
     
 
@@ -160,7 +162,7 @@
         row-gap: 20px;
         column-gap: 10px;
         /* width: 100%; */
-        margin-top: 30px;
+        /* margin-top: 30px; */
 
     }
     

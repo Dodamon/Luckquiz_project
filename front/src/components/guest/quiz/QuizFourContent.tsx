@@ -6,13 +6,34 @@ import styles from "./QuizFourContent.module.css";
 import { getQuizItem, setQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 type QuizFourContentProps = {
   content: getQuizItem;
 };
 
+// const content = {
+//   answer: "의경",
+//   answerList: null,
+//   four: "의경",
+//   game: null,
+//   id: 1315,
+//   one: "육군",
+//   question: "알톡챗의 병과는?",
+//   quiz: "four",
+//   quizNum: 1,
+//   quizSize: 4,
+//   quizUrl: "https://storage.googleapis.com/luckquiz/08b9d217-ecf4-48e1-8195-275c8b71a003",
+//   three: "공군",
+//   timer: 10,
+//   two: "해군",
+//   type: null,
+// };
+
 const QuizFourContent = ({ content }: QuizFourContentProps) => {
   const [item, setItem] = useState("");
+  const auth = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const answerHandler = (answer: string) => {
     setItem(answer);
@@ -25,9 +46,9 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
       <QuizGameTitle title={content.question} />
 
       {/* {content.quizUrl &&  */}
-        <div className={styles.content_images}>
-          <img src={"https://image.hmall.com/static/0/0/32/88/2088320002_1.jpg?RS=600x600&AR=0"} alt="좋아" />
-        </div>
+      <div className={styles.content_images}>
+        <img src={"https://image.hmall.com/static/0/0/32/88/2088320002_1.jpg?RS=600x600&AR=0"} alt="좋아" />
+      </div>
       {/* } */}
 
       <div className={styles.content_answerbox}>
