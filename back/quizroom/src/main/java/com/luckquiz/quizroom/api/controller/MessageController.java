@@ -27,7 +27,6 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
 // 꾸글
-//
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -83,7 +82,6 @@ public class MessageController {
                 .build();
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
-        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), egm);
         quizService.serveEntry(egm,message.getRoomId());
     }
 

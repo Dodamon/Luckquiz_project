@@ -86,8 +86,8 @@ public class QuizService {
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
         List<String> rank = new ArrayList<>(all);
 
-        for(String name : rank){
-            EnterUser temp = gson.fromJson(name,EnterUser.class);
+        for(int i = 2; i<rank.size();i++){
+            EnterUser temp = gson.fromJson(rank.get(i),EnterUser.class);
             sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+temp.getSender(),egm);
         }
     }
