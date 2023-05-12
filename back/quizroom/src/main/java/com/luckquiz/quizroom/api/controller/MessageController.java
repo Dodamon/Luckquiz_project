@@ -1,15 +1,8 @@
 package com.luckquiz.quizroom.api.controller;
 
 
-import com.google.api.gax.core.CredentialsProvider;
-import com.google.api.gax.core.FixedCredentialsProvider;
-import com.google.api.gax.core.GoogleCredentialsProvider;
-import com.google.auth.Credentials;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.google.cloud.vision.v1.*;
+
 import com.google.gson.Gson;
-import com.google.protobuf.ByteString;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.Duplucheck;
@@ -25,7 +18,6 @@ import com.luckquiz.quizroom.model.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -228,7 +220,7 @@ public class MessageController {
     public void currentParticipent(CurrentParticipent currentParticipent){
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         Map all = hashOperations.entries(currentParticipent.getRoomId()+"p");
-        sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size()-1);
+        sendingOperations.convertAndSend("/topic/quiz/" + currentParticipent.getRoomId(), all.size());
     }
 
     @MessageMapping("/quiz/execute")
