@@ -85,9 +85,8 @@ public class QuizService {
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
         List<String> rank = new ArrayList<>(all);
-
-        for(int i = 2; i<rank.size();i++){
-            EnterUser temp = gson.fromJson(rank.get(i),EnterUser.class);
+        for(String a : rank){
+            EnterUser temp = gson.fromJson(a,EnterUser.class);
             sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+temp.getSender(),egm);
         }
     }
