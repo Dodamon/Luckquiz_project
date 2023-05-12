@@ -65,7 +65,7 @@ const HostPlayQuiz = () => {
           <>
             <div className={styles.header}>
               <TimerBar time={quizItem.timer} handleOrder={setOrder} />
-              {quizItem?.quizNum}/{quizItem?.quizSize}
+              {quizItem?.quizNum + 1}/{quizItem?.quizSize}
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}

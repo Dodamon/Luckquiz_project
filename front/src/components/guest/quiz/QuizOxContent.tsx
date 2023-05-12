@@ -13,7 +13,7 @@ type QuizOxContentProps = {
 
 const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
   const [item, setItem] = useState("");
-  const guest = useSelector((state: RootState) => state.guest.nickname);
+  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
 
   const answerHandler = (answer: string) => {
     setItem(answer);

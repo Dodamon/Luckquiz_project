@@ -13,7 +13,8 @@ type QuizShortContentProps = {
 
 const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
   const [item, setItem] = useState("");
-  const guest = useSelector((state: RootState) => state.guest.nickname); 
+  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
+  const auth = useSelector((state: RootState) => state.auth.isAuthenticated) 
 
 
   const answerHandler = (e: any) => {
@@ -43,7 +44,7 @@ const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
           </div>
           <div className={styles.content_input}>
             {guest && <input type="text" value={item} onChange={(e) => answerHandler(e)} />}
-            {!guest && <input type="text" value="주관식으로 답을 적어보세요"/>}
+            {auth && <input type="text" value="주관식으로 답을 적어보세요"/>}
           </div>
         </div>
         {/* <div className={styles.content_submitbox}>
