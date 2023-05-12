@@ -32,7 +32,7 @@ const HomeListCard = (props: Props) => {
       const socketProps = {
         roomNum: data!.roomId,
         name: hostName,
-        img: hostImg,
+        img: 0,
         isHost: true,
       };
       connectAndSubscribe(socketProps, dispatch);
