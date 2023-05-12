@@ -35,6 +35,23 @@
     align-items: center;
 }
 
+.effect_font{
+    display: none;
+}
+.content_images:hover .effect_font{
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .content_images:hover >div{
+    font-size: 48px;
+    cursor: pointer;
+    background-color: var(--white-color);
+    border-radius: 10px
+} */
+
 .plus_comment{
     font-size: 48px;
     cursor: pointer;

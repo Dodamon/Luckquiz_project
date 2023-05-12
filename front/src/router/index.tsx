@@ -77,8 +77,10 @@ const router = createBrowserRouter([
         element: <QuizCreatePage/>,
       },
       {
+
+
         path: "quiz/:quiz_id/edit",
-        element: <Edit />,
+        element: <QuizCreatePage/>,
       },
       {
         path: "host/quiz/:quiz_id",

@@ -28,7 +28,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl) {
         dispatch(quizAtions.contentsUpdate({index:num, content: content}))
       }
-    }, 5000);
+    }, 2000);
     return () => clearInterval(intervalId);
   }, [quiz]);
 
@@ -75,23 +75,25 @@ const QuizShortTemplate = ({ num }: pageNum) => {
         <input type="text" value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
       </div>
 
-      <div className={styles.content_images} style={quiz.quizUrl?{backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain",   backgroundPosition: 'center center',backgroundRepeat:"no-repeat" }:{}}>
-        <div className={styles.plus_font} ><div>
-        <label htmlFor="file-upload"   className={styles.plus_comment}>
-          <Icon icon="ic:round-plus" />
-        </label>
-        <input
-          id="file-upload"
-          type="file"
-          accept=".jpg, .png"
-          onChange={imageUploadHandler}
-          style={{ display: "none" }}
-        />
-        
-        </div>
-        <div>이미지 첨부하세요</div>
-        </div>
-      </div>
+      <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
+                <div 
+                
+                className={ !quiz.quizUrl?styles['plus_font']: styles['effect_font']}  ><div>
+                    <label htmlFor="file-upload" className={styles.plus_comment}>
+                        <Icon icon="ic:round-plus" />
+                    </label>
+                    <input
+                        id="file-upload"
+                        type="file"
+                        accept=".jpg, .png"
+                        onChange={imageUploadHandler}
+                        style={{ display: "none" }}
+                    />
+
+                </div>
+                    <div>이미지 첨부하세요</div>
+                </div>
+            </div>
 
       <div className={styles.content_answerbox}>
         {

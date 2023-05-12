@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
 import axios from "axios"
+import { useNavigate } from "react-router";
 
 
 const QuizSelectMenu = () => {
@@ -17,6 +18,7 @@ const QuizSelectMenu = () => {
     const [selectedGameOption, setSelectedGameOption] = useState(quizInfo[selectInfo].game);
     const [selectedTimeOption, setSelectedTimeOption] = useState(quizInfo[selectInfo].timer);
 
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const quizTypeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -49,15 +51,51 @@ const QuizSelectMenu = () => {
     }, [quizInfo, selectInfo])
 
     const temporarySaveHandler = () => {
-        console.log(template);
+        // dispatch(quizAtions.contentsUpdate({ index: selectInfo, content: template }))
+        // console.log("뭔데", template);
 
-        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", template).then(res => {
-            console.log(res);
+        const quizList = template.quizList;
+ 
+        
+        const checkedList = quizList.map(it =>{
 
+            if (it.type === "game") {
+                // 게임 null 확인
+                return (!it.game) ? { ...it, is_Valid: false } : (it.game === "emotion") && (!it.answer) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
+            } else if (it.type === "quiz") {
+                
+                // 사지선다 확인
+                if(it.quiz === "four"){
+                    return (!it.answer || !it.one || !it.two || !it.three || !it.four || !it.question) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
+               
+                // 주관식 확인
+                }else if(it.quiz==="text"){
+                    return (it.answerList.length===0 || !it.question) ? { ...it,is_Valid: false } : { ...it, is_Valid: true };
+                
+                // ox 확인
+                }else if(it.quiz==="ox"){
+                    return (!it.answer || !it.question) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
+                }
+            }
         })
 
+        const isValid = checkedList.some(element => element?.is_Valid === false);
+        const saveData= {...template, is_Valid: !isValid, quizList: checkedList}
 
+
+
+        // axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", saveData).then(res => {
+
+        //     console.log(res);
+        //     navigate("/home");
+
+        // })
     }
+
+
+
+
+
 
 
 
@@ -93,7 +131,7 @@ const QuizSelectMenu = () => {
                     <div onClick={temporarySaveHandler}>임시저장</div>
                 </div>
                 <div>
-                    <div>저장</div><Icon icon="ic:round-log-out" />
+                    <div onClick={temporarySaveHandler}>저장</div><Icon icon="ic:round-log-out" />
                 </div>
             </div>
         </nav>

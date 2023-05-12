@@ -12,7 +12,7 @@ import text from '../../../assets/images/text.png';
 import game from '../../../assets/images/game.png';
 
 const newQuizItem: setQuizItem = {
-
+    id:0,
     type: "quiz",
     quiz: "four",
     quizUrl: "",
@@ -24,11 +24,12 @@ const newQuizItem: setQuizItem = {
     four: "",
     answerList: [""],
     game: "",
-    timer: 15
+    timer: 15,
+    is_Valid: false,
 }
 
 const newGameItem: setQuizItem = {
-
+    id:0,
     type: "game",
     quiz: "",
     quizUrl: "",
@@ -40,7 +41,8 @@ const newGameItem: setQuizItem = {
     four: "",
     answerList: [],
     game: "",
-    timer: 15
+    timer: 15,
+    is_Valid: false,
 }
 
 
@@ -51,6 +53,8 @@ const QuizListBar = () => {
     const [focusedItem, setFocusedItem] = useState(0);
 
     const itemSelectHandler = (quiznum: number) => {
+        console.log("사람살려", quiznum);
+        
         dispatch(authActions.selectIndex(quiznum));
         setFocusedItem(quiznum);
     }
