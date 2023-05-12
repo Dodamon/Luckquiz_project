@@ -1,9 +1,11 @@
 package com.luckquiz.quiz.api.controller;
 
+import com.google.gson.Gson;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -15,10 +17,12 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class QuizRoomConsumerController {
+    private final Gson gson;
     private final RedisTransService redisTransService;
     private final StringRedisTemplate stringRedisTemplate;
     @KafkaListener(topics = "server_message",groupId = "test")
     public void quizStart(String in, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
+
         System.out.println("came here?");
         System.out.println(key);
         if("start".equals(key)){
@@ -28,6 +32,8 @@ public class QuizRoomConsumerController {
             int templateId = Integer.parseInt(in.split(" ")[2]);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
+            ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+            stringStringValueOperations.append(roomId+"l",hostId+", ");
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
         }

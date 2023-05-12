@@ -15,4 +15,6 @@ public class TemplateResponse {
     private int id;
     private String name;
     private UUID hostId;
+
+    private String isValid;
 }

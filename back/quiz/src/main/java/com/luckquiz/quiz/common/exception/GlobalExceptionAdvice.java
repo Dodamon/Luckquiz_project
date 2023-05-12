@@ -2,6 +2,7 @@ package com.luckquiz.quiz.common.exception;
 
 import com.luckquiz.quiz.api.response.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.type.SerializationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,6 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionAdvice {
     //1. 에러가 우리 customException에서 잡아낸 에러
+    @ExceptionHandler(value = SerializationException.class)
+    public ResponseEntity<ExceptionResponse> kafakExceptionHandler(SerializationException se){
+        log.info("세리얼라이즈가 안돼");
+        return getResponseEntity(CustomExceptionType.KAFKA_SERIALIZE_ERROR);
+    }
+
     @ExceptionHandler(value = CustomException.class)
     public ResponseEntity<ExceptionResponse> customExceptionHandler(CustomException e){
         return getResponseEntity(e.getException());
@@ -23,7 +30,6 @@ public class GlobalExceptionAdvice {
     //3. 에러가 CustomException에서 못잡고, Runtime Exception이 아닌 모든 Exception
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ExceptionResponse> exceptionHandler(Exception e){
-        log.info(e.toString());
         log.info(e.getMessage());
         return getResponseEntity(CustomExceptionType.INTERNAL_SERVER_ERROR);
     }

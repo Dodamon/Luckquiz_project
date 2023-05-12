@@ -28,6 +28,7 @@ public class QGame {
     private String four;
     private String game;
     private Integer timer;
+    private String isValid;
 
     public void setType(QuizType type) {
         this.type = type;
@@ -39,5 +40,9 @@ public class QGame {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setIsValid(String isValid){
+        this.isValid=isValid;
     }
 }

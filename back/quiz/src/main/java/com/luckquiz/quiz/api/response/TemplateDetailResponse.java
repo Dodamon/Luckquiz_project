@@ -20,6 +20,7 @@ public class TemplateDetailResponse {
     private List<QGame> quizList;
     private String[] numbering;
     private int quizNum;
+    private String isValid;
 
     public void setQuizNum(int quizNum){
         this.quizNum = quizNum;
