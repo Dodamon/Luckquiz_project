@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Service
+//@Service
 public class GoogleVisionService {
     private final Gson gson;
     public void googleCheck(byte[] decode) throws  Exception {
@@ -40,16 +40,16 @@ public class GoogleVisionService {
 
                 // For full list of available annotations, see http://g.co/cloud/vision/docs
                 for (FaceAnnotation annotation : res.getFaceAnnotationsList()) {
-                    System.out.println("화남: " + annotation.getAngerLikelihoodValue());
-                    System.out.println("놀람 :" + annotation.getSurpriseLikelihoodValue());
-                    System.out.println("즐거움 :" + annotation.getJoyLikelihoodValue());
-                    System.out.println("슬픔 :" + annotation.getSorrowLikelihoodValue());
-                    System.out.println("머리에 뭐 쓴거같은지 :" + annotation.getHeadwearLikelihoodValue());
-                    System.out.println("화난 가능성 :" + annotation.getAngerLikelihood());
-                    System.out.println("놀람 가능성 :" + annotation.getSurpriseLikelihood());
-                    System.out.println("즐거움 가능성 :" + annotation.getJoyLikelihood());
-                    System.out.println("슬픔 가능성 :" + annotation.getSurpriseLikelihood());
-                    System.out.println("머리 뭐 쓴 가능성 :" + annotation.getHeadwearLikelihood());
+//                    System.out.println("화남: " + annotation.getAngerLikelihoodValue());
+//                    System.out.println("놀람 :" + annotation.getSurpriseLikelihoodValue());
+//                    System.out.println("즐거움 :" + annotation.getJoyLikelihoodValue());
+//                    System.out.println("슬픔 :" + annotation.getSorrowLikelihoodValue());
+//                    System.out.println("머리에 뭐 쓴거같은지 :" + annotation.getHeadwearLikelihoodValue());
+//                    System.out.println("화난 가능성 :" + annotation.getAngerLikelihood());
+//                    System.out.println("놀람 가능성 :" + annotation.getSurpriseLikelihood());
+//                    System.out.println("즐거움 가능성 :" + annotation.getJoyLikelihood());
+//                    System.out.println("슬픔 가능성 :" + annotation.getSurpriseLikelihood());
+//                    System.out.println("머리 뭐 쓴 가능성 :" + annotation.getHeadwearLikelihood());
                     //                    System.out.println(gson.toJson(annotation));
 //                    System.out.format(
 //                            "anger: %s%njoy: %s%nsurprise: %s%nposition: %s",
