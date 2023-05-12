@@ -156,7 +156,7 @@ public class TemplateService {
     public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest, Template temp) {
         List<QGame> qGames = quizGameCreateRequest.getQuizList();
         List<QGame> result = new ArrayList<>();
-        temp.setIsValid("false");
+        temp.setIsValid("true");
         for (QGame check : qGames) {
             check.setIsValid("true");
 
