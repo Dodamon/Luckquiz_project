@@ -83,6 +83,7 @@ public class MessageController {
                 .build();
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
+        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), egm);
         quizService.serveEntry(egm,message.getRoomId());
     }
 
