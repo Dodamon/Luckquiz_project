@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.Duplucheck;
+import com.luckquiz.quizroom.api.response.EmotionResponse;
 import com.luckquiz.quizroom.api.response.QGame;
 import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
 import com.luckquiz.quizroom.api.service.*;
@@ -16,6 +17,7 @@ import com.luckquiz.quizroom.message.EnterGuestMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.*;
 
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Emotion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -113,15 +115,31 @@ public class MessageController {
         byte[] decode;
         EmotionResultMessage result;
         try{
-            decode =  Base64.getDecoder().decode(message.getFile().split(",")[1]);
-            if(decode.length>= 2097152){
-                throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
-            }
-            result = clovarVisionService.naverCheck(decode);
-            sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
-            // 채점결과 채점서버로 message 보내기
-            toGradeProducer.clientSubmit(gson.toJson(message));
-            log.info("제출 했습니다.");
+
+                decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
+                if (decode.length >= 2097152) {
+                    throw new CustomException(CustomExceptionType.FILE_TOO_LARGE);
+                }
+                result = clovarVisionService.naverCheck(decode);
+                result.setName(message.getSender());
+                result.setRoomId(message.getRoomId());
+                result.setQuizNum(message.getQuizNum());
+                EmotionResponse emotionResponse = new EmotionResponse();
+                emotionResponse.setType(result.getType());
+                if (result.getResult().getFaces() == null) {
+                    System.out.println("1");
+                    emotionResponse.setEmotion(null);
+                } else {
+                    System.out.println("2");
+                    emotionResponse.setEmotion(result.getResult().getFaces().get(0).getEmotion());
+                }
+
+
+                sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);
+                // 채점결과 채점서버로 message 보내기
+                toGradeProducer.emotion(gson.toJson(result));
+                log.info("제출 했습니다.");
+
         } catch (CustomException e){
             throw new CustomException(CustomExceptionType.NO_PICTURE_ERROR);
         }

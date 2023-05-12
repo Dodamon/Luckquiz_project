@@ -109,7 +109,7 @@ public class ClovarVisionService{
         }
 
         resultMessage.setResult(result);
-        resultMessage.setType("EmotionResult");
+        resultMessage.setType("emotion");
         return resultMessage;
     }
 }
