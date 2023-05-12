@@ -63,7 +63,9 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             </div>
 
             <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
-                <div className={styles.plus_font} ><div>
+                <div 
+                
+                className={ !quiz.quizUrl?styles['plus_font']: styles['effect_font']}  ><div>
                     <label htmlFor="file-upload" className={styles.plus_comment}>
                         <Icon icon="ic:round-plus" />
                     </label>

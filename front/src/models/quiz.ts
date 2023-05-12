@@ -28,6 +28,7 @@ export interface setQuizItem {
     answerList: string[],
     game: string,
     timer: number,
+    is_Valid: boolean;
 }
 
 
@@ -43,5 +44,6 @@ export interface setQuizSet {
     name?:string,
     hostId:string,
     templateId: number,
+    is_Valid?: boolean,
     quizList: setQuizItem[];
 }

@@ -41,6 +41,17 @@
     cursor: pointer;
 }
 
+.effect_font{
+    display: none;
+}
+.content_images:hover .effect_font{
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 .content_answerbox{
     display: flex;
     justify-content: center;

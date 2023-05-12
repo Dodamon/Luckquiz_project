@@ -13,15 +13,11 @@ import { useDispatch } from "react-redux";
 import { authActions } from "store/auth";
 import useHostAxios from "hooks/useHostAxios";
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
+
 export interface Quiz {
   name: string;
   templateId: string;
+  is_Valid: boolean;
   date: string;
 }
 
@@ -53,17 +49,6 @@ const Quiz = () => {
 
 
   useEffect(() => {
-    // sendHostRequest({
-    //   url: `/api/quiz/template/list?hostId=${authInfo.userId}`,
-    // }).then(data =>{
-    //   console.log(data);
-      
-    // })
-    
-
-
-
-
 
     axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
@@ -74,15 +59,6 @@ const Quiz = () => {
       });
   }, [deleteItem])
 
-  const [open, setOpen] = useState(false);
-
-  const handleAlertOpen = () => {
-    setOpen(true);
-  };
-
-  const handleAlertClose = () => {
-    setOpen(false);
-  };
 
 
   
@@ -99,8 +75,6 @@ const Quiz = () => {
         <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={() => setIsModal(!isModal)} />
         {/* </Link> */}
       </div>
-
-  
     </div>
   );
 };
