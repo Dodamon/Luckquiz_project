@@ -9,33 +9,19 @@ import { RootState } from "store";
 
 type QuizFourContentProps = {
   content: getQuizItem;
+  handleAnswer? : Function;
+
 };
 
-// const content = {
-//   answer: "의경",
-//   answerList: null,
-//   four: "의경",
-//   game: null,
-//   id: 1315,
-//   one: "육군",
-//   question: "알톡챗의 병과는?",
-//   quiz: "four",
-//   quizNum: 1,
-//   quizSize: 4,
-//   quizUrl: "https://storage.googleapis.com/luckquiz/08b9d217-ecf4-48e1-8195-275c8b71a003",
-//   three: "공군",
-//   timer: 10,
-//   two: "해군",
-//   type: null,
-// };
-
-const QuizFourContent = ({ content }: QuizFourContentProps) => {
+const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
   const [item, setItem] = useState("");
-  const auth = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const guest = useSelector((state: RootState) => state.guest.nickname);
 
   const answerHandler = (answer: string) => {
     setItem(answer);
+    handleAnswer && handleAnswer(answer)  // 보기에 담기 답을 직접 string으로 보내야함.
   };
+
   return (
     <div className={styles.QuizFourContent}>
       {/* <div className={styles.content_title}>
@@ -52,7 +38,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("one")}
+          onClick={() => guest && answerHandler("one")}
           style={item === "one" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}>
@@ -67,7 +53,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("two")}
+          onClick={() => guest && answerHandler("two")}
           style={item === "two" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}>
@@ -82,7 +68,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("three")}
+          onClick={() => guest && answerHandler("three")}
           style={item === "three" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}>
@@ -97,7 +83,7 @@ const QuizFourContent = ({ content }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("four")}
+          onClick={() => guest && answerHandler("four")}
           style={item === "four" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}>

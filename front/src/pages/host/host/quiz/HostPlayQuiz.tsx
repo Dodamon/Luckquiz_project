@@ -90,6 +90,19 @@ const HostPlayQuiz = () => {
                   )
                 }
               />
+              <ButtonWithLogo
+                name="채점하기"
+                fontSize="18px"
+                height="45px"
+                onClick={() =>
+                  dispatch(
+                    socketActions.sendAnswerMessage({
+                      destination: "",  // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
+                      body: { hostId: userId, roomId: quiz_id },
+                    }),
+                  )
+                }
+              />
             </div>
           </>
         )}

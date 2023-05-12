@@ -8,14 +8,18 @@ import { RootState } from "store";
 
 type QuizOxContentProps = {
   content: getQuizItem;
+  handleAnswer? : Function;
 };
 
-const QuizOxContent = ({ content }: QuizOxContentProps) => {
+const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
   const [item, setItem] = useState("");
-  const auth = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const guest = useSelector((state: RootState) => state.guest.nickname);
 
   const answerHandler = (answer: string) => {
     setItem(answer);
+    console.log(answer)
+    handleAnswer && handleAnswer(answer)
+
   };
   return (
     <div className={styles.QuizOxContent}>
@@ -33,8 +37,8 @@ const QuizOxContent = ({ content }: QuizOxContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("one")}
-          style={item === "one" ? { opacity: "70%" } : {}}
+          onClick={() => guest && answerHandler("O")}
+          style={item === "O" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-two)" }}>
             <div>
@@ -48,8 +52,8 @@ const QuizOxContent = ({ content }: QuizOxContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !auth && answerHandler("two")}
-          style={item === "two" ? { opacity: "70%" } : {}}
+          onClick={() => guest && answerHandler("X")}
+          style={item === "X" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-one)" }}>
             <div>
