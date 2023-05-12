@@ -33,7 +33,6 @@ const socketSlice = createSlice({
       if (client) {
         console.log("publish");
         client.publish({
-          // destination: "/app/quiz/start",
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
@@ -108,9 +107,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
     roomId: socketProps.roomNum,
   };
   // const URL = `/topic/quiz/${pinNum}`;
-  // const URL = `/topic/quiz/3670055`;
+  const URL = `/topic/quiz/5118714`;
 
-  const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+  // const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };

@@ -68,9 +68,9 @@ const HostPlayQuiz = () => {
               {quizItem?.quizNum}/{quizItem?.quizSize}
             </div>
             <div className={styles.quizContainer}>
-            {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
-            {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
-            {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
+              {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
+              {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} />}
+              {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} />}
             </div>
             {/* 
             <div className={styles.currenSubmitChart}>
@@ -119,10 +119,7 @@ const HostPlayQuiz = () => {
                   height="45px"
                   onClick={() => {
                     dispatch(
-                      socketActions.sendAnswerMessage({
-                        destination: "/app/quiz/next",
-                        body: { sender: "fufu", img: 2, roomId: "3670055" },
-                      }),
+                      socketActions.sendRequest("/app/quiz/next"),
                     );
                   }}
                 />
