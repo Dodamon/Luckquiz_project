@@ -11,14 +11,13 @@ const QuizCreateLayout = () => {
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
     const selectInfo = useSelector((state: RootState) => state.auth.choiceIndex);
     console.log(selectInfo);
-    
     console.log(quizInfo);
+    console.log(quizInfo[selectInfo]?.quiz);
     
     return (
         <>
             <QuizSelectMenu/>
             {
-                
                quizInfo[selectInfo]?.quiz==="four"? <QuizFourTemplate num={selectInfo}/>:quizInfo[selectInfo]?.quiz==="ox"? <QuizOxTemplate num={selectInfo}/>:<QuizShortTemplate num={selectInfo}/>
             }
            
