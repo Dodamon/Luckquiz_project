@@ -9,17 +9,8 @@ import javax.annotation.Nullable;
 public class EmotionResponse {
     public String type;
 
-    @Nullable
-    class Emotion {
-        public EmotionResult.ValCon emotion;
-    }
-    public Emotion emotion;
 
-    public void setEmotion(EmotionResult.ValCon emotion){
-        if(this.emotion == null){
-            this.emotion = new Emotion();
-        }
-        this.emotion.emotion=emotion;
-    }
+    public  EmotionResult.ValCon emotion;
+
 
 }
