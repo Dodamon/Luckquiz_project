@@ -123,7 +123,7 @@ public class MessageController {
 
                 EmotionResponse emotionResponse = new EmotionResponse();
                 emotionResponse.setType(result.getType());
-                if (result.getResult().getFaces() == null) {
+                if (result.getResult().getFaces().isEmpty()) {
                     emotionResponse.setEmotionResult(null);
                 } else {
                     log.info("성공");
