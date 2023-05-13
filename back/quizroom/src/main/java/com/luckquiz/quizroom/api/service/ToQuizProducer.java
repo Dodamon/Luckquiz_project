@@ -23,16 +23,9 @@ public class ToQuizProducer {
         producer.close();
     }
 
-    public void QuizEnd(String request){
-        KafkaProducer<String,String> producer = new KafkaProducer(configs);
-        ProducerRecord record = new ProducerRecord<String,String>("server_message","quiz_end",request);
-        producer.send(record);
-        producer.close();
-    }
-
     public void GameEnd(String request){
         KafkaProducer<String,String> producer = new KafkaProducer(configs);
-        ProducerRecord record = new ProducerRecord<String,String>("sign_to_grade","final_end",request);
+        ProducerRecord record = new ProducerRecord<String,String>("server_message","final_end",request);
         producer.send(record);
         producer.close();
     }

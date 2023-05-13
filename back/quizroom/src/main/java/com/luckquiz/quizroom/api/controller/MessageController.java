@@ -5,10 +5,7 @@ package com.luckquiz.quizroom.api.controller;
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
-import com.luckquiz.quizroom.api.response.Duplucheck;
-import com.luckquiz.quizroom.api.response.EmotionResponse;
-import com.luckquiz.quizroom.api.response.QGame;
-import com.luckquiz.quizroom.api.response.ToGradeStartMessage;
+import com.luckquiz.quizroom.api.response.*;
 import com.luckquiz.quizroom.api.service.*;
 import com.luckquiz.quizroom.exception.CustomException;
 import com.luckquiz.quizroom.exception.CustomExceptionType;
@@ -225,7 +222,7 @@ public class MessageController {
     @MessageMapping("/turnEnd")
     public void quizEnd(QuizMessage message) {
         // 제출 끝나썽
-        toQuizProducer.QuizEnd(gson.toJson(message));
+        toGradeProducer.QuizEnd(gson.toJson(message));
         TurnEndResponse tr = TurnEndResponse.builder()
                 .type("quizEnd")
                 .quizEnd("success")
@@ -255,7 +252,7 @@ public class MessageController {
     }
 
     @MessageMapping("/quiz/middlerank")
-    public void rollBack(MiddleRank middleRank){
+    public void middleRank(MiddleRank middleRank){
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         Map all = hashOperations.entries(middleRank.getRoomId()+"p");
         List<String> users = new ArrayList<>(all.values());
@@ -290,6 +287,11 @@ public class MessageController {
         }
         sendingOperations.convertAndSend("/topic/quiz/" + totalRank.getRoomId(),result);
         sendingOperations.convertAndSend("/queue/quiz/" + totalRank.getRoomId(),result);
+    }
+
+    @MessageMapping("/finalEnd")
+    public void finalEnd(FinalRequest finalRequest){
+//        if(finalRequest.getRoomId() != null) toGradeProducer.(gson.toJson(finalRequest));
     }
 
 
