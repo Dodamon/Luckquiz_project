@@ -27,7 +27,7 @@ public class GradingConsumerController {
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key){
         if("grade_end".equals(key)){
             GradeEndMessage gradeEndMessage = gson.fromJson(in,GradeEndMessage.class);
-            quizReportRepository.findQuizReportByPinNum(gradeEndMessage.getRoomId());
+            QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(gradeEndMessage.getRoomId());
         }
     }
 

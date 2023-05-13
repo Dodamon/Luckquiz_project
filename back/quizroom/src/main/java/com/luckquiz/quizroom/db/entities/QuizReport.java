@@ -36,6 +36,4 @@ public class QuizReport {
 
     @Column(name = "pin_num")
     private Integer pinNum;
-
-
 }

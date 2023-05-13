@@ -232,6 +232,8 @@ public class MessageController {
                 .quizEnd("success")
                 .build();
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), tr);
+        quizService.serveTurnEnd(tr,message.getRoomId());
+
     }
 
     @MessageMapping("/quiz/currentCount")
