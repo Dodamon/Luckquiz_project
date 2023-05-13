@@ -1,4 +1,6 @@
 package com.luckquiz.quiz.db.entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -7,6 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "quiz_room")
+@AllArgsConstructor
+@Builder
 public class QuizRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
