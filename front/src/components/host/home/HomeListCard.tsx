@@ -38,7 +38,7 @@ const HomeListCard = (props: Props) => {
   const userId = useSelector((state: RootState) => state.auth.userId);
 
 
-  console.log("서버에서 받은 데이터를 카드로 바로 받은 데이터", typeof (quiz.isValid));
+  console.log("서버에서 받은 데이터를 카드로 바로 받은 데이터", quiz.isValid);
 
   useEffect(() => {
     if (data) {
@@ -109,8 +109,8 @@ const HomeListCard = (props: Props) => {
       <div className={styles.quizRowFrame}>
         <div className={styles.logoImgContainer}>
           {
-            quiz.isValid.toString() === "true" ? <img className={styles.logoImg} src={ready_logo} alt="준비완료" /> :
-              <img className={styles.logoImg} src={save_logo} alt="준비미완료" />
+            (!quiz.isValid || quiz.isValid.toString() === "false") ? <img className={styles.logoImg} src={save_logo} alt="준비미완료" /> :
+              <img className={styles.logoImg} src={ready_logo} alt="준비완료" />
           }
 
         </div>
@@ -147,7 +147,7 @@ const HomeListCard = (props: Props) => {
               />
             </button>
             {
-              quiz.isValid.toString() === "true" ? <button className={styles.button} >
+              (!quiz.isValid || quiz.isValid.toString() === "false") ? <></> : <button className={styles.button} >
                 <Icon
                   icon="iconoir:play-outline"
                   className={styles.btn}
@@ -156,7 +156,8 @@ const HomeListCard = (props: Props) => {
                     startQuiz(quiz.name);
                   }}
                 />
-              </button> : <></>
+              </button>
+
             }
 
             <button className={styles.button}>
