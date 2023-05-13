@@ -35,6 +35,7 @@ public class QuizRoom {
     @Column(name = "correct_count", nullable = true)
     private int correctCount;
 
-
+    @Column(name = "pin_num",nullable = true)
+    private Integer pinNum;
 
 }
