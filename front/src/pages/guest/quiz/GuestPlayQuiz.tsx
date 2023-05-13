@@ -11,17 +11,18 @@ import CountdownAni from "components/common/CountdownAni";
 import styles from "../../host/host/quiz/HostPlayQuiz.module.css";
 import { socketActions } from "store/webSocket";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
+import StartFinishText from "components/common/StartFinishText";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
-  const roomId = useSelector((state : RootState) => state.socket.pinNum)
-  const nickname = useSelector((state : RootState) => state.guest.nickname)
-  const [guestAnswer, SetguestAnswer] = useState("")
+  const roomId = useSelector((state: RootState) => state.socket.pinNum);
+  const nickname = useSelector((state: RootState) => state.guest.nickname);
+  const [guestAnswer, SetguestAnswer] = useState("");
   const dispatch = useDispatch();
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
-  // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 정답 및 랭킹 발표
+  // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
@@ -33,12 +34,12 @@ const GuestPlayQuiz = () => {
     dispatch(
       socketActions.sendAnswerMessage({
         destination: "/app/submit",
-        body: {sender:nickname, message:guestAnswer,roomId:roomId,type:"SUBMIT",quizNum:quizItem?.quizNum},
+        body: { sender: nickname, message: guestAnswer, roomId: roomId, type: "SUBMIT", quizNum: quizItem?.quizNum },
         // gametype이랑 file은 감정게임에서만
         // body: {sender:"ryeo",message:"hihi",roomId:123,type:"SUBMIT",quizNum:2,"gameType":"emotion",file:"filedata"},
       }),
-    )
-  }
+    );
+  };
 
   return (
     quizItem && (
@@ -51,8 +52,8 @@ const GuestPlayQuiz = () => {
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} handleAnswer={SetguestAnswer} />}
-              {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem}  handleAnswer={SetguestAnswer} />}
-              {quizItem?.quiz === "four" && <QuizFourContent content={quizItem}  handleAnswer={SetguestAnswer} />}
+              {quizItem?.quiz === "ox" && <QuizOxContent content={quizItem} handleAnswer={SetguestAnswer} />}
+              {quizItem?.quiz === "four" && <QuizFourContent content={quizItem} handleAnswer={SetguestAnswer} />}
             </div>
             <div className={styles.nextBtn}>
               <ButtonWithLogo
@@ -63,7 +64,13 @@ const GuestPlayQuiz = () => {
                   dispatch(
                     socketActions.sendAnswerMessage({
                       destination: "/app/submit",
-                      body: {sender:nickname, message:guestAnswer,roomId:roomId,type:"SUBMIT",quizNum:quizItem.quizNum},
+                      body: {
+                        sender: nickname,
+                        message: guestAnswer,
+                        roomId: roomId,
+                        type: "SUBMIT",
+                        quizNum: quizItem.quizNum,
+                      },
                       // gametype이랑 file은 감정게임에서만
                       // body: {sender:"ryeo",message:"hihi",roomId:123,type:"SUBMIT",quizNum:2,"gameType":"emotion",file:"filedata"},
                     }),
@@ -73,7 +80,8 @@ const GuestPlayQuiz = () => {
             </div>
           </>
         )}
-        {order === 2 && (
+        {order === 2 && (<StartFinishText title="채점중인뎁숑" />)}
+        {order === 3 && (
           // 랭킹 컴포넌트
           <></>
         )}
