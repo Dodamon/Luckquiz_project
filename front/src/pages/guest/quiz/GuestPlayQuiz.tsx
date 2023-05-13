@@ -3,9 +3,9 @@ import { setQuizItem } from "models/quiz";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import QuizShortContent from "components/guest/quiz/QuizShortContent";
-import QuizOxContent from "components/guest/quiz/QuizOxContent";
-import QuizFourContent from "components/guest/quiz/QuizFourContent";
+import QuizShortContent from "components/quiz/QuizShortContent";
+import QuizOxContent from "components/quiz/QuizOxContent";
+import QuizFourContent from "components/quiz/QuizFourContent";
 import TimerBar from "components/common/TimerBar";
 import CountdownAni from "components/common/CountdownAni";
 import styles from "../../host/host/quiz/HostPlayQuiz.module.css";
@@ -31,6 +31,7 @@ const GuestPlayQuiz = () => {
   }, [quizItem]);
 
   const submitAnswer = () => {
+    console.log('자동제출')
     dispatch(
       socketActions.sendAnswerMessage({
         destination: "/app/submit",
@@ -60,7 +61,8 @@ const GuestPlayQuiz = () => {
                 name="제출하기"
                 fontSize="18px"
                 height="45px"
-                onClick={() =>
+                onClick={() => {
+                  console.log('수동제출')
                   dispatch(
                     socketActions.sendAnswerMessage({
                       destination: "/app/submit",
@@ -74,13 +76,14 @@ const GuestPlayQuiz = () => {
                       // gametype이랑 file은 감정게임에서만
                       // body: {sender:"ryeo",message:"hihi",roomId:123,type:"SUBMIT",quizNum:2,"gameType":"emotion",file:"filedata"},
                     }),
-                  )
-                }
+                  );
+                  setOrder(2);
+                }}
               />
             </div>
           </>
         )}
-        {order === 2 && (<StartFinishText title="채점중인뎁숑" />)}
+        {order === 2 && <StartFinishText title="채점중인뎁숑" />}
         {order === 3 && (
           // 랭킹 컴포넌트
           <></>

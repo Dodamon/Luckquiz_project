@@ -15,7 +15,7 @@ type QuizFourContentProps = {
 
 const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
   const [item, setItem] = useState("");
-  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
+  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated); 
 
   const answerHandler = (answer: string) => {
     setItem(answer);
@@ -38,7 +38,7 @@ const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("one")}
+          onClick={() => !isHost && answerHandler("one")}
           style={item === "one" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}>
@@ -53,7 +53,7 @@ const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("two")}
+          onClick={() => !isHost && answerHandler("two")}
           style={item === "two" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}>
@@ -68,7 +68,7 @@ const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("three")}
+          onClick={() => !isHost && answerHandler("three")}
           style={item === "three" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}>
@@ -83,7 +83,7 @@ const QuizFourContent = ({ content, handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("four")}
+          onClick={() => !isHost && answerHandler("four")}
           style={item === "four" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}>

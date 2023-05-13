@@ -13,7 +13,7 @@ type QuizOxContentProps = {
 
 const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
   const [item, setItem] = useState("");
-  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
+  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated); 
 
   const answerHandler = (answer: string) => {
     setItem(answer);
@@ -37,7 +37,7 @@ const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("O")}
+          onClick={() => !isHost && answerHandler("O")}
           style={item === "O" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-two)" }}>
@@ -52,7 +52,7 @@ const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => guest && answerHandler("X")}
+          onClick={() => !isHost && answerHandler("X")}
           style={item === "X" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-one)" }}>

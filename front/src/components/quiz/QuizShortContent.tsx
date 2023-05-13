@@ -8,18 +8,16 @@ import { useSelector } from "react-redux";
 
 type QuizShortContentProps = {
   content: getQuizItem;
-  handleAnswer? : Function;
+  handleAnswer?: Function;
 };
 
 const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
   const [item, setItem] = useState("");
-  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
-  const auth = useSelector((state: RootState) => state.auth.isAuthenticated) 
-
+  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const answerHandler = (e: any) => {
     setItem(e.target.value);
-    handleAnswer && handleAnswer(e.target.value)
+    handleAnswer && handleAnswer(e.target.value);
   };
   return (
     <div className={styles.QuizShortContent}>
@@ -43,8 +41,11 @@ const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
             </div>
           </div>
           <div className={styles.content_input}>
-            {guest && <input type="text" value={item} onChange={(e) => answerHandler(e)} />}
-            {auth && <input type="text" value="주관식으로 답을 적어보세요"/>}
+            {isHost ? (
+              <input type="text" value="주관식" style={{color:"gray"}} disabled/>
+            ) : (
+              <input type="text" value={item} onChange={(e) => answerHandler(e)} />
+            )}
           </div>
         </div>
         {/* <div className={styles.content_submitbox}>
