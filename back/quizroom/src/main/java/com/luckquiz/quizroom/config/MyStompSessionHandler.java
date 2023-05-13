@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MyStompSessionHandler extends TextWebSocketHandler {
-    private static final long TIMEOUT_DURATION = 60000; // Timeout duration in milliseconds
+    private static final long TIMEOUT_DURATION = 900000; // Timeout duration in milliseconds
     private ScheduledExecutorService executorService;
     private WebSocketHandler delegate;
     private WebSocketSession session;
