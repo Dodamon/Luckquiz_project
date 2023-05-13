@@ -28,7 +28,7 @@ public class User {
     @Column(name = "id", columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Size(max = 10)
+    @Size(max = 50)
     @NotNull
     private String name;
 
