@@ -1,5 +1,8 @@
 package com.luckquiz.quizroom.db.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -7,8 +10,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "quiz_report")
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class QuizReport {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -29,7 +34,8 @@ public class QuizReport {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private QuizRoom quizRoom;
 
-
+    @Column(name = "pin_num")
+    private Integer pinNum;
 
 
 }
