@@ -20,14 +20,14 @@
 .profile {
   display: flex;
   align-items: center;
-  padding: 10% 15%;
+  padding: 10% 4%;
   font-size: 17px;
+  justify-content: space-evenly;
 }
 
 .profileName {
-  width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: center;
   text-align: center;
 }
 

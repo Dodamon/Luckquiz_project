@@ -1,20 +1,25 @@
-import React from "react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 import styles from "./QuizShortContent.module.css";
 import { getQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
-import ButtonWithLogo from "components/common/ButtonWithLogo";
+import { RootState } from "store";
+import { useSelector } from "react-redux";
 
 type QuizShortContentProps = {
   content: getQuizItem;
+  handleAnswer? : Function;
 };
 
-const QuizShortContent = ({ content }: QuizShortContentProps) => {
+const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
   const [item, setItem] = useState("");
+  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
+  const auth = useSelector((state: RootState) => state.auth.isAuthenticated) 
+
 
   const answerHandler = (e: any) => {
     setItem(e.target.value);
+    handleAnswer && handleAnswer(e.target.value)
   };
   return (
     <div className={styles.QuizShortContent}>
@@ -38,7 +43,8 @@ const QuizShortContent = ({ content }: QuizShortContentProps) => {
             </div>
           </div>
           <div className={styles.content_input}>
-            <input type="text" value={item} onChange={(e) => answerHandler(e)} />
+            {guest && <input type="text" value={item} onChange={(e) => answerHandler(e)} />}
+            {auth && <input type="text" value="주관식으로 답을 적어보세요"/>}
           </div>
         </div>
         {/* <div className={styles.content_submitbox}>
