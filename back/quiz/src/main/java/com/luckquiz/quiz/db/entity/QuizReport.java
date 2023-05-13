@@ -1,13 +1,19 @@
 package com.luckquiz.quiz.db.entity;
 
 import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "quiz_report")
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class QuizReport {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
