@@ -11,7 +11,7 @@ export const client = new Client({ brokerURL: brokerURL });
 interface SocketState {
   client: Client | null;
   pinNum: string;
-  guestList: GuestType[];
+  guestList: GuestType[] | null;
   quizItem: getQuizItem | null;
   getMessage: boolean;
   emotionResult: EmotionResult | null;
@@ -20,7 +20,7 @@ interface SocketState {
 const initialState: SocketState = {
   client: client,
   pinNum: "",
-  guestList: [{ sender: "", img: 0 }],
+  guestList: null,
   quizItem: null,
   getMessage: false,
   emotionResult: null,
@@ -34,8 +34,8 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         console.log("publish");
+        console.log(actions)
         client.publish({
-          // destination: "/app/quiz/start",
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨

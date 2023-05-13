@@ -1,21 +1,25 @@
-import React from "react";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-
 import styles from "./QuizOxContent.module.css";
 import { getQuizItem, setQuizItem } from "models/quiz";
-import ButtonWithLogo from "components/common/ButtonWithLogo";
 import QuizGameTitle from "components/common/QuizGameTitle";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 type QuizOxContentProps = {
   content: getQuizItem;
+  handleAnswer? : Function;
 };
 
-const QuizOxContent = ({ content }: QuizOxContentProps) => {
+const QuizOxContent = ({ content, handleAnswer }: QuizOxContentProps) => {
   const [item, setItem] = useState("");
+  const guest = useSelector((state: RootState) => state.guest.nickname) !== "" ? true : false; 
 
   const answerHandler = (answer: string) => {
     setItem(answer);
+    console.log(answer)
+    handleAnswer && handleAnswer(answer)
+
   };
   return (
     <div className={styles.QuizOxContent}>
@@ -33,8 +37,8 @@ const QuizOxContent = ({ content }: QuizOxContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("one")}
-          style={item === "one" ? { opacity: "70%" } : {}}
+          onClick={() => guest && answerHandler("O")}
+          style={item === "O" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-two)" }}>
             <div>
@@ -48,8 +52,8 @@ const QuizOxContent = ({ content }: QuizOxContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => answerHandler("two")}
-          style={item === "two" ? { opacity: "70%" } : {}}
+          onClick={() => guest && answerHandler("X")}
+          style={item === "X" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-one)" }}>
             <div>

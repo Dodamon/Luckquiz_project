@@ -14,10 +14,11 @@ const ShowPin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (guestList.length >= 2) {
+    console.log(guestList)
+    if (guestList && guestList.length >= 1) {
       navigate(`/host/quiz/${quiz_id}/lobby`);
     }
-  }, [guestList.length, navigate, quiz_id]);
+  }, [guestList, navigate, quiz_id]);
 
   return (
     <div className={styles.container}>
