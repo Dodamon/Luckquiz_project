@@ -28,7 +28,7 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             if (content.answer || content.question || content.quizUrl) {
                 dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
             }
-        }, 2000);
+        }, 1000);
         return () => clearInterval(intervalId);
     }, [quiz, num, dispatch]);
 
@@ -63,34 +63,45 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             </div>
 
             <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
-                <div 
-                
-                className={ !quiz.quizUrl?styles['plus_font']: styles['effect_font']}  ><div>
-                    <label htmlFor="file-upload" className={styles.plus_comment}>
-                        <Icon icon="ic:round-plus" />
-                    </label>
-                    <input
-                        id="file-upload"
-                        type="file"
-                        accept=".jpg, .png"
-                        onChange={imageUploadHandler}
-                        style={{ display: "none" }}
-                    />
+                <div
 
-                </div>
+                    className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  ><div>
+                        <label htmlFor="file-upload" className={styles.plus_comment}>
+                            <Icon icon="ic:round-plus" />
+                        </label>
+                        <input
+                            id="file-upload"
+                            type="file"
+                            accept=".jpg, .png"
+                            onChange={imageUploadHandler}
+                            style={{ display: "none" }}
+                        />
+
+                    </div>
                     <div>이미지 첨부하세요</div>
                 </div>
             </div>
 
             <div className={styles.content_answerbox}>
-                <div className={styles.content_answer} onClick={() => answerHandler('o')} style={quiz.answer === 'o' ? { opacity: "70%" } : {}}>
+                <div className={styles.content_answer}>
                     <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}><div><Icon icon="material-symbols:circle-outline" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={"맞다"} disabled /></div>
+                    <div className={styles.content_input}><input type="text" value={"맞다"} disabled />
+                        <div className={styles.checkbox} >{
+
+                            quiz.answer === "o" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("o")} />
+
+                        }</div>
+                    </div>
                 </div>
 
-                <div className={styles.content_answer} onClick={() => answerHandler('x')} style={quiz.answer === 'x' ? { opacity: "70%" } : {}}>
+                <div className={styles.content_answer} >
                     <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}><div><Icon icon="ph:x-bold" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={"아니다"} disabled /></div>
+                    <div className={styles.content_input}><input type="text" value={"아니다"} disabled />
+                        <div className={styles.checkbox} >{
+
+                            quiz.answer === "x" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("x")} />
+
+                        }</div> </div>
                 </div>
 
             </div>

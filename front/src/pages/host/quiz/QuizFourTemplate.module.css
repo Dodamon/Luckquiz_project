@@ -63,7 +63,7 @@
     row-gap: 20px;
     column-gap: 100px;
     width: 90%;
-    /* margin-top: 30px; */
+    margin-top: 30px;
 }
 
 .content_answer{
@@ -97,15 +97,41 @@
     height: 100%;
     display: flex;
     width: 100%;
+    align-items: center;
 }
 
 .content_input input{
-    width: 100%;
+    width: 80%;
+    height: 90%;
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     font-size: 28px;
     padding-left: 10px;
     outline: none;
     border-style: none;
+    background-color: var(--white-color);
 }
 
+.checkbox{
+    /* background-color: red; */
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: var(--placeholder-text);
+}
+.outbox{
+    cursor: pointer;
+}
+.outbox:hover{
+    font-size: 46px;
+}
+.keepbox{
+    cursor: pointer;
+}
+
+.keepbox:hover{
+    font-size: 46px;
+}

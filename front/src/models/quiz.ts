@@ -30,7 +30,7 @@ export interface setQuizItem {
     answerList: string[],
     game: string,
     timer: number,
-    is_Valid: boolean;
+    isValid: boolean;
 }
 
 
