@@ -52,7 +52,7 @@ const Quiz = () => {
 
     axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
-        console.log(res.data);
+        console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;
 
 
@@ -92,7 +92,7 @@ const Quiz = () => {
     <div className={styles.content} style={isModal || isModals ? { backgroundColor: "darkgray" } : {}}>
       <div className={styles.title}>내가 만든 퀴즈</div>
       <div className={styles.listColFrame}>
-        {myQuizList.map((quiz, index) => (
+        {myQuizList.length === 0 ? <div className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
           <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler} />
         ))}
         <Modal isModal={isModal} setIsModal={setIsModal} />

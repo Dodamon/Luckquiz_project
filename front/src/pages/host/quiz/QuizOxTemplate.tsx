@@ -28,7 +28,7 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             if (content.answer || content.question || content.quizUrl) {
                 dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
             }
-        }, 2000);
+        }, 1000);
         return () => clearInterval(intervalId);
     }, [quiz, num, dispatch]);
 

@@ -36,7 +36,7 @@ const QuizFourTemplate = ({ num }: pageNum) => {
                 // const item = template;
                 // const res = await axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", item);                
             }
-        }, 2000);
+        }, 1000);
         return () => clearInterval(intervalId);
 
 
@@ -105,7 +105,7 @@ const QuizFourTemplate = ({ num }: pageNum) => {
             <div className={styles.content_answerbox}>
                 <div className={styles.content_answer}>
                     <div className={styles.content_color} style={quiz.one ? { backgroundColor: "var(--select-one)" } : { backgroundColor: "var(--placeholder-text)" }}><div><Icon icon="material-symbols:circle-outline" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.one} onChange={(e) => answerInputHandler(e, "one")} /> <div className={styles.checkbox} style={!quiz.one?{visibility:"hidden"}:{}}>{
+                    <div className={styles.content_input}><input type="text" value={quiz.one} onChange={(e) => answerInputHandler(e, "one")} /> <div className={styles.checkbox} style={!quiz.one ? { visibility: "hidden" } : {}}>{
 
                         quiz.answer === "one" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("one")} />
 
@@ -114,7 +114,7 @@ const QuizFourTemplate = ({ num }: pageNum) => {
 
                 <div className={styles.content_answer} >
                     <div className={styles.content_color} style={quiz.two ? { backgroundColor: "var(--select-two)" } : { backgroundColor: "var(--placeholder-text)" }}><div><Icon icon="ph:triangle-bold" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.two} onChange={(e) => answerInputHandler(e, "two")} /> <div className={styles.checkbox} style={!quiz.two?{visibility:"hidden"}:{}}>{
+                    <div className={styles.content_input}><input type="text" value={quiz.two} onChange={(e) => answerInputHandler(e, "two")} /> <div className={styles.checkbox} style={!quiz.two ? { visibility: "hidden" } : {}}>{
 
                         quiz.answer === "two" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("two")} />
 
@@ -123,7 +123,7 @@ const QuizFourTemplate = ({ num }: pageNum) => {
 
                 <div className={styles.content_answer} >
                     <div className={styles.content_color} style={quiz.three ? { backgroundColor: "var(--select-three)" } : { backgroundColor: "var(--placeholder-text)" }}><div><Icon icon="ph:x-bold" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.three} onChange={(e) => answerInputHandler(e, "three")} /> <div className={styles.checkbox} style={!quiz.three?{visibility:"hidden"}:{}} >{
+                    <div className={styles.content_input}><input type="text" value={quiz.three} onChange={(e) => answerInputHandler(e, "three")} /> <div className={styles.checkbox} style={!quiz.three ? { visibility: "hidden" } : {}} >{
 
                         quiz.answer === "three" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("three")} />
 
@@ -132,9 +132,9 @@ const QuizFourTemplate = ({ num }: pageNum) => {
 
                 <div className={styles.content_answer} >
                     <div className={styles.content_color} style={quiz.four ? { backgroundColor: "var(--select-four)" } : { backgroundColor: "var(--placeholder-text)" }}><div><Icon icon="material-symbols:square-outline-rounded" /></div></div>
-                    <div className={styles.content_input}><input type="text" value={quiz.four} onChange={(e) => answerInputHandler(e, "four")} /> <div className={styles.checkbox} style={!quiz.four?{visibility:"hidden"}:{}}>{
+                    <div className={styles.content_input}><input type="text" value={quiz.four} onChange={(e) => answerInputHandler(e, "four")} /> <div className={styles.checkbox} style={!quiz.four ? { visibility: "hidden" } : {}}>{
 
-                        quiz.answer === "four" ? <Icon className={styles.keepbox}  icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("four")} />
+                        quiz.answer === "four" ? <Icon className={styles.keepbox} icon="fluent-emoji-flat:check-mark-button" onClick={() => answerHandler("")} /> : <Icon icon="mdi:checkbox-blank-outline" className={styles.outbox} onClick={() => answerHandler("four")} />
 
                     }</div> </div>
                 </div>
