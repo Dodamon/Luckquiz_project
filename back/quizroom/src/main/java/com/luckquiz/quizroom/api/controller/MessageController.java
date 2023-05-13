@@ -15,6 +15,7 @@ import com.luckquiz.quizroom.exception.CustomExceptionType;
 import com.luckquiz.quizroom.message.EmotionResultMessage;
 import com.luckquiz.quizroom.message.EnterGuestMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
+import com.luckquiz.quizroom.message.TurnEndResponse;
 import com.luckquiz.quizroom.model.*;
 
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Emotion;
@@ -126,11 +127,10 @@ public class MessageController {
                 EmotionResponse emotionResponse = new EmotionResponse();
                 emotionResponse.setType(result.getType());
                 if (result.getResult().getFaces() == null) {
-                    System.out.println("1");
-                    emotionResponse.setEmotion(null);
+                    emotionResponse.setEmotionResult(null);
                 } else {
-                    System.out.println("2");
-                    emotionResponse.setEmotion(result.getResult().getFaces().get(0).getEmotion());
+                    emotionResponse.emotionResult.setEmotion(result.getResult().getFaces().get(0).getEmotion());
+                    emotionResponse.emotionResult.setRoi(result.getResult().getFaces().get(0).getRoi());
                 }
 
 
@@ -159,19 +159,10 @@ public class MessageController {
 
     @MessageMapping("/submit")
     public void submit(QuizMessage message) throws  Exception{
-//      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
-//      toGradeProducer.clientSubmit(gson.toJson(message));
-//      Object resultRespone = gson.fromJson(result, ResultRes.class);
-//      sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
-    }
+      System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+      toGradeProducer.clientSubmit(gson.toJson(message));
 
-//    @MessageMapping("/{roomId}/private/{sender}")
-//    // 각각의 사용자에게 채점 결과를 보내주는 메소드
-//    public void quizSpread(@Payload QuizMessage message,@DestinationVariable int roomId, @DestinationVariable String sender, Principal principal) {
-//        // 메시지를 수신자에게 전송
-//        System.out.println("private here");
-//        sendingOperations.convertAndSendToUser(sender, "/queue/"+roomId+"/private/", message);
-//    }
+    }
 
     // 퀴즈가 시작 요청이 오면 맨 처음 문제를 반환한다.
     // 이 때 quizNum 이 0으로 초기화된다.
@@ -230,10 +221,15 @@ public class MessageController {
         quizService.serveQuiz(qsmG,nextMessage.getRoomId());
     }
 
-    @MessageMapping("/quiz/end")
+    @MessageMapping("/turnEnd")
     public void quizEnd(QuizMessage message) {
-//        세션 끝내면 저장한것도 삭제
+        // 제출 끝나썽
         toQuizProducer.QuizEnd(gson.toJson(message));
+        TurnEndResponse tr = TurnEndResponse.builder()
+                .type("quizEnd")
+                .quizEnd("success")
+                .build();
+        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), tr);
     }
 
     @MessageMapping("/quiz/currentCount")

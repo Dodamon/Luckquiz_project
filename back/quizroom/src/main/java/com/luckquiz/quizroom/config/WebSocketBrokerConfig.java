@@ -6,10 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
@@ -59,6 +61,16 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         container.setMaxTextMessageBufferSize(1024*1024*40); // (4)
         container.setMaxBinaryMessageBufferSize(1024*1024*40); // (5)
         return container;
+    }
+
+    @Bean
+    public WebSocketHandlerDecoratorFactory webSocketHandlerDecoratorFactory() {
+        return new WebSocketHandlerDecoratorFactory() {
+            @Override
+            public WebSocketHandler decorate(WebSocketHandler handler) {
+                return new MyStompSessionHandler(handler);
+            }
+        };
     }
 
 }
