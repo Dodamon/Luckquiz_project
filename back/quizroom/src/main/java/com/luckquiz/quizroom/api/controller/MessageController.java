@@ -129,10 +129,10 @@ public class MessageController {
                 if (result.getResult().getFaces() == null) {
                     emotionResponse.setEmotionResult(null);
                 } else {
+                    log.info("성공");
                     emotionResponse.emotionResult.setEmotion(result.getResult().getFaces().get(0).getEmotion());
                     emotionResponse.emotionResult.setRoi(result.getResult().getFaces().get(0).getRoi());
                 }
-
 
                 sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);
                 // 채점결과 채점서버로 message 보내기
