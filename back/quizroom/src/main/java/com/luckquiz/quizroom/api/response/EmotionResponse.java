@@ -3,14 +3,18 @@ package com.luckquiz.quizroom.api.response;
 import com.luckquiz.quizroom.model.EmotionResult;
 import lombok.Setter;
 
-import javax.annotation.Nullable;
 
 @Setter
 public class EmotionResponse {
     public String type;
+    @Setter
+    public class EmotionResult {
+        public com.luckquiz.quizroom.model.EmotionResult.ValCon emotion;
+        public com.luckquiz.quizroom.model.EmotionResult.Roi roi;
+    }
 
+    public EmotionResult emotionResult;
 
-    public  EmotionResult.ValCon emotion;
 
 
 }
