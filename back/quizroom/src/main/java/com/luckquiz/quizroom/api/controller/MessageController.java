@@ -130,6 +130,7 @@ public class MessageController {
                     emotionResponse.setEmotionResult(null);
                 } else {
                     log.info("성공");
+                    log.info(result.getResult().getFaces().get(0).toString());
                     emotionResponse.emotionResult.setEmotion(result.getResult().getFaces().get(0).getEmotion());
                     emotionResponse.emotionResult.setRoi(result.getResult().getFaces().get(0).getRoi());
                 }
