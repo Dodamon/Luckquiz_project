@@ -4,8 +4,8 @@
 @keyframes bounce {
   100% {
     top: -20px;
-    text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-      0 5px 0 #ccc, 0 6px 0 #ccc, 0 7px 0 #ccc, 0 8px 0 #ccc, 0 9px 0 #ccc,
+    text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+      0 5px 0 #67676792, 0 6px 0 #67676792, 0 7px 0 #67676792, 0 8px 0 #67676792, 0 9px 0 #67676792,
       0 50px 25px rgba(0, 0, 0, 0.2);
   }
 }
@@ -31,8 +31,8 @@
 
 .title > span:nth-child(1) {
     color: var(--select-one);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 
@@ -40,40 +40,40 @@
 .title > span:nth-child(2) {
   animation-delay: 0.1s;
       color: var(--select-two);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title > span:nth-child(3) {
   animation-delay: 0.2s;
       color: var(--button-two);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title > span:nth-child(4) {
   animation-delay: 0.3s;
       color: var(--select-one);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title > span:nth-child(5) {
   animation-delay: 0.4s;
         color: var(--select-two);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title > span:nth-child(6) {
   animation-delay: 0.5s;
         color: var(--button-two);
-  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
-    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
 

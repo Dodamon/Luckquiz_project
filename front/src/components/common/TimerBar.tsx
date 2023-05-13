@@ -6,7 +6,7 @@ interface Props {
   handleSubmit?: Function;
 }
 
-// &:after 가상요소에서 쓸 변수르 넘겨주기 위한 cssproperties타입 커스텀
+// &:after 가상요소에서 쓸 변수를 넘겨주기 위한 cssproperties타입 커스텀
 interface CustomCSSProperties {
   "--countdown-time": string;
 }

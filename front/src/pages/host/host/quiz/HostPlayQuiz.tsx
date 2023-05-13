@@ -15,6 +15,7 @@ import TimerBar from "components/common/TimerBar";
 import CountdownAni from "components/common/CountdownAni";
 import SubmitChart from "components/host/quiz/SubmitChart";
 import { socketActions } from "store/webSocket";
+import StartFinishText from "components/common/StartFinishText";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const HostPlayQuiz = () => {
   const dispatch = useDispatch();
   const [showQuizGame, setShowQuizGame] = useState(false);
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
-  // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 정답 및 랭킹 발표
+  // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
   // const [data, Setdata] = useState()
 
@@ -56,6 +57,16 @@ const HostPlayQuiz = () => {
     setOrder(0);
   }, [quizItem]);
 
+  // 호스트 기준 퀴즈시간이 끝나면 quizgameend publish
+  // const quizGameEnd = () => {
+  //   dispatch(
+  //     socketActions.sendAnswerMessage({
+  //       destination: "",
+  //       body: {},
+  //     }),
+  //   );
+  // };
+
   console.log(quizItem);
   return (
     quizItem && (
@@ -64,8 +75,9 @@ const HostPlayQuiz = () => {
         {order === 1 && (
           <>
             <div className={styles.header}>
+              {/* <TimerBar time={quizItem.timer} handleOrder={setOrder} handleSubmit={quizGameEnd}/> */}
               <TimerBar time={quizItem.timer} handleOrder={setOrder} />
-              {quizItem?.quizNum}/{quizItem?.quizSize}
+              {quizItem?.quizNum + 1}/{quizItem?.quizSize}
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent content={quizItem} />}
@@ -97,7 +109,7 @@ const HostPlayQuiz = () => {
                 onClick={() =>
                   dispatch(
                     socketActions.sendAnswerMessage({
-                      destination: "",  // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
+                      destination: "", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
                       body: { hostId: userId, roomId: quiz_id },
                     }),
                   )
@@ -107,6 +119,28 @@ const HostPlayQuiz = () => {
           </>
         )}
         {order === 2 && (
+          <>
+            <StartFinishText title="채점중인뎁숑" />
+            
+            {/* 임시로 달아놈 */}
+            <div className={styles.nextBtn}>
+              <ButtonWithLogo
+                name="다음 퀴즈"
+                fontSize="18px"
+                height="45px"
+                onClick={() =>
+                  dispatch(
+                    socketActions.sendAnswerMessage({
+                      destination: "/app/quiz/next",
+                      body: { hostId: userId, roomId: quiz_id },
+                    }),
+                  )
+                }
+              />
+            </div>
+          </>
+        )}
+        {order === 3 && (
           // 랭킹 컴포넌트
           <>
             <div className={styles.submitChart}>
