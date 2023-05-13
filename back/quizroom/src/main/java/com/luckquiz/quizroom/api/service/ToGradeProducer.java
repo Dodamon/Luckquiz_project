@@ -46,5 +46,11 @@ public class ToGradeProducer {
         producer.close();
     }
 
+    public void quizEnd(String rollbackRequest){
+        KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
+        ProducerRecord record = new ProducerRecord<String,String>("sign_to_grade","quiz_end",rollbackRequest);
+        producer.send(record);
+        producer.close();
+    }
 
 }

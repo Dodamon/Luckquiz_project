@@ -21,13 +21,5 @@ public class GradingConsumerController {
         log.info("gson은 신이다 : "+quizStartRequest.getRoomId());
     }
 
-    @KafkaListener(topics = "sign_to_quiz",groupId = "test")
-    public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
-        if("grade_end".equals(key)){
-            GradeEndMessage gem = gson.fromJson(in,GradeEndMessage.class);
 
-            Integer roomId = Integer.parseInt(in);
-
-        }
-    }
 }
