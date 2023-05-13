@@ -87,7 +87,7 @@ public class MessageController {
                 .build();
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
-        quizService.serveEntry(egm,message.getRoomId());
+//        quizService.serveEntry(egm,message.getRoomId());
     }
 
     @MessageMapping("/duplicheck")
@@ -296,6 +296,7 @@ public class MessageController {
     @MessageMapping("/finalEnd")
     public void finalEnd(FinalRequest finalRequest){
 //        if(finalRequest.getRoomId() != null) toGradeProducer.(gson.toJson(finalRequest));
+
     }
 
 
