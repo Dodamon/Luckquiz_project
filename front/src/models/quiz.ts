@@ -45,7 +45,7 @@ export interface setQuizSet {
     name?:string,
     hostId:string,
     templateId: number,
-    isValid?: boolean,
+    is_Valid?: boolean,
     quizList: setQuizItem[]
 }
 
