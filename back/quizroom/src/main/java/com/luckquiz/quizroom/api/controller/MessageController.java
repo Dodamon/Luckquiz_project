@@ -128,8 +128,12 @@ public class MessageController {
                 } else {
                     log.info("성공");
                     log.info(result.getResult().getFaces().get(0).toString());
-                    emotionResponse.emotionResult.setEmotion(result.getResult().getFaces().get(0).getEmotion());
-                    emotionResponse.emotionResult.setRoi(result.getResult().getFaces().get(0).getRoi());
+                    emotionResponse.setEmotionResult(EmotionResponse.EmotionResult.builder()
+                            .emotion(result.getResult().getFaces().get(0).getEmotion())
+                            .roi(result.getResult().getFaces().get(0).getRoi())
+                            .build()
+                    );
+
                 }
 
                 sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);

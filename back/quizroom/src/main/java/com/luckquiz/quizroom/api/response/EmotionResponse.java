@@ -1,5 +1,7 @@
 package com.luckquiz.quizroom.api.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Setter;
 
 import javax.annotation.Nullable;
@@ -15,7 +17,9 @@ public class EmotionResponse {
 
 
     @Setter
-    public class EmotionResult {
+    @AllArgsConstructor
+    @Builder
+    public static class EmotionResult {
         @Nullable
         public com.luckquiz.quizroom.model.EmotionResult.ValCon emotion;
         @Nullable
