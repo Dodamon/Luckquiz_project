@@ -35,10 +35,9 @@ export interface setQuizItem {
 
 
 export interface getQuizSet {
-
     name: string,
     hostId: number,
-    quizList: getQuizItem[];
+    quizList: getQuizItem[]
 }
 
 export interface setQuizSet {
@@ -47,5 +46,15 @@ export interface setQuizSet {
     hostId:string,
     templateId: number,
     is_Valid?: boolean,
-    quizList: setQuizItem[];
+    quizList: setQuizItem[]
+}
+
+
+export interface EmotionResult {
+    roi: {x: number, y: number, width: number, height: number}
+    emotion: {
+        value: string,
+        confidence: number
+    }
+
 }
