@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.api.controller;
 
 import com.google.gson.Gson;
+import com.luckquiz.quiz.api.request.QuizMessage;
 import com.luckquiz.quiz.api.response.EnterUser;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.common.exception.CustomException;
@@ -52,25 +53,6 @@ public class QuizRoomConsumerController {
             redisTransService.roomTempTrans(roomId,hostId,templateId);
 
             Template temp = templateRepository.findTemplateById(templateId).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
-
-            QuizRoom quizRoom = QuizRoom.builder()
-                    .template(temp)
-                    .createdTime(LocalDateTime.now())
-                    .build();
-            QuizReport quizReport = QuizReport.builder()
-                    .quizRoom(quizRoom)
-                    .build();
-            quizRoomRepository.save(quizRoom);
-            quizReportRepository.save(quizReport);
-        }
-    }
-
-    @KafkaListener(topics = "server_message",groupId = "test")
-    public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
-        if("end".equals(key)){
-            Integer roomId = Integer.parseInt(in);
-            String roomInfo = stringRedisTemplate.opsForValue().get(roomId);
-
         }
     }
 }

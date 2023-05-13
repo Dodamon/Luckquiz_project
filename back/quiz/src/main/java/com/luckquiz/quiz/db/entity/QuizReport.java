@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.db.entity;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +35,8 @@ public class QuizReport {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private QuizRoom quizRoom;
 
-
+    @Column(name = "pin_num")
+    private Integer pinNum;
 
 
 }
