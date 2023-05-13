@@ -103,7 +103,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       // message가 guestList일 때,
       if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
       else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
-      else if (data.type === "emotion") dispatch(socketActions.getEmotionResult(data.emotion))
+      else if (data.type === "emotionResult") dispatch(socketActions.getEmotionResult(data.emotionResult));
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     };
