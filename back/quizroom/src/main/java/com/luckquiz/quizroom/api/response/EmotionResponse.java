@@ -14,11 +14,11 @@ public class EmotionResponse {
     public EmotionResult emotionResult;
 
 
-
-
     @Setter
     public class EmotionResult {
+        @Nullable
         public com.luckquiz.quizroom.model.EmotionResult.ValCon emotion;
+        @Nullable
         public com.luckquiz.quizroom.model.EmotionResult.Roi roi;
     }
 }
