@@ -7,12 +7,12 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 
 type QuizShortContentProps = {
-  content: getQuizItem;
   handleAnswer?: Function;
 };
 
-const QuizShortContent = ({ content, handleAnswer }: QuizShortContentProps) => {
+const QuizShortContent = ({ handleAnswer }: QuizShortContentProps) => {
   const [item, setItem] = useState("");
+  const content = useSelector((state: RootState) => state.socket.quizItem!)
   const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const answerHandler = (e: any) => {

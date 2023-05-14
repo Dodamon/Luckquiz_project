@@ -16,6 +16,7 @@ interface SocketState {
   getMessage: boolean;
   getEmotion: boolean;
   emotionResult: EmotionResult | null;
+  endQuiz: number
 }
 
 const initialState: SocketState = {
@@ -26,6 +27,7 @@ const initialState: SocketState = {
   getMessage: false,
   getEmotion: false,
   emotionResult: null,
+  endQuiz: 0,
 };
 
 const socketSlice = createSlice({
@@ -73,6 +75,10 @@ const socketSlice = createSlice({
       console.log(state.quizItem);
     },
 
+    endQuiz: (state, actions) => {
+      state.endQuiz = state.endQuiz + 1;
+    },
+
     getEmotionResult: (state, actions) => {
       state.emotionResult = actions.payload;
     },
@@ -112,7 +118,9 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       else if (data.type === "emotionResult") {
         dispatch(socketActions.getEmotionResult(data.emotionResult));
         dispatch(socketActions.getEmotionMessage(true));
-      } else console.log("got empty message");
+      } 
+      // else if (data.type === "endQuiz") dispatch(socketActions.endQuiz)
+      else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     }
   };
