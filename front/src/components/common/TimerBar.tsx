@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styles from "./TimerBar.module.css"
 
 interface Props {
@@ -15,12 +16,21 @@ type CSSProperties = React.CSSProperties & CustomCSSProperties;
 
 const TimerBar = ({ time, handleOrder, handleSubmit }: Props) => {
 
-  setTimeout(() => {
-    handleOrder(2);
-    handleSubmit && handleSubmit()
-  }, time * 1000);
+  useEffect(() => {
+    // 마운트시 time 활성화
+    let timer = setTimeout(() => {
+      handleOrder(2);
+      handleSubmit && handleSubmit()
+    }, time * 1000);
 
-  const style: CSSProperties = {
+
+    // 언마운트시 timer reset
+    return () => {
+      clearTimeout(timer)
+    };
+  }, [])
+    
+    const style: CSSProperties = {
     "--countdown-time": `${time}s`,
   };
 

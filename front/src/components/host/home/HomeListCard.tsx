@@ -56,7 +56,7 @@ const HomeListCard = (props: Props) => {
       sendHostRequest({
         url: `/api/quizroom/create`,
         method: "POST",
-        data: { hostId: userId, templateId: 31 },
+        data: { hostId: userId, templateId: quiz.templateId },
         // templateId 고쳐야됨
       });
     }
