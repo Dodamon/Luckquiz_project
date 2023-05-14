@@ -14,6 +14,7 @@ import com.luckquiz.quiz.db.repository.QuizRoomRepository;
 import com.luckquiz.quiz.db.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -31,6 +32,7 @@ public class QuizRoomConsumerController {
     private final Gson gson;
     private final RedisTransService redisTransService;
     private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String , Integer> integerRedisTemplate;
 
     private final TemplateRepository templateRepository;
     private final QuizRoomRepository quizRoomRepository;
@@ -43,10 +45,12 @@ public class QuizRoomConsumerController {
             UUID hostId = UUID.fromString(in.split(" ")[0]);
             int roomId = Integer.parseInt(in.split(" ")[1]);
             int templateId = Integer.parseInt(in.split(" ")[2]);
-            ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+            ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
             u.setSender(hostId.toString());
             u.setImg(0);
-            stringStringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
+            StringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
+            ValueOperations<String, Integer> IntegerValueOperations = integerRedisTemplate.opsForValue();
+            IntegerValueOperations.set(roomId+"cnt",0);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
             redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
