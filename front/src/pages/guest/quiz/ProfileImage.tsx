@@ -49,6 +49,7 @@ const ProfileImage: React.FC = () => {
     setClicked(index);
   };
 
+
   const onClickSetImage = () => {
     dispatch(guestActions.updateGuestImage(clicked));
     navigate(`/guest/nickname?pinnum=${state.pinNum}`);

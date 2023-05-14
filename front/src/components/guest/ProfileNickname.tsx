@@ -128,13 +128,17 @@ const ProfileNickname: React.FC = () => {
 
   useEffect(() => {
     setNameLoading(false);
-    dispatch(guestActions.updateGuestNickname(""));
-
+  
     const queryString = location.search;
     const searchParams = new URLSearchParams(queryString);
     const value = searchParams.get("pinnum");
     console.log("params: ", value);
     if (typeof value === "string") setParamPin(value);
+
+    if (guestName.length > 0 ) {
+      nicknameRef.current!.value = guestName;
+      nicknameRef.current?.focus();
+    } 
   }, []);
 
   useEffect(() => {
