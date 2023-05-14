@@ -1,13 +1,11 @@
 package com.luckquiz.quiz.api.controller;
 
 import com.google.gson.Gson;
-import com.luckquiz.quiz.api.request.QuizMessage;
 import com.luckquiz.quiz.api.response.EnterUser;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
-import com.luckquiz.quiz.db.entity.QuizReport;
-import com.luckquiz.quiz.db.entity.QuizRoom;
+import com.luckquiz.quiz.config.RedisConfig;
 import com.luckquiz.quiz.db.entity.Template;
 import com.luckquiz.quiz.db.repository.QuizReportRepository;
 import com.luckquiz.quiz.db.repository.QuizRoomRepository;
@@ -21,8 +19,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
-
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
@@ -32,8 +28,7 @@ public class QuizRoomConsumerController {
     private final Gson gson;
     private final RedisTransService redisTransService;
     private final StringRedisTemplate stringRedisTemplate;
-    private final RedisTemplate<String , Integer> integerRedisTemplate;
-
+    private final RedisConfig redisConfig;
     private final TemplateRepository templateRepository;
     private final QuizRoomRepository quizRoomRepository;
     private final QuizReportRepository quizReportRepository;
@@ -49,7 +44,7 @@ public class QuizRoomConsumerController {
             u.setSender(hostId.toString());
             u.setImg(0);
             StringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
-            ValueOperations<String, Integer> IntegerValueOperations = integerRedisTemplate.opsForValue();
+            ValueOperations<String, Integer> IntegerValueOperations = redisConfig.redisIntegerTemplate().opsForValue();
             IntegerValueOperations.set(roomId+"cnt",0);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
