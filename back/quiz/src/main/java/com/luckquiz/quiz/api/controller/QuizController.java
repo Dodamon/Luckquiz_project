@@ -26,6 +26,11 @@ public class QuizController {
     private final GcpService gcpService;
     private final RedisTransService redisTransService;
 
+    @GetMapping("/user")
+    public ResponseEntity test() {
+        return ResponseEntity.ok().body("this is auth server test22222");
+    }
+
     // 혹시 모를 자잘한 이미지 업로드가 있을까봐하여 맹글어두었읍니다...
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@RequestParam(value = "file", required = false) MultipartFile file) throws Exception{
