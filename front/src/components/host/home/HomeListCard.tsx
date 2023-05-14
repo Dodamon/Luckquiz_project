@@ -20,6 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import { isConstructorDeclaration } from "typescript";
 interface Props {
   quiz: Quiz;
   menu: number;
@@ -56,11 +57,12 @@ const HomeListCard = (props: Props) => {
 
   // 퀴즈시작 버튼 클릭시, pin번호 받아오기
   const startQuiz = (title: string) => {
+    
     if (window.confirm(`⭐${title}⭐ 를 지금 바로 진행하시겠습니까?`)) {
       sendHostRequest({
         url: `/api/quizroom/create`,
         method: "POST",
-        data: { hostId: userId, templateId: 31 },
+        data: { hostId: userId, templateId: quiz.templateId },
         // templateId 고쳐야됨
       });
     }

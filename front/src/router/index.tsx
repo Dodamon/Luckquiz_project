@@ -28,7 +28,7 @@ import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
-import QuizRanking from "components/guest/quiz/QuizRanking";
+import QuizRanking from "components/quiz/QuizRanking";
 
 
 const router = createBrowserRouter([

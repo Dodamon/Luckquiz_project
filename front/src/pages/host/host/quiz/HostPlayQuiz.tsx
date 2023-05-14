@@ -1,5 +1,5 @@
 import ButtonWithLogo from "components/common/ButtonWithLogo";
-import QuizShortContent from "components/guest/quiz/QuizShortContent";
+import QuizShortContent from "components/quiz/QuizShortContent";
 import { getQuizItem } from "models/quiz";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +7,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "store";
 import styles from "./HostPlayQuiz.module.css";
 import { findByText } from "@testing-library/react";
-import QuizOxContent from "components/guest/quiz/QuizOxContent";
-import QuizFourContent from "components/guest/quiz/QuizFourContent";
+import QuizOxContent from "components/quiz/QuizOxContent";
+import QuizFourContent from "components/quiz/QuizFourContent";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 import TimerBar from "components/common/TimerBar";
@@ -27,6 +27,7 @@ const HostPlayQuiz = () => {
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
   // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
+  console.log("order:", order);
   // const [data, Setdata] = useState()
 
   // const chartConfig = {
@@ -58,14 +59,15 @@ const HostPlayQuiz = () => {
   }, [quizItem]);
 
   // 호스트 기준 퀴즈시간이 끝나면 quizgameend publish
-  // const quizGameEnd = () => {
-  //   dispatch(
-  //     socketActions.sendAnswerMessage({
-  //       destination: "",
-  //       body: {},
-  //     }),
-  //   );
-  // };
+  const quizGameEnd = () => {
+    console.log('자동채점')
+    dispatch(
+      socketActions.sendAnswerMessage({
+        destination: "/app/turnEnd", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
+        body: { hostId: userId, roomId: quiz_id },
+      }),
+    );
+  };
 
   console.log(quizItem);
   return (
@@ -76,7 +78,7 @@ const HostPlayQuiz = () => {
           <>
             <div className={styles.header}>
               {/* <TimerBar time={quizItem.timer} handleOrder={setOrder} handleSubmit={quizGameEnd}/> */}
-              <TimerBar time={quizItem.timer} handleOrder={setOrder} />
+              <TimerBar time={quizItem.timer} handleOrder={setOrder} handleSubmit={quizGameEnd}/>
               {quizItem?.quizNum + 1}/{quizItem?.quizSize}
             </div>
             <div className={styles.quizContainer}>
@@ -106,14 +108,16 @@ const HostPlayQuiz = () => {
                 name="채점하기"
                 fontSize="18px"
                 height="45px"
-                onClick={() =>
+                onClick={() => {
+                  console.log('수동채점')
                   dispatch(
                     socketActions.sendAnswerMessage({
-                      destination: "", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
+                      destination: "/app/turnEnd", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
                       body: { hostId: userId, roomId: quiz_id },
                     }),
-                  )
-                }
+                  );
+                  setOrder(2);
+                }}
               />
             </div>
           </>
@@ -121,11 +125,11 @@ const HostPlayQuiz = () => {
         {order === 2 && (
           <>
             <StartFinishText title="채점중인뎁숑" />
-            
+
             {/* 임시로 달아놈 */}
             <div className={styles.nextBtn}>
               <ButtonWithLogo
-                name="다음 퀴즈"
+                name="다음 퀴즈(임시)"
                 fontSize="18px"
                 height="45px"
                 onClick={() =>

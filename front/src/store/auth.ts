@@ -7,7 +7,7 @@ interface AuthState {
     userId: string;
     nickname: string;
     image_url: string;
-    connected: boolean;
+    // connected: boolean;
     choiceIndex: number;
     // quizType: string;
 }
@@ -19,7 +19,7 @@ const initialAuth: AuthState ={
     userId: "",
     nickname: "",
     image_url:"",
-    connected: false,
+    // connected: false,
     choiceIndex: 0,
     // quizType: ""
 }
@@ -36,10 +36,10 @@ reducers:{
         state.isAuthenticated =true;
         sessionStorage.setItem("accessToken", action.payload.token);
     },
-    logout:(state)=>{
-        state.isAuthenticated = false;
-        state.nickname = "";
-        // sessionStorage.removeItem("accessToken")
+    logout: (state) => {
+        // state = initialAuth // 이걸로 하면 안됩니다.
+        Object.assign(state, initialAuth);
+        // sessionStorage.removeItem("accessToken") // 여기서 세션지우면 안됩니다.
     },
     updateInfo:(state, action)=>{
         state.nickname = action.payload.nickname;

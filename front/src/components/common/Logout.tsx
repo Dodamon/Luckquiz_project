@@ -11,7 +11,7 @@ const Logout = () => {
 
   const logout = () => {
     // 프론트단에서 
-    dispatch(authActions.logout)
+    dispatch(authActions.logout())
     sessionStorage.removeItem("accessToken")
 
     // 백에도 api로 로그아웃 전달

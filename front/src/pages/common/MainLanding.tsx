@@ -4,7 +4,7 @@ import { Mobile, Default } from "hooks/mediaQuery";
 import Login from "components/login/Login";
 
 
-const MainLanding:React.FC = () => {
+const MainLanding: React.FC = () => {
   return (
       <div className={styles.container}>
         <EnterPin />
