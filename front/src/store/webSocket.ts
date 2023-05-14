@@ -4,7 +4,7 @@ import { EmotionResult, getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
-// const brokerURL = "ws://70.12.245.21:8080/connect/quiz";
+// const brokerURL = "ws://192.168.1.194:8080/connect/quiz";
 
 export const client = new Client({ brokerURL: brokerURL });
 
@@ -14,6 +14,7 @@ interface SocketState {
   guestList: GuestType[] | null;
   quizItem: getQuizItem | null;
   getMessage: boolean;
+  getEmotion: boolean;
   emotionResult: EmotionResult | null;
 }
 
@@ -23,6 +24,7 @@ const initialState: SocketState = {
   guestList: null,
   quizItem: null,
   getMessage: false,
+  getEmotion: false,
   emotionResult: null,
 };
 
@@ -34,13 +36,13 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         console.log("publish");
-        console.log(actions)
+        console.log(actions);
         client.publish({
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
           // actions.payload로 API DOCS 에 써있는 sending message 정보 넣으면 됨
         });
-      };
+      }
     },
 
     // body 없는 publish
@@ -54,7 +56,7 @@ const socketSlice = createSlice({
     },
 
     updateGetMessage: (state, actions) => {
-      state.getMessage = actions.payload
+      state.getMessage = actions.payload;
     },
 
     changeGuestList: (state, actions) => {
@@ -63,7 +65,7 @@ const socketSlice = createSlice({
 
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
-      console.log(actions.payload)
+      console.log(actions.payload);
     },
 
     getQuizItem: (state, actions) => {
@@ -74,6 +76,10 @@ const socketSlice = createSlice({
     getEmotionResult: (state, actions) => {
       state.emotionResult = actions.payload;
     },
+
+    getEmotionMessage: (state, actions) => {
+      state.getEmotion = actions.payload;
+    }
   },
 });
 
@@ -103,18 +109,22 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       // message가 guestList일 때,
       if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
       else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
-      else if (data.type === "emotionResult") dispatch(socketActions.getEmotionResult(data.emotionResult));
-      else console.log("got empty message");
+      else if (data.type === "emotionResult") {
+        dispatch(socketActions.getEmotionResult(data.emotionResult));
+        dispatch(socketActions.getEmotionMessage(true));
+      } else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
-    };
+    }
   };
 
   const sender = {
     type: "enter",
     roomId: socketProps.roomNum,
   };
-  
-  const URL = socketProps.isHost ? `/topic/quiz/${socketProps.roomNum}` : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
+
+  const URL = socketProps.isHost
+    ? `/topic/quiz/${socketProps.roomNum}`
+    : `/queue/quiz/${socketProps.roomNum}/${socketProps.name}`;
   const Obj = JSON.stringify(sender);
   client.subscribe(URL, callback, { sender: Obj });
 };
