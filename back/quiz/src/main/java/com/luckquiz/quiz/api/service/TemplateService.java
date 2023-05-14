@@ -116,7 +116,7 @@ public class TemplateService {
             byte[] bytes = gson.toJson(a).getBytes(charset);
             QuizGame qgame = QuizGame.builder()
                     .templateId(temp.getId())
-                    .timer(newQg.getTimer())
+                    .timer(a.getTimer())
                     .quiz(bytes)
                     .isValid(a.getIsValid())
                     .type(a.getType())
