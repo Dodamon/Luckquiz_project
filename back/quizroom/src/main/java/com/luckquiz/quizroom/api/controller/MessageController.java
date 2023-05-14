@@ -23,8 +23,13 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
 
 // 꾸글
@@ -47,6 +52,36 @@ public class MessageController {
     private final QuizService quizService;
     //------------------------------------------------------------
     private final ClovarVisionService clovarVisionService;
+
+
+    @SubscribeMapping("/babo")
+    public void Callback(StompHeaderAccessor accessor, @Payload(required = false, value = "babo") String message){
+        String sessionId = accessor.getSessionId();
+        String subscriptionId = accessor.getSubscriptionId();
+        System.out.println("이름: "+message);
+        StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.RECEIPT);
+        headers.setSessionId(sessionId);
+        headers.setSubscriptionId(subscriptionId);
+        headers.setReceiptId(accessor.getReceipt());
+        String subscribeMessage = "들어오신 것을 환영합니다.";
+        sendingOperations.convertAndSendToUser(accessor.getUser().getName(), headers.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
+    }
+    //app/quiz/{roomId}/{name} 구독시 호은 topic/quiz/{roomiId}/{name} 메시지 날림
+    @SubscribeMapping("/quiz/{roomId}/{name}")
+    public void subscribeCallback(StompHeaderAccessor accessor, @DestinationVariable(value = "roomId") String roomId, @DestinationVariable(value = "name") String name){
+        String sessionId = accessor.getSessionId();
+        String subscriptionId = accessor.getSubscriptionId();
+        System.out.println("이름: "+name+" 방번호 : "+ roomId);
+        StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.RECEIPT);
+        headers.setSessionId(sessionId);
+        headers.setSubscriptionId(subscriptionId);
+        headers.setReceiptId(accessor.getReceipt());
+        String subscribeMessage = name+"들어오신 것을 환영합니다.";
+        System.out.println(accessor.getDestination());
+//        sendingOperations.convertAndSendToUser(accessor.getUser().getName(), headers.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
+        sendingOperations.convertAndSendToUser(name, accessor.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
+    }
+
 
     @MessageMapping("/enter")
     public void enter(QuizMessage message) {

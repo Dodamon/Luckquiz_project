@@ -32,6 +32,13 @@ public class ChatRoomController { // for controller update
     private final SimpMessageSendingOperations sendingOperations;
     private final Gson gson;
     private  final StringRedisTemplate stringRedisTemplate;
+    //옌님 테스트 코드
+    @GetMapping("/user")
+    public ResponseEntity test() {
+        return ResponseEntity.ok().body("this is auth server test22222");
+    }
+
+
     // 채팅방 생성
     @PostMapping("/create")
     @ResponseBody
