@@ -104,7 +104,7 @@ public class TemplateService {
     public TemplateDetailResponse quizGameCreate(QuizGameCreateRequest qgcr) throws Exception, CustomException {
         Template temp = templateRepository.findTemplateByIdAndHostId(qgcr.getTemplateId(), qgcr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         temp.setDate(LocalDateTime.now());
-        QuizGameCreateRequest newQg = checkValid(qgcr,temp);
+        QuizGameCreateRequest newQg = checkValid(qgcr);
         if (quizGameRepository.existsByTemplateId(temp.getId())) {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
@@ -152,7 +152,8 @@ public class TemplateService {
         return result;
     }
 
-    public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest, Template temp) {
+    public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest) {
+        Template temp = templateRepository.findTemplateById(quizGameCreateRequest.getTemplateId()).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         List<QGame> qGames = quizGameCreateRequest.getQuizList();
         temp.setIsValid("true");
         for (QGame check : qGames) {
@@ -160,16 +161,19 @@ public class TemplateService {
             if (QuizType.quiz.equals(check.getType())) {
                 switch (check.getQuiz()) {
                     case "ox":
+                        System.out.println("ox 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
-                        } else if (StringUtils.isEmpty(check.getAnswer())) {
+                        }
+                        if (StringUtils.isEmpty(check.getAnswer())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
                         }
                         break;
 
                     case "four":
+                        System.out.println("four 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
@@ -184,27 +188,30 @@ public class TemplateService {
                         break;
 
                     case "text":
+                        System.out.println("text 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
-                        } else if (StringUtils.isEmpty(check.getAnswerList())) {
+                        }
+                        if (StringUtils.isEmpty(check.getAnswerList())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
                         }
                         break;
                 }
             } else {
+                System.out.println("game 인뎁숑");
                 if (StringUtils.isEmpty(check.getGame())) {
                     check.setIsValid("false");
                     temp.setIsValid("false");
                 }
                 if ("emotion".equals(check.getGame())) {
+                    System.out.println("감정겜 인뎁숑");
                     if (StringUtils.isEmpty(check.getAnswer())) {
                         check.setIsValid("false");
                         temp.setIsValid("false");
                     }
                 }
-                break;
 
             }
         }
