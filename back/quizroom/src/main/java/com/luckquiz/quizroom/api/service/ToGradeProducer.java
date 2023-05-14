@@ -32,6 +32,7 @@ public class ToGradeProducer {
         producer.send(record);
         producer.close();
     }
+
     public void emotion(String result){
         KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
         ProducerRecord record = new ProducerRecord<String,String>("grade","emotion",result);
