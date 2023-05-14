@@ -1,6 +1,7 @@
 @media screen and (min-width: 767px) {
     .ReadyGameContainer {
         width: 100%;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -18,7 +19,7 @@
     
     .gameContainer {
         width: 80%;
-        height: 30%;
+        height: fit-content;
         max-width: 750px;
         background-color: var(--white-color);
         border-radius: 20px; 
@@ -48,7 +49,7 @@
     
     .gameContainer {
         width: 80%;
-        height: 30%;
+        height: fit-content;
         max-width: 600px;
         min-width: 210px;
         background-color: var(--white-color);
