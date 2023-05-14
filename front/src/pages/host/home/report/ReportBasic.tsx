@@ -63,19 +63,23 @@ const ReportBasic = () => {
       <ReportTab report_id={report_id}></ReportTab>
       <div className={styles.reportContent} style={{ backgroundColor: "white" }}>
         <ul className={styles.reportContentList}>
-          <li>
+        <li className={styles.reportContentTitle} >
+            {/* <Icon icon="iconoir:user" className={styles.iconStyle} /> */}
+            <div className={styles.textTitle}>퀴즈통계</div>
+          </li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:user" className={styles.iconStyle} />
             <div className={styles.textStyle}>참여자 수</div>: {reportBasic.parti} 명
           </li>
-          <li>
-            <Icon icon="iconoir:question-mark-circle" className={styles.iconStyle} />
+          <li className={styles.reportContentItem} >
+            <Icon icon="iconoir:question-mark-circle"  className={styles.iconStyle} />
             <div className={styles.textStyle}>퀴즈 개수</div>: {reportBasic.quizs} 개
           </li>
-          <li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:gamepad" className={styles.iconStyle} />
             <div className={styles.textStyle}>게임 개수</div>: {reportBasic.games} 개
           </li>
-          <li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:alarm" className={styles.iconStyle} />
             <div className={styles.textStyle}>소요 시간</div>: {Math.floor(reportBasic.times / 60)}분{" "}
             {reportBasic.times % 60}초
@@ -84,7 +88,7 @@ const ReportBasic = () => {
         <div className={styles.chartContainer}>
           <img src={report_logo} alt="" width={"50%"} style={{ marginRight: "20px" }} />
           <div className={styles.chartBox}>
-            <div style={{display:"flex", alignItems:"center"}}>
+            <div className={styles.percentageBox} style={{display:"flex", alignItems:"center"}}>
               <div className={styles.textStyle}>총 정답률</div>
               <div className={styles.textStyle}>{reportBasic.percentage}%</div>
             </div>

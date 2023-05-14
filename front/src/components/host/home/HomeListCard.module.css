@@ -1,5 +1,6 @@
 @media screen and (min-width: 747px) {
     .quizBox {
+        transition: transform 0.3s ease;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -12,6 +13,9 @@
         padding-left: 7%;
         padding-right: 7%;
         box-sizing: border-box;
+    }
+    .quizBox:hover {
+        transform: translateY(-5px);
     }
 }
 
