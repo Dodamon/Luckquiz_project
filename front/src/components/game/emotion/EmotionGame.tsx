@@ -90,7 +90,9 @@ const EmotionGame: React.FC = () => {
   return (
     <div className={styles.emotionGameContainer}>
       <QuizGameTitle title="오늘만큼은 나도 연기 왕" />
-      <div></div>
+      <div>
+        
+      </div>
       {img ? (
         <div className={styles.emotionGameCamera}>
           <img src={img} alt="" className={styles.photoImg} />

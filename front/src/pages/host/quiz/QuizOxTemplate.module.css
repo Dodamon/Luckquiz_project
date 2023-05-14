@@ -97,6 +97,7 @@
     padding-left: 20px;
     outline: none;
     border-style: none;
+    background-color: var(--white-color);
 }
 
 .content_color>div {
@@ -104,4 +105,31 @@
     font-size: 44px;
     color: var(--white-color);
     font-weight: bold;
+}
+
+
+.checkbox{
+    /* background-color: red; */
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: var(--placeholder-text);
+}
+
+
+.outbox{
+    cursor: pointer;
+}
+.outbox:hover{
+    font-size: 46px;
+}
+.keepbox{
+    cursor: pointer;
+}
+
+.keepbox:hover{
+    font-size: 46px;
 }
