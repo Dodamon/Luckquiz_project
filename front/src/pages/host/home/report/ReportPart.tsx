@@ -2,6 +2,10 @@ import { useParams } from "react-router-dom";
 import styles from "./Report.module.css";
 import ReportTab from "components/host/home/report/ReportTab";
 import ReportTable from "components/host/home/report/ReportTable";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+
 
 const parti = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -50,9 +54,26 @@ const parti = {
     },
   ],
 };
+type listType ={
+  rank: number,
+  name: string,
+  answer: number,
+  score:number,
+}
+
+interface mainType {
+  title: string,
+  list :listType[]
+}
+
+
 
 const ReportPart = () => {
   const { report_id } = useParams();
+  const [basicReport, setBasicReport] = useState<mainType>();
+  useEffect(()=>{
+    axios.get("")
+  }, [])
   return (
     <div className={styles.content}>
       <div className={styles.title}>{parti.title}</div>

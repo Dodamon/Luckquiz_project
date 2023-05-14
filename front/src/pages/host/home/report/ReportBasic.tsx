@@ -5,7 +5,17 @@ import { Icon } from "@iconify/react";
 import report_logo from "assets/images/report_logo.png";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
+import { useEffect, useState } from "react";
 
+
+interface basicType {
+  title: string,
+  parti: number,
+  quizs: number,
+  games: number,
+  times: number,
+  percentage: number,
+}
 const reportBasic = {
   title: "SSAFY 스타트 캠프 퀴즈",
   parti: 431,
@@ -41,7 +51,11 @@ const data = {
 
 const ReportBasic = () => {
   const { report_id } = useParams();
+
+  const [basicReport, setBasicReport] = useState<basicType[]>([]);
+  useEffect(()=>{
   // getReportBasic
+  },[])
 
   return (
     <div className={styles.content}>
