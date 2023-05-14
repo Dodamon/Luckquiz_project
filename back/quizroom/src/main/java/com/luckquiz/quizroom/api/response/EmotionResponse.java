@@ -10,12 +10,8 @@ import javax.annotation.Nullable;
 @Setter
 public class EmotionResponse {
     public String type;
-
-
     @Nullable
     public EmotionResult emotionResult;
-
-
     @Setter
     @AllArgsConstructor
     @Builder

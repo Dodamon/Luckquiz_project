@@ -3,6 +3,7 @@ package com.luckquiz.quizroom.api.controller;
 
 
 import com.google.gson.Gson;
+import com.luckquiz.quizroom.api.request.EmotionSubmit;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.*;
@@ -87,7 +88,7 @@ public class MessageController {
                 .build();
 
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), egm);
-//        quizService.serveEntry(egm,message.getRoomId());
+        quizService.serveEntry(egm,message.getRoomId());
     }
 
     @MessageMapping("/duplicheck")
@@ -110,6 +111,7 @@ public class MessageController {
 
 
     @MessageMapping("/emotion")
+    // 복사해서 임시랑 최종 맹글어야합니다.
     public void emotion(QuizMessage message) throws  Exception{
         try{
                 byte[] decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
@@ -133,14 +135,12 @@ public class MessageController {
                             .roi(result.getResult().getFaces().get(0).getRoi())
                             .build()
                     );
-
                 }
 
                 sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId() + "/" + message.getSender(), emotionResponse);
                 // 채점결과 채점서버로 message 보내기
-                toGradeProducer.emotion(gson.toJson(result));
+//                toGradeProducer.emotion(gson.toJson(result));
                 log.info("제출 했습니다.");
-
         } catch (CustomException e){
             throw new CustomException(CustomExceptionType.NO_PICTURE_ERROR);
         }
@@ -157,6 +157,12 @@ public class MessageController {
 //      Object resultRespone = gson.fromJson(result, Object.class);
 //      sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
 //        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
+    }
+
+    @MessageMapping("/emotion/submit")
+    public void emotionSubmit(EmotionSubmit message) throws  Exception{
+        System.out.println("emotionType:   "+message.getEmotionResult().value+", confidence:    "+message.getEmotionResult().confidence + "    sender: "+message.getSender());
+        toGradeProducer.emotion(gson.toJson(message));
     }
 
     @MessageMapping("/submit")
