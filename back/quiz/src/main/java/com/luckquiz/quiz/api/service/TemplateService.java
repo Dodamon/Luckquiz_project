@@ -95,7 +95,6 @@ public class TemplateService {
                 .name(template.getName())
                 .quizList(quizgame)
                 .build();
-
         return result;
     }
 
@@ -155,11 +154,9 @@ public class TemplateService {
 
     public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest, Template temp) {
         List<QGame> qGames = quizGameCreateRequest.getQuizList();
-        List<QGame> result = new ArrayList<>();
         temp.setIsValid("true");
         for (QGame check : qGames) {
             check.setIsValid("true");
-
             if (QuizType.quiz.equals(check.getType())) {
                 switch (check.getQuiz()) {
                     case "ox":
@@ -201,7 +198,7 @@ public class TemplateService {
                     check.setIsValid("false");
                     temp.setIsValid("false");
                 }
-                if (check.getGame().equals("emotion")) {
+                if ("emotion".equals(check.getGame())) {
                     if (StringUtils.isEmpty(check.getAnswer())) {
                         check.setIsValid("false");
                         temp.setIsValid("false");
@@ -210,9 +207,7 @@ public class TemplateService {
                 break;
 
             }
-            result.add(check);
         }
-        quizGameCreateRequest.setQuizList(result);
         return quizGameCreateRequest;
     }
 
