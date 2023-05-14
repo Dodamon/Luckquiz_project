@@ -22,20 +22,20 @@ const QuizCreatePage: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(()=>{
-        if(quiz_id){
-            axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res=>{
-                console.log("아놔 여긴데~",res.data);
-                const data= res.data;
+    useEffect(() => {
+        if (quiz_id) {
+            axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
+                console.log("아놔 여긴데~ 수정에서받은겨", res);
+                const data = res.data;
                 dispatch(quizAtions.receiveUpdate(data));
-              })
-    
+            })
+
         }
-    },[])
+    }, [])
 
 
-    
-    
+
+
     console.log(quizInfo);
     console.log(authInfo.choiceIndex);
     return (

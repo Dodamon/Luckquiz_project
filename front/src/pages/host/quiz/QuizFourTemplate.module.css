@@ -1,48 +1,48 @@
-.content_title{
-    width: 90%;
-    margin-top: 2%;
-    margin-bottom: 3%;
+.content_title {
+  width: 90%;
+  margin-top: 2%;
+  margin-bottom: 3%;
 }
 
-.content_title input{
-   width: 100%;
-   height: 90px; 
-   text-align: center;
-   font-size: 40px;
-   border-radius: 20px;
-   border-style: none;
+.content_title input {
+  width: 100%;
+  height: 90px;
+  text-align: center;
+  font-size: 40px;
+  border-radius: 20px;
+  border-style: none;
 }
 
-.content_images{
-    background-color: var(--white-color);
-    width: 400px;
-    height: 200px;
-    min-height: 200px;
-    border-radius: 20px;
-    opacity: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var( --placeholder-text);
-    margin-bottom: 1%;
+.content_images {
+  background-color: var(--white-color);
+  width: 400px;
+  height: 200px;
+  min-height: 200px;
+  border-radius: 20px;
+  opacity: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--placeholder-text);
+  margin-bottom: 1%;
 }
 
-.plus_font{
-    font-size: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.plus_font {
+  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.effect_font{
-    display: none;
+.effect_font {
+  display: none;
 }
-.content_images:hover .effect_font{
-    font-size: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.content_images:hover .effect_font {
+  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* .content_images:hover >div{
@@ -52,86 +52,85 @@
     border-radius: 10px
 } */
 
-.plus_comment{
-    font-size: 48px;
-    cursor: pointer;
+.plus_comment {
+  font-size: 48px;
+  cursor: pointer;
 }
 
-.content_answerbox{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    row-gap: 20px;
-    column-gap: 100px;
-    width: 90%;
-    margin-top: 30px;
+.content_answerbox {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 20px;
+  column-gap: 100px;
+  width: 90%;
+  margin-top: 100px;
 }
 
-.content_answer{
-    background-color: var(--white-color);
-    height: 90px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
+.content_answer {
+  background-color: var(--white-color);
+  height: 90px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
 }
 
-.content_color{
-    background-color: red;
-    height: 100%;
-    width: 100px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.content_color {
+  background-color: red;
+  height: 100%;
+  width: 100px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.content_color>div{
-    display: flex;
-    font-size: 44px;
-    /* font-weight: bold; */
-    color: var(--white-color);
-}
-
-.content_input{
-    /* background-color: red; */
-    height: 100%;
-    display: flex;
-    width: 100%;
-    align-items: center;
+.content_color > div {
+  display: flex;
+  font-size: 44px;
+  /* font-weight: bold; */
+  color: var(--white-color);
 }
 
-.content_input input{
-    width: 80%;
-    height: 90%;
-    border-bottom-right-radius: 20px;
-    border-top-right-radius: 20px;
-    font-size: 28px;
-    padding-left: 10px;
-    outline: none;
-    border-style: none;
-    background-color: var(--white-color);
+.content_input {
+  /* background-color: red; */
+  height: 100%;
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
 
-.checkbox{
-    /* background-color: red; */
-    width: 20%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 40px;
-    color: var(--placeholder-text);
-}
-.outbox{
-    cursor: pointer;
-}
-.outbox:hover{
-    font-size: 46px;
-}
-.keepbox{
-    cursor: pointer;
+.content_input input {
+  width: 80%;
+  height: 90%;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  font-size: 28px;
+  padding-left: 10px;
+  outline: none;
+  border-style: none;
+  background-color: var(--white-color);
 }
 
-.keepbox:hover{
-    font-size: 46px;
+.checkbox {
+  /* background-color: red; */
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color: var(--placeholder-text);
+}
+.outbox {
+  cursor: pointer;
+}
+.outbox:hover {
+  font-size: 46px;
+}
+.keepbox {
+  cursor: pointer;
+}
+
+.keepbox:hover {
+  font-size: 46px;
 }

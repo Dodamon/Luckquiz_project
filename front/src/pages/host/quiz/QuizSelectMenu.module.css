@@ -16,30 +16,42 @@ justify-content: space-between;
     height: 60px;
     border-radius: 20px;
     font-size: 22px;
+    /* padding-right: 20px; */
+    /* padding-left: 20px; */
+    /* padding-right: 50px; */
+    /* appearance: none; */
+    /* background-image 속성을 사용한 방법 */
+  
 }
 
 .nav_right{
     width: 340px;
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
 }
 
 .nav_right>div{
     width: 160px;
     height: 60px;
     border-radius: 20px;
-    background-color: var(  --white-color);
+    background-color: var(--select-two);
     display: flex;
     font-size: 22px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     word-break: keep-all;
-    font-weight: bold;
+    /* font-weight: bold; */
+    color: var( --white-color);
+}
+
+.nav_right>div:hover{
+   opacity: 70%;
 }
 
 .select_form{
     padding-left: 15px;
     font-size: 18px;
     font-weight: bold;
+    /* padding-right: 50px; */
 }
