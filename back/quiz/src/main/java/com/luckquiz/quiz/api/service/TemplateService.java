@@ -161,7 +161,6 @@ public class TemplateService {
             if (QuizType.quiz.equals(check.getType())) {
                 switch (check.getQuiz()) {
                     case "ox":
-                        System.out.println("ox 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
@@ -173,7 +172,6 @@ public class TemplateService {
                         break;
 
                     case "four":
-                        System.out.println("four 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
@@ -188,7 +186,6 @@ public class TemplateService {
                         break;
 
                     case "text":
-                        System.out.println("text 인뎁숑");
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
                             temp.setIsValid("false");
@@ -200,13 +197,11 @@ public class TemplateService {
                         break;
                 }
             } else {
-                System.out.println("game 인뎁숑");
                 if (StringUtils.isEmpty(check.getGame())) {
                     check.setIsValid("false");
                     temp.setIsValid("false");
                 }
                 if ("emotion".equals(check.getGame())) {
-                    System.out.println("감정겜 인뎁숑");
                     if (StringUtils.isEmpty(check.getAnswer())) {
                         check.setIsValid("false");
                         temp.setIsValid("false");
