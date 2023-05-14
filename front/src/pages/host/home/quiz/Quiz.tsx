@@ -17,7 +17,7 @@ import useHostAxios from "hooks/useHostAxios";
 export interface Quiz {
   name: string;
   templateId: string;
-  is_Valid: boolean;
+  isValid: boolean;
   date: string;
 }
 
@@ -44,7 +44,7 @@ const Quiz = () => {
   // 컴포넌트 분리로 삭제후 업데이트가 안돼서 강제로 사용
   const deleteQuizHandler = (quizId: string) => {
     setDeleteItem(quizId)
-    console.log("삭제된 템플릿 번호",quizId);
+    console.log("삭제된 템플릿 번호", quizId);
   };
 
 
@@ -52,23 +52,48 @@ const Quiz = () => {
 
     axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
-        console.log(res.data);
+        console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;
-        setMyQuizList(newQuizList);
+
+
+        const sortedItems = [...newQuizList].sort((a: any, b: any) => {
+          // true인 경우를 먼저 오도록 정렬
+          if (a.isValid === "true" && b.isValid !== "true") {
+            return -1;
+          }
+          if (a.isValid !== "true" && b.isValid === "true") {
+            return 1;
+          }
+
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+
+          // 이후 날짜 정렬
+          if (dateA < dateB) {
+            return -1;
+          }
+          if (dateA > dateB) {
+            return 1;
+          }
+
+          return 0;
+        });
+
+        setMyQuizList(sortedItems);
         dispatch(authActions.selectIndex(0));
       });
-  }, [deleteItem])
+  }, [deleteItem, authInfo.userId])
 
 
 
-  
+
 
   return (
     <div className={styles.content} style={isModal || isModals ? { backgroundColor: "darkgray" } : {}}>
       <div className={styles.title}>내가 만든 퀴즈</div>
       <div className={styles.listColFrame}>
-        {myQuizList.map((quiz, index) => (
-          <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler}  />
+        {myQuizList.length === 0 ? <div className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
+          <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler} />
         ))}
         <Modal isModal={isModal} setIsModal={setIsModal} />
         {/* <Link to={"/quiz/create"}> */}

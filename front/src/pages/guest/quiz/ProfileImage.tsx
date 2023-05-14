@@ -43,7 +43,7 @@ const ProfileImage: React.FC = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const dispatch = useDispatch();
-  const [clicked, setClicked] = useState(state);
+  const [clicked, setClicked] = useState(state.imgIdx);
 
   const onClickImage = (index: number) => {
     setClicked(index);
@@ -51,7 +51,7 @@ const ProfileImage: React.FC = () => {
 
   const onClickSetImage = () => {
     dispatch(guestActions.updateGuestImage(clicked));
-    navigate("/guest/nickname");
+    navigate(`/guest/nickname?pinnum=${state.pinNum}`);
   };
 
   return (

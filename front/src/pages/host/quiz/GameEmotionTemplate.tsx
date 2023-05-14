@@ -40,32 +40,35 @@ const GameEmotionTemplate = () => {
                 <div className={styles.emotion_select}>
 
                     <ul className={styles.emotion_grid}>
-                        <li onClick={() => emotionSelectHandler("happy")} style={quizInfo[authInfo].answer === 'happy' ? { opacity: "70%" } : {}}>
+                        <li onClick={() => emotionSelectHandler("smile")} style={quizInfo[authInfo].answer === 'smile' ? { opacity: "60%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-two)" }} ><Icon icon="ri:emotion-line" /></div>
                             <div className={styles.emotion_ment}>기쁨</div>
                         </li>
 
-                        <li onClick={() => emotionSelectHandler("sad")} style={quizInfo[authInfo].answer === 'sad' ? { opacity: "70%" } : {}}>
+                        <li onClick={() => emotionSelectHandler("sad")} style={quizInfo[authInfo].answer === 'sad' ? { opacity: "60%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-four)" }} ><Icon icon="ri:emotion-sad-line" /></div>
                             <div className={styles.emotion_ment}>슬픔</div>
                         </li>
 
-                        <li onClick={() => emotionSelectHandler("scared")} style={quizInfo[authInfo].answer === 'scared' ? { opacity: "70%" } : {}}>
+                        <li onClick={() => emotionSelectHandler("fear")} style={quizInfo[authInfo].answer === 'fear' ? { opacity: "60%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-three)" }}><Icon icon="ri:emotion-2-line" /></div>
                             <div className={styles.emotion_ment}>두려움</div>
                         </li>
 
-                        <li onClick={() => emotionSelectHandler("angry")} style={quizInfo[authInfo].answer === 'angry' ? { opacity: "70%" } : {}}>
+                        <li onClick={() => emotionSelectHandler("angry")} style={quizInfo[authInfo].answer === 'angry' ? { opacity: "60%" } : {}}>
                             <div className={styles.emotion_box} style={{ backgroundColor: "var( --select-one)" }}><Icon icon="ri:emotion-unhappy-line" /></div>
                             <div className={styles.emotion_ment}>분노</div>
                         </li>
 
-                        <li onClick={() => emotionSelectHandler("aversion")} style={quizInfo[authInfo].answer === 'aversion' ? { opacity: "70%" } : {}}>
-                            <div className={styles.emotion_box} ><Icon icon="ri:emotion-laugh-line" /></div>
+                        <li onClick={() => emotionSelectHandler("disgust")} style={quizInfo[authInfo].answer === 'disgust' ? { opacity: "60%" } : {}}>
+                            <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-three)" }} ><Icon icon="ri:emotion-laugh-line" /></div>
                             <div className={styles.emotion_ment}>혐오</div>
                         </li>
 
-
+                        <li onClick={() => emotionSelectHandler("surprise")} style={quizInfo[authInfo].answer === 'surprise' ? { opacity: "60%" } : {}}>
+                            <div className={styles.emotion_box} style={{ backgroundColor: "var(--select-three)" }} ><Icon icon="ri:emotion-laugh-line" /></div>
+                            <div className={styles.emotion_ment}>놀람</div>
+                        </li>
 
                     </ul>
 

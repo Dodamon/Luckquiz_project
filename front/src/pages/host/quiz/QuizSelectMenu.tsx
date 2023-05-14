@@ -55,46 +55,42 @@ const QuizSelectMenu = () => {
         // console.log("뭔데", template);
 
         const quizList = template.quizList;
- 
-        
-        const checkedList = quizList.map(it =>{
+
+        const checkedList = quizList.map(it => {
 
             if (it.type === "game") {
                 // 게임 null 확인
-                return (!it.game) ? { ...it, is_Valid: false } : (it.game === "emotion") && (!it.answer) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
+                return (!it.game) ? { ...it, isValid: false } : (it.game === "emotion") && (!it.answer) ? { ...it, isValid: false } : { ...it, isValid: true };
             } else if (it.type === "quiz") {
-                
+
                 // 사지선다 확인
-                if(it.quiz === "four"){
-                    return (!it.answer || !it.one || !it.two || !it.three || !it.four || !it.question) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
-               
-                // 주관식 확인
-                }else if(it.quiz==="text"){
-                    return (it.answerList.length===0 || !it.question) ? { ...it,is_Valid: false } : { ...it, is_Valid: true };
-                
-                // ox 확인
-                }else if(it.quiz==="ox"){
-                    return (!it.answer || !it.question) ? { ...it, is_Valid: false } : { ...it, is_Valid: true };
+                if (it.quiz === "four") {
+                    return (!it.answer || !it.one || !it.two || !it.three || !it.four || !it.question) ? { ...it, isValid: false } : { ...it, isValid: true };
+
+                    // 주관식 확인
+                } else if (it.quiz === "text") {
+                    return (it.answerList.length === 0 || !it.question) ? { ...it, isValid: false } : { ...it, isValid: true };
+
+                    // ox 확인
+                } else if (it.quiz === "ox") {
+                    return (!it.answer || !it.question) ? { ...it, isValid: false } : { ...it, isValid: true };
                 }
             }
+        });
+
+
+        const isValid = checkedList.some(element => element?.isValid === false);
+        const saveData = { ...template, isValid: !isValid, quizList: checkedList }
+
+
+
+        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", saveData).then(res => {
+
+            console.log(res);
+            navigate("/home", { replace: true });
+
         })
-
-        const isValid = checkedList.some(element => element?.is_Valid === false);
-        const saveData= {...template, is_Valid: !isValid, quizList: checkedList}
-
-
-
-        // axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", saveData).then(res => {
-
-        //     console.log(res);
-        //     navigate("/home");
-
-        // })
     }
-
-
-
-
 
 
 

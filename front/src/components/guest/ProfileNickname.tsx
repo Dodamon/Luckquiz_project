@@ -60,7 +60,7 @@ const ProfileNickname: React.FC = () => {
 
   // 프로필 사진 수정
   const onClickEditImg = () => {
-    navigate("/guest/profile", { state: imgIdx });
+    navigate("/guest/profile", { state: {imgIdx: imgIdx, pinNum: paramPin} });
   };
 
   // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 웹소켓 연결, 대기화면으로 navigate
