@@ -28,11 +28,13 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker( "/queue","/topic");  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
         // 내장 브로커 사용
         // 파라미터로 설정된 값으로 prefix가 붙은 메시지를 발행 시 브로커가 처리하겠다.
-        registry.setApplicationDestinationPrefixes("/app","/topic");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
+        registry.setApplicationDestinationPrefixes("/app");
+//        registry.setApplicationDestinationPrefixes("/app","/topic/quiz");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
         // 메시지 핸들러로 라우팅되는 prefix
         // 클라이언트가 메시지를 보낼 때 경로 맨앞에 "/app"이 붙어있으면 Broker로 보내짐.
-//        registry.setUserDestinationPrefix("/topic");
+//        registry.setUserDestinationPrefix("/topic/quiz");
     }
+
 
 //    @Override
 //    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
@@ -43,8 +45,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
-        registration.setMessageSizeLimit(1024*1024*160);
-        registration.setSendBufferSizeLimit(1024*1024*160);
+        registration.setMessageSizeLimit(1024*1024*100);
+        registration.setSendBufferSizeLimit(1024*1024*100);
         registration.setSendTimeLimit(20 * 1000);
 //        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
@@ -52,9 +54,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean(); // (3)
-        container.setMaxTextMessageBufferSize(1024*1024*160); // (4)
-        container.setMaxBinaryMessageBufferSize(1024*1024*160); // (5)
-
+        container.setMaxTextMessageBufferSize(1024*1024*100); // (4)
+        container.setMaxBinaryMessageBufferSize(1024*1024*100); // (5)
         return container;
     }
 
