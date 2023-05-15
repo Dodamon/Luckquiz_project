@@ -25,7 +25,7 @@ const GameSelection = () => {
             <div className={styles.game_content}>
 
                 <ul className={styles.game_list}>
-                    <li className={styles.game_item} onClick={() => gameSelectHandler("egg")}>
+                    <li className={styles.game_item} onClick={() => gameSelectHandler("emotion")}>
                         <header className={styles.game_title}><h4>셀카 감정분석게임</h4></header>
                         <section className={styles.game_img} ><img src={emotion} alt="감정분석" /></section>
                         <footer className={styles.game_setting}><div className={styles.game_btnbox}>

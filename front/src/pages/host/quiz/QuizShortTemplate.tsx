@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./QuizShortTemplate.module.css"
 import { Icon } from '@iconify/react';
-import { useEffect } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
 type pageNum = {
@@ -12,11 +10,9 @@ type pageNum = {
 }
 const QuizShortTemplate = ({ num }: pageNum) => {
   const dispatch = useDispatch();
-  // const selectIndex = useSelector((state: RootState)=> state.auth.choiceIndex);
   const quizList = useSelector((state: RootState) => state.quiz.quizList);
   const [quiz, setQuiz] = useState(quizList[num]);
 
-  console.log("여기 왔습니니다.", num, quiz);
   useEffect(() => {
     setQuiz(quizList[num]);
   }, [num, quizList]);

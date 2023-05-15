@@ -1,5 +1,9 @@
-.logoutBtn{
-  color: rgb(214, 214, 214);
-  margin-bottom: 50px;
-  cursor: pointer;
+.logoutBtn {
+    color: rgb(214, 214, 214);
+    margin-bottom: 50px;
+    cursor: pointer;
+}
+
+.logoutBtn:hover {
+    color: black;
 }

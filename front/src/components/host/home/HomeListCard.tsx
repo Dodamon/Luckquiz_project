@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./HomeListCard.module.css";
 import { Icon } from "@iconify/react";
-import main_logo from "assets/images/main_logo.png";
+import reports_logo from "assets/images/reports_logo.png";
 import ready_logo from "assets/images/ready_logo.png";
 import save_logo from "assets/images/save_logo.png";
 import { Quiz } from "pages/host/home/quiz/Quiz";
@@ -22,10 +22,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { isConstructorDeclaration } from "typescript";
 interface Props {
-  quiz: Quiz;
+  quiz?: Quiz;
   menu: number;
-  report?: string;
-  onDeleteQuiz: (quizId: string) => void;
+  report?: Report;
+  onDeleteQuiz?: (quizId: string) => void;
 }
 
 
@@ -39,7 +39,10 @@ const HomeListCard = (props: Props) => {
   const userId = useSelector((state: RootState) => state.auth.userId);
 
 
-  console.log("서버에서 받은 데이터를 카드로 바로 받은 데이터", quiz.isValid);
+  if(quiz){
+    console.log("서버에서 받은 데이터를 카드로 바로 받은 데이터", quiz.isValid);
+  }
+ 
 
   useEffect(() => {
     if (data) {
@@ -74,16 +77,21 @@ const HomeListCard = (props: Props) => {
   };
 
   const deleteQuizHandler = () => {
-    const deleteItem = {
-      id: quiz.templateId,
-      hostId: userId
+    if(quiz){
+      const deleteItem = {
+        id: quiz.templateId,
+        hostId: userId
+      }
+  
+      axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem).then(res => {
+        console.log("삭제할때 가는 데이터", res.data);
+        if(onDeleteQuiz){
+          onDeleteQuiz(quiz.templateId);
+        }
+      
+        setOpen(true);
+      })
     }
-
-    axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem).then(res => {
-      console.log("삭제할때 가는 데이터", res.data);
-      onDeleteQuiz(quiz.templateId);
-      setOpen(true);
-    })
   }
 
 
@@ -95,38 +103,27 @@ const HomeListCard = (props: Props) => {
   }
 
 
-  const test = () => {
-    axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz.templateId}&hostId=${userId}`).then(res => {
-      console.log(res.data);
-
-    })
-  }
-
-
-
-
 
   return (
     <div className={styles.quizBox}>
       <div className={styles.quizRowFrame}>
         <div className={styles.logoImgContainer}>
           {
-            (!quiz.isValid || quiz.isValid.toString() === "false") ? <img className={styles.logoImg} src={save_logo} alt="준비미완료" /> :
-              <img className={styles.logoImg} src={ready_logo} alt="준비완료" />
+           !quiz? <img className={styles.logoImg} src={reports_logo} alt="준비미완료" />:(!quiz.isValid || quiz.isValid.toString() === "false") ? <img className={styles.logoImg} src={save_logo} alt="준비미완료" /> :<img className={styles.logoImg} src={ready_logo} alt="준비완료" />
           }
 
         </div>
         <div>
           {/* quiz에서 쓰이는 경우 (menu = 0)*/}
-          {menu === 0 ? (
+          {menu === 0 && quiz ? (
             <>
               <div className={styles.quizTitle}>{quiz?.name}</div>
-              <div className={styles.placeholder}>{dateChangeHandler(quiz?.date)}</div>
+              <div className={styles.placeholder}>{dateChangeHandler(quiz.date)}</div>
             </>
           ) : (
             <>
-              {/* <div className={styles.quizTitle}>{report?.title}</div> */}
-              {/* <div className={styles.placeholder}>{report?.date}</div> */}
+              <div className={styles.quizTitle}>{report?.title}</div>
+              <div className={styles.placeholder}>{report?.date}</div>
             </>
           )}
         </div>
@@ -134,7 +131,7 @@ const HomeListCard = (props: Props) => {
 
       <div className={styles.quizRowFrame}>
         {/* quiz에서 쓰이는 경우 (menu = 0)*/}
-        {menu === 0 ? (
+        {menu === 0 && quiz ?  (
           <>
             <button className={styles.button}>
               <Icon
@@ -176,8 +173,9 @@ const HomeListCard = (props: Props) => {
 
         ) : (
           // report에서 쓰이는 경우 (menu = 1)
-          <div className={styles.parti}>참여자 </div>
-          // {report?.participants}명
+          <>   
+            <div className={styles.parti}>참여 {report?.participants} 명 </div>
+          </>
         )}
       </div>
 
