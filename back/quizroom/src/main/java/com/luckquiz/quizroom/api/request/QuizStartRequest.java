@@ -15,4 +15,5 @@ import java.util.UUID;
 public class QuizStartRequest {
     private Integer roomId;
     private UUID hostId;
+    private Integer quizNum;
 }

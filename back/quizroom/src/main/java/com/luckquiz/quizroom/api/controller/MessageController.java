@@ -118,7 +118,7 @@ public class MessageController {
         System.out.println("this is roomInfojson  "+ roomInfo);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
 
-        if(!message.getSender().equals(roomInf.getHostNickName())) {
+        if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
             zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         }
