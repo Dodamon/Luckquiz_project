@@ -11,3 +11,7 @@ li {
 a{
     text-decoration: none;
 }
+
+ul {
+    margin-left: 0;
+}

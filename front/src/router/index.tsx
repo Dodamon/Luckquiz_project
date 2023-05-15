@@ -125,6 +125,10 @@ const router = createBrowserRouter([
             element: <GuestLobby/>,
           },
           {
+            path: "quiz/balloon",
+            element: <PlayBalloonGame handleOrder={() => {}}/>
+          },
+          {
             path: "quiz/play",
             element: <GuestPlayQuiz/>,
           },

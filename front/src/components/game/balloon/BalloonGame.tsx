@@ -121,7 +121,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
     }, 320);
 
     console.log(time.toFixed(2));
-    submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
+    // submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
     setIsRunning(false);
 
     setTimeout(() => {
@@ -135,21 +135,21 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   }, []);
 
   useEffect(() => {
-    let interval: NodeJS.Timer;
+    let timeout: NodeJS.Timeout;
     if (isRunning) {
-      interval = setInterval(() => {
+      timeout = setTimeout(() => {
         setTime((time) => time + 0.01);
       }, 10);
     }
     return () => {
-      clearInterval(interval);
+      clearTimeout(timeout);
     };
-  }, [isRunning]);
+  }, [isRunning, time]);
 
   return (
     <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
       <div id="time-box">{timeLimit} 초</div>
-      <div id="game-description">가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
+      <div id="game-description">위 시간과 가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
       <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg as MutableRefObject<SVGSVGElement>} className="svg">
         <path
           d="M24 55,

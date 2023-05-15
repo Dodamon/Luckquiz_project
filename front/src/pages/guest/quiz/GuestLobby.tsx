@@ -13,7 +13,7 @@ const GuestLobby: React.FC = () => {
   const guestList = useSelector<RootState, GuestType[]|null>((state) => state.socket.guestList);
 
   const onClickGame = () => {
-    navigate('/guest/quiz/emotion')
+    navigate('/guest/quiz/balloon')
   };
   
   useEffect(() => {
@@ -29,7 +29,7 @@ const GuestLobby: React.FC = () => {
       <div className={styles.logoContainer}>
         <img src={logo} alt="" className={styles.logo} />
       </div>
-      <button onClick={onClickGame}>감정게임</button>
+      <button onClick={onClickGame}>풍선게임</button>
       <LobbyComp />
     </div>
   );
