@@ -1,13 +1,12 @@
-.EmptyContentPage{
+.EmptyContentPage {
     width: 100%;
     height: 90%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
-.emptybox{
+.emptybox {
     width: 500px;
     height: 500px;
     display: flex;
@@ -16,14 +15,12 @@
     align-items: center;
 }
 
-.logo{
-    /* background-color: red; */
+.logo {
     width: 400px;
     height: 230px;
-    /* height: 384px; */
 }
 
-.logo>img{
+.logo>img {
     width: 100%;
     height: 100%;
 }
@@ -31,20 +28,18 @@
 .comment {
     margin-top: 10px;
     font-size: 24px;
-    /* width: 60% */
     min-width: 880px;
     text-align: center;
     color: var(--white-color);
 }
 
-.exitbox{
+.exitbox {
     width: 90%;
-    /* background-color: red; */
     display: flex;
     justify-content: end;
 }
 
-.exit_btn{
+.exit_btn {
     background-color: var(--white-color);
     width: 150px;
     height: 50px;
@@ -57,10 +52,10 @@
     cursor: pointer;
 }
 
-.exit_btn:hover{
+.exit_btn:hover {
     opacity: 80%;
 }
-.btn_comment{
+
+.btn_comment {
     color: var(--black-color);
-    /* color: red; */
 }

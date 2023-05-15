@@ -10,7 +10,6 @@ import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
 import Login from "components/login/Login";
 import QuizCreatePage from "pages/host/quiz/QuizCreatePage";
-import Edit from "pages/host/quiz/Edit";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
@@ -29,6 +28,7 @@ import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
+import ErrorPage from "pages/common/ErrorPage";
 
 
 const router = createBrowserRouter([
@@ -71,6 +71,10 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "/*",
+        element: <ErrorPage/>,
       },
       {
         path: "quiz/create",

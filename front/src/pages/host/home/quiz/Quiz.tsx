@@ -83,10 +83,7 @@ const Quiz = () => {
         setMyQuizList(sortedItems);
         dispatch(authActions.selectIndex(0));
       }).catch(err =>{
-        console.log(err.response.status);
-        navigate('/error', { state: { code: err.response.status }});
-       
-        
+        navigate('/error', { state: { code:err.response.status}});
       } 
       );
   }, [deleteItem, authInfo.userId])

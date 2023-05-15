@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector} from 'react-redux';
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
+import { useNavigate } from 'react-router-dom';
 type pageNum = {
   num: number;
 }
@@ -12,7 +13,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   const dispatch = useDispatch();
   const quizList = useSelector((state: RootState) => state.quiz.quizList);
   const [quiz, setQuiz] = useState(quizList[num]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setQuiz(quizList[num]);
   }, [num, quizList]);
@@ -43,11 +44,12 @@ const QuizShortTemplate = ({ num }: pageNum) => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('https://k8a707.p.ssafy.io/api/quiz/upload', formData);
+      const response = await axios.post(`${process.env.REACT_APP_HOST}/api/quiz/upload`, formData);
       setQuiz({ ...quiz, quizUrl: response.data });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (err) {
+      console.log(err);
+      navigate('/error', { state: { code:err}});
+  }
   };
 
 

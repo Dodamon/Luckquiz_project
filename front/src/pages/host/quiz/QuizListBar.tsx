@@ -11,7 +11,7 @@ import four from '../../../assets/images/four.png';
 import text from '../../../assets/images/text.png';
 import game from '../../../assets/images/game.png';
 import axios from 'axios';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 
 const newQuizItem: setQuizItem = {
     id: 0,
@@ -54,7 +54,7 @@ const QuizListBar = () => {
     const authInfo = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
     const [focusedItem, setFocusedItem] = useState(0);
-
+    const navigate = useNavigate();
     
     const params = useParams();
     const quiz_id = params.quiz_id;
@@ -63,10 +63,13 @@ const QuizListBar = () => {
 
     useEffect(() => {
         if (quiz_id) {
-            axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
+            axios.get(`${process.env.REACT_APP_HOST}/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
                 console.log("아놔 여긴데~ 수정에서받은겨", res);
                 const data = res.data;
                 dispatch(quizAtions.receiveUpdate(data));
+            }).catch(err=>{
+                console.log(err);
+                navigate('/error', { state: { code:err.response.status}});
             })
 
         }
