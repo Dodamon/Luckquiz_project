@@ -6,16 +6,30 @@ import quizReducer from "./quiz";
 import guestReducer from "./guest";
 import guestSocketReducer from "./webSocket";
 
-const persistConfig = {
-  key: "root",
+
+
+const authPersistConfig = {
+  key: "auth",
   storage,
-  whitelist: [ "userId","nickname","image_url","isAuthenticated","connected", "hostId", "quizList", "templateId"],
+  whitelist: ["userId", "name", "image_url", "isAuthenticated"],
+};
+
+const quizPersistConfig = {
+  key: "quiz",
+  storage,
+  whitelist: ["hostId", "quizList", "templateId"],
+};
+
+const guestPersistConfig = {
+  key: "guest",
+  storage,
+  whitelist: ["nickname","image"],
 };
 
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
-const persistedGuestReducer = persistReducer(persistConfig, guestReducer);
-const persistedQuizReducer = persistReducer(persistConfig, quizReducer);
+const persistedReducer = persistReducer(authPersistConfig, authReducer);
+const persistedGuestReducer = persistReducer(guestPersistConfig, guestReducer);
+const persistedQuizReducer = persistReducer(quizPersistConfig, quizReducer);
 
 
 const store = configureStore({

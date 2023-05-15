@@ -118,10 +118,18 @@ const QuizSelectMenu = () => {
                 }
 
                 <select className={styles.select_form} value={selectedTimeOption} onChange={quizTimeHandler}>
-                    <option value="15">15초</option>
-                    <option value="30">30초</option>
-                    <option value="45">45초</option>
-                    <option value="60">60초</option>
+                    {
+                          quizInfo[selectInfo]?.type === "game" && quizInfo[selectInfo]?.game === "emotion" ? <>
+                          <option value="30">30초</option>
+                          <option value="45">45초</option>
+                          <option value="60">60초</option></>:
+                            <><option value="15">15초</option>
+                          <option value="30">30초</option>
+                          <option value="45">45초</option>
+                          <option value="60">60초</option></>
+
+                    }
+                    
                 </select>
             </div>
 
