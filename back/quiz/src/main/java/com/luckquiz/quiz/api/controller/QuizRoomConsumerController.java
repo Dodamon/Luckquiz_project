@@ -48,11 +48,14 @@ public class QuizRoomConsumerController {
             UUID hostId = UUID.fromString(in.split(" ")[0]);
             int roomId = Integer.parseInt(in.split(" ")[1]);
             int templateId = Integer.parseInt(in.split(" ")[2]);
+            
             ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
             u.setSender(hostId.toString());
+            
             StringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
             ValueOperations<String, Integer> IntegerValueOperations = redisConfig.redisIntegerTemplate().opsForValue();
             IntegerValueOperations.set(roomId+"cnt",0);
+            
             User host = userRepository.findUserById(hostId).orElseThrow(()->new CustomException(CustomExceptionType.USER_NOT_FOUND));
             redisTransService.quizRedisTrans(roomId,hostId,templateId,host.getName());  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
@@ -62,6 +65,7 @@ public class QuizRoomConsumerController {
             QuizRoom quizRoom = QuizRoom.builder()
                     .pinNum(roomId)
                     .template(temp)
+                    .hostId(hostId)
                     .createdTime(LocalDateTime.now())
                     .build();
             quizRoomRepository.save(quizRoom);
