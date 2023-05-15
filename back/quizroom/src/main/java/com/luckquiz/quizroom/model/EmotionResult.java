@@ -43,7 +43,7 @@ public class EmotionResult {
     }
 
     @Getter
-    public class ValCon {
+    public static class ValCon {
         public String value;
         public double confidence;
     }
