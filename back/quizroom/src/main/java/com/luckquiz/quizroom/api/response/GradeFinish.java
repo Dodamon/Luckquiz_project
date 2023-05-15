@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class GradeFinish {
-    //
     Integer roomId;
     Integer count;
     Integer solvedCount;
