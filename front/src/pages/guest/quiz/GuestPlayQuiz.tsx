@@ -63,6 +63,7 @@ const GuestPlayQuiz = () => {
               {quizItem?.quiz === "ox" && <QuizOxContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "four" && <QuizFourContent handleAnswer={SetguestAnswer} />}
               {quizItem?.game === "wakeup" && <WakeUpGame handleOrder={setOrder} />}
+              {quizItem?.game === "emotion" && <EmotionGame handleOrder={setOrder} />}
             </div>
             {quizItem?.quiz && (
               <div className={styles.nextBtn}>
