@@ -23,6 +23,9 @@ public class EnterUser {
 
     @Override
     public int hashCode(){
+        if(this.sender == null){
+            return 0;
+        }
         return (this.sender.hashCode());
     }
 
