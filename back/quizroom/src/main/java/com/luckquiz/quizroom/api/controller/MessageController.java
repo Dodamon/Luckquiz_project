@@ -99,7 +99,7 @@ public class MessageController {
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
-        System.out.println("entered:  "+message.getSender()+"img type: ");
+        System.out.println("entered:  "+message.getSender());
 
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
@@ -117,7 +117,6 @@ public class MessageController {
         String roomInfo =StringValueOperations.get(roomIdString);
         System.out.println("this is roomInfojson  "+ roomInfo);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
-
 
         String allList = StringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
@@ -259,7 +258,7 @@ public class MessageController {
         if("emotion".equals(result.getGame())){
             System.out.println("emotion 찍혔니?");
             toGuest.setAnswer(result.getAnswer());
-            qsmG.setGetQuizItem(result);
+            qsmG.setGetQuizItem(toGuest);
             qsmG.setType("getQuizItem");
         }else {
             qsmG.setGetQuizItem(toGuest);
@@ -290,13 +289,18 @@ public class MessageController {
         if("emotion".equals(result.getGame())){
             System.out.println("emotion 찍혔니?");
             toGuest.setAnswer(result.getAnswer());
-            qsmG.setGetQuizItem(result);
+            qsmG.setGetQuizItem(toGuest);
             qsmG.setType("getQuizItem");
         }else {
             qsmG.setGetQuizItem(toGuest);
             qsmG.setType("getQuizItem");
         }
+        QuizStartRequest quizStartRequest = QuizStartRequest.builder()
+                .hostId(nextMessage.getHostId())
+                .roomId(nextMessage.getRoomId())
+                .build();
         quizService.serveQuiz(qsmG,nextMessage.getRoomId());
+        toGradeProducer.quizStart(gson.toJson(quizStartRequest));
     }
 
     @MessageMapping("/turnEnd")
@@ -359,11 +363,10 @@ public class MessageController {
         List<UserR> result = new ArrayList<>();
         int rankNum = 1;
         for(String name : rank){
+            EnterUser user = gson.fromJson(name,EnterUser.class);
             UserR tempU = new UserR();
-            String uName = name.split(" ")[0];
-            int img = Integer.parseInt(name.split(" ")[1]);
             tempU.setSender(name);
-            tempU.setImg(img);
+            tempU.setImg(user.getImg());
             tempU.setRank(rankNum);
             rankNum ++;
         }
