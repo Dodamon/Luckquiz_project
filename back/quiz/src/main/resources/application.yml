@@ -1,49 +1,17 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://K8A7071.p.ssafy.io:3308/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://k8a7071.p.ssafy.io:3308/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: carrot707
     password: ekdrmsehdrms1111!!
 
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
   jpa:
-    open-in-view: false
-    generate-ddl: false
-    show-sql: false
     hibernate:
-      ddl-auto: none
-
-  cache:
-    type: redis
-    redis:
-      time-to-live: 5000
-      cache-null-values: false
-      host: k8a707.p.ssafy.io
-      port: 3307
-      password: 'eodrms1111!'
-
-  kafka:
-    bootstrap-servers: http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    consumer:
-      group-id: spring-boot-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
-  servlet:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false #To beautify or pretty print the SQL
+        show_sql: false #show sql
   cloud:
     gcp:
       storage:
@@ -51,8 +19,38 @@ spring:
         project-id: snappy-analog-384101
         credentials:
           location: classpath:snappy-analog-384101-5ff843401827.json
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5000
+      cache-null-values: false
+      host: k8a7071.p.ssafy.io
+      port: 3309
+      password: 'eodrms1111!'
+
+  kafka:
+    bootstrap-servers:
+      - http://13.125.215.143:9092
+      - http://54.180.139.100:9092
+      - http://54.180.165.36:9092
+    consumer:
+      group-id: test
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 app:
   cors:
     allowedOrigins: http://localhost:3000
-server:
-  port: 8081

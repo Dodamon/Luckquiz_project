@@ -5,6 +5,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@Getter
 public class QuizReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,12 @@ public class QuizReport {
 
     @Column(name = "pin_num")
     private Integer pinNum;
+
+    @Column(name = "quiz_count", nullable = true)
+    private int quizCount;
+
+    @Column(name = "game_count", nullable = true)
+    private int gameCount;
 
 
 }
