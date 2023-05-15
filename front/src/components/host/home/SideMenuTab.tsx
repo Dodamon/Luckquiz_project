@@ -19,7 +19,7 @@ const SideMenuTab = () => {
         <img className={styles.profileImg} src={userInfo.image_url} alt="" />
         <div className={styles.profileRight}>
           <div className={styles.profileBoard}>MANAGER</div>
-        <div className={styles.profileName}>{userInfo.nickname}</div>
+        <div className={styles.profileName}>{userInfo.name}</div>
         </div>
         </div>
       </div>

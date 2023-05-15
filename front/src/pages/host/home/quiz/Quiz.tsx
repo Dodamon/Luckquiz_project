@@ -49,7 +49,8 @@ const Quiz = () => {
 
 
   useEffect(() => {
-
+    console.log("이거다링", authInfo.userId);
+    
     axios.get(`${process.env.REACT_APP_HOST}/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
         console.log("서버에서 바로받은 데이터", res.data);

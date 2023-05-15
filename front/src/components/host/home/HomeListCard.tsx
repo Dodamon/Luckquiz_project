@@ -33,7 +33,7 @@ const HomeListCard = (props: Props) => {
   const { quiz, menu, report, onDeleteQuiz } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const hostName = useSelector((state: RootState) => state.auth.nickname);
+  const hostName = useSelector((state: RootState) => state.auth.name);
   const { data, status, sendHostRequest } = useHostAxios();
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -60,14 +60,17 @@ const HomeListCard = (props: Props) => {
 
   // 퀴즈시작 버튼 클릭시, pin번호 받아오기
   const startQuiz = (title: string) => {
-    
-    if (window.confirm(`⭐${title}⭐ 를 지금 바로 진행하시겠습니까?`)) {
-      sendHostRequest({
-        url: `/api/quizroom/create`,
-        method: "POST",
-        data: { hostId: userId, templateId: quiz!.templateId },
-      });
+    if(quiz){
+      if (window.confirm(`⭐${title}⭐ 를 지금 바로 진행하시겠습니까?`)) {
+        sendHostRequest({
+          url: `/api/quizroom/create`,
+          method: "POST",
+          data: { hostId: userId, templateId: quiz.templateId },
+          // templateId 고쳐야됨
+        })
+      }
     }
+ 
   };
 
 
@@ -138,7 +141,6 @@ const HomeListCard = (props: Props) => {
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-two)" }}
                 onClick={() => {
-
                   dispatch(quizAtions.templateIdUpdate(quiz.templateId))
                   navigate(`/quiz/${quiz.templateId}/edit`);
                 }}

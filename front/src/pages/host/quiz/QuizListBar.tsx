@@ -60,6 +60,7 @@ const QuizListBar = () => {
     const quiz_id = params.quiz_id;
 
 
+
     useEffect(() => {
         if (quiz_id) {
             axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
@@ -70,6 +71,7 @@ const QuizListBar = () => {
 
         }
     }, [])
+
     const itemSelectHandler = (quiznum: number) => {
         console.log("사람살려", quiznum);
 
