@@ -1,8 +1,21 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import confetti from "canvas-confetti";
 import "./BalloonGame.css";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { socketActions } from "store/webSocket";
+import { useDispatch } from "react-redux";
 
-const BalloonGame: React.FC = () => {
+interface Props {
+  handleOrder?: Function;
+}
+
+const BalloonGame = (props: Props) => {
+  const { handleOrder } = props;
+  const dispatch = useDispatch()
+  const roomId = useSelector((state: RootState) => state.socket.pinNum);
+  const nickname = useSelector((state: RootState) => state.guest.nickname);
+  const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
   const mainSvg = useRef<SVGSVGElement>();
   const secondSvg = useRef<SVGSVGElement>();
   const thirdSvg = useRef<SVGSVGElement>();
@@ -11,8 +24,18 @@ const BalloonGame: React.FC = () => {
   const normalMotion = useRef<HTMLButtonElement>();
   let audio = new Audio("http://soundbible.com/mp3/Balloon%20Popping-SoundBible.com-1247261379.mp3");
 
+  const submitAnswer = ( answer : number) => {
+    console.log("자동제출: ", );
+    dispatch(
+      socketActions.sendAnswerMessage({
+        destination: "/app/submit",
+        body: { sender: nickname, message: answer, roomId: roomId, type: "SUBMIT", quizNum: quizNum },
+      }),
+    );
+  };
+
   // timeLimit 불러옴
-  const timeLimit = "13:49";
+  const timeLimit = 9.49;
 
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -99,6 +122,7 @@ const BalloonGame: React.FC = () => {
     }, 320);
 
     console.log(time.toFixed(2));
+    submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
     // POST time.toFixed(2) data
     ////////////////////////////
     setIsRunning(false);
@@ -490,3 +514,4 @@ const BalloonGame: React.FC = () => {
 };
 
 export default BalloonGame;
+

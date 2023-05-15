@@ -16,6 +16,7 @@ import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import guest from "store/guest";
+import BalloonGame from "components/game/balloon/BalloonGame";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
@@ -33,10 +34,10 @@ const GuestPlayQuiz = () => {
   // 게임이면 -1부터 진행
   // 호스트가 퀴즈채점으로 넘기면 (endquiz : end) 2로 전환
   useEffect(() => {
-    quizItem ? (quizItem?.quiz ? setOrder(0) : setOrder(-1)) : setOrder(2)
+    quizItem ? (quizItem?.quiz ? setOrder(0) : setOrder(-1)) : setOrder(2);
   }, [quizItem]);
 
-  console.log(guestAnswer)
+  console.log(guestAnswer);
 
   const submitAnswer = () => {
     console.log("자동제출: ", guestAnswer);
@@ -56,13 +57,14 @@ const GuestPlayQuiz = () => {
         {order === 1 && (
           <>
             <div className={styles.header}>
-              <TimerBar handleOrder={setOrder} handleSubmit={submitAnswer} />
+              {quizItem?.game !== "balloon" && quizItem?.game !== "emotion" && <TimerBar handleOrder={setOrder} handleSubmit={submitAnswer} />}
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "ox" && <QuizOxContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "four" && <QuizFourContent handleAnswer={SetguestAnswer} />}
               {quizItem?.game === "wakeup" && <WakeUpGame handleOrder={setOrder} />}
+              {quizItem?.game === "balloon" && <BalloonGame handleOrder={setOrder} />}
               {quizItem?.game === "emotion" && <EmotionGame handleOrder={setOrder} />}
             </div>
             {quizItem?.quiz && (
