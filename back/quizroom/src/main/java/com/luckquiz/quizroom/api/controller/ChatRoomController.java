@@ -28,7 +28,6 @@ import java.util.UUID;
 @RequestMapping("/api/quizroom")
 public class ChatRoomController { // for controller update
     private final QuizService quizService;
-
     private final SimpMessageSendingOperations sendingOperations;
     private final Gson gson;
     private  final StringRedisTemplate stringRedisTemplate;
