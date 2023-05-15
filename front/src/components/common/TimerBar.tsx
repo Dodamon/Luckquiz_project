@@ -27,9 +27,11 @@ const TimerBar = ({ handleOrder, handleSubmit }: Props) => {
         handleOrder(2);
       } else {
         // 게스트의 wakeup,balloon 게임에서는 애니메이션을 보여줘야해서 해당 컴포넌트에서 handleorder
-        gametype !== "wakeup" && gametype !== "balloon" && handleOrder(2);
+        if (gametype !== "wakeup" && gametype !== "balloon") {
+          handleOrder(2);
+          handleSubmit && handleSubmit(); // 자동제출
+        }
       }
-      handleSubmit && handleSubmit(); // 자동제출
       // 게스트의 제출과 호스트의 end 알림이 동시에 가면 게스트 답안 채점이 됩니까?
     }, time! * 1000);
 
