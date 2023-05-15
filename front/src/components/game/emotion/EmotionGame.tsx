@@ -6,7 +6,11 @@ import styles from "./EmotionGame.module.css";
 import { socketActions } from "store/webSocket";
 import { RootState } from "store";
 
-const EmotionGame: React.FC = () => {
+interface HandleOrderProps {
+  handleOrder: Function
+};
+
+const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
   const dispatch = useDispatch();
 
   const webcamRef = useRef<Webcam>(null);
@@ -121,11 +125,10 @@ const EmotionGame: React.FC = () => {
       body: result,
     };
     dispatch(socketActions.sendAnswerMessage(data));
+    await handleOrder(2);
   };
  
-
   useEffect(() => {
-    
     if (emotionResult) {
       const faceImg = document.getElementById("captured-img");
       // "angry", "disgust", "fear", "laugh", "neutral", "sad", "surprise", "smile", "talking"
@@ -163,7 +166,7 @@ const EmotionGame: React.FC = () => {
         resultRef!.current!.style.justifyContent = "center";
         resultRef!.current!.style.alignItems = "center";
         resultRef!.current!.style.gap = "10px";
-      }
+      };
     };
     if (gotEmotion && !emotionResult) alert("인식된 얼굴이 없습니다. 다시 찍어보세요.");
   }, [emotionResult, gotEmotion]);
@@ -199,7 +202,6 @@ const EmotionGame: React.FC = () => {
             <button onClick={onClickSubmit} className={styles.submitBtn} disabled={emotionResult === null || analyzeCnt<1 ? true : false}>
               제출
             </button>
-            
           </div>
         </div>
       ) : (
