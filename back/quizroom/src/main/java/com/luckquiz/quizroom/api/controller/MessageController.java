@@ -130,6 +130,7 @@ public class MessageController {
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
             if(!roomInf.getHostNickName().equals(a.getSender()) && !roomInf.getHostId().toString().equals(a.getSender())){
+                System.out.println("is guest");
                 result.add(a);
             }
         }
