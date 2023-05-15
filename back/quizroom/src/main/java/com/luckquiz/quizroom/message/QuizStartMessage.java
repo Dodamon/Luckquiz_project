@@ -16,4 +16,11 @@ import java.util.List;
 public class QuizStartMessage {
     private String type;
     private QGame getQuizItem;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    public void setGetQuizItem(QGame getQuizItem){
+        this.getQuizItem = getQuizItem;
+    }
 }
