@@ -20,11 +20,12 @@ public class RedisTransService {
     private Gson gson = new Gson();
     @Transactional
     // 퀴즈 정보를 전달한다.
-    public void quizRedisTrans(int roomId, UUID hostId, int templateId) throws Exception{
+    public void quizRedisTrans(int roomId, UUID hostId, int templateId, String hostNickName) throws Exception{
         System.out.println("레디스로 보내기 시작");
         // 템플릿 가져오기.
         TemplateDetailResponse templateDetailResponse = templateService.findTemplateDetail(templateId, hostId);
         templateDetailResponse.setQuizNum(0);
+        templateDetailResponse.setHostNickName(hostNickName);
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
         int temp = templateDetailResponse.getId();
         UUID host = templateDetailResponse.getHostId();

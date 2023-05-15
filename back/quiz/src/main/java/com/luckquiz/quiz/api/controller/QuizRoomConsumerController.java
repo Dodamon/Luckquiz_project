@@ -2,6 +2,7 @@ package com.luckquiz.quiz.api.controller;
 
 import com.google.gson.Gson;
 import com.luckquiz.quiz.api.request.FinalRequest;
+import com.luckquiz.quiz.api.request.Grade;
 import com.luckquiz.quiz.api.response.EnterUser;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.common.exception.CustomException;
@@ -14,6 +15,7 @@ import com.luckquiz.quiz.db.entity.User;
 import com.luckquiz.quiz.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -49,14 +51,16 @@ public class QuizRoomConsumerController {
             int templateId = Integer.parseInt(in.split(" ")[2]);
             ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
             u.setSender(hostId.toString());
-            u.setImg(0);
             StringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
             ValueOperations<String, Integer> IntegerValueOperations = redisConfig.redisIntegerTemplate().opsForValue();
             IntegerValueOperations.set(roomId+"cnt",0);
             System.out.println(templateId);
             System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
-            redisTransService.quizRedisTrans(roomId,hostId,templateId);  // roomId 로
+            User host = userRepository.findUserById(hostId).orElseThrow(()->new CustomException(CustomExceptionType.USER_NOT_FOUND));
+            log.info(host.getName());
+            redisTransService.quizRedisTrans(roomId,hostId,templateId,host.getName());  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
+
 
             Template temp = templateRepository.findTemplateById(templateId).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
             QuizRoom quizRoom = QuizRoom.builder()
@@ -78,18 +82,22 @@ public class QuizRoomConsumerController {
 
 //          QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(finalRequest.getRoomId());
             ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+            HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+            Map all = hashOperations.entries(finalRequest.getRoomId()+"p");
+            List<String> users = new ArrayList<>(all.values());
+            for(String one: users){
+                Grade g = gson.fromJson(one, Grade.class);
+                QuizGuest qguest = QuizGuest.builder()
+                        .correctCount(g.getCount())
+                        .guestNickname(g.getPlayerName())
+                        .build();
+            }
 
             Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId()+"rank",0,zSetOperations.size(finalRequest.getRoomId()+"rank")-1);
             for(ZSetOperations.TypedTuple a : rank){
                 EnterUser temp = gson.fromJson(a.getValue().toString(),EnterUser.class);
-                if(!user.getName().equals(temp.getSender())){
-//                    QuizGuest quizGuest = QuizGuest.builder()
-//                            .guestNickname(temp.getSender())
-//                            .score(a.getScore()) // 점수
-//                            .build();
-
+                if(user.getName().equals(temp.getSender())){
                 }
-
             }
         }
     }
