@@ -8,27 +8,21 @@ import HomeMain from "pages/host/home/HomeMain";
 import Quiz from "pages/host/home/quiz/Quiz";
 import Report from "pages/host/home/report/Report";
 import HostQuiz from "pages/host/host/HostQuiz";
-import Login from "components/login/Login";
 import QuizCreatePage from "pages/host/quiz/QuizCreatePage";
-import Edit from "pages/host/quiz/Edit";
 import ShowPin from "pages/host/host/quiz/ShowPin";
 import ReportMain from "pages/host/home/report/ReportMain";
 import GuestLobby from "pages/guest/quiz/GuestLobby";
-import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
-// import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
 import ReportBasic from "pages/host/home/report/ReportBasic";
 import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "components/login/SocialRedirect";
-import ReadyGame from "components/common/ReadyGame";
-import EmotionGame from "components/game/emotion/EmotionGame";
 import GuestPlayQuiz from "pages/guest/quiz/GuestPlayQuiz";
 import BalloonGame from "components/game/balloon/BalloonGame";
-import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
+import EmotionGame from "components/game/emotion/EmotionGame";
 
 
 const router = createBrowserRouter([
@@ -125,8 +119,12 @@ const router = createBrowserRouter([
             element: <GuestLobby/>,
           },
           {
+            path: "quiz/emotion",
+            element: <EmotionGame handleOrder={() => {}}/>
+          },
+          {
             path: "quiz/balloon",
-            element: <PlayBalloonGame handleOrder={() => {}}/>
+            element: <BalloonGame handleOrder={() => {}}/>
           },
           {
             path: "quiz/play",
