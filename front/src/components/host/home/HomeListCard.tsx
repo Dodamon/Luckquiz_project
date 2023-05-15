@@ -32,7 +32,7 @@ const HomeListCard = (props: Props) => {
   const { quiz, menu, report, onDeleteQuiz } = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const hostName = useSelector((state: RootState) => state.auth.nickname);
+  const hostName = useSelector((state: RootState) => state.auth.name);
   const { data, status, sendHostRequest } = useHostAxios();
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -137,7 +137,6 @@ const HomeListCard = (props: Props) => {
                 className={styles.btn}
                 style={{ backgroundColor: "var(--button-two)" }}
                 onClick={() => {
-
                   dispatch(quizAtions.templateIdUpdate(quiz.templateId))
                   navigate(`/quiz/${quiz.templateId}/edit`);
                 }}
