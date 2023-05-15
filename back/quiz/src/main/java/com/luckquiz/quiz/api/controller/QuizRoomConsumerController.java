@@ -85,7 +85,7 @@ public class QuizRoomConsumerController {
                 if(!user.getName().equals(temp.getSender())){
                     QuizGuest quizGuest = QuizGuest.builder()
                             .guestNickname(temp.getSender())
-                            .score(a.getScore())
+                            .score(a.getScore()) // 점수
 
                             .build();
 
