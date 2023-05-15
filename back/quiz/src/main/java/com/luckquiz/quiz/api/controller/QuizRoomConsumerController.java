@@ -92,6 +92,7 @@ public class QuizRoomConsumerController {
             for(ZSetOperations.TypedTuple a : rank){
                 EnterUser temp = gson.fromJson(a.getValue().toString(),EnterUser.class);
                 if(user.getName().equals(temp.getSender())){
+                    
                 }
             }
         }
