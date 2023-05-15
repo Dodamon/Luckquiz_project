@@ -6,6 +6,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { authActions } from "store/auth";
 import { RootState } from "store";
+import useHostAxios from "hooks/useHostAxios";
 
 const SocialRedirect = () => {
   const navigate = useNavigate();
@@ -15,13 +16,15 @@ const SocialRedirect = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const token: string | null = searchParams.get("token");
   const userId: string | null = searchParams.get("id");
+  const { data, status, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
     if (token) {
       dispatch(authActions.login({ token: token }));
       if (token === sessionStorage.getItem("accessToken")) {
-        alert("로그인성공");
-        navigate("/home");
+        sendHostRequest({
+          url: `/api/auth/user/info`,
+        });
       } else {
         alert("로그인실패");
         navigate("/");
@@ -31,6 +34,14 @@ const SocialRedirect = () => {
       navigate("/");
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(authActions.updateInfo({ nickname: data.name, userId: data.id, image_url: data.image_url }));
+      alert("로그인성공");
+      navigate("/home");
+    }
+  }, [data]);
 
   // useEffect(() => {
   //   // 쿠키에서 access token을 가져오기

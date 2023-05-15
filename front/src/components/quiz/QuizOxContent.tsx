@@ -19,7 +19,6 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
     setItem(answer);
     console.log(answer)
     handleAnswer && handleAnswer(answer)
-
   };
   return (
     <div className={styles.QuizOxContent}>

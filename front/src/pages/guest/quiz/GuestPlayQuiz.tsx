@@ -39,15 +39,15 @@ const GuestPlayQuiz = () => {
 
   console.log(guestAnswer);
 
-  const submitAnswer = () => {
-    console.log("자동제출: ", guestAnswer);
-    dispatch(
-      socketActions.sendAnswerMessage({
-        destination: "/app/submit",
-        body: { sender: nickname, message: guestAnswer, roomId: roomId, type: "SUBMIT", quizNum: quizItem?.quizNum },
-      }),
-    );
-  };
+  // const submitAnswer = () => {
+  //   console.log("자동제출: ", guestAnswer);
+  //   dispatch(
+  //     socketActions.sendAnswerMessage({
+  //       destination: "/app/submit",
+  //       body: { sender: nickname, message: guestAnswer, roomId: roomId, type: "SUBMIT", quizNum: quizItem?.quizNum },
+  //     }),
+  //   );
+  // };
 
   return (
     quizItem && (
@@ -57,7 +57,7 @@ const GuestPlayQuiz = () => {
         {order === 1 && (
           <>
             <div className={styles.header}>
-              {quizItem?.game !== "balloon" && quizItem?.game !== "emotion" && <TimerBar handleOrder={setOrder} handleSubmit={submitAnswer} />}
+              {quizItem?.game !== "balloon" && quizItem?.game !== "emotion" && <TimerBar handleOrder={setOrder}/>}
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
