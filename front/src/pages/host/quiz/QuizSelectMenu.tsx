@@ -56,11 +56,13 @@ const QuizSelectMenu = () => {
 
         const quizList = template.quizList;
 
+
+
         const checkedList = quizList.map(it => {
 
             if (it.type === "game") {
                 // 게임 null 확인
-                return (!it.game) ? { ...it, isValid: false } : (it.game === "emotion") && (!it.answer) ? { ...it, isValid: false } : { ...it, isValid: true };
+                return (it.game === "") ? { ...it, isValid: false } : (it.game === "emotion") && (!it.answer) ? { ...it, isValid: false } : { ...it, isValid: true };
             } else if (it.type === "quiz") {
 
                 // 사지선다 확인
@@ -78,6 +80,7 @@ const QuizSelectMenu = () => {
             }
         });
 
+        console.log("저장할 데이터랑께", checkedList);
 
         const isValid = checkedList.some(element => element?.isValid === false);
         const saveData = { ...template, isValid: !isValid, quizList: checkedList }
@@ -107,7 +110,7 @@ const QuizSelectMenu = () => {
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>
                     </select> : <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
-                        <option value="egg">emotion</option>
+                        <option value="emotion">emotion</option>
                         <option value="wakeup">wakeup</option>
                         <option value="balloon">balloon</option>
                     </select>
@@ -115,19 +118,19 @@ const QuizSelectMenu = () => {
                 }
 
                 <select className={styles.select_form} value={selectedTimeOption} onChange={quizTimeHandler}>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="45">45</option>
-                    <option value="60">60</option>
+                    <option value="15">15초</option>
+                    <option value="30">30초</option>
+                    <option value="45">45초</option>
+                    <option value="60">60초</option>
                 </select>
             </div>
 
             <div className={styles.nav_right}>
-                <div>
+                {/* <div>
                     <div onClick={temporarySaveHandler}>임시저장</div>
-                </div>
-                <div>
-                    <div onClick={temporarySaveHandler}>저장</div><Icon icon="ic:round-log-out" />
+                </div> */}
+                <div onClick={temporarySaveHandler}>
+                    <div >저장</div><Icon style={{ marginLeft: "5px", fontWeight: "bold" }} icon="ic:round-log-out" />
                 </div>
             </div>
         </nav>

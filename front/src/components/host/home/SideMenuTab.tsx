@@ -15,18 +15,23 @@ const SideMenuTab = () => {
   return (
     <div className={styles.sideTab}>
       <div className={styles.profile}>
+          <div  className={styles.profil_box}>
         <img className={styles.profileImg} src={userInfo.image_url} alt="" />
+        <div className={styles.profileRight}>
+          <div className={styles.profileBoard}>MANAGER</div>
         <div className={styles.profileName}>{userInfo.nickname}</div>
+        </div>
+        </div>
       </div>
       <Link to={"/home"}>
         <div className={styles.menu} style={{ backgroundColor: bgcolor[0] }}>
-          <Icon icon="mdi:view-list-outline" />
+          <Icon icon="mdi:view-list-outline" style={{color:"orange"}}/>
           퀴즈
         </div>
       </Link>
       <Link to={"/home/report"}>
         <div className={styles.menu} style={{ backgroundColor: bgcolor[1], borderRadius: "0px 0px 20px 20px" }}>
-          <Icon icon="mdi:poll" />
+          <Icon icon="mdi:poll" style={{color:"green"}} />
           레포트
         </div>
       </Link>
