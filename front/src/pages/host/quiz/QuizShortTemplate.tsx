@@ -68,7 +68,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   return (
     <>
       <div className={styles.content_title}>
-        <input type="text"  maxLength={35} value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
+        <input type="text"  maxLength={25} value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
       </div>
 
       <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
@@ -96,7 +96,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
           quiz.answerList.map((it, index) => {
             return <div className={styles.content_answer} key={index}> <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}><div><Icon icon="ic:round-menu" /></div></div>
               <div className={styles.content_input}>
-                <input type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
+                <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
               <div className={styles.content_add} onClick={answerAddHandler}><Icon icon="ic:round-plus" /></div></div>
           })
