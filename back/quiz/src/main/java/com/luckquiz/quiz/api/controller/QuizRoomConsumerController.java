@@ -57,6 +57,7 @@ public class QuizRoomConsumerController {
             redisTransService.quizRedisTrans(roomId,hostId,templateId,host.getName());  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
 
+            System.out.println("consumer came");
             Template temp = templateRepository.findTemplateById(templateId).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
             QuizRoom quizRoom = QuizRoom.builder()
                     .pinNum(roomId)
