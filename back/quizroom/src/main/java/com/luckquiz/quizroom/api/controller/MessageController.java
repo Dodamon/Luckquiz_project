@@ -330,23 +330,23 @@ public class MessageController {
         if(rollBackRequest.getRoomId() != null) toGradeProducer.rollBack(gson.toJson(rollBackRequest));
     }
 
-    @MessageMapping("/quiz/middlerank")
-    public void middleRank(MiddleRank middleRank){
-        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
-        Map all = hashOperations.entries(middleRank.getRoomId()+"p");
-        List<String> users = new ArrayList<>(all.values());
-        List<UserR> userLList = new ArrayList<>();
-        for(String user: users){
-            Grade a = gson.fromJson(user,Grade.class);
-            UserR u = new UserR();
-            u.setImg(a.getPlayerImg());
-            u.setSender(a.getPlayerName());
-            u.setRank(a.getRankNow());
-            userLList.add(u);
-        }
-        Collections.sort(userLList);
-        sendingOperations.convertAndSend("/topic/quiz/" + middleRank.getRoomId(), userLList);
-    }
+//    @MessageMapping("/quiz/middlerank")
+//    public void middleRank(MiddleRank middleRank){
+//        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+//        Map all = hashOperations.entries(middleRank.getRoomId()+"p");
+//        List<String> users = new ArrayList<>(all.values());
+//        List<UserR> userLList = new ArrayList<>();
+//        for(String user: users){
+//            Grade a = gson.fromJson(user,Grade.class);
+//            UserR u = new UserR();
+//            u.setImg(a.getPlayerImg());
+//            u.setSender(a.getPlayerName());
+//            u.setRank(a.getRankNow());
+//            userLList.add(u);
+//        }
+//        Collections.sort(userLList);
+//        sendingOperations.convertAndSend("/topic/quiz/" + middleRank.getRoomId(), userLList);
+//    }
 
     @MessageMapping("/quiz/ranking")
     public void totalRank (TotalRank totalRank){
