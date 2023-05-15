@@ -22,6 +22,7 @@ public class TemplateInfoResponse {
     private String[] answerList;
     private String game;
     private Integer timer;
+    private String hostNickName;
 
     public void setId(Integer id) {
         this.id = id;
