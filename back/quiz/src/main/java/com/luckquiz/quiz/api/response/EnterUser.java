@@ -1,7 +1,9 @@
 package com.luckquiz.quiz.api.response;
 
 import io.swagger.models.auth.In;
+import lombok.Getter;
 
+@Getter
 public class EnterUser {
     private String sender;
     private Integer img;
