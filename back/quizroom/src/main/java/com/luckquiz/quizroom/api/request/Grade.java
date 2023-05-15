@@ -32,6 +32,6 @@ public class Grade implements Comparable<Grade>{
     }
     @Override
     public int compareTo(Grade o) {
-        return o.getRankNow() - getRankNow();
+        return o.getScoreGet() - getScoreGet();
     }
 }

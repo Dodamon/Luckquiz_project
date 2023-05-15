@@ -2,6 +2,7 @@ package com.luckquiz.quizroom.api.controller;
 
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
+import com.luckquiz.quizroom.api.request.KafkaGradeEndMessage;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.GradeEndMessage;
 import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
@@ -36,7 +37,7 @@ public class GradingConsumerController {
     private final SimpMessageSendingOperations sendingOperations;
     private  final StringRedisTemplate stringRedisTemplate;
 
-    @KafkaListener(topics = "sign_to_quiz",groupId = "test")
+    @KafkaListener(topics = "sign_to_quiz",groupId = "test2")
     public void messageListener(String in, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
 //        QuizStartRequest quizStartRequest = gson.fromJson(in, QuizStartRequest.class);
         System.out.println("컨슈머 들어오는 것 확인 키값 : " + key);
@@ -65,17 +66,11 @@ public class GradingConsumerController {
                 break;
             case "grade_end":
                 log.info("채점 끝났답니다. 결과 메시지를 보내주는 함수 구현해야 합니다.");
-                @Getter
-                @Setter
-                class KafkaGradeEndMessage{
-                    private Integer roomId;
-                    private Integer count;
-                    private Integer solvedCount;
-                    private Integer quizNum;
-                }
+
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+                System.out.println(kafkaGradeEndMessage.getRoomId());
                 Map all = hashOperations.entries(kafkaGradeEndMessage.getRoomId()+"p");
                 List<String> users = new ArrayList<>(all.values());
                 List<Grade> userLList = new ArrayList<>();

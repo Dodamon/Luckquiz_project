@@ -1,17 +1,17 @@
-package com.luckquiz.quizroom.model;
+package com.luckquiz.quizroom.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NextMessage {
+public class KafkaGradeEndMessage {
     private Integer roomId;
-    private UUID hostId;
+    private Integer count;
+    private Integer solvedCount;
+    private Integer quizNum;
 }
