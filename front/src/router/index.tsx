@@ -28,7 +28,7 @@ import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
-import QuizRanking from "components/guest/quiz/QuizRanking";
+import QuizRanking from "components/quiz/QuizRanking";
 
 
 const router = createBrowserRouter([
@@ -136,16 +136,15 @@ const router = createBrowserRouter([
             path: "quiz/emotion",
             element: <EmotionGame/>,
           },
-          {
-            // 지워야 됨
-            path: "quiz/egg",
-            element: <WakeUpGame/>,
-          },
-          {
-            // 지워야 됨
-            path: "quiz/game/ready",
-            element: <ReadyGame/>
-          },
+          // {
+          //   path: "quiz/wakeup",
+          //   element: <WakeUpGame/>,
+          // },
+          // {
+          //   // 지워야 됨
+          //   path: "quiz/game/ready",
+          //   element: <ReadyGame/>
+          // },
           {
             path: "quiz/result",
             element: <></>,

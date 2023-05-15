@@ -17,11 +17,15 @@ const SocialRedirect = () => {
   const userId: string | null = searchParams.get("id");
 
   useEffect(() => {
-    const accessToken = token || "";
-    dispatch(authActions.login({ token: accessToken }));
-    if (accessToken === sessionStorage.getItem("accessToken")) {
-      alert("로그인성공");
-      navigate("/home");
+    if (token) {
+      dispatch(authActions.login({ token: token }));
+      if (token === sessionStorage.getItem("accessToken")) {
+        alert("로그인성공");
+        navigate("/home");
+      } else {
+        alert("로그인실패");
+        navigate("/");
+      }
     } else {
       alert("로그인실패");
       navigate("/");

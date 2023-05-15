@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './QuizRanking.module.css'
-import crown from './../../../assets/images/pngwing.png'
-import rank from './../../../assets/images/rank.png'
+import crown from 'assets/images/pngwing.png'
+import rank from 'assets/images/rank.png'
 
 const QuizRanking = () => {
     const setList = [1, 3, 4, 5, 2];
