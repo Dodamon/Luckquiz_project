@@ -5,7 +5,17 @@ import { Icon } from "@iconify/react";
 import report_logo from "assets/images/report_logo.png";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
+import { useEffect, useState } from "react";
 
+
+interface basicType {
+  title: string,
+  parti: number,
+  quizs: number,
+  games: number,
+  times: number,
+  percentage: number,
+}
 const reportBasic = {
   title: "SSAFY 스타트 캠프 퀴즈",
   parti: 431,
@@ -41,7 +51,11 @@ const data = {
 
 const ReportBasic = () => {
   const { report_id } = useParams();
+
+  const [basicReport, setBasicReport] = useState<basicType[]>([]);
+  useEffect(()=>{
   // getReportBasic
+  },[])
 
   return (
     <div className={styles.content}>
@@ -49,19 +63,23 @@ const ReportBasic = () => {
       <ReportTab report_id={report_id}></ReportTab>
       <div className={styles.reportContent} style={{ backgroundColor: "white" }}>
         <ul className={styles.reportContentList}>
-          <li>
+        <li className={styles.reportContentTitle} >
+            {/* <Icon icon="iconoir:user" className={styles.iconStyle} /> */}
+            <div className={styles.textTitle}>퀴즈통계</div>
+          </li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:user" className={styles.iconStyle} />
             <div className={styles.textStyle}>참여자 수</div>: {reportBasic.parti} 명
           </li>
-          <li>
-            <Icon icon="iconoir:question-mark-circle" className={styles.iconStyle} />
+          <li className={styles.reportContentItem} >
+            <Icon icon="iconoir:question-mark-circle"  className={styles.iconStyle} />
             <div className={styles.textStyle}>퀴즈 개수</div>: {reportBasic.quizs} 개
           </li>
-          <li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:gamepad" className={styles.iconStyle} />
             <div className={styles.textStyle}>게임 개수</div>: {reportBasic.games} 개
           </li>
-          <li>
+          <li className={styles.reportContentItem} >
             <Icon icon="iconoir:alarm" className={styles.iconStyle} />
             <div className={styles.textStyle}>소요 시간</div>: {Math.floor(reportBasic.times / 60)}분{" "}
             {reportBasic.times % 60}초
@@ -70,7 +88,7 @@ const ReportBasic = () => {
         <div className={styles.chartContainer}>
           <img src={report_logo} alt="" width={"50%"} style={{ marginRight: "20px" }} />
           <div className={styles.chartBox}>
-            <div style={{display:"flex", alignItems:"center"}}>
+            <div className={styles.percentageBox} style={{display:"flex", alignItems:"center"}}>
               <div className={styles.textStyle}>총 정답률</div>
               <div className={styles.textStyle}>{reportBasic.percentage}%</div>
             </div>
