@@ -7,6 +7,8 @@ import com.luckquiz.quizroom.api.response.GradeEndMessage;
 import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
 import com.luckquiz.quizroom.db.entities.QuizReport;
 import com.luckquiz.quizroom.db.repository.QuizReportRepository;
+import com.luckquiz.quizroom.message.GuestTurnEndMessage;
+import com.luckquiz.quizroom.message.HostTurnEndMessage;
 import com.luckquiz.quizroom.model.UserR;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -94,10 +96,17 @@ public class GradingConsumerController {
                         userTurnEndResponse.setIsUp("true");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
-                    sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),userTurnEndResponse);
+                    GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
+                            .type("userTurnEndResponse")
+                            .userTurnEndResponse(userTurnEndResponse)
+                            .build();
+                    sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),guestTurnEndMessage);
                 }
-                sendingOperations.convertAndSend("/topic/quiz/"+kafkaGradeEndMessage.getRoomId(),userLList);
-
+                HostTurnEndMessage hostTurnEndMessage = HostTurnEndMessage.builder()
+                        .type("userLList")
+                        .userLList(userLList)
+                        .build();
+                sendingOperations.convertAndSend("/topic/quiz/"+kafkaGradeEndMessage.getRoomId(),hostTurnEndMessage);
                 break;
             default:
                 break;
