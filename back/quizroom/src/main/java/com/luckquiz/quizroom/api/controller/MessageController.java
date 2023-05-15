@@ -64,7 +64,7 @@ public class MessageController {
         sendingOperations.convertAndSendToUser(accessor.getUser().getName(), headers.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
     }
     //app/quiz/{roomId}/{name} 구독시 호은 topic/quiz/{roomiId}/{name} 메시지 날림
-    @SubscribeMapping("/quiz/{roomId}/{name}")
+    @SubscribeMapping("/{roomId}/{name}")
     public void subscribeCallback(Principal principal, @DestinationVariable(value = "roomId") String roomId, @DestinationVariable(value = "name") String name){
 //        String sessionId = accessor.getSessionId();
 //        String subscriptionId = accessor.getSubscriptionId();
@@ -82,9 +82,14 @@ public class MessageController {
         String destination = "/quiz/"+roomId+"/"+name;
         System.out.println(destination);
         System.out.println(principal.getName());
-        sendingOperations.convertAndSendToUser(principal.getName(), "/topic"+destination, "세션 아이디 : "+"몰라");
+//        sendingOperations.convertAndSendToUser(principal.getName(), "/queue"+destination, "세션 아이디 : "+"몰라");
+//        sendingOperations.convertAndSend("/queue"+destination,subscribeMessage);
+//        sendingOperations.convertAndSendToUser(principal.getName(), destination, "세션 아이디 : "+"몰라");
+//        sendingOperations.convertAndSend(destination,subscribeMessage);
+        sendingOperations.convertAndSendToUser(principal.getName(), "/"+roomId+"/"+name, "세션 아이디 : "+"몰라");
+//        sendingOperations.convertAndSendToUser(principal.getName(), "/app"+destination, "세션 아이디 : "+"몰라");
         sendingOperations.convertAndSend("/topic"+destination,subscribeMessage);
-//        return "왔다";
+        //        return "왔다";
     }
 
 
