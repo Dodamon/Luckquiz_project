@@ -163,11 +163,17 @@ public class MessageController {
         d.setCheckGuestName(check);
         sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
     }
-
+    @MessageMapping("/emotion/submit")
+    public void emotionSubmit(EmotionSubmit message) throws  Exception{
+        System.out.println("이미지 제출 시작합니다.");
+        System.out.println("emotionType:   "+message.getEmotionResult().value+", confidence:    "+message.getEmotionResult().confidence + "    sender: "+message.getSender());
+        toGradeProducer.emotion(gson.toJson(message));
+    }
 
     @MessageMapping("/emotion")
     // 복사해서 임시랑 최종 맹글어야합니다.
     public void emotion(QuizMessage message) throws  Exception{
+        System.out.println("분석 시작");
         try{
                 byte[] decode = Base64.getDecoder().decode(message.getFile().split(",")[1]);
                 if (decode.length >= 2097152) {
@@ -214,11 +220,7 @@ public class MessageController {
 //        sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), result);
     }
 
-    @MessageMapping("/emotion/submit")
-    public void emotionSubmit(EmotionSubmit message) throws  Exception{
-        System.out.println("emotionType:   "+message.getEmotionResult().value+", confidence:    "+message.getEmotionResult().confidence + "    sender: "+message.getSender());
-        toGradeProducer.emotion(gson.toJson(message));
-    }
+
 
     @MessageMapping("/submit")
     public void submit(QuizMessage message) throws  Exception{
