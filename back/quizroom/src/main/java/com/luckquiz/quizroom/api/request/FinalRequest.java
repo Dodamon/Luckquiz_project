@@ -1,4 +1,4 @@
-package com.luckquiz.quizroom.api.response;
+package com.luckquiz.quizroom.api.request;
 
 import lombok.Getter;
 import org.apache.kafka.common.protocol.types.Field;

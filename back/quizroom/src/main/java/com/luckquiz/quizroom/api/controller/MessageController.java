@@ -4,6 +4,7 @@ package com.luckquiz.quizroom.api.controller;
 
 import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.EmotionSubmit;
+import com.luckquiz.quizroom.api.request.FinalRequest;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.*;
@@ -16,7 +17,6 @@ import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.message.TurnEndResponse;
 import com.luckquiz.quizroom.model.*;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Emotion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -34,10 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // 꾸글
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.security.Principal;
 import java.util.*;
 
 @RestController
@@ -319,7 +316,7 @@ public class MessageController {
     @MessageMapping("/quiz/ranking")
     public void totalRank (TotalRank totalRank){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
-        Set<String> all = zSetOperations.range(totalRank.getRoomId()+"rank",0,zSetOperations.size(totalRank.getRoomId()+"rank")-1);
+        Set<String> all = zSetOperations.reverseRange(totalRank.getRoomId()+"rank",0,zSetOperations.size(totalRank.getRoomId()+"rank")-1);
         List<String> rank = new ArrayList<>(all);
         List<UserR> result = new ArrayList<>();
         int rankNum = 1;
@@ -338,7 +335,8 @@ public class MessageController {
 
     @MessageMapping("/finalEnd")
     public void finalEnd(FinalRequest finalRequest){
-//        if(finalRequest.getRoomId() != null) toGradeProducer.(gson.toJson(finalRequest));
+        toGradeProducer.FinalEnd(gson.toJson(finalRequest));
+        toQuizProducer.FinalEnd(gson.toJson(finalRequest));
 
     }
 

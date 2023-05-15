@@ -16,17 +16,19 @@ public class ToQuizProducer {
         configs.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
     }
     // server_message
-    public void callQuizTemp(String request){
+    public void CallQUizTemp(String request){
         KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
         ProducerRecord record = new ProducerRecord<String,String>("server_message","start",request);
         producer.send(record);
         producer.close();
     }
 
-    public void GameEnd(String request){
+    public void FinalEnd(String request){
         KafkaProducer<String,String> producer = new KafkaProducer(configs);
         ProducerRecord record = new ProducerRecord<String,String>("server_message","final_end",request);
         producer.send(record);
         producer.close();
     }
+
+
 }

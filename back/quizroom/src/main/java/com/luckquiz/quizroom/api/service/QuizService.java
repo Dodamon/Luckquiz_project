@@ -50,7 +50,7 @@ public class QuizService {
     public QuizRoom createRoom(QuizRoomCreateRequest qrc) {
         QuizRoom quizRoom = QuizRoom.create();
 
-        toQuizProducer.callQuizTemp(qrc.getHostId()+" "+quizRoom.getRoomId()+" "+qrc.getTemplateId());
+        toQuizProducer.CallQUizTemp(qrc.getHostId()+" "+quizRoom.getRoomId()+" "+qrc.getTemplateId());
         return quizRoom;
     }
 
