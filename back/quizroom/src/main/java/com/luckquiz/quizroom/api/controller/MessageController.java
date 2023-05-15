@@ -108,18 +108,25 @@ public class MessageController {
         zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         stringStringValueOperations.append(roomId+"l",gson.toJson(enterUser)+", ");
 
+        String roomInfo =stringStringValueOperations.get(message.getRoomId());
+        TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
+
+
         String allList = stringStringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
         List<EnterUser> result = new ArrayList();
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            result.add(a);
+            if(!roomInf.getHostNickName().equals(a.getSender()) && !roomInf.getHostId().equals(a.getSender())){
+                result.add(a);
+            }
         }
 
         LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(result);
         List<EnterUser> finList = new ArrayList<>();
         result.clear();
         result.addAll(li);
+
         for (int i = 2; i < result.size(); i++) {
             finList.add(result.get(i));
         }

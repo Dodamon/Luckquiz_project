@@ -13,6 +13,7 @@ public class Grade {
     private int scoreGet = 0;
     private int rankPre = 0;
     private int rankNow = 0;
+    private int count ;
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
