@@ -54,4 +54,11 @@ public class ToGradeProducer {
         producer.close();
     }
 
+    public void FinalEnd(String request){
+        KafkaProducer<String,String> producer = new KafkaProducer(configs);
+        ProducerRecord record = new ProducerRecord<String,String>("sign_to_grade","final_end",request);
+        producer.send(record);
+        producer.close();
+    }
+
 }
