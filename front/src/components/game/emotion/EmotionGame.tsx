@@ -7,10 +7,10 @@ import { socketActions } from "store/webSocket";
 import { RootState } from "store";
 
 interface HandleOrderProps {
-  handleOrder: Function
-};
+  handleOrder: Function;
+}
 
-const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
+const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
   const dispatch = useDispatch();
 
   const webcamRef = useRef<Webcam>(null);
@@ -18,17 +18,17 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
   const resultRef = useRef<HTMLDivElement>(null);
 
   const [isFacingModeUser] = useState<boolean>(true);
-  const [img, setImg] = useState<string | null | undefined>();        // react-webcam에서 capture로 얻은 image file
-  const [analyzeCnt, setAnalyzeCnt] = useState(0);                    // emotion 분석 api 보낸 횟수 (분석 버튼 누른 횟수)
-  const [emotionKor, setEmotionKor] = useState("");                   // 한국말로 바꾼 감정 결과
-  
+  const [img, setImg] = useState<string | null | undefined>(); // react-webcam에서 capture로 얻은 image file
+  const [analyzeCnt, setAnalyzeCnt] = useState(0); // emotion 분석 api 보낸 횟수 (분석 버튼 누른 횟수)
+  const [emotionKor, setEmotionKor] = useState(""); // 한국말로 바꾼 감정 결과
+  const [mission, setMission] = useState(""); // 미션으로 받아온 감정 한국말로 바꿈
+
   const sender = useSelector((state: RootState) => state.guest.nickname);
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const emotionResult = useSelector((state: RootState) => state.socket.emotionResult);
-  const quizNum = useSelector((state:RootState) => state.socket.quizItem?.quizNum);
-  const gotEmotion = useSelector((state:RootState) => state.socket.getEmotion);
-  const emotion = useSelector((state:RootState) => state.socket.quizItem?.answer);
-
+  const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
+  const gotEmotion = useSelector((state: RootState) => state.socket.getEmotion);
+  let emotion = useSelector((state: RootState) => state.socket.quizItem?.answer);
 
   const resizeImage = (img: string, maxSize: number) => {
     return new Promise<string | null>((resolve, reject) => {
@@ -81,7 +81,7 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
   };
 
   const onClickPhoto = async () => {
-    await capture();  
+    await capture();
   };
 
   const onClickShootAgain = async () => {
@@ -99,7 +99,6 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
       gameType: "emotion",
       quizNum: quizNum,
       file: img,
-      
     };
     const emotionData = {
       destination: destination,
@@ -127,19 +126,35 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
     dispatch(socketActions.sendAnswerMessage(data));
     await handleOrder(2);
   };
- 
+
+  const translateKor = (emotion: string) => {
+    // "angry", "disgust", "fear", "laugh", "neutral", "sad", "surprise", "smile", "talking"
+    let emotionKor: string;
+
+    if (emotion === "angry") {
+      return emotionKor = "화남";
+    } else if (emotion === "disgust") {
+      return emotionKor = "혐오";
+    } else if (emotion === "fear") {
+      return emotionKor = "두려움";
+    } else if (emotion === "laugh" || emotion === "smile") {
+      return emotionKor = "기쁨";
+    } else if (emotion === "neutral") {
+      return emotionKor = "무표정";
+    } else if (emotion === "sad") {
+      return emotionKor = "슬픔";
+    } else if (emotion === "surprise") {
+      return emotionKor = "놀람";
+    } else if (emotion === "talking") {
+      return emotionKor = "수다";
+    };   
+    return emotionKor = "";
+  };
+
   useEffect(() => {
     if (emotionResult) {
       const faceImg = document.getElementById("captured-img");
-      // "angry", "disgust", "fear", "laugh", "neutral", "sad", "surprise", "smile", "talking"
-      if (emotionResult.emotion.value === "angry") setEmotionKor("화남");
-      else if (emotionResult.emotion.value === "disgust") setEmotionKor("혐오");
-      else if (emotionResult.emotion.value === "fear") setEmotionKor("두려움");
-      else if (emotionResult.emotion.value === "laugh" || emotionResult.emotion.value === "smile") setEmotionKor("기쁨");
-      else if (emotionResult.emotion.value === "neutral") setEmotionKor("무표정");
-      else if (emotionResult.emotion.value === "sad") setEmotionKor("슬픔");
-      else if (emotionResult.emotion.value === "surprise") setEmotionKor("놀람");
-      else if (emotionResult.emotion.value === "talking") setEmotionKor("수다");
+      setEmotionKor(translateKor(emotionResult.emotion.value));
 
       if (faceImg) {
         const left = faceImg.offsetLeft;
@@ -155,7 +170,7 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
         faceBoxRef!.current!.style.height = `${emotionResult!.roi.height}px`;
 
         resultRef!.current!.style.top = `${top + emotionResult!.roi.y - 45}px`;
-        resultRef!.current!.style.left = `${left + emotionResult!.roi.x }px`;
+        resultRef!.current!.style.left = `${left + emotionResult!.roi.x}px`;
         resultRef!.current!.style.position = "absolute";
         resultRef!.current!.style.width = "130px";
         resultRef!.current!.style.height = "40px";
@@ -166,40 +181,42 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
         resultRef!.current!.style.justifyContent = "center";
         resultRef!.current!.style.alignItems = "center";
         resultRef!.current!.style.gap = "10px";
-      };
-    };
+      }
+    }
     if (gotEmotion && !emotionResult) alert("인식된 얼굴이 없습니다. 다시 찍어보세요.");
   }, [emotionResult, gotEmotion]);
+
+  useEffect(() => {
+    setMission(translateKor(emotion!));
+  }, []);
 
   return (
     <div className={styles.emotionGameContainer}>
       <QuizGameTitle title="오늘만큼은 나도 연기 왕" />
-      <div className={styles.missionEmotion}>{emotion}</div>
+      <div className={styles.missionEmotion}>{mission}</div>
       {img ? (
         <div className={styles.emotionGameCamera}>
           <div>
             <div ref={resultRef}>
-              <div>
-                {emotionResult && emotionKor}
-              </div>
-              <div>
-                {emotionResult && emotionResult.emotion.confidence}
-              </div>
+              <div>{emotionResult && emotionKor}</div>
+              <div>{emotionResult && emotionResult.emotion.confidence}</div>
             </div>
             <div ref={faceBoxRef}></div>
           </div>
           <img src={img} alt="" className={styles.photoImg} id="captured-img" />
           <div className={styles.btnWrapper}>
-            <div className={styles.leftOpp}>
-              남은 기회 : {3 - analyzeCnt}회
-            </div>
-            <button onClick={onClickShootAgain} className={styles.againBtn} disabled={analyzeCnt===3 && true}>
+            <div className={styles.leftOpp}>남은 기회 : {3 - analyzeCnt}회</div>
+            <button onClick={onClickShootAgain} className={styles.againBtn} disabled={analyzeCnt === 3 && true}>
               다시 찍기
             </button>
-            <button onClick={onClickAnalyze} className={styles.analyzeBtn} disabled={analyzeCnt===3 && true}>
+            <button onClick={onClickAnalyze} className={styles.analyzeBtn} disabled={analyzeCnt === 3 && true}>
               감정 분석
             </button>
-            <button onClick={onClickSubmit} className={styles.submitBtn} disabled={emotionResult === null || analyzeCnt<1 ? true : false}>
+            <button
+              onClick={onClickSubmit}
+              className={styles.submitBtn}
+              disabled={emotionResult === null || analyzeCnt < 1 ? true : false}
+            >
               제출
             </button>
           </div>
