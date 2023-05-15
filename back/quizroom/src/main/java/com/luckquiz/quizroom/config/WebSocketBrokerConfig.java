@@ -3,6 +3,9 @@ package com.luckquiz.quizroom.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.DefaultManagedTaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -25,7 +28,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     // 주로 "/queue"는 1대1 메시징, "/topic"은 1대다 메시징일 때 주로 사용함.
     @Override
     public void configureMessageBroker (MessageBrokerRegistry registry) {  // 메시지 브로커 설정
-        registry.enableSimpleBroker( "/queue","/topic");  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
+        //15초 간격 핑퐁
+        registry.enableSimpleBroker( "/queue","/topic").setTaskScheduler(new DefaultManagedTaskScheduler()).setHeartbeatValue(new long[] {15000L,15000L}) ;  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
         // 내장 브로커 사용
         // 파라미터로 설정된 값으로 prefix가 붙은 메시지를 발행 시 브로커가 처리하겠다.
         registry.setApplicationDestinationPrefixes("/app");
@@ -45,17 +49,20 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
-        registration.setMessageSizeLimit(1024*1024*100);
-        registration.setSendBufferSizeLimit(1024*1024*100);
+        //버퍼 사이즈 8MB로 수정. (2023-05-15)
+        registration.setMessageSizeLimit(1024*1024*8);
+        registration.setSendBufferSizeLimit(1024*1024*8);
         registration.setSendTimeLimit(20 * 1000);
 //        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
 
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
+        //버퍼 사이즈 8MB로 수정. (2023-05-15)
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean(); // (3)
-        container.setMaxTextMessageBufferSize(1024*1024*100); // (4)
-        container.setMaxBinaryMessageBufferSize(1024*1024*100); // (5)
+        container.setMaxTextMessageBufferSize(1024*1024*8); // (4)
+        container.setMaxBinaryMessageBufferSize(1024*1024*8); // (5)
+        container.setMaxSessionIdleTimeout(1200000L); // 1200000ms => 1200sec => 20
         return container;
     }
 
