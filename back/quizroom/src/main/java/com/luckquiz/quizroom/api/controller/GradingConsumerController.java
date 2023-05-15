@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.GradeEndMessage;
+import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
 import com.luckquiz.quizroom.db.entities.QuizReport;
 import com.luckquiz.quizroom.db.repository.QuizReportRepository;
 import com.luckquiz.quizroom.model.UserR;
@@ -62,7 +63,6 @@ public class GradingConsumerController {
                 break;
             case "grade_end":
                 log.info("채점 끝났답니다. 결과 메시지를 보내주는 함수 구현해야 합니다.");
-
                 @Getter
                 @Setter
                 class KafkaGradeEndMessage{
@@ -76,18 +76,27 @@ public class GradingConsumerController {
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
                 Map all = hashOperations.entries(kafkaGradeEndMessage.getRoomId()+"p");
                 List<String> users = new ArrayList<>(all.values());
-                List<UserR> userLList = new ArrayList<>();
+                List<Grade> userLList = new ArrayList<>();
                 for(String user: users){
                     Grade a = gson.fromJson(user,Grade.class);
-                    UserR u = new UserR();
-                    u.setImg(a.getPlayerImg());
-                    u.setSender(a.getPlayerName());
-                    u.setRank(a.getRankNow());
-                    userLList.add(u);
+                    userLList.add(a);
                 }
                 Collections.sort(userLList);
-
-                sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId(),userLList);
+                for(Grade gtemp :userLList){
+                    UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
+                    userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
+                    int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
+                    if(rankDiff < 0 ){
+                        userTurnEndResponse.setIsUp("false");
+                    }else if(rankDiff == 0){
+                        userTurnEndResponse.setIsUp("same");
+                    }else {
+                        userTurnEndResponse.setIsUp("true");
+                    }
+                    userTurnEndResponse.setRankDiff(rankDiff);
+                    sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),userTurnEndResponse);
+                }
+                sendingOperations.convertAndSend("/topic/quiz/"+kafkaGradeEndMessage.getRoomId(),userLList);
 
                 break;
             default:
