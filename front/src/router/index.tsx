@@ -29,6 +29,7 @@ import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
+import HostAwards from "pages/host/host/quiz/HostAwards";
 
 
 const router = createBrowserRouter([
@@ -74,13 +75,11 @@ const router = createBrowserRouter([
       },
       {
         path: "quiz/create",
-        element: <QuizCreatePage/>,
+        element: <QuizCreatePage />,
       },
       {
-
-
         path: "quiz/:quiz_id/edit",
-        element: <QuizCreatePage/>,
+        element: <QuizCreatePage />,
       },
       {
         path: "host/quiz/:quiz_id",
@@ -92,15 +91,15 @@ const router = createBrowserRouter([
           },
           {
             path: "lobby",
-            element: <HostLobby/>,
+            element: <HostLobby />,
           },
           {
             path: "play",
-            element: <HostPlayQuiz/>,
+            element: <HostPlayQuiz />,
           },
           {
             path: "awards",
-            element: <></>,
+            element: <HostAwards />,
           },
         ],
       },
@@ -122,15 +121,15 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/lobby",
-            element: <GuestLobby/>,
+            element: <GuestLobby />,
           },
           {
             path: "quiz/play",
-            element: <GuestPlayQuiz/>,
+            element: <GuestPlayQuiz />,
           },
           {
             path: "quiz/balloon",
-            element: <BalloonGame/>,
+            element: <BalloonGame />,
           },
           // {
           //   path: "quiz/emotion",
@@ -155,14 +154,14 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/ranking",
-            element: <QuizRanking/>,
+            element: <QuizRanking />,
           },
         ],
       },
       {
-        path:"oauth/redirect",
-        element: <SocialRedirect/>
-      }
+        path: "oauth/redirect",
+        element: <SocialRedirect />,
+      },
     ],
   },
 ]);

@@ -72,7 +72,7 @@ const WakeUpGame = (props: Props) => {
     // web이면, keydown listner작동
     !isMobile && window.addEventListener("keydown", handleWebShake);
 
-    console.log("타이머 시작:", (time! - 6));
+    console.log("타이머 시작:", time! - 6);
     let startGame = setTimeout(() => {
       setIsBroken(true);
       window.removeEventListener("keydown", handleWebShake);
@@ -124,7 +124,7 @@ const WakeUpGame = (props: Props) => {
               </>
             ) : (
               <>
-                <div id="time-box">Time Over</div>
+                {/* <div id="time-box">Time Over</div> */}
                 <div id="game-description">
                   {isMobile ? "알을 터치하여 럭퀴를 깨워주세요" : "스페이스 바를 눌러 럭퀴를 흔들어 깨워주세요"}
                 </div>

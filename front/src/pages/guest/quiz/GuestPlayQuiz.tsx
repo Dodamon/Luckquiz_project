@@ -64,7 +64,7 @@ const GuestPlayQuiz = () => {
         {order === 1 && (
           <>
             <div className={styles.header}>
-              {quizItem?.game !== "balloon" && quizItem?.game !== "emotion" && <TimerBar handleOrder={setOrder}/>}
+              {quizItem?.game !== "balloon" && <TimerBar handleOrder={setOrder}/>}
             </div>
             <div className={styles.quizContainer}>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
