@@ -7,8 +7,8 @@
 }
 
 @media screen and (min-width: 767px) {
-  #content {
-    width: 80%;
+  .content {
+    /* width: 100%; */
     padding: 10px;
     margin-top: 30px;
     margin-bottom: 15px;   
@@ -21,8 +21,8 @@
   }
 }
 @media screen and (max-width: 767px) {
-  #content {
-    width: 80%;
+  .content {
+    /* width: 80%; */
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 10px;   
