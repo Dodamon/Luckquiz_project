@@ -27,6 +27,8 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessageType;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -65,18 +67,26 @@ public class MessageController {
     }
     //app/quiz/{roomId}/{name} 구독시 호은 topic/quiz/{roomiId}/{name} 메시지 날림
     @SubscribeMapping("/quiz/{roomId}/{name}")
-    public void subscribeCallback(StompHeaderAccessor accessor, @DestinationVariable(value = "roomId") String roomId, @DestinationVariable(value = "name") String name){
-        String sessionId = accessor.getSessionId();
-        String subscriptionId = accessor.getSubscriptionId();
+    public void subscribeCallback(Principal principal, @DestinationVariable(value = "roomId") String roomId, @DestinationVariable(value = "name") String name){
+//        String sessionId = accessor.getSessionId();
+//        String subscriptionId = accessor.getSubscriptionId();
         System.out.println("이름: "+name+" 방번호 : "+ roomId);
-        StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.RECEIPT);
-        headers.setSessionId(sessionId);
-        headers.setSubscriptionId(subscriptionId);
-        headers.setReceiptId(accessor.getReceipt());
-        String subscribeMessage = name+"들어오신 것을 환영합니다.";
-        System.out.println(accessor.getDestination());
+//        StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.RECEIPT);
+//        headers.setSessionId(sessionId);
+//        headers.setSubscriptionId(subscriptionId);
+//        headers.setReceiptId(accessor.getReceipt());
+//        headers.setLeaveMutable(false);
+        String subscribeMessage = name+"님 접속을 환영합니다.";
+//        System.out.println(accessor.getDestination());
+//        System.out.println(accessor.getSessionId());
+//        System.out.println(principal.getName());
 //        sendingOperations.convertAndSendToUser(accessor.getUser().getName(), headers.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
-        sendingOperations.convertAndSendToUser(name, accessor.getDestination(), subscribeMessage+"님 접속을 환영합니다.", headers.toMap());
+        String destination = "/quiz/"+roomId+"/"+name;
+        System.out.println(destination);
+        System.out.println(principal.getName());
+        sendingOperations.convertAndSendToUser(principal.getName(), "/topic"+destination, "세션 아이디 : "+"몰라");
+        sendingOperations.convertAndSend("/topic"+destination,subscribeMessage);
+//        return "왔다";
     }
 
 

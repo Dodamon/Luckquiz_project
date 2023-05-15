@@ -23,7 +23,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     // 새로운 핸드쉐이크 커넥션을 생성할 때 사용됨.
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/connect/quiz").setAllowedOriginPatterns("*").addInterceptors(new HttpSessionHandshakeInterceptor());
+        registry.addEndpoint("/connect/quiz").setAllowedOriginPatterns("*").setHandshakeHandler(new CustomHandshakeHandler());
     }
 
     // adasd
@@ -37,7 +37,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app","/topic");  // 로 가면 app 이 붙은 애를 처리하는 애한테 간다.
         // 메시지 핸들러로 라우팅되는 prefix
         // 클라이언트가 메시지를 보낼 때 경로 맨앞에 "/app"이 붙어있으면 Broker로 보내짐.
-//        registry.setUserDestinationPrefix("/user");
+//        registry.setUserDestinationPrefix("/topic");
     }
 
 //    @Override
@@ -49,8 +49,8 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
         // 내가 추가함
-        registration.setMessageSizeLimit(1024*1024*80);
-        registration.setSendBufferSizeLimit(1024*1024*80);
+        registration.setMessageSizeLimit(1024*1024*160);
+        registration.setSendBufferSizeLimit(1024*1024*160);
         registration.setSendTimeLimit(20 * 1000);
 //        registration.setDecoratorFactories(new AgentWebSocketHandlerDecoratorFactory());
     }
@@ -58,20 +58,20 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean(); // (3)
-        container.setMaxTextMessageBufferSize(1024*1024*80); // (4)
-        container.setMaxBinaryMessageBufferSize(1024*1024*80); // (5)
+        container.setMaxTextMessageBufferSize(1024*1024*160); // (4)
+        container.setMaxBinaryMessageBufferSize(1024*1024*160); // (5)
 
         return container;
     }
 
-    @Bean
-    public WebSocketHandlerDecoratorFactory webSocketHandlerDecoratorFactory() {
-        return new WebSocketHandlerDecoratorFactory() {
-            @Override
-            public WebSocketHandler decorate(WebSocketHandler handler) {
-                return new MyStompSessionHandler(handler);
-            }
-        };
-    }
+//    @Bean
+//    public WebSocketHandlerDecoratorFactory webSocketHandlerDecoratorFactory() {
+//        return new WebSocketHandlerDecoratorFactory() {
+//            @Override
+//            public WebSocketHandler decorate(WebSocketHandler handler) {
+//                return new MyStompSessionHandler(handler);
+//            }
+//        };
+//    }
 
 }
