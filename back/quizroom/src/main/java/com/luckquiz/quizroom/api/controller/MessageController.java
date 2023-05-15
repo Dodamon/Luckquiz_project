@@ -93,7 +93,7 @@ public class MessageController {
 //    }
 
 
-    @MessageMapping("/enter")
+    @MessageMapping("/enter") // 호스트 아이디  host nickname 이랑 같은 애는 rank 랑 hash에 안넣어
     public void enter(QuizMessage message) {
         Grade grade = new Grade();
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
@@ -104,19 +104,24 @@ public class MessageController {
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
         grade.setPlayerImg(message.getImg());
-        hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
+
         EnterUser enterUser = EnterUser.builder()
                 .sender(message.getSender())
                 .img(message.getImg())
                 .build();
-        zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         StringValueOperations.append(roomId+"l",gson.toJson(enterUser)+", ");
+
 
         String roomIdString = roomId+"";
         System.out.println(" this is room Id ---->" + roomIdString);
         String roomInfo =StringValueOperations.get(roomIdString);
         System.out.println("this is roomInfojson  "+ roomInfo);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
+
+        if(!message.getSender().equals(roomInf.getHostNickName())) {
+            hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
+            zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
+        }
 
         String allList = StringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
@@ -128,6 +133,7 @@ public class MessageController {
                 result.add(a);
             }
         }
+
         LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(result);
         List<EnterUser> finList = new ArrayList<>();
         result.clear();

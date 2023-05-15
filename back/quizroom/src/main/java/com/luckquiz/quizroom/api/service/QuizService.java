@@ -49,7 +49,6 @@ public class QuizService {
     @Transactional
     public QuizRoom createRoom(QuizRoomCreateRequest qrc) {
         QuizRoom quizRoom = QuizRoom.create();
-
         toQuizProducer.CallQUizTemp(qrc.getHostId()+" "+quizRoom.getRoomId()+" "+qrc.getTemplateId());
         return quizRoom;
     }
