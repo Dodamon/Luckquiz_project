@@ -3,6 +3,12 @@ import styles from "./Report.module.css";
 import ReportTab from "components/host/home/report/ReportTab";
 import ReportTable from "components/host/home/report/ReportTable";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+
+
+
 
 const quiz = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -49,8 +55,26 @@ const hardest = [
   },
 ];
 
+type listType ={
+  id: number,
+  title: string,
+  answer: number,
+}
+
+interface quizType {
+  title: string,
+  list :listType[]
+}
+
+
 const ReportQuiz = () => {
   const { report_id } = useParams();
+  const [basicReport, setBasicReport] = useState<quizType>();
+  useEffect(()=>{
+    axios.get("")
+  }, [])
+
+
   return (
     <div className={styles.content}>
       <div className={styles.title}>{quiz.title}</div>

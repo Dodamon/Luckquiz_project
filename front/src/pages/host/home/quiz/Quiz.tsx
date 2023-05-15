@@ -50,7 +50,7 @@ const Quiz = () => {
 
   useEffect(() => {
 
-    axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/list?hostId=${authInfo.userId}`)
+    axios.get(`${process.env.REACT_APP_HOST}/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
         console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;

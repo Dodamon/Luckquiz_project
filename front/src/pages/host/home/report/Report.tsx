@@ -4,6 +4,8 @@ import { Icon } from "@iconify/react";
 import profile_sample from "assets/images/profile_sample.png";
 import report_bg from "assets/images/report_bg.png";
 import HomeListCard from "components/host/home/HomeListCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export interface Report {
   id: number;
@@ -12,8 +14,11 @@ export interface Report {
   participants: number;
 }
 
+ 
+
 const Report = () => {
-  // const getMyReportList = () => {}
+  
+  // const [myReportList, setMyReportList] = useState<Report[]>([])
   const myReportList: Report[] = [
     {
       id: 0,
@@ -34,6 +39,15 @@ const Report = () => {
       participants: 7,
     },
   ];
+  // useEffect(()=>{
+
+  
+
+
+
+
+  // }, [myReportList])
+
 
   return (
       <div className={styles.content} style={{ backgroundImage: report_bg }}>
@@ -41,7 +55,7 @@ const Report = () => {
         <div className={styles.listColFrame}>
           {myReportList.map((report, index) => (
             <Link key={index} to={`/home/report/${report.id}/basicinfo`} style={{width:"100%"}}>
-              {/* <HomeListCard menu={1} report={report}/> */}
+              <HomeListCard menu={1} report={report}/>
             </Link>
           ))}
         </div>

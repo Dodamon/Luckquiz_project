@@ -17,7 +17,7 @@ const GameEmotionTemplate = () => {
 
     const emotionSelectHandler = (item: string) => {
         setEmotion(item);
-        dispatch(quizAtions.emotionTypeUpdate({index: authInfo, type: item}))
+        dispatch(quizAtions.emotionTypeUpdate({ index: authInfo, type: item }))
     }
 
 

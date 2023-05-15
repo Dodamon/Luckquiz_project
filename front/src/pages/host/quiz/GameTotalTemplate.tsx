@@ -14,7 +14,7 @@ const GameTotalTemplate = () => {
     return (
         <>
             {
-                quizInfo[selectInfo].game === "egg" ? <GameEmotionTemplate /> : quizInfo[selectInfo].game === "wakeup" ? <GameWakeupTemplate /> :
+                quizInfo[selectInfo].game === "emotion" ? <GameEmotionTemplate /> : quizInfo[selectInfo].game === "wakeup" ? <GameWakeupTemplate /> :
                     quizInfo[selectInfo].game === "balloon" ? <GameBalloonTemplate /> : <></>
             }
         </>

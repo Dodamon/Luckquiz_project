@@ -132,10 +132,10 @@ const router = createBrowserRouter([
             path: "quiz/balloon",
             element: <BalloonGame/>,
           },
-          {
-            path: "quiz/emotion",
-            element: <EmotionGame/>,
-          },
+          // {
+          //   path: "quiz/emotion",
+          //   element: <EmotionGame handleOrder={() => {}}/>,
+          // },
           // {
           //   path: "quiz/wakeup",
           //   element: <WakeUpGame/>,

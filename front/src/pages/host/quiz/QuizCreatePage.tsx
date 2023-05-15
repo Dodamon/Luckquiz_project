@@ -9,33 +9,19 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { quizAtions } from "store/quiz";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 
 const QuizCreatePage: React.FC = () => {
+    // const [quizInfo, setQuizInfo] = useState(useSelector((state: RootState) => state.quiz.quizList))
     const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
     const authInfo = useSelector((state: RootState) => state.auth);
 
-    const params = useParams();
-    const quiz_id = params.quiz_id;
-
-    const dispatch = useDispatch();
-
-    useEffect(()=>{
-        if(quiz_id){
-            axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res=>{
-                console.log("아놔 여긴데~",res.data);
-                const data= res.data;
-                dispatch(quizAtions.receiveUpdate(data));
-              })
-    
-        }
-    },[])
 
 
-    
-    
+
+
     console.log(quizInfo);
     console.log(authInfo.choiceIndex);
     return (
