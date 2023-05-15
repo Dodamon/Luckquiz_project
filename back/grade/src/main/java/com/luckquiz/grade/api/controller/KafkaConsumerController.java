@@ -8,8 +8,10 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
 
 import com.google.gson.Gson;
+import com.luckquiz.grade.api.common.enums.GradeKey;
 import com.luckquiz.grade.api.common.enums.Topic;
 import com.luckquiz.grade.api.request.KafkaEmotionRequest;
+import com.luckquiz.grade.api.request.KafkaFinalEndRequest;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
 import com.luckquiz.grade.api.common.enums.SignToGradeKey;
 import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
@@ -29,13 +31,23 @@ public class KafkaConsumerController {
 
 	@KafkaListener(topics = "grade" , groupId = "grade_group",properties = {},containerFactory = "kafkaListenerContainerFactory")
 	public void gradingConsumer(List<String> messages, @Header(KafkaHeaders.RECEIVED_TOPIC) List<Topic> topics, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<String> keys) {
+		System.out.println("grade 시작");
 		for(int i=0; i<messages.size(); i++){
-			if(keys.get(i).equals("grade")){
-				KafkaGradeRequest gradeRequest = gson.fromJson(messages.get(i), KafkaGradeRequest.class);
-				gradeService.grade(gradeRequest);
-			} else {
-				KafkaEmotionRequest kafkaEmotionRequest = gson.fromJson(messages.get(i), KafkaEmotionRequest.class);
-				gradeService.pictureGrade(kafkaEmotionRequest);
+			System.out.println("key 값 :" + keys.get(i));
+			switch (keys.get(i)){
+				case "grade":
+					System.out.println("grade 시작");
+					KafkaGradeRequest gradeRequest = gson.fromJson(messages.get(i), KafkaGradeRequest.class);
+					gradeService.grade(gradeRequest);
+					break;
+				case "emotion":
+					System.out.println("이모션 시작");
+					KafkaEmotionRequest kafkaEmotionRequest = gson.fromJson(messages.get(i), KafkaEmotionRequest.class);
+					gradeService.pictureGrade(kafkaEmotionRequest);
+					break;
+				default:
+					log.warn("grade 컨슈머에서 이상한 키값이 왔습니다.");
+					break;
 			}
 		}
 	}
@@ -44,7 +56,6 @@ public class KafkaConsumerController {
 	public void signHandleConsumer(String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) SignToGradeKey key) {
 		// KafkaGradeRequest gradeRequest = gson.fromJson(message, KafkaGradeRequest.class)
 		// ConsumerRecord record = (ConsumerRecord) message;
-
 		switch(key){
 			case rollback:
 				KafkaQuizRollbackRequest quizRollbackRequest = gson.fromJson(message, KafkaQuizRollbackRequest.class);
@@ -58,10 +69,13 @@ public class KafkaConsumerController {
 				KafkaQuizStartRequest quizStartRequest = gson.fromJson(message, KafkaQuizStartRequest.class);
 				gradeService.quizStart(quizStartRequest);
 				break;
+			case final_end:
+				KafkaFinalEndRequest kafkaFinalEndRequest = gson.fromJson(message, KafkaFinalEndRequest.class);
+				gradeService.finalFinish(kafkaFinalEndRequest);
+				break;
 			default:
 				log.info("없는 키값입니다.");
 				break;
 		}
 	}
-
 }

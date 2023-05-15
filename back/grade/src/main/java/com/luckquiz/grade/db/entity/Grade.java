@@ -22,6 +22,7 @@ public class Grade implements Serializable{
 	private int rankNow;
 	private int playerImg;
 
+	private int count;
 	public String getPlayerName() {
 		if(playerName==null){
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
@@ -43,5 +44,9 @@ public class Grade implements Serializable{
 
 	public int getPlayerImg() {
 		return playerImg;
+	}
+
+	public int getCount() {
+		return count;
 	}
 }

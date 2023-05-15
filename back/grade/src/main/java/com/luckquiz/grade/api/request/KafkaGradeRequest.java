@@ -7,36 +7,48 @@ import lombok.Getter;
 
 
 public class KafkaGradeRequest {
-	private Integer roomId;
-	private String playerName;
-	private Integer quizNum;
-	private String answer;
+	private String hostId;
+	private int roomId;
+	private String sender;
+	private int img;
+	private int quizNum;
+	private String message;
+	private String file;
 
-	public Integer getRoomId() {
-		if(roomId==null){
-			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
-		}
+	public String getHostId() {
+		return hostId;
+	}
+
+	public int getRoomId() {
 		return roomId;
 	}
 
-	public String getPlayerName() {
-		if(playerName==null){
+	public String getSender() {
+		if(sender == null){
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
 		}
-		return playerName;
+		return sender;
 	}
 
-	public Integer getQuizNum() {
-		if(quizNum==null){
-			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
-		}
+	public int getImg() {
+		return img;
+	}
+
+	public int getQuizNum() {
 		return quizNum;
 	}
 
-	public String getAnswer() {
-		if(answer==null){
+	public String getMessage() {
+		if(message == null){
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
 		}
-		return answer;
+		return message;
+	}
+
+	public String getFile() {
+		if(file == null){
+			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
+		}
+		return file;
 	}
 }

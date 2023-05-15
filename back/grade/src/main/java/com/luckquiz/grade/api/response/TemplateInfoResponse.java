@@ -61,6 +61,7 @@ public class TemplateInfoResponse {
 
 	public String getAnswer() {
 		if(answer==null){
+			System.out.println("정답이 없습니다.");
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
 		}
 		return answer;
@@ -101,7 +102,7 @@ public class TemplateInfoResponse {
 
 	public String getGame() {
 		if(game==null){
-			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);
+			return "";
 		}
 		return game;
 	}

@@ -7,31 +7,33 @@ import lombok.Getter;
 
 @Getter
 public class KafkaEmotionRequest {
-	private String type;
-	private KafkaEmotionResult result;
 	private Integer roomId;
-	private String name;
-	private int quizNum;
+	private String sender;
+	private Integer quizNum;
+	private KafkaEmotionResult.ValCon emotionResult;
+
 
 	public void setQuizNum(int quizNum){
 		this.quizNum = quizNum;
 	}
-	public void setType(String type){
-		this.type = type;
-	}
 
-	public void setResult(KafkaEmotionResult emotionResult){
+
+	public void setEmotionResult(KafkaEmotionResult.ValCon emotionResult){
 		if(emotionResult == null){
 			throw new CustomException(CustomExceptionType.FACE_NOT_FOUND);
 		}
-		this.result = emotionResult;
+		this.emotionResult = emotionResult;
 	}
 
 	public void setRoomId(Integer roomId){
 		this.roomId = roomId;
 	}
 
-	public void setName(String name){
-		this.name = name;
+	public void setSender(String name){
+		this.sender = name;
+	}
+
+	public void setQuizNum(Integer quizNum) {
+		this.quizNum = quizNum;
 	}
 }
