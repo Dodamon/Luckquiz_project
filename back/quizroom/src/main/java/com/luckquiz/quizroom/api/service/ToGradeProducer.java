@@ -34,6 +34,7 @@ public class ToGradeProducer {
     }
 
     public void emotion(String result){
+        System.out.println("이모션 보내기 카프카에");
         KafkaProducer<String , String> producer = new KafkaProducer<String, String>(configs);
         ProducerRecord record = new ProducerRecord<String,String>("grade","emotion",result);
         producer.send(record);

@@ -16,3 +16,7 @@ public class GradeFinish {
     Integer solvedCount;
     Integer quizNum;
 }
+
+//guest들이
+// /topic/quiz/{roomId} 모든 유저가 구독하는 곳.
+// /queue/quiz/{roomId}/{username} 1개씩.
