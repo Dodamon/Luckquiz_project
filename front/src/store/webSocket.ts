@@ -38,7 +38,7 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         console.log("publish");
-        console.log(actions);
+        console.log(actions.payload.destination);
         client.publish({
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
