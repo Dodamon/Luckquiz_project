@@ -27,8 +27,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -95,8 +93,8 @@ public class MessageController {
         Grade grade = new Grade();
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
-        ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
-        System.out.println("entered:  "+message.getSender());
+        ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
+        System.out.println("entered:  "+message.getSender()+"img type: ");
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
         grade.setPlayerImg(message.getImg());
@@ -106,28 +104,30 @@ public class MessageController {
                 .img(message.getImg())
                 .build();
         zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
-        stringStringValueOperations.append(roomId+"l",gson.toJson(enterUser)+", ");
-
-        String roomInfo =stringStringValueOperations.get(message.getRoomId());
+        StringValueOperations.append(roomId+"l",gson.toJson(enterUser)+", ");
+//안돼쥬
+        String roomIdString = roomId+"";
+        System.out.println(" this is room Id ---->" + roomIdString);
+        String roomInfo =StringValueOperations.get(roomIdString);
+        System.out.println("this is roomInfojson  "+ roomInfo);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
 
 
-        String allList = stringStringValueOperations.get(roomId+"l",0,-1);
+        String allList = StringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
         List<EnterUser> result = new ArrayList();
+        System.out.println("this hostId ---->" + roomInf.getHostId());
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            if(!roomInf.getHostNickName().equals(a.getSender()) && !roomInf.getHostId().equals(a.getSender())){
+            if(!roomInf.getHostNickName().equals(a.getSender()) && !roomInf.getHostId().toString().equals(a.getSender())){
                 result.add(a);
             }
         }
-
         LinkedHashSet<EnterUser> li = new LinkedHashSet<EnterUser>(result);
         List<EnterUser> finList = new ArrayList<>();
         result.clear();
         result.addAll(li);
-
-        for (int i = 2; i < result.size(); i++) {
+        for (int i = 0; i < result.size(); i++) {
             finList.add(result.get(i));
         }
 
