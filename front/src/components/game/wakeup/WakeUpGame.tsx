@@ -19,12 +19,8 @@ const WakeUpGame = (props: Props) => {
   const dispatch = useDispatch();
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  const timer = useSelector((state: RootState) => state.socket.quizItem?.timer);
+  const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
   const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
-  // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
-  const [time, setTime] = useState(timer! - 6.5);
-  // const [timeFormat, setTimeFormat] = useState("");
-  const [isRunning, setIsRunning] = useState(false);
   const [shakeCount, setShakeCount] = useState(0); // 흔든 횟수 제출
   const [isShaking, setIsShaking] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
@@ -75,40 +71,19 @@ const WakeUpGame = (props: Props) => {
   useEffect(() => {
     // web이면, keydown listner작동
     !isMobile && window.addEventListener("keydown", handleWebShake);
-    setIsRunning(true);
+
+    console.log("타이머 시작:", (time! - 6));
+    let startGame = setTimeout(() => {
+      setIsBroken(true);
+      window.removeEventListener("keydown", handleWebShake);
+      submitAnswer(); // shake횟수 제출
+    }, (time! - 6) * 1000); // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
+
+    // cleanup 함수에서 setInterval 정리
+    return () => {
+      clearTimeout(startGame);
+    };
   }, []);
-
-  // 타이머 작동
-  useEffect(() => {
-    if (isRunning && time > 0) {
-      console.log("타이머 시작");
-      let interval = setInterval(() => {
-        setTime((prevTime) => prevTime - 0.01);
-        console.log(time);
-        // 시간이 끝나면 애니메이션 작동 및 interval 중지
-        if (time.toFixed(2) === "0.00") {
-          setIsBroken(true);
-          setIsRunning(false);
-          clearInterval(interval);
-          submitAnswer(); // shake횟수 제출
-          window.removeEventListener("keydown", handleWebShake);
-        }
-      }, 10);
-
-      // let startGame = setTimeout(() => {
-      //             setIsBroken(true);
-      //             setIsRunning(false);
-      //             window.removeEventListener("keydown", handleWebShake);
-      // submitAnswer()  // shake횟수 제출
-      // }, time);
-
-      // cleanup 함수에서 setInterval 정리
-      return () => {
-        clearInterval(interval);
-        // clearTimeout(startGame)
-      };
-    }
-  }, [time, isRunning]);
 
   useEffect(() => {
     if (isBroken) {
@@ -124,9 +99,9 @@ const WakeUpGame = (props: Props) => {
     if (showluckqui) {
       setTimeout(() => {
         handleOrder && handleOrder(2);
-      }, 5000);
+      }, 4500);
     }
-  });
+  }, [showluckqui]);
 
   return (
     <>
