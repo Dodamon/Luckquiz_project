@@ -150,8 +150,8 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   return (
     <div className="balloonGamePage"> 
       <QuizGameTitle title="풍선 터트리기"/>
-      <div className="content" ref={content as MutableRefObject<HTMLDivElement>}>
-        <div className="time-box">{timeLimit} 초</div>
+      <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
+        <div id="time-box">{timeLimit} 초</div>
         <div id="game-description">위 시간과 가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
         <svg viewBox="0 0 100 100" id="main-svg" ref={mainSvg as MutableRefObject<SVGSVGElement>} className="svg">
           <path

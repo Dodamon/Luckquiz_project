@@ -1,6 +1,6 @@
 @media screen and (min-width: 767px) {
   .balloonGamePage {
-    width: 90%;
+    width: 150%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -9,7 +9,7 @@
     padding-top: 20px;
   }
   
-  .content {
+  #content {
     width: 80%;
     padding: 10px;
     margin-top: 30px;
@@ -22,7 +22,7 @@
     align-items: center;
   }
 
-  .time-box {
+  #time-box {
     width: 150px;
     height: 60px;
     margin-top: 20px;
@@ -133,7 +133,7 @@
 @media screen and (max-width: 767px) {
   .balloonGamePage {
     width: 100%;
-    margin-left: 9.5%;
+    /* margin-left: 9.5%; */
     max-width: 767px;
     min-width: 240px;
     height: 100%;
@@ -143,7 +143,7 @@
     align-items: center;
   }
   
-  .content {
+  #content {
     width: 90%;
     padding: 10px;
     margin-top: 20px;
@@ -156,7 +156,7 @@
     align-items: center;
   }
 
-  .time-box {
+  #time-box {
     width: 150px;
     height: 50px;
     margin-top: 20px;
