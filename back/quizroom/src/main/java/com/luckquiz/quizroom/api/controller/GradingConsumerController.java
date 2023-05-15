@@ -30,5 +30,4 @@ public class GradingConsumerController {
             QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(gradeEndMessage.getRoomId());
         }
     }
-
 }
