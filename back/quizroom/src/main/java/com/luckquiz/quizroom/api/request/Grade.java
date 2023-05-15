@@ -1,5 +1,6 @@
 package com.luckquiz.quizroom.api.request;
 
+import com.luckquiz.quizroom.model.UserR;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,32 +8,30 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Getter
 @NoArgsConstructor
-public class Grade {
+public class Grade implements Comparable<Grade>{
     private String playerName;
     private int playerImg;
-    private int scoreGet = 0;
-    private int rankPre = 0;
-    private int rankNow = 0;
-    private int count ;
-
+    private int scoreGet;
+    private int rankPre;
+    private int rankNow;
+    private int count;
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
-
-    public void setScore_get(int scoreGet) {
+    public void setScoreGet(int scoreGet) {
         this.scoreGet = scoreGet;
     }
-
-    public void setRank_pre(int rankPre) {
+    public void setRankPre(int rankPre) {
         this.rankPre = rankPre;
     }
-
-
-    public void setRank_now(int rankNow) {
+    public void setRankNow(int rankNow) {
         this.rankNow = rankNow;
     }
-
     public void setPlayerImg(int playerImg) {
         this.playerImg = playerImg;
+    }
+    @Override
+    public int compareTo(Grade o) {
+        return o.getRankNow() - getRankNow();
     }
 }
