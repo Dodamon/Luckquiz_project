@@ -44,10 +44,8 @@ import java.util.UUID;
 // 템플랫 생성, 조회, 다수조회, 퀴즈추가
 public class TemplateService {
     private final TemplateRepository templateRepository;
-
     private final QuizGameRepository quizGameRepository;
     private final Gson gson;
-
     @Transactional
     public int createTemplate(TemplateCreateRequest tcr) {
         Template temp = Template.builder()
@@ -58,15 +56,12 @@ public class TemplateService {
         Template a = templateRepository.save(temp);
         return a.getId();
     }
-
     @Transactional
     public Boolean deleteTemplate(TemplateDeleteRequest tdr) {
         Template template = templateRepository.findTemplateByIdAndHostId(tdr.getId(), tdr.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         templateRepository.delete(template);
         return true;
     }
-
-
     public Slice<TemplateResponse> findTemplates(int hostId, @PageableDefault(size = 8, sort = {"created_at"}) Pageable pageable) {
         Slice<Template> tempList = templateRepository.findTemplatesByHostId(hostId, pageable);
         Slice<TemplateResponse> result = tempList.map((template) -> TemplateResponse.builder()
@@ -76,7 +71,6 @@ public class TemplateService {
                 .build());
         return result;
     }
-
     public TemplateDetailResponse findTemplateDetail(int templateId, UUID hostId) throws Exception {
         Template template = templateRepository.findTemplateByIdAndHostId(templateId, hostId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         // template 을 조회를 해 있는거겠지 그러니까 그 다음에도 있어야해?
@@ -97,7 +91,6 @@ public class TemplateService {
                 .build();
         return result;
     }
-
     // 구분자는 모두 `` 으로 나눴고 인정답안은 ₩₩ 으로 구분하였다.
     // 아 이거 그냥 json 형태로 키 밸류로 할걸그랬읍니다 다 동근땅근님때문이야
     @Transactional
@@ -109,7 +102,6 @@ public class TemplateService {
             quizGameRepository.deleteByTemplateId(temp.getId());
         }  // 기존꺼 삭제하고 만든다.
         // 퀴즈들을 저장하자.
-
         List<QGame> qGames = newQg.getQuizList();
         for (QGame a : qGames) {
             Charset charset = Charset.forName("UTF-8");
@@ -125,13 +117,9 @@ public class TemplateService {
                 qgame.setType(QuizType.game);
             }
             quizGameRepository.save(qgame);
-
         }
-
-
         return findTemplateDetail(temp.getId(), temp.getHostId());
     }
-
     public List<TemplateListResponse> templateList(UUID hostId) {
         List<Template> before = templateRepository.findAllByHostId(hostId);
         List<TemplateListResponse> result = new ArrayList<>();
@@ -151,7 +139,6 @@ public class TemplateService {
         }
         return result;
     }
-
     public QuizGameCreateRequest checkValid(QuizGameCreateRequest quizGameCreateRequest) {
         Template temp = templateRepository.findTemplateById(quizGameCreateRequest.getTemplateId()).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
         List<QGame> qGames = quizGameCreateRequest.getQuizList();
@@ -170,7 +157,6 @@ public class TemplateService {
                             temp.setIsValid("false");
                         }
                         break;
-
                     case "four":
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
@@ -184,7 +170,6 @@ public class TemplateService {
                             temp.setIsValid("false");
                         }
                         break;
-
                     case "text":
                         if (StringUtils.isEmpty(check.getQuestion())) {
                             check.setIsValid("false");
@@ -207,11 +192,8 @@ public class TemplateService {
                         temp.setIsValid("false");
                     }
                 }
-
             }
         }
         return quizGameCreateRequest;
     }
-
-
 }

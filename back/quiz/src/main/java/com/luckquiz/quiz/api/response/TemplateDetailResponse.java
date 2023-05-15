@@ -18,12 +18,17 @@ public class TemplateDetailResponse {
     private String name;
     private UUID hostId;
     private List<QGame> quizList;
-    private String[] numbering;
     private int quizNum;
     private String isValid;
 
+    private String hostNickName;
+
     public void setQuizNum(int quizNum){
         this.quizNum = quizNum;
+    }
+
+    public void setHostNickName(String hostNickName){
+        this.hostNickName = hostNickName;
     }
 
 }
