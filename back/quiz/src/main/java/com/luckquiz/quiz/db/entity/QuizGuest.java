@@ -20,7 +20,7 @@ public class QuizGuest {
     private int id;
 
     @Column(name = "template_id")
-    private int templateId;
+    private Integer templateId;
 
     @Column(name = "guest_nickname")
     private String guestNickname;

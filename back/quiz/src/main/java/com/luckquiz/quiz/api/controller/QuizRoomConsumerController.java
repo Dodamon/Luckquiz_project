@@ -83,11 +83,10 @@ public class QuizRoomConsumerController {
             for(ZSetOperations.TypedTuple a : rank){
                 EnterUser temp = gson.fromJson(a.getValue().toString(),EnterUser.class);
                 if(!user.getName().equals(temp.getSender())){
-                    QuizGuest quizGuest = QuizGuest.builder()
-                            .guestNickname(temp.getSender())
-                            .score(a.getScore()) // 점수
-
-                            .build();
+//                    QuizGuest quizGuest = QuizGuest.builder()
+//                            .guestNickname(temp.getSender())
+//                            .score(a.getScore()) // 점수
+//                            .build();
 
                 }
 

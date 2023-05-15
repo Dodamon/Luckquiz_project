@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface QuizGuestRepository extends JpaRepository<QuizGuest, Integer> {
-    Optional findQuizGuestByTemplateId(Integer id);
+//    Optional findQuizGuestByTemplateId(Integer templateId);
+    Optional<QuizGuest> findByTemplateId(Integer templateId);
 }
+
