@@ -110,7 +110,7 @@ const QuizSelectMenu = () => {
                         <option value="ox">OX 선택</option>
                         <option value="text">주관식</option>
                     </select> : <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
-                        <option value="egg">emotion</option>
+                        <option value="emotion">emotion</option>
                         <option value="wakeup">wakeup</option>
                         <option value="balloon">balloon</option>
                     </select>
@@ -129,8 +129,8 @@ const QuizSelectMenu = () => {
                 {/* <div>
                     <div onClick={temporarySaveHandler}>임시저장</div>
                 </div> */}
-                <div>
-                    <div onClick={temporarySaveHandler}>저장</div><Icon style={{ marginLeft: "5px", fontWeight: "bold" }} icon="ic:round-log-out" />
+                <div onClick={temporarySaveHandler}>
+                    <div >저장</div><Icon style={{ marginLeft: "5px", fontWeight: "bold" }} icon="ic:round-log-out" />
                 </div>
             </div>
         </nav>

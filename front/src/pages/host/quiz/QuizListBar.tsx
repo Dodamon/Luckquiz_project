@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import styles from "./QuizListBar.module.css"
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +10,8 @@ import ox from '../../../assets/images/ox.png';
 import four from '../../../assets/images/four.png';
 import text from '../../../assets/images/text.png';
 import game from '../../../assets/images/game.png';
+import axios from 'axios';
+import { useParams } from 'react-router';
 
 const newQuizItem: setQuizItem = {
     id: 0,
@@ -49,9 +51,25 @@ const newGameItem: setQuizItem = {
 const QuizListBar = () => {
 
     const quizInfo = useSelector((state: RootState) => state.quiz);
+    const authInfo = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch();
     const [focusedItem, setFocusedItem] = useState(0);
 
+    
+    const params = useParams();
+    const quiz_id = params.quiz_id;
+
+
+    useEffect(() => {
+        if (quiz_id) {
+            axios.get(`https://k8a707.p.ssafy.io/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
+                console.log("아놔 여긴데~ 수정에서받은겨", res);
+                const data = res.data;
+                dispatch(quizAtions.receiveUpdate(data));
+            })
+
+        }
+    }, [])
     const itemSelectHandler = (quiznum: number) => {
         console.log("사람살려", quiznum);
 
@@ -78,6 +96,8 @@ const QuizListBar = () => {
             return;
         }
         dispatch(quizAtions.addQuiz(newQuizItem));
+        setFocusedItem(quizInfo.quizList.length)
+        dispatch(authActions.selectIndex(quizInfo.quizList.length))
     }
 
     const addGameHandler = () => {
@@ -86,6 +106,8 @@ const QuizListBar = () => {
             return;
         }
         dispatch(quizAtions.addQuiz(newGameItem))
+        setFocusedItem(quizInfo.quizList.length)
+        dispatch(authActions.selectIndex(quizInfo.quizList.length))
     }
 
     const deleteContentHandler = (idx: number) => {
