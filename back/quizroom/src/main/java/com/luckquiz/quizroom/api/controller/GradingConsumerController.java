@@ -70,6 +70,7 @@ public class GradingConsumerController {
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+                System.out.println(kafkaGradeEndMessage.getRoomId());
                 Map all = hashOperations.entries(kafkaGradeEndMessage.getRoomId()+"p");
                 List<String> users = new ArrayList<>(all.values());
                 List<Grade> userLList = new ArrayList<>();
