@@ -30,7 +30,6 @@ const TimerBar = ({ handleOrder, handleSubmit }: Props) => {
         handleSubmit && handleSubmit(); // 자동제출(채점해줘)
       }
     }, time! * 1000);
-
     // 언마운트시 timer reset
     return () => {
       clearTimeout(timer);

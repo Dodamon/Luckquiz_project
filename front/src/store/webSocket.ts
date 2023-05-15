@@ -16,7 +16,7 @@ interface SocketState {
   getMessage: boolean;
   getEmotion: boolean;
   emotionResult: EmotionResult | null;
-  endQuiz: number
+  quizEnd: string | null
 }
 
 const initialState: SocketState = {
@@ -27,7 +27,7 @@ const initialState: SocketState = {
   getMessage: false,
   getEmotion: false,
   emotionResult: null,
-  endQuiz: 0,
+  quizEnd: null,
 };
 
 const socketSlice = createSlice({
@@ -72,11 +72,12 @@ const socketSlice = createSlice({
 
     getQuizItem: (state, actions) => {
       state.quizItem = actions.payload;
+      state.quizEnd = null;
       console.log(state.quizItem);
     },
 
-    endQuiz: (state, actions) => {
-      state.endQuiz = state.endQuiz + 1;
+    quizEnd: (state, actions) => {
+      state.quizEnd = actions.payload;
     },
 
     getEmotionResult: (state, actions) => {
@@ -119,7 +120,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
         dispatch(socketActions.getEmotionResult(data.emotionResult));
         dispatch(socketActions.getEmotionMessage(true));
       } 
-      // else if (data.type === "endQuiz") dispatch(socketActions.endQuiz)
+      else if (data.type === "quizEnd") dispatch(socketActions.quizEnd(data.quizEnd))
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     }

@@ -36,8 +36,8 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("O")}
-          style={item === "O" ? { opacity: "70%" } : {}}
+          onClick={() => !isHost && answerHandler("o")}
+          style={item === "o" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-two)" }}>
             <div>
@@ -51,8 +51,8 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("X")}
-          style={item === "X" ? { opacity: "70%" } : {}}
+          onClick={() => !isHost && answerHandler("x")}
+          style={item === "x" ? { opacity: "70%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-one)" }}>
             <div>
