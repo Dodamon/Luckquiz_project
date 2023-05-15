@@ -28,6 +28,7 @@ public class QGame {
     private Integer timer;
     private Integer quizNum;
     private Integer quizSize;
+    private String hostNickname;
 
     public void setType(QuizType type) {
         this.type = type;
@@ -48,6 +49,9 @@ public class QGame {
     public void setQuizSize(Integer quizSize) {
         this.quizSize = quizSize;
     }
+
+    public void setAnswer(String answer){this.answer = answer;}
+    public void setHostNickname(String hostNickname){this.hostNickname = hostNickname;}
 
     public static QGame serveQgame(QGame q){
         QGame qgame = new QGame();

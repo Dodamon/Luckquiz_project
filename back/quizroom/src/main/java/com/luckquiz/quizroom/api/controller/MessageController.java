@@ -100,6 +100,7 @@ public class MessageController {
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
         System.out.println("entered:  "+message.getSender()+"img type: ");
+
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
         grade.setPlayerImg(message.getImg());
@@ -110,7 +111,7 @@ public class MessageController {
                 .build();
         zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         StringValueOperations.append(roomId+"l",gson.toJson(enterUser)+", ");
-//안돼쥬
+
         String roomIdString = roomId+"";
         System.out.println(" this is room Id ---->" + roomIdString);
         String roomInfo =StringValueOperations.get(roomIdString);
@@ -251,10 +252,16 @@ public class MessageController {
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
-        QuizStartMessage qsmG = QuizStartMessage.builder()
-                .type("getQuizItem")
-                .getQuizItem(toGuest)
-                .build();
+        QuizStartMessage qsmG = new QuizStartMessage();
+        if("emotion".equals(result.getGame())){
+            System.out.println("emotion 찍혔니?");
+            toGuest.setAnswer(result.getAnswer());
+            qsmG.setGetQuizItem(result);
+            qsmG.setType("getQuizItem");
+        }else {
+            qsmG.setGetQuizItem(toGuest);
+            qsmG.setType("getQuizItem");
+        }
         quizService.serveQuiz(qsmG,quizStartRequest.getRoomId());
     }
 
@@ -276,10 +283,16 @@ public class MessageController {
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
-        QuizStartMessage qsmG = QuizStartMessage.builder()
-                .type("getQuizItem")
-                .getQuizItem(toGuest)
-                .build();
+        QuizStartMessage qsmG = new QuizStartMessage();
+        if("emotion".equals(result.getGame())){
+            System.out.println("emotion 찍혔니?");
+            toGuest.setAnswer(result.getAnswer());
+            qsmG.setGetQuizItem(result);
+            qsmG.setType("getQuizItem");
+        }else {
+            qsmG.setGetQuizItem(toGuest);
+            qsmG.setType("getQuizItem");
+        }
         quizService.serveQuiz(qsmG,nextMessage.getRoomId());
     }
 

@@ -63,6 +63,7 @@ public class QuizService {
         firstQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
 
         templateDetailResponse.setQuizNum(0);
+        log.info("host NickName  "+templateDetailResponse.getHostNickName());
         String newVal = gson.toJson(templateDetailResponse);
         stringRedisTemplate.opsForValue().set(quizStartRequest.getRoomId().toString(),newVal);
         return firstQuiz;
