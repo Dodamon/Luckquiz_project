@@ -117,7 +117,7 @@ public class MessageController {
         List<EnterUser> result = new ArrayList();
         for(String user: arr){
             EnterUser a = gson.fromJson(user,EnterUser.class);
-            if(!roomInf.getHostNickName().equals(a.getSender()) || !roomInf.getHostId().equals(a.getSender())){
+            if(!roomInf.getHostNickName().equals(a.getSender()) && !roomInf.getHostId().equals(a.getSender())){
                 result.add(a);
             }
         }
