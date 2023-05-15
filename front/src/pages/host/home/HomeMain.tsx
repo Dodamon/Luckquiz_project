@@ -25,21 +25,21 @@ interface Data {
 const HomeMain = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { data, status, sendHostRequest } = useHostAxios();
+  // const { data, status, sendHostRequest } = useHostAxios();
   const [isModals, setIsModal] = useState(false);
   const quizInfo = useSelector((state:RootState) => state.quiz)
   const authInfo = useSelector((state:RootState) => state.auth)
- useEffect(() => {
-  sendHostRequest({
-    url: `/api/auth/user/info`,
-  });
-}, []);
+//  useEffect(() => {
+//   sendHostRequest({
+//     url: `/api/auth/user/info`,
+//   });
+// }, []);
 
-useEffect(() => {
-  if (data) {
-    dispatch(authActions.updateInfo({ nickname: data.name, userId: data.id, image_url: data.image_url }));
-  }
-}, [data]);
+// useEffect(() => {
+//   if (data) {
+//     dispatch(authActions.updateInfo({ nickname: data.name, userId: data.id, image_url: data.image_url }));
+//   }
+// }, [data]);
 
 const testHandler= ()=>{
  setIsModal(!isModals);
