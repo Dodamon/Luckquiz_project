@@ -29,7 +29,7 @@ import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
-import HostAwards from "pages/host/host/quiz/HostAwards";
+import Awards from "pages/common/Awards";
 
 
 const router = createBrowserRouter([
@@ -99,7 +99,7 @@ const router = createBrowserRouter([
           },
           {
             path: "awards",
-            element: <HostAwards />,
+            element: <Awards />,
           },
         ],
       },
@@ -150,7 +150,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/awards",
-            element: <></>,
+            element: <Awards />,
           },
           {
             path: "quiz/ranking",
