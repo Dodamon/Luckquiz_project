@@ -1,43 +1,18 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
 import styles from "./QuizOxContent.module.css";
-import { getQuizItem, setQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
-type QuizOxContentProps = {
-  handleAnswer? : Function;
-};
-
-const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
-  const [item, setItem] = useState("");
+const QuizOxAnswer = () => {
   const content = useSelector((state: RootState) => state.socket.quizItem!);
-  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated); 
 
-  const answerHandler = (answer: string) => {
-    setItem(answer);
-    console.log(answer)
-    handleAnswer && handleAnswer(answer)
-  };
   return (
     <div className={styles.QuizOxContent}>
-      {/* <div className={styles.content_title}>
-                <input type="text" disabled value={"문제입니다"}/>
-            </div> */}
-      <QuizGameTitle title={content.question} />
-
-      {/* {content.quizUrl &&  */}
-      <div className={styles.content_images}>
-        <img src={"https://image.hmall.com/static/0/0/32/88/2088320002_1.jpg?RS=600x600&AR=0"} alt="좋아" />
-      </div>
-      {/* } */}
-
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("o")}
-          style={item === "o" ? { opacity: "70%" } : {}}
+          style={content.answer !== "o" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-two)" }}>
             <div>
@@ -51,8 +26,7 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("x")}
-          style={item === "x" ? { opacity: "70%" } : {}}
+          style={content.answer !== "x" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-one)" }}>
             <div>
@@ -68,4 +42,4 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
   );
 };
 
-export default QuizOxContent;
+export default QuizOxAnswer;

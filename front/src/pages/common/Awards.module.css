@@ -1,0 +1,11 @@
+.container {
+    width: 50%;
+    height: 50%;
+}
+
+.btn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  /* margin-top: 5vh; */
+}
