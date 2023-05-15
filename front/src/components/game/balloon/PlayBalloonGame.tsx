@@ -3,7 +3,11 @@ import BalloonGame from "components/game/balloon/BalloonGame";
 import styles from "./PlayBalloonGame.module.css";
 import logoCat from "assets/images/logoCharacter.png";
 
-const PlayBalloonGame:React.FC = () => {
+interface Props {
+    handleOrder: Function;
+  }
+  
+const PlayBalloonGame:React.FC<Props> = ({handleOrder}) => {
 
     return (
         <div className={styles.balloonGameContainer}>
@@ -11,7 +15,7 @@ const PlayBalloonGame:React.FC = () => {
             <div className={styles.gameTitle}>
                 풍선 터트리기 게임 
             </div>
-            <BalloonGame/> 
+            <BalloonGame handleOrder={handleOrder}/> 
         </div>  
     );
 };

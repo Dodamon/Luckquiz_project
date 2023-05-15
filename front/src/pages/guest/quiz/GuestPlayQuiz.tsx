@@ -17,6 +17,7 @@ import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import guest from "store/guest";
 import BalloonGame from "components/game/balloon/BalloonGame";
+import PlayBalloonGame from "components/game/balloon/PlayBalloonGame";
 
 const GuestPlayQuiz = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const GuestPlayQuiz = () => {
               {quizItem?.quiz === "ox" && <QuizOxContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "four" && <QuizFourContent handleAnswer={SetguestAnswer} />}
               {quizItem?.game === "wakeup" && <WakeUpGame handleOrder={setOrder} />}
-              {quizItem?.game === "balloon" && <BalloonGame handleOrder={setOrder} />}
+              {quizItem?.game === "balloon" && <PlayBalloonGame handleOrder={setOrder} />}
               {quizItem?.game === "emotion" && <EmotionGame handleOrder={setOrder} />}
             </div>
             {quizItem?.quiz && (

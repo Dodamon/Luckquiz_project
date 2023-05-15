@@ -12,7 +12,7 @@ interface HandleOrderProps {
 
 const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
   const dispatch = useDispatch();
-
+  
   const webcamRef = useRef<Webcam>(null);
   const faceBoxRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -28,7 +28,6 @@ const EmotionGame: React.FC<HandleOrderProps> = ({handleOrder}) => {
   const quizNum = useSelector((state:RootState) => state.socket.quizItem?.quizNum);
   const gotEmotion = useSelector((state:RootState) => state.socket.getEmotion);
   const emotion = useSelector((state:RootState) => state.socket.quizItem?.answer);
-
 
   const resizeImage = (img: string, maxSize: number) => {
     return new Promise<string | null>((resolve, reject) => {

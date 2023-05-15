@@ -129,23 +129,6 @@ const router = createBrowserRouter([
             element: <GuestPlayQuiz/>,
           },
           {
-            path: "quiz/balloon",
-            element: <BalloonGame/>,
-          },
-          // {
-          //   path: "quiz/emotion",
-          //   element: <EmotionGame handleOrder={() => {}}/>,
-          // },
-          // {
-          //   path: "quiz/wakeup",
-          //   element: <WakeUpGame/>,
-          // },
-          // {
-          //   // 지워야 됨
-          //   path: "quiz/game/ready",
-          //   element: <ReadyGame/>
-          // },
-          {
             path: "quiz/result",
             element: <></>,
           },

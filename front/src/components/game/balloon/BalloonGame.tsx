@@ -7,11 +7,10 @@ import { socketActions } from "store/webSocket";
 import { useDispatch } from "react-redux";
 
 interface Props {
-  handleOrder?: Function;
+  handleOrder: Function;
 }
 
-const BalloonGame = (props: Props) => {
-  const { handleOrder } = props;
+const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   const dispatch = useDispatch()
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
@@ -123,9 +122,11 @@ const BalloonGame = (props: Props) => {
 
     console.log(time.toFixed(2));
     submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
-    // POST time.toFixed(2) data
-    ////////////////////////////
     setIsRunning(false);
+
+    setTimeout(() => {
+      handleOrder(2);
+    }, 400)
   };
 
   useEffect(() => {
