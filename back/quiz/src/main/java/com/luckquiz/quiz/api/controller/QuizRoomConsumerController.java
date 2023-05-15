@@ -45,7 +45,6 @@ public class QuizRoomConsumerController {
     public void quizStart(String in, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception{
         if("start".equals(key)){
             EnterUser u = new EnterUser();
-            System.out.println("start 로 왔니");
             UUID hostId = UUID.fromString(in.split(" ")[0]);
             int roomId = Integer.parseInt(in.split(" ")[1]);
             int templateId = Integer.parseInt(in.split(" ")[2]);
@@ -54,13 +53,9 @@ public class QuizRoomConsumerController {
             StringValueOperations.append(roomId+"l",gson.toJson(u)+", ");
             ValueOperations<String, Integer> IntegerValueOperations = redisConfig.redisIntegerTemplate().opsForValue();
             IntegerValueOperations.set(roomId+"cnt",0);
-            System.out.println(templateId);
-            System.out.println(templateId + "    roomId: "+roomId + "    hostId: "+hostId);
             User host = userRepository.findUserById(hostId).orElseThrow(()->new CustomException(CustomExceptionType.USER_NOT_FOUND));
-            log.info(host.getName());
             redisTransService.quizRedisTrans(roomId,hostId,templateId,host.getName());  // roomId 로
             redisTransService.roomTempTrans(roomId,hostId,templateId);
-
 
             Template temp = templateRepository.findTemplateById(templateId).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
             QuizRoom quizRoom = QuizRoom.builder()
@@ -92,7 +87,6 @@ public class QuizRoomConsumerController {
                         .guestNickname(g.getPlayerName())
                         .build();
             }
-
             Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId()+"rank",0,zSetOperations.size(finalRequest.getRoomId()+"rank")-1);
             for(ZSetOperations.TypedTuple a : rank){
                 EnterUser temp = gson.fromJson(a.getValue().toString(),EnterUser.class);
