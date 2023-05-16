@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface QuizGuestRepository extends JpaRepository<QuizGuest, Integer> {
     Optional<QuizGuest> findByTemplateId(Integer templateId);
+    Optional<QuizGuest> findQuizGuestByPinNum(Integer pinNum);
 }
 

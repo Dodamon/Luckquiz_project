@@ -24,6 +24,9 @@ public class QuizReport {
 
     @Column(name = "quiz_game_id", nullable = true)
     private int quizGameId;
+
+    @Column(name = "question")
+    private String question;
     //count임
     @Column(name = "correct_count", nullable = true)
     private int correctCount;
@@ -40,5 +43,27 @@ public class QuizReport {
     @Column(name = "pin_num")
     private Integer pinNum;
 
+    public void setQuizGameId(int quizGameId) {
+        this.quizGameId = quizGameId;
+    }
 
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setCorrectCount(int correctCount) {
+        this.correctCount = correctCount;
+    }
+
+    public void setSubmitCount(int submitCount) {
+        this.submitCount = submitCount;
+    }
+
+    public void setQuizRoom(QuizRoom quizRoom) {
+        this.quizRoom = quizRoom;
+    }
+
+    public void setPinNum(Integer pinNum) {
+        this.pinNum = pinNum;
+    }
 }

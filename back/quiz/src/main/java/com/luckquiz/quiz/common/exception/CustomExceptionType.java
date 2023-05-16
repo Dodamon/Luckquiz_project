@@ -18,7 +18,9 @@ public enum CustomExceptionType {
     KAFKA_SERIALIZE_ERROR(HttpStatus.BAD_REQUEST,"110","카프카 SERIALIZE가 안됩니다."),
     NULL_VALUE_ERROR(HttpStatus.BAD_REQUEST,"111","필요한 값중 하나가 빈 값입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"112","해당하는 유저가 없읍니다."),
-    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"113","해당하는 퀴즈 방이 없읍니다.");
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND,"113","해당하는 퀴즈 방이 없읍니다."),
+    REPORT_NOT_FOUND(HttpStatus.NOT_FOUND,"114","해당하는 퀴즈 리포트가 없읍니다."),
+    QUIZGUEST_NOT_FOUND(HttpStatus.NOT_FOUND,"115","해당하는 퀴즈 유저들이 없읍니다.");
     private final HttpStatus httpStatus;
     private final String code;
     private String message;

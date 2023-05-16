@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class RedisTransService {
 
         String value = gson.toJson(templateDetailResponse);
         stringStringValueOperations.set(keyVal ,value);
+        redisTemplate.expire(keyVal,3L, TimeUnit.HOURS);
 
         final String room_id = stringStringValueOperations.get(keyVal);
         System.out.println(keyVal);
@@ -56,6 +58,7 @@ public class RedisTransService {
                 .build();
         String value = gson.toJson(val);
         stringStringValueOperations.set(keyVal ,value);
+        redisTemplate.expire(keyVal,3L,TimeUnit.HOURS);
 
         final String room_id = stringStringValueOperations.get(keyVal);
         System.out.println("template 과 roomId를 얻기 위해  "+keyVal);

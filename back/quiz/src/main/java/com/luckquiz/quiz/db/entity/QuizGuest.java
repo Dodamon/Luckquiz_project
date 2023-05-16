@@ -36,4 +36,28 @@ public class QuizGuest {
 
     @Column(name = "score")
     private Double score;
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
+    }
+
+    public void setGuestNickname(String guestNickname) {
+        this.guestNickname = guestNickname;
+    }
+
+    public void setPinNum(int pinNum) {
+        this.pinNum = pinNum;
+    }
+
+    public void setCorrectCount(int correctCount) {
+        this.correctCount = correctCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
 }
