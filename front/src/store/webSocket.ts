@@ -102,14 +102,13 @@ const socketSlice = createSlice({
     getGuestResult: (state, actions) => {
       state.getGuestResult = actions.payload;
     },
-    
-    deleteGuestResult: (state, actions) => {
-      state.getGuestResult = null
-      console.log('delete')
-    },
 
     getFinalResultList: (state, actions) => {
       state.getFinalResultList = actions.payload;
+    },
+
+    resetSocket: (state) => {
+      Object.assign(state, initialState);
     }
   },
 });
