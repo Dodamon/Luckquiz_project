@@ -135,17 +135,10 @@ const router = createBrowserRouter([
             path: "quiz/play",
             element: <GuestPlayQuiz />,
           },
-<<<<<<< front/src/router/index.tsx
-          // {
-          //   path: "quiz/result",
-          //   element: <GuestResult/>,
-          // },
-=======
           {
             path: "quiz/result",
-            element: <GuestResult />,
+            element: <></>,
           },
->>>>>>> front/src/router/index.tsx
           {
             path: "quiz/awards",
             element: <Awards />,

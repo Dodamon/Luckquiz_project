@@ -100,7 +100,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
               <div className={styles.content_input}>
                 <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
-              <div className={styles.content_add} onClick={answerAddHandler}><Icon icon="ic:round-plus" /></div></div>
+              <div className={styles.content_add} onClick={answerAddHandler} style={index ===2? {visibility:"hidden"}:{}}><Icon icon="ic:round-plus" /></div></div>
           })
         }
 
