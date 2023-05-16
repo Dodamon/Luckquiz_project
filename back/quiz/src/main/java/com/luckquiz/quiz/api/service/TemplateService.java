@@ -5,9 +5,7 @@ import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.request.QuizGameCreateRequest;
 import com.luckquiz.quiz.api.request.TemplateCreateRequest;
 import com.luckquiz.quiz.api.request.TemplateDeleteRequest;
-import com.luckquiz.quiz.api.response.QGCreateResponse;
 import com.luckquiz.quiz.api.response.TemplateDetailResponse;
-import com.luckquiz.quiz.api.response.TemplateInfoResponse;
 import com.luckquiz.quiz.api.response.TemplateResponse;
 import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
@@ -18,16 +16,13 @@ import com.luckquiz.quiz.db.repository.QuizGameRepository;
 import com.luckquiz.quiz.db.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.util.ReflectionUtil;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
 import java.time.LocalDateTime;
