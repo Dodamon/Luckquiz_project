@@ -34,8 +34,6 @@ public class QuizReportService {
 
         QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-        QuizReport quizReport = quizReportRepository.findByQuizRoom(quizRoom).orElseThrow(
-                () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
 
         // LocalDateTime 객체를 Instant 객체로 변환
         Instant startInstant = quizRoom.getCreatedTime().toInstant(ZoneOffset.UTC);
@@ -44,10 +42,10 @@ public class QuizReportService {
         Duration duration = Duration.between(startInstant, endInstant);
 
         QuizReportResponse quizReportResponse = QuizReportResponse.builder()
-                .quizCount(quizReport.getQuizCount())
-                .gameCount(quizReport.getGameCount())
+                .quizCount(quizRoom.getQuizCount())
+                .gameCount(quizRoom.getGameCount())
                 .participantCount(quizRoom.getParticipantCount())
-                .successRate(quizReport.getCorrectCount() / quizReport.getSubmitCount())
+                .successRate(quizRoom.getCorrectCount() / quizRoom.getSubmitCount())
                 .duration(duration)
                 .title(quizRoom.getTemplate().getName())
                 .build();
