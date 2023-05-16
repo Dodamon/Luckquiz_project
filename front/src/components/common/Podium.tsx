@@ -13,6 +13,7 @@ import { IMAGES } from "components/guest/ProfileNickname"
 const Podium = () => {
   const aniBox = useRef<HTMLDivElement>(null);
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList)
+  const minGuest = finalResult?.length
   const [showFirstProfile, setShowFirstProfile] = useState(false);
   const [showSecondProfile, setShowSecondProfile] = useState(false);
   const [showThirdProfile, setShowThirdProfile] = useState(false);
@@ -66,19 +67,19 @@ const Podium = () => {
       {finalResult && showFirstProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "31%", bottom: "56.5%" }}>
           <img src={IMAGES[finalResult[0].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>무지개꽃잎이</div>
+          <div className={styles.nameTag}>{finalResult[0].sender}</div>
         </div>
       )}
-      {finalResult && showSecondProfile && (
+      {finalResult && minGuest! >= 2 && showSecondProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "-4%", bottom: "45%" }}>
           <img src={IMAGES[finalResult[1].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>무지개꽃잎이</div>
+          <div className={styles.nameTag}>{finalResult[1].sender}</div>
         </div>
       )}
-      {finalResult && showThirdProfile && (
+      {finalResult && minGuest! >= 3 && showThirdProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "66%", bottom: "35.5%" }}>
-          <img src={IMAGES[finalResult[3].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>무지개꽃잎이</div>
+          <img src={IMAGES[finalResult[2].img]} alt="" className={styles.profileImg} />
+          <div className={styles.nameTag}>{finalResult[2].sender}</div>
         </div>
       )}
       <div ref={aniBox}></div>
