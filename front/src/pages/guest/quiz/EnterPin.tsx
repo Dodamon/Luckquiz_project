@@ -15,7 +15,7 @@ const EnterPin: React.FC = () => {
 
   const formSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const enteredPin = inputRef.current!.value;
+    const enteredPin = inputRef.current!.value.trim();
     if (enteredPin.length === 0) {
       alert("핀 번호를 입력하세요.");
       inputRef.current?.focus();

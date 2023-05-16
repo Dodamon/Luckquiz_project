@@ -20,7 +20,7 @@ const ReadyGame = ({ handleOrder }: Props) => {
   handleOrder &&
     setTimeout(() => {
       handleOrder(0);
-    }, 3800);
+    }, 6000);
 
   return (
     <div className={styles.ReadyGameContainer}>
@@ -30,9 +30,6 @@ const ReadyGame = ({ handleOrder }: Props) => {
         {type === "emotion" && <ReadyEmotionGame />}
         {type === "wakeup" && <ReadyWakeupGame />}
       </div>
-      {/* <div>
-        <LoadingSpinner text="잠시만 기다려 주세요"/>
-      </div> */}
     </div>
   );
 };
