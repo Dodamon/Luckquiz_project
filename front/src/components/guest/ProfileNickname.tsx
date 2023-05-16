@@ -68,7 +68,7 @@ const ProfileNickname: React.FC = () => {
   // 참여하기 눌렀을 때 프로필사진 닉네임 설정, 웹소켓 연결, 대기화면으로 navigate
   const onClickSubmit = async () => {
     // 닉네임 유효성 검사
-    const enteredTxt = nicknameRef.current!.value;
+    const enteredTxt = nicknameRef.current!.value.trim();
     if (enteredTxt.length === 0) {
       alert("닉네임을 입력하세요.");
       nicknameRef.current?.focus();
