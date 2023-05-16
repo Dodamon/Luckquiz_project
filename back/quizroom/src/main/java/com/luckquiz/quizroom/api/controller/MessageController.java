@@ -269,13 +269,8 @@ public class MessageController {
 
     @MessageMapping("/quiz/next")
     public void next(NextMessage nextMessage) {
+        System.out.println("howqhrioqwhroiqwhroiqwhrioqwhroi___________");
         QGame result = quizService.nextQuiz(nextMessage);
-        String type = "";
-        if(result.getQuiz() != null){
-            type = result.getQuiz();
-        }else{
-            type = result.getGame();
-        }
         QuizStartMessage qsm = QuizStartMessage.builder()
                 .type("getQuizItem")
                 .getQuizItem(result)
@@ -285,12 +280,13 @@ public class MessageController {
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
-        toGuest.setQuizNum(result.getQuizNum());
         QuizStartMessage qsmG = new QuizStartMessage();
+        log.warn(qsmG.getGetQuizItem().getGame());
+        log.warn(qsmG.getGetQuizItem().getQuiz());
+        log.warn("퀴즈 번호"+qsmG.getGetQuizItem().getQuizNum().toString());
         if("emotion".equals(result.getGame())){
             System.out.println("emotion 찍혔니?");
             toGuest.setAnswer(result.getAnswer());
-
             qsmG.setGetQuizItem(toGuest);
             qsmG.setType("getQuizItem");
         }else {
