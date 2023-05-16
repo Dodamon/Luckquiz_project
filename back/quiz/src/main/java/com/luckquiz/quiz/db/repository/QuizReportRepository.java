@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface QuizReportRepository extends JpaRepository<QuizReport, Integer> {
     @Override
     Optional<QuizReport> findById(Integer integer);
-
+    Optional<QuizReport> findQuizReportByPinNum(Integer pinNum);
     Optional<QuizReport> findByQuizRoom(QuizRoom quizRoom);
 
     // 이거 api 짜면서 그 때 그 때 맹그시지요... 역시 알 톡 챗 켓 텍 카 노 리 갑자기 저도 안됩니다?
