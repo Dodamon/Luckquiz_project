@@ -8,18 +8,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 
 type QuizFourContentProps = {
-  handleAnswer? : Function;
-
+  handleAnswer?: Function;
 };
 
 const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
   const [item, setItem] = useState("");
   const content = useSelector((state: RootState) => state.socket.quizItem!);
-  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated); 
+  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const answerHandler = (answer: string) => {
     setItem(answer);
-    handleAnswer && handleAnswer(answer)  // 보기에 담기 답을 직접 string으로 보내야함.
+    handleAnswer && handleAnswer(answer); // 보기에 담기 답을 직접 string으로 보내야함.
   };
 
   return (
@@ -29,11 +28,11 @@ const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
             </div> */}
       <QuizGameTitle title={content.question} />
 
-      {/* {content.quizUrl &&  */}
-      <div className={styles.content_images}>
-        <img src={content.quizUrl} alt="좋아" />
-      </div>
-      {/* } */}
+      {content.quizUrl && (
+        <div className={styles.content_images}>
+          <img src={content.quizUrl} alt="좋아" />
+        </div>
+      )}
 
       <div className={styles.content_answerbox}>
         <div

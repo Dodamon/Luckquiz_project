@@ -5,7 +5,7 @@ export interface getQuizItem {
     question: string,
     quizUrl: string,
     answer: string,
-    answerList: string,
+    answerList: string[],
     one: string,
     two: string,
     three: string,
