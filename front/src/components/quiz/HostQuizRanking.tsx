@@ -4,10 +4,22 @@ import crown from 'assets/images/pngwing.png'
 import rank from 'assets/images/rank.png'
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import { HostResult } from 'models/quiz';
 
-const QuizRanking = () => {
-    const quizGameType = useSelector((state : RootState) => state.socket.quizItem)
 
+interface HostQuizRankingProps {
+    result: HostResult[];
+  }
+//   export interface HostResult {
+//     count: number;
+//     playerImg: number;
+//     playerName: string;
+//     rankNow: number;
+//     rankPre: number;
+//     scoreGet: number;
+const HostQuizRanking= ({ result }: HostQuizRankingProps) => {
+    const quizGameType = useSelector((state: RootState) => state.socket.quizItem)
+    
     const setList = [1, 3, 4, 5, 2];
     return (
         <div className={styles.QuizRanking}>
@@ -21,7 +33,7 @@ const QuizRanking = () => {
             </div>
             <section className={styles.rank_box}>
                 <header className={styles.titles}>
-                    <div className={styles.title_text}>OX 문제</div>
+                    <div className={styles.title_text}>게임결과</div>
                 </header>
 
                 <main className={styles.crown}>
@@ -122,4 +134,4 @@ const QuizRanking = () => {
     );
 };
 
-export default QuizRanking;
+export default HostQuizRanking;

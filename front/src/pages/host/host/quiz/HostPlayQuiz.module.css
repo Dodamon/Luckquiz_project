@@ -12,8 +12,12 @@
   justify-content: center;
   align-items: center;
   gap: 2vh;
+  position: relative;
+  z-index: 3;
 }
 }
+
+
 @media screen and (max-width: 767px) {
 .container {
   width: 100%;
@@ -28,6 +32,9 @@
   justify-content: center;
   align-items: center;
   gap: 3vh;
+  position: relative;
+  z-index: 3;
+  /* background-color: red; */
 }
 }
 
@@ -63,4 +70,18 @@
 .submitChart {
   width: 70%;
   /* height: 30%; */
+}
+
+.bgtools{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+}
+
+.open_btn{
+  cursor: pointer;
 }

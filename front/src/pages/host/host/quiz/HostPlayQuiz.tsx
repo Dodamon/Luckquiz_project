@@ -21,6 +21,7 @@ import QuizRanking from "components/quiz/QuizRanking";
 import QuizShortAnswer from "components/quiz/QuizShortAnswer";
 import QuizOxAnswer from "components/quiz/QuizOxAnswer";
 import QuizFourAnswer from "components/quiz/QuizFourAnswer";
+import HostQuizRanking from "components/quiz/HostQuizRanking";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const HostPlayQuiz = () => {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const quizGameResult = useSelector((state: RootState) => state.socket.getHostResult);
+  
   const [modalOn, SetModalOn] = useState(quizItem?.quiz ? false : true);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -51,12 +53,18 @@ const HostPlayQuiz = () => {
 
   // 결과 랭킹 모달 밖에 클릭시, 모달닫기
   useEffect(() => {
-    const clickOutside = (e: { target: Node | null }) => {
-      if (modalOn && ref.current && !ref.current.contains(e.target)) {
+    function handleClickOutside(event:any) {
+      if (ref.current && !ref.current.contains(event.target)) {
         SetModalOn(false);
       }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [modalOn]);
+  }, []);
+
+
 
   // 호스트 기준 퀴즈시간이 끝나면 quizgameend publish
   const quizGameEnd = () => {
@@ -72,12 +80,13 @@ const HostPlayQuiz = () => {
   console.log(quizItem);
   return (
     quizItem && (
-      <div className={styles.container} ref={ref}>
+      <div className={styles.container}    >
+      
         {order === -1 && <ReadyGame handleOrder={setOrder} />}
         {order === 0 && <CountdownAni handleOrder={setOrder} />}
         {order === 1 && (
           <>
-            <div className={styles.header}>
+            <div className={styles.header} >
               <TimerBar handleOrder={setOrder} handleSubmit={quizGameEnd} />
               {quizItem?.quizNum + 1}/{quizItem?.quizSize}
             </div>
@@ -132,7 +141,7 @@ const HostPlayQuiz = () => {
           </>
         )}
         {order === 2 && (
-          <>
+          <> 
             <StartFinishText title="채점중인뎁숑" />
             <div className={styles.nextBtn}>
               <ButtonWithLogo
@@ -155,22 +164,22 @@ const HostPlayQuiz = () => {
           // 제출현황 차트 & 랭킹 컴포넌트(모달)
           <>
             {quizItem?.quiz && (
-              <div className={styles.submitChart}>
+              <div className={styles.submitChart} style={{position:"relative", zIndex:"-1"}}  >
                 <SubmitChart myData={[34, 24, 44, 10]} />
               </div>
             )}
-            <div className={styles.quizContainer}>
+            <div className={styles.quizContainer} ref={ref}  style={{position:"relative", zIndex:"-1"}}  >
               {quizItem?.quiz === "text" && <QuizShortAnswer />}
               {quizItem?.quiz === "ox" && <QuizOxAnswer />}
               {quizItem?.quiz === "four" && <QuizFourAnswer />}
             </div>
-            {quizItem?.quiz && <div onClick={() => SetModalOn((pre) => !pre)}>현재 전체 랭킹보기</div>}
-            {modalOn && <QuizRanking />}
-
+            {quizItem?.quiz && <div onClick={() => SetModalOn((pre) => !pre)} style={ modalOn? { position: "relative", zIndex:"-2"}:{} } >현재 전체 랭킹보기</div>}
+            {(modalOn && quizGameResult)&&  <HostQuizRanking  result={quizGameResult} />}
+            <div  className={styles.bgtools} style={modalOn? {backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)'}: {}} ></div>
             {/* 마지막 문제이면 최종결과 버튼*/}
             {/* 아니면 다음퀴즈 버튼*/}
             {quizItem.quizSize - quizItem.quizNum === 1 ? (
-              <div className={styles.nextBtn}>
+              <div className={styles.nextBtn} style={ modalOn? { position: "relative", zIndex:"-2"}:{} } >
                 <ButtonWithLogo
                   name="최종 결과보기"
                   fontSize="18px"
@@ -205,6 +214,7 @@ const HostPlayQuiz = () => {
             )}
           </>
         )}
+        
       </div>
     )
   );
