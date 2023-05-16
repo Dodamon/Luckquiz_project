@@ -238,12 +238,6 @@ public class MessageController {
                 .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
-        String type = "";
-        if(result.getQuiz() != null){
-            type = result.getQuiz();
-        }else{
-            type = result.getGame();
-        }
         QuizStartMessage qsm = QuizStartMessage.builder()
                 .type("getQuizItem")
                 .getQuizItem(result)
@@ -269,7 +263,6 @@ public class MessageController {
 
     @MessageMapping("/quiz/next")
     public void next(NextMessage nextMessage) {
-        System.out.println("howqhrioqwhroiqwhroiqwhrioqwhroi___________");
         QGame result = quizService.nextQuiz(nextMessage);
         QuizStartMessage qsm = QuizStartMessage.builder()
                 .type("getQuizItem")
@@ -281,9 +274,6 @@ public class MessageController {
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
         QuizStartMessage qsmG = new QuizStartMessage();
-        log.warn(qsmG.getGetQuizItem().getGame());
-        log.warn(qsmG.getGetQuizItem().getQuiz());
-        log.warn("퀴즈 번호"+qsmG.getGetQuizItem().getQuizNum().toString());
         if("emotion".equals(result.getGame())){
             System.out.println("emotion 찍혔니?");
             toGuest.setAnswer(result.getAnswer());
@@ -402,7 +392,6 @@ public class MessageController {
             tempU.setScore(name.getScore().intValue());
             rankNum ++;
             result.add(tempU);
-
         }
         FinalResultMessage finalResultMessage = FinalResultMessage.builder()
                 .type("finalResultList")
@@ -413,7 +402,6 @@ public class MessageController {
             sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+user.getSender(),finalResultMessage);
         }
         sendingOperations.convertAndSend("/topic/quiz/" + finalRequest.getRoomId(),finalResultMessage);
-
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
     }
