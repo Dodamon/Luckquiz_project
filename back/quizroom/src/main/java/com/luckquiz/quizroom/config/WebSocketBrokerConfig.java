@@ -29,7 +29,7 @@ public class WebSocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker (MessageBrokerRegistry registry) {  // 메시지 브로커 설정
         //15초 간격 핑퐁
-        registry.enableSimpleBroker( "/queue","/topic").setTaskScheduler(new DefaultManagedTaskScheduler()).setHeartbeatValue(new long[] {15000L,15000L}) ;  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
+        registry.enableSimpleBroker( "/queue","/topic").setTaskScheduler(new DefaultManagedTaskScheduler()).setHeartbeatValue(new long[] {30000L,30000L}) ;  // topic은 주로 일대다 여기다 받는걸 해두면 된다.
         // 내장 브로커 사용
         // 파라미터로 설정된 값으로 prefix가 붙은 메시지를 발행 시 브로커가 처리하겠다.
         registry.setApplicationDestinationPrefixes("/app");
