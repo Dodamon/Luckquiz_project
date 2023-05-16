@@ -6,9 +6,13 @@ import profile1 from "assets/profile/profile1.png";
 import profile2 from "assets/profile/profile2.png";
 import profile3 from "assets/profile/profile3.png";
 import confetti from "canvas-confetti";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { IMAGES } from "components/guest/ProfileNickname"
 
 const Podium = () => {
   const aniBox = useRef<HTMLDivElement>(null);
+  const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList)
   const [showFirstProfile, setShowFirstProfile] = useState(false);
   const [showSecondProfile, setShowSecondProfile] = useState(false);
   const [showThirdProfile, setShowThirdProfile] = useState(false);
@@ -59,21 +63,21 @@ const Podium = () => {
 
   return (
     <div className={styles.container}>
-      {showFirstProfile && (
+      {finalResult && showFirstProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "31%", bottom: "56.5%" }}>
-          <img src={profile1} alt="" className={styles.profileImg} />
+          <img src={IMAGES[finalResult[0].img]} alt="" className={styles.profileImg} />
           <div className={styles.nameTag}>무지개꽃잎이</div>
         </div>
       )}
-      {showSecondProfile && (
+      {finalResult && showSecondProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "-4%", bottom: "45%" }}>
-          <img src={profile2} alt="" className={styles.profileImg} />
+          <img src={IMAGES[finalResult[1].img]} alt="" className={styles.profileImg} />
           <div className={styles.nameTag}>무지개꽃잎이</div>
         </div>
       )}
-      {showThirdProfile && (
+      {finalResult && showThirdProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "66%", bottom: "35.5%" }}>
-          <img src={profile3} alt="" className={styles.profileImg} />
+          <img src={IMAGES[finalResult[3].img]} alt="" className={styles.profileImg} />
           <div className={styles.nameTag}>무지개꽃잎이</div>
         </div>
       )}
