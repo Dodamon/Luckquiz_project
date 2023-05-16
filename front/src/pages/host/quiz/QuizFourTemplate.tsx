@@ -17,13 +17,32 @@ const QuizFourTemplate = ({ num }: pageNum) => {
     const quizList = useSelector((state: RootState) => state.quiz.quizList);
     const template = useSelector((state: RootState) => state.quiz)
     const [quiz, setQuiz] = useState(quizList[num]);
-    const navigate = useNavigate();
 
+    const navigate = useNavigate()
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+          event.preventDefault();
+          event.returnValue = '';       
+         };
+    
+        const handlePopstate = (event: PopStateEvent) => {
+        
+        };
+    
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('popstate', handlePopstate);
+        window.addEventListener('popstate', handlePopstate);
+    
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+          window.removeEventListener('popstate', handlePopstate);
+        };
+      }, [navigate]);
 
     console.log("여기 왔습니니다.", num, quiz);
     useEffect(() => {
         setQuiz(quizList[num]);
-    }, [num, quizList]);
+    }, [num]);
 
     const questionHandler = (e: any) => {
         setQuiz({ ...quiz, question: e.target.value });
