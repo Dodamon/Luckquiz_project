@@ -41,4 +41,8 @@ public class QuizRoom {
     private UUID hostId;
     @Column(name = "pin_num",nullable = true)
     private Integer pinNum;
+    @Column(name = "quiz_count", nullable = true)
+    private int quizCount;
+    @Column(name = "game_count", nullable = true)
+    private int gameCount;
 }

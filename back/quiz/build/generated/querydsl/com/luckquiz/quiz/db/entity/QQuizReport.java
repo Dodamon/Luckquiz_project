@@ -24,13 +24,9 @@ public class QQuizReport extends EntityPathBase<QuizReport> {
 
     public final NumberPath<Integer> correctCount = createNumber("correctCount", Integer.class);
 
-    public final NumberPath<Integer> gameCount = createNumber("gameCount", Integer.class);
-
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final NumberPath<Integer> pinNum = createNumber("pinNum", Integer.class);
-
-    public final NumberPath<Integer> quizCount = createNumber("quizCount", Integer.class);
 
     public final NumberPath<Integer> quizGameId = createNumber("quizGameId", Integer.class);
 

@@ -40,11 +40,5 @@ public class QuizReport {
     @Column(name = "pin_num")
     private Integer pinNum;
 
-    @Column(name = "quiz_count", nullable = true)
-    private int quizCount;
-
-    @Column(name = "game_count", nullable = true)
-    private int gameCount;
-
 
 }
