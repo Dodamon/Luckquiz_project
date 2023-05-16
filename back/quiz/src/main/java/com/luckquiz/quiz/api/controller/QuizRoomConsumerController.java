@@ -106,7 +106,12 @@ public class QuizRoomConsumerController {
                     }else {
                         gameCnt ++;
                     }
+                    QuizReport quizReport = new QuizReport();
+                    quizReport.setQuizGameId(a.getId());
+                    quizReport.setQuestion(a.getQuestion());
+                    quizReport.setPinNum(quizRoom.getPinNum());
                 }
+
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
 
@@ -125,6 +130,7 @@ public class QuizRoomConsumerController {
                             .totalCount(templateDetailResponse.getQuizList().size())
                             .pinNum(quizRoom.getPinNum())
                             .templateId(quizRoom.getTemplate().getId())
+                            .quizRoomId(quizRoom.getId())
                             .build();
                     quizGuestRepository.save(qguest);
                 }
@@ -134,8 +140,12 @@ public class QuizRoomConsumerController {
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
-
+                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByPinNum(quizRoom.getPinNum()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
+                    if(quizGuest.getGuestNickname().equals(temp.getSender())){
+                        quizGuest.setScore(a.getScore());  // 게스트의 총점
+                    }
                     if (host.getName().equals(temp.getSender())) {
+
                     }
                 }
 

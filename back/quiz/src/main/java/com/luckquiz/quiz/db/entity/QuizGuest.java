@@ -37,6 +37,9 @@ public class QuizGuest {
     @Column(name = "score")
     private Double score;
 
+    @Column(name = "quiz_room_id")
+    private int quizRoomId;
+
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
     }
