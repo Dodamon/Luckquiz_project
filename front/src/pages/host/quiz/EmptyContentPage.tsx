@@ -9,14 +9,10 @@ const EmptyContentPage = () => {
     const navigate = useNavigate();
     return (
         <div className={styles.EmptyContentPage}>
-
             <div className={styles.exitbox}>
-
                 <div className={styles.exit_btn} >
-
                     <div className={styles.btn_comment} onClick={()=>  navigate("/home",{replace: true})}>나가기</div>
                 </div>
-
             </div>
 
             <div className={styles.emptybox} >

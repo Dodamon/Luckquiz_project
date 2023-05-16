@@ -26,8 +26,7 @@ import useGuestAxios from "hooks/useGuestAxios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router-dom";
 
-const ProfileNickname: React.FC = () => {
-  const IMAGES = [
+export const IMAGES = [
     img1,
     img2,
     img3,
@@ -45,6 +44,9 @@ const ProfileNickname: React.FC = () => {
     img15,
     img16,
   ];
+
+const ProfileNickname: React.FC = () => {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();

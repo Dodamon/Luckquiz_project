@@ -4,7 +4,9 @@
     height: 100%;
 }
 
+
 /* 페이지 좌측 */
+
 .left_side {
     /* width: 350px; */
     width: 250px;
@@ -16,31 +18,34 @@
 }
 
 
-
 /* 스크롤바 설정*/
-.left_side::-webkit-scrollbar{
+
+.left_side::-webkit-scrollbar {
     width: 8px;
 }
 
+
 /* 스크롤바 막대 설정*/
-.left_side::-webkit-scrollbar-thumb{
+
+.left_side::-webkit-scrollbar-thumb {
     background-color: var( --wrong-answer);
     /* 스크롤바 둥글게 설정    */
-    border-radius: 10px;    
+    border-radius: 10px;
 }
+
 
 /* 스크롤바 뒷 배경 설정*/
-.left_side::-webkit-scrollbar-track{
-    background-color: rgba(0,0,0,0);
+
+.left_side::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
 }
-
-
-
-
 
 
 /* ------------------------------------------- */
+
+
 /* 우측 페이지 구성 */
+
 .right_side {
     width: calc(100% - 250px);
     display: flex;
@@ -53,4 +58,3 @@
     background-size: cover;
     background-attachment: fixed;
 }
-

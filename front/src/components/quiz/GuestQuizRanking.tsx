@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './QuizRanking.module.css'
+import styles from './GuestQuizRanking.module.css'
 import crown from 'assets/images/pngwing.png'
 import rank from 'assets/images/rank.png'
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { HostResult } from 'models/quiz';
+import { GuestResult, HostResult } from 'models/quiz';
 import img1 from "assets/profile/profile1.png";
 import img2 from "assets/profile/profile2.png";
 import img3 from "assets/profile/profile3.png";
@@ -21,11 +21,12 @@ import img13 from "assets/profile/profile13.png";
 import img14 from "assets/profile/profile14.png";
 import img15 from "assets/profile/profile15.png";
 import img16 from "assets/profile/profile16.png";
-interface HostQuizRankingProps {
-    result: HostResult[];
+import { Icon } from '@iconify/react';
+interface GuestQuizRankingProps {
+    result:GuestResult;
 }
 
-const HostQuizRanking = ({ result }: HostQuizRankingProps) => {
+const GuestQuizRanking = ({ result }: GuestQuizRankingProps) => {
     const quizGameType = useSelector((state: RootState) => state.socket.quizItem)
     const IMAGES = [
         img1,
@@ -44,8 +45,7 @@ const HostQuizRanking = ({ result }: HostQuizRankingProps) => {
         img14,
         img15,
         img16,
-      ];
-    
+    ];
 
     return (
         <div className={styles.QuizRanking}>
@@ -58,41 +58,38 @@ const HostQuizRanking = ({ result }: HostQuizRankingProps) => {
 
             </div>
             <section className={styles.rank_box}>
-                <header className={styles.titles}>
-                    <div className={styles.title_text}>{quizGameType?.game}</div>
-                </header>
+
 
                 <main className={styles.crown}>
                     <img src={crown} alt='crown' className={styles.crown_img} />
                 </main>
 
+                <div className={styles.real_rank} >
+                    <div className={styles.real_num}>{result.rankDiff}위</div>
+                </div>
 
-                <footer className={styles.ranking}>
-                    <ul className={styles.ranking_list}>
-
+                <div className={styles.diff_box} >
+                    <div className={styles.diff_number}>{result.rankDiff}</div>
+                    <div className={styles.diff_updown}>
                         {
-                            result.map((it,index) => {
-                                return <li className={styles.ranking_item} key={index}>
-                                    <div className={styles.item_left}>
-                                        <div className={styles.item_num}>{it.rankNow}</div>
-                                        <div className={styles.item_img}>
-                                            <img src={ IMAGES[it.playerImg]} alt="img" className={styles.user_img} />
-                                        </div>
-                                        <div className={styles.item_name}>{it.playerName}</div>
-                                    </div>
-
-                                    <div className={styles.item_right}>
-                                        <div className={styles.item_score}>{it.scoreGet}</div>
-                                    </div>
-                                </li>
-                            })
+                            result.isUp==="true" ? <Icon icon="mdi:arrow-down-bold" color="green" rotate={2} />:
+                            result.isUp==="false"? <Icon icon="mdi:arrow-down-bold" color="red" />:  <Icon icon="mdi:menu-swap" color="gray" />
                         }
-                    </ul>
+                 </div>
+                </div>
 
-                </footer>
+                <div className={styles.score_box} >
+                    <div className={styles.score_number}>+2240</div>
+                </div>
+
+      
+
+
+           
+
             </section>
         </div>
     );
 };
 
-export default HostQuizRanking;
+export default GuestQuizRanking;

@@ -22,9 +22,14 @@ import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
+import ErrorPage from "pages/common/ErrorPage";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
 import GuestResult from "pages/guest/quiz/GuestResult";
+
+import GuestQuizRanking from "components/quiz/GuestQuizRanking";
+import WakeUpGame from "components/game/wakeup/WakeUpGame";
+
 
 
 const router = createBrowserRouter([
@@ -67,6 +72,10 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "/*",
+        element: <ErrorPage/>,
       },
       {
         path: "quiz/create",
@@ -123,20 +132,12 @@ const router = createBrowserRouter([
             element: <GuestLobby />,
           },
           {
-            path: "quiz/emotion",
-            element: <EmotionGame handleOrder={() => {}}/>
-          },
-          {
-            path: "quiz/balloon",
-            element: <BalloonGame handleOrder={() => {}}/>
-          },
-          {
             path: "quiz/play",
-            element: <GuestPlayQuiz/>,
+            element: <GuestPlayQuiz />,
           },
           {
             path: "quiz/result",
-            element: <GuestResult/>,
+            element: <></>,
           },
           {
             path: "quiz/awards",
@@ -144,7 +145,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/ranking",
-            element: <QuizRanking />,
+            element: <QuizRanking/>,
           },
         ],
       },

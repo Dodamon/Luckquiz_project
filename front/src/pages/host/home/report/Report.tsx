@@ -6,6 +6,7 @@ import report_bg from "assets/images/report_bg.png";
 import HomeListCard from "components/host/home/HomeListCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useHostAxios from "hooks/useHostAxios";
 
 export interface Report {
   id: number;
@@ -19,6 +20,7 @@ export interface Report {
 const Report = () => {
   
   // const [myReportList, setMyReportList] = useState<Report[]>([])
+  const { data, status, sendHostRequest } = useHostAxios();
   const myReportList: Report[] = [
     {
       id: 0,
@@ -39,14 +41,12 @@ const Report = () => {
       participants: 7,
     },
   ];
-  // useEffect(()=>{
 
-  
-
-
-
-
-  // }, [myReportList])
+  useEffect(()=>{
+    sendHostRequest({
+      url: `/api/quizroom/create`,
+    })
+  }, [])
 
 
   return (
