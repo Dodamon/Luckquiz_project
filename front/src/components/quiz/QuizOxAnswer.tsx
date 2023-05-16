@@ -8,7 +8,7 @@ const QuizOxAnswer = () => {
   const content = useSelector((state: RootState) => state.socket.quizItem!);
 
   return (
-    <div className={styles.QuizOxContent}>
+    <div className={styles.QuizOxContent}  >
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}

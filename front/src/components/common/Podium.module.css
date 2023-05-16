@@ -1,6 +1,7 @@
 .container {
   position: relative;
   margin: 5%;
+  z-index: -1;
 }
 
 .profileBox {
