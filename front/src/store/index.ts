@@ -1,6 +1,7 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import storageSession from "redux-persist/lib/storage/session";
 import authReducer from "./auth";
 import quizReducer from "./quiz";
 import guestReducer from "./guest";
@@ -8,7 +9,7 @@ import guestSocketReducer from "./webSocket";
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: storageSession,
   whitelist: [ "userId","nickname","image_url","isAuthenticated","connected", "hostId", "quizList", "templateId"],
 };
 

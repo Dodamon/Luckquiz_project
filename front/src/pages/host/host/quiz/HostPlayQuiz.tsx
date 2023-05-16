@@ -79,7 +79,9 @@ const HostPlayQuiz = () => {
           <>
             <div className={styles.header}>
               <TimerBar handleOrder={setOrder} handleSubmit={quizGameEnd} />
-              {quizItem?.quizNum + 1}/{quizItem?.quizSize}
+              <div className={styles.quizNum}>
+                {quizItem?.quizNum + 1}/{quizItem?.quizSize}
+              </div>
             </div>
             {quizItem?.game ? (
               <ReadyGame />
@@ -183,7 +185,9 @@ const HostPlayQuiz = () => {
                   //     }),
                   //   );
                   // }}
-                  onClick={() => {navigate(`/host/quiz/${quiz_id}/awards`);}}
+                  onClick={() => {
+                    navigate(`/host/quiz/${quiz_id}/awards`);
+                  }}
                 />
               </div>
             ) : (

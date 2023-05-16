@@ -70,12 +70,12 @@ const WakeUpGame = (props: Props) => {
   // 마운트와 함께 타이머 시작
   useEffect(() => {
     // web이면, keydown listner작동
-    !isMobile && window.addEventListener("keydown", handleWebShake);
+    !isMobile && window.addEventListener("keyup", handleWebShake);
 
     console.log("타이머 시작:", time! - 6);
     let startGame = setTimeout(() => {
       setIsBroken(true);
-      window.removeEventListener("keydown", handleWebShake);
+      window.removeEventListener("keyup", handleWebShake);
       submitAnswer(); // shake횟수 제출
     }, (time! - 6) * 1000); // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
 
