@@ -69,16 +69,14 @@ public class QuizReportCustomRepository {
         return checkLastPage(pageable, results);
     }
 
-    public Slice<QuizReportProblem> getProblems(int roomId, int templateId) {
+    public Slice<QuizReportProblem> getProblems(int pinNum, int templateId) {
         List<QuizReportProblem> mostDifficultProblem =  queryFactory.select(
                         Projections.constructor( QuizReportProblem.class,
                                 quizReport.quizGameId,
-                                quizGame.quiz,
+                                quizReport.question,
                                 quizReport.correctCount.divide(quizGuest.totalCount))
                 )
                 .from(quizGuest)
-                .innerJoin(quizGame).fetchJoin()
-                .on(quizGame.id.eq(quizReport.quizGameId))
                 .where(
                         quizGame.type.eq(QuizType.quiz)
                 )

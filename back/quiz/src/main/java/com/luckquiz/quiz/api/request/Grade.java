@@ -25,7 +25,6 @@ public class Grade {
         this.rankPre = rankPre;
     }
 
-
     public void setRank_now(int rankNow) {
         this.rankNow = rankNow;
     }

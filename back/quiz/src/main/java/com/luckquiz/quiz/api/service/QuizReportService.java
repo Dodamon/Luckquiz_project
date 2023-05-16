@@ -30,9 +30,10 @@ public class QuizReportService {
     private final QuizReportCustomRepository quizReportCustomRepository;
 
     @Transactional(readOnly = true)
-    public QuizReportResponse getQuizReport(int roomId) {
-
-        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(
+    public QuizReportResponse getQuizReport(int pinNum) {
+        // quizRoom 전체 방에 대한 정보
+        // quizReport는 문제 하나에 대한 정보
+        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
 
         // LocalDateTime 객체를 Instant 객체로 변환
@@ -55,16 +56,16 @@ public class QuizReportService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<QuizReportGuest> getQuizParticipants(int roomId, int lastGuestId, Pageable pageable) {
-        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(
+    public Slice<QuizReportGuest> getQuizParticipants(int pinNum, int lastGuestId, Pageable pageable) {
+        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
         return quizReportCustomRepository.getParticipants(quizRoom.getPinNum(), lastGuestId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<QuizReportProblem> getQuizProblems(int roomId) {
-        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(
+    public Slice<QuizReportProblem> getQuizProblems(int pinNum) {
+        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-        return quizReportCustomRepository.getProblems(roomId, quizRoom.getTemplate().getId());
+        return quizReportCustomRepository.getProblems(pinNum, quizRoom.getTemplate().getId());
     }
 }

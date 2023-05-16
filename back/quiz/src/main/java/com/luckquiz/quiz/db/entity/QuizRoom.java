@@ -45,4 +45,45 @@ public class QuizRoom {
     private int quizCount;
     @Column(name = "game_count", nullable = true)
     private int gameCount;
+
+
+    public void setTemplate(Template template) {
+        this.template = template;
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public void setInactive(boolean inactive) {
+        this.inactive = inactive;
+    }
+
+    public void setFinishedTime(LocalDateTime finishedTime) {
+        this.finishedTime = finishedTime;
+    }
+
+    public void setParticipantCount(int participantCount) {
+        this.participantCount = participantCount;
+    }
+
+    public void setSubmitCount(int submitCount) {
+        this.submitCount = submitCount;
+    }
+
+    public void setCorrectCount(int correctCount) {
+        this.correctCount = correctCount;
+    }
+
+    public void setHostId(UUID hostId) {
+        this.hostId = hostId;
+    }
+
+    public void setQuizCount(int quizCount) {
+        this.quizCount = quizCount;
+    }
+
+    public void setGameCount(int gameCount) {
+        this.gameCount = gameCount;
+    }
 }

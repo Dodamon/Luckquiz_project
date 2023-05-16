@@ -3,7 +3,9 @@ package com.luckquiz.quiz.api.controller;
 import com.google.gson.Gson;
 import com.luckquiz.quiz.api.request.FinalRequest;
 import com.luckquiz.quiz.api.request.Grade;
+import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.response.EnterUser;
+import com.luckquiz.quiz.api.response.TemplateDetailResponse;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
@@ -12,6 +14,7 @@ import com.luckquiz.quiz.db.entity.*;
 import com.luckquiz.quiz.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @Slf4j
@@ -44,9 +48,11 @@ public class QuizRoomConsumerController {
         switch(key){
             case "start": {
                 EnterUser u = new EnterUser();
-                UUID hostId = UUID.fromString(in.split(" ")[0]);
-                int roomId = Integer.parseInt(in.split(" ")[1]);
-                int templateId = Integer.parseInt(in.split(" ")[2]);
+                // 데이터 " "로 파싱
+                String[] parsedData = in.split(" ");
+                UUID hostId = UUID.fromString(parsedData[0]);
+                int roomId = Integer.parseInt(parsedData[1]);
+                int templateId = Integer.parseInt(parsedData[2]);
 
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 u.setSender(hostId.toString());
@@ -54,6 +60,9 @@ public class QuizRoomConsumerController {
                 StringValueOperations.append(roomId + "l", gson.toJson(u) + ", ");
                 ValueOperations<String, Integer> IntegerValueOperations = redisConfig.redisIntegerTemplate().opsForValue();
                 IntegerValueOperations.set(roomId + "cnt", 0);
+                //3시간 뒤 삭제
+                stringRedisTemplate.expire(roomId+"l",3L, TimeUnit.HOURS);
+                stringRedisTemplate.expire(roomId+"cnt",3L, TimeUnit.HOURS);
 
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 redisTransService.quizRedisTrans(roomId, hostId, templateId, host.getName());  // roomId 로
@@ -71,38 +80,72 @@ public class QuizRoomConsumerController {
             }
                 break;
             case "final_end": {
+                //Zset => 랭킹 가져오기위함 template
                 ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+                //Hash => 맞은 개수 등 가져오기 위한 template
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
                 // in 에 UUID 인 hostId 가 들었고 , int (7자리) roomId 가 들어있읍니다.
+                // in은 카프카에서 온 메시지 여기서 hostId, roomId 파싱;
                 FinalRequest finalRequest = gson.fromJson(in, FinalRequest.class);
                 UUID hostId = finalRequest.getHostId();
                 Integer roomId = finalRequest.getRoomId();
 
+                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
 
-                User user = userRepository.findUserById(finalRequest.getHostId()).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
-//                QuizRoom room = quizRoomRepository.getReferenceById();
+                User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
+                QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+                String quizInfo = StringValueOperations.get(roomId);
 
+                // 퀴즈 정보 가져오기
+                TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
+                int quizCnt = 0;
+                int gameCnt = 0;
+                for(QGame a : templateDetailResponse.getQuizList()){
+                    if("quiz".equals(a.getType())){
+                        quizCnt ++;
+                    }else {
+                        gameCnt ++;
+                    }
+                }
+                quizRoom.setQuizCount(quizCnt);
+                quizRoom.setGameCount(gameCnt);
 
-                        Map all = hashOperations.entries(finalRequest.getRoomId() + "p");
+                // quiz_room 에 정보를 입력
+                Map all = hashOperations.entries(finalRequest.getRoomId() + "p");
 
+                // quiz_guest 에 정보를 입력
                 List<String> users = new ArrayList<>(all.values());
+                int correctCnt = 0;
                 for (String one : users) {
                     Grade g = gson.fromJson(one, Grade.class);
+                    correctCnt += g.getCount();
                     QuizGuest qguest = QuizGuest.builder()
                             .correctCount(g.getCount())
                             .guestNickname(g.getPlayerName())
+                            .totalCount(templateDetailResponse.getQuizList().size())
+                            .pinNum(quizRoom.getPinNum())
+                            .templateId(quizRoom.getTemplate().getId())
                             .build();
+                    quizGuestRepository.save(qguest);
                 }
+
+
+                quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
-                    if (user.getName().equals(temp.getSender())) {
 
+                    if (host.getName().equals(temp.getSender())) {
                     }
                 }
+
+                // quiz_report 에 정보입력
+
+
             }
                 break;
             default:
+                log.info("kafka key 값이 유효하지 않습니다.");
                 break;
 
         }

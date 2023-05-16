@@ -28,6 +28,8 @@ public class QQuizReport extends EntityPathBase<QuizReport> {
 
     public final NumberPath<Integer> pinNum = createNumber("pinNum", Integer.class);
 
+    public final StringPath question = createString("question");
+
     public final NumberPath<Integer> quizGameId = createNumber("quizGameId", Integer.class);
 
     public final QQuizRoom quizRoom;
