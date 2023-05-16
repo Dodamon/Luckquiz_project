@@ -2,21 +2,25 @@ import React from 'react';
 import styles from './QuizRanking.module.css'
 import crown from 'assets/images/pngwing.png'
 import rank from 'assets/images/rank.png'
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const QuizRanking = () => {
+    const quizGameType = useSelector((state : RootState) => state.socket.quizItem)
+
     const setList = [1, 3, 4, 5, 2];
     return (
         <div className={styles.QuizRanking}>
 
             <div className={styles.rank_logo}>
 
-                <div className={styles.logo}>
+                <div className={styles.logos}>
                     <img src={rank} alt="logo" />
                 </div>
 
             </div>
             <section className={styles.rank_box}>
-                <header className={styles.title}>
+                <header className={styles.titles}>
                     <div className={styles.title_text}>OX 문제</div>
                 </header>
 

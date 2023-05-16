@@ -205,7 +205,7 @@
         width: 100%;
         border-bottom-right-radius: 20px;
         border-top-right-radius: 20px;
-        font-size: 22px;
+        /* font-size: 22px; */
         padding-left: 10px;
         outline: none;
         border-style: none;

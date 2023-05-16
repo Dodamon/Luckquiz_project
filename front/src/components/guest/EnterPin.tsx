@@ -1,9 +1,10 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import logo from "assets/images/logo.png";
 import styles from "./EnterPin.module.css";
 import { socketActions } from "store/webSocket";
+import { guestActions } from "store/guest";
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
@@ -28,6 +29,10 @@ const EnterPin: React.FC = () => {
     navigate("/guest/nickname");
   };
 
+  useEffect(() => {
+    dispatch(guestActions.updateGuestNickname(""));
+  }, []);
+  
   return (
     <div className={styles.containerWrapper}>
       <img src={logo} alt="" className={styles.logo} />

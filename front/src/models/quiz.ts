@@ -5,7 +5,7 @@ export interface getQuizItem {
     question: string,
     quizUrl: string,
     answer: string,
-    answerList: string,
+    answerList: string[],
     one: string,
     two: string,
     three: string,
@@ -57,4 +57,28 @@ export interface EmotionResult {
         confidence: number
     }
 
+}
+
+export interface HostResult {
+    count: number;
+    playerImg: number;
+    playerName: string;
+    rankNow: number;
+    rankPre: number;
+    scoreGet: number;
+    quizNum: number;
+}
+
+export interface GuestResult {
+    isUp: boolean;
+    rankDiff: number;
+    scoreGet: number;
+    quizNum: number;
+}
+
+export interface FinalResultList {
+    sender: string,
+    img: number,
+    rank: number,
+    score: number
 }

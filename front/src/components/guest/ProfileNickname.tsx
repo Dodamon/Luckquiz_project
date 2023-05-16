@@ -27,6 +27,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router-dom";
 
 const ProfileNickname: React.FC = () => {
+
   const IMAGES = [
     img1,
     img2,
@@ -45,6 +46,7 @@ const ProfileNickname: React.FC = () => {
     img15,
     img16,
   ];
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();

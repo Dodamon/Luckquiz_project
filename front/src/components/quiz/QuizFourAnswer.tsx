@@ -1,44 +1,19 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
-import logo from "../../../assets/images/timer1.png";
 import styles from "./QuizFourContent.module.css";
-import { getQuizItem, setQuizItem } from "models/quiz";
 import QuizGameTitle from "components/common/QuizGameTitle";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
-type QuizFourContentProps = {
-  handleAnswer?: Function;
-};
 
-const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
-  const [item, setItem] = useState("");
+const QuizFourAnswer = () => {
   const content = useSelector((state: RootState) => state.socket.quizItem!);
-  const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
-
-  const answerHandler = (answer: string) => {
-    setItem(answer);
-    handleAnswer && handleAnswer(answer); // 보기에 담기 답을 직접 string으로 보내야함.
-  };
 
   return (
     <div className={styles.QuizFourContent}>
-      {/* <div className={styles.content_title}>
-                <input type="text" value={content.game} />
-            </div> */}
-      <QuizGameTitle title={content.question} />
-
-      {content.quizUrl && (
-        <div className={styles.content_images}>
-          <img src={content.quizUrl} alt="좋아" />
-        </div>
-      )}
-
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("one")}
-          style={item === "one" ? { opacity: "70%" } : {}}
+          style={content.answer !== "one" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-one)" }}>
             <div>
@@ -52,8 +27,7 @@ const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("two")}
-          style={item === "two" ? { opacity: "70%" } : {}}
+          style={content.answer !== "two" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-two)" }}>
             <div>
@@ -67,8 +41,7 @@ const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("three")}
-          style={item === "three" ? { opacity: "70%" } : {}}
+          style={content.answer !== "three" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var( --select-three)" }}>
             <div>
@@ -82,8 +55,7 @@ const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
 
         <div
           className={styles.content_answer}
-          onClick={() => !isHost && answerHandler("four")}
-          style={item === "four" ? { opacity: "70%" } : {}}
+          style={content.answer !== "four" ? { opacity: "50%" } : {}}
         >
           <div className={styles.content_color} style={{ backgroundColor: "var(--select-four)" }}>
             <div>
@@ -99,4 +71,4 @@ const QuizFourContent = ({ handleAnswer }: QuizFourContentProps) => {
   );
 };
 
-export default QuizFourContent;
+export default QuizFourAnswer;

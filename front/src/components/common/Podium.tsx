@@ -38,12 +38,12 @@ const Podium = () => {
 
     setTimeout(() => {
       confetti({
-        particleCount: 250,
-        spread: 200,
+        particleCount: 500,
+        spread: 1000,
         origin: {
-          x: 0.6,
+          x: 0.5,
           // since they fall down, start a bit higher than random
-          y: 0.85,
+          y: 0.5,
         },
       });
     }, 1950);
