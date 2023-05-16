@@ -309,13 +309,25 @@ public class MessageController {
     public void quizEnd(QuizMessage message) {
         // 제출 끝나썽
         toGradeProducer.QuizEnd(gson.toJson(message));
+
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(message.getRoomId()+"statics",0,zSetOperations.size(message.getRoomId()+"rank")-1);
+        List<ZSetOperations.TypedTuple<String>> rank = new ArrayList<>(all);
+        List<TurnEndGraph> results = new ArrayList<>();
+
+        for(ZSetOperations.TypedTuple<String> name : rank){
+            TurnEndGraph turnEndGraph = TurnEndGraph.builder()
+                    .answer(name.getValue())
+                    .count(name.getScore().intValue())
+                    .build();
+            results.add(turnEndGraph);
+        }
         TurnEndResponse tr = TurnEndResponse.builder()
                 .type("quizEnd")
-                .quizEnd("success")
+                .quizEnd(results)
                 .build();
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), tr);
         quizService.serveTurnEnd(tr,message.getRoomId());
-
     }
 
     @MessageMapping("/quiz/currentCount")
