@@ -26,6 +26,7 @@ import ErrorPage from "pages/common/ErrorPage";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
 import GuestResult from "pages/guest/quiz/GuestResult";
+import WakeUpGame from "components/game/wakeup/WakeUpGame";
 
 
 
@@ -129,20 +130,12 @@ const router = createBrowserRouter([
             element: <GuestLobby />,
           },
           {
-            path: "quiz/emotion",
-            element: <EmotionGame handleOrder={() => {}}/>
-          },
-          {
-            path: "quiz/balloon",
-            element: <BalloonGame handleOrder={() => {}}/>
-          },
-          {
             path: "quiz/play",
-            element: <GuestPlayQuiz/>,
+            element: <GuestPlayQuiz />,
           },
           {
             path: "quiz/result",
-            element: <GuestResult/>,
+            element: <GuestResult />,
           },
           {
             path: "quiz/awards",

@@ -1,14 +1,11 @@
 import QuizRanking from "components/quiz/QuizRanking";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "store";
-import { socketActions } from "store/webSocket";
 
 const GuestResult = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const result = useSelector((state: RootState) => state.socket.getGuestResult)
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList)
@@ -19,12 +16,12 @@ const GuestResult = () => {
     if (quizItem?.quizNum !== result?.quizNum) {
       navigate('/guest/quiz/play')
       }
-  }, [quizItem]);
+  }, [navigate, quizItem, result?.quizNum]);
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-    navigate('/guest/quiz/result')
-  }, [finalResult])
+    navigate('/guest/quiz/awards')
+  }, [finalResult, navigate])
 
   return (
     <>
