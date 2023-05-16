@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from "./GameCreateLayout.module.css"
 import GameSelection from './GameSelection';
-// import QuizSelectMenu from './QuizSelectMenu';
 import GameTemplate from './GameTemplate';
 import QuizSelectMenu from './QuizSelectMenu';
 import GameTotalTemplate from './GameTotalTemplate';

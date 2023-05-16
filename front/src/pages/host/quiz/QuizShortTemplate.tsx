@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch, useSelector} from 'react-redux';
 import { RootState } from 'store';
 import { quizAtions } from 'store/quiz';
+import { useNavigate } from 'react-router-dom';
 type pageNum = {
   num: number;
 }
@@ -12,7 +13,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   const dispatch = useDispatch();
   const quizList = useSelector((state: RootState) => state.quiz.quizList);
   const [quiz, setQuiz] = useState(quizList[num]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setQuiz(quizList[num]);
   }, [num, quizList]);
@@ -43,11 +44,12 @@ const QuizShortTemplate = ({ num }: pageNum) => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('https://k8a707.p.ssafy.io/api/quiz/upload', formData);
+      const response = await axios.post(`${process.env.REACT_APP_HOST}/api/quiz/upload`, formData);
       setQuiz({ ...quiz, quizUrl: response.data });
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (err) {
+      console.log(err);
+      navigate('/error', { state: { code:err}});
+  }
   };
 
 
@@ -68,7 +70,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   return (
     <>
       <div className={styles.content_title}>
-        <input type="text"  maxLength={35} value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
+        <input type="text"  maxLength={25} value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
       </div>
 
       <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
@@ -96,7 +98,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
           quiz.answerList.map((it, index) => {
             return <div className={styles.content_answer} key={index}> <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}><div><Icon icon="ic:round-menu" /></div></div>
               <div className={styles.content_input}>
-                <input type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
+                <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
               <div className={styles.content_add} onClick={answerAddHandler}><Icon icon="ic:round-plus" /></div></div>
           })

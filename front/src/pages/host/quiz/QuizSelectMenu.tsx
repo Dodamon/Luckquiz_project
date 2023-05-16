@@ -51,13 +51,8 @@ const QuizSelectMenu = () => {
     }, [quizInfo, selectInfo])
 
     const temporarySaveHandler = () => {
-        // dispatch(quizAtions.contentsUpdate({ index: selectInfo, content: template }))
-        // console.log("뭔데", template);
 
         const quizList = template.quizList;
-
-
-
         const checkedList = quizList.map(it => {
 
             if (it.type === "game") {
@@ -80,14 +75,12 @@ const QuizSelectMenu = () => {
             }
         });
 
-        console.log("저장할 데이터랑께", checkedList);
-
         const isValid = checkedList.some(element => element?.isValid === false);
         const saveData = { ...template, isValid: !isValid, quizList: checkedList }
 
 
-
-        axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", saveData).then(res => {
+     
+        axios.post(`${process.env.REACT_APP_HOST}/api/quiz/template/contents-create`, saveData).then(res => {
 
             console.log(res);
             navigate("/home", { replace: true });

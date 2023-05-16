@@ -28,6 +28,12 @@ const Modal = ({ isModal, setIsModal }: ModalProps) => {
     }
 
     function onClickCreate() {
+
+        if(name.length===0){
+            alert("최소 글자수를 맞춰주세요!");
+            return;
+        }
+    
         const template = {
             name: name,
             hostId: authInfo,
@@ -72,7 +78,7 @@ const Modal = ({ isModal, setIsModal }: ModalProps) => {
                 <main className={styles.main_section}>
 
                     <div className={styles.input_name}>TEMPLATE</div>
-                    <div className={styles.input_box}><input type="text" value={name} onChange={e => nameChangeHandler(e)} placeholder="Please Enter the template name" /></div>
+                    <div className={styles.input_box}><input type="text" maxLength={15} value={name} onChange={e => nameChangeHandler(e)} placeholder="Please Enter the template name" /></div>
                 </main>
 
                 <div className={styles.footer_section}>

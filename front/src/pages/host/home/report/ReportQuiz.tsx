@@ -5,6 +5,7 @@ import ReportTable from "components/host/home/report/ReportTable";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useHostAxios from "hooks/useHostAxios";
 
 
 
@@ -70,8 +71,11 @@ interface quizType {
 const ReportQuiz = () => {
   const { report_id } = useParams();
   const [basicReport, setBasicReport] = useState<quizType>();
+  const { data, status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
-    axios.get("")
+    sendHostRequest({
+      url: `/api/quizroom/create`,
+    })
   }, [])
 
 

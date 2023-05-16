@@ -6,6 +6,7 @@ import report_logo from "assets/images/report_logo.png";
 import "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
 import { useEffect, useState } from "react";
+import useHostAxios from "hooks/useHostAxios";
 
 
 interface basicType {
@@ -25,7 +26,7 @@ const reportBasic = {
   percentage: 42,
 };
 
-const data = {
+const datas = {
   labels: [],
   datasets: [
     {
@@ -53,8 +54,11 @@ const ReportBasic = () => {
   const { report_id } = useParams();
 
   const [basicReport, setBasicReport] = useState<basicType[]>([]);
+  const { data,status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
-  // getReportBasic
+    sendHostRequest({
+      url: `/api/quizroom/create`,
+    })
   },[])
 
   return (
@@ -93,7 +97,7 @@ const ReportBasic = () => {
               <div className={styles.textStyle}>{reportBasic.percentage}%</div>
             </div>
             <div className={styles.pieStyle}>
-            <Doughnut data={data} />
+            <Doughnut data={datas} />
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ const Quiz = () => {
   const [deleteItem, setDeleteItem] = useState("");
   const { data, status, sendHostRequest } = useHostAxios();
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
 
 
   // 컴포넌트 분리로 삭제후 업데이트가 안돼서 강제로 사용
@@ -82,7 +82,10 @@ const Quiz = () => {
 
         setMyQuizList(sortedItems);
         dispatch(authActions.selectIndex(0));
-      });
+      }).catch(err =>{
+        navigate('/error', { state: { code:err.response.status}});
+      } 
+      );
   }, [deleteItem, authInfo.userId])
 
 

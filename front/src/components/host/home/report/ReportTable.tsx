@@ -89,8 +89,20 @@ const ReportTable = (props: Props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700, borderRadius: "20px" }} aria-label="customized table" stickyHeader>
+      <TableContainer  sx={{
+    "&::-webkit-scrollbar": {
+	  width: 10
+    },
+    "&::-webkit-scrollbar-track": {
+	  backgroundColor: "orange"
+    },
+    "&::-webkit-scrollbar-thumb": {
+	  backgroundColor: 'var(--button-two)',
+	  borderRadius: 0
+    },
+    overflowX:"hidden"
+  }}  component={Paper}>
+        <Table sx={{ minWidth: 700, borderRadius: "20px"}} aria-label="customized table" stickyHeader>
           <TableHead>
             <TableRow>
               {property.map((col, index) => (
