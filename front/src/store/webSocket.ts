@@ -147,7 +147,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       // else if (data.type === "userList") dispatch(socketActions.getHostResult(data.userList));
       else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
       else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));
-      else if (data.type === "finalResultList") dispatch(socketActions.getGuestResult(data.finalResultList));
+      else if (data.type === "finalResultList") dispatch(socketActions.getFinalResultList(data.finalResultList));
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     }

@@ -6,11 +6,9 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "store";
-import { socketActions } from "store/webSocket";
 
 const GuestResult = (state:GuestResult) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const result = useSelector((state: RootState) => state.socket.getGuestResult)
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList)
@@ -21,11 +19,13 @@ const GuestResult = (state:GuestResult) => {
     if (quizItem?.quizNum !== result?.quizNum) {
       navigate('/guest/quiz/play')
       }
-  }, [quizItem]);
+  }, [navigate, quizItem, result?.quizNum]);
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-    navigate('/guest/quiz/result')
+        console.log("최종결과인뎁숑?:");
+        finalResult && console.log("최종결과인뎁숑?:", finalResult);
+    finalResult && navigate('/guest/quiz/awards')
   }, [finalResult])
 
   return (
