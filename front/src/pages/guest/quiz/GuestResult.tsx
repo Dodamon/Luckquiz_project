@@ -20,7 +20,7 @@ const GuestResult = () => {
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-    navigate('/guest/quiz/awards')
+    finalResult && navigate('/guest/quiz/awards')
   }, [finalResult, navigate])
 
   return (
