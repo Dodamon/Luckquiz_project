@@ -1,4 +1,6 @@
+import GuestQuizRanking from "components/quiz/GuestQuizRanking";
 import QuizRanking from "components/quiz/QuizRanking";
+import { GuestResult } from "models/quiz";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -6,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "store";
 import { socketActions } from "store/webSocket";
 
-const GuestResult = () => {
+const GuestResult = (state:GuestResult) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
@@ -28,7 +30,10 @@ const GuestResult = () => {
 
   return (
     <>
-      <QuizRanking />
+    {
+      result &&<GuestQuizRanking result={result}/>
+    }
+      
     </>
   );
 };

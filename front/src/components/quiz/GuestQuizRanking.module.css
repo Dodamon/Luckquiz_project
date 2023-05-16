@@ -1,0 +1,169 @@
+@media screen and (min-width:767px) {
+    .HostQuizRanking {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        /* background-color: red; */
+        z-index: 4;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .rank_logo {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+    .logos {
+        font-size: 56px;
+        color: var( --white-color);
+    }
+    .logos>img {
+        width: 400px;
+    }
+    .rank_box {
+        background-color: var( --ranking-background);
+        width: 500px;
+        height: 410px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+    }
+    .titles {
+        margin-top: 20px;
+        width: 140px;
+        height: 30px;
+        background-color: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .crown {
+        width: 200px;
+        height: 200px;
+        background-color: var(--white-color);
+        border-radius: 50%;
+    }
+    .crown_img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+    .score_box {
+        background-color: rgb(52, 53, 126);
+        width: 150px;
+        height: 50px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+    .score_number {
+        color: var(--white-color);
+        font-size: 28px;
+    }
+    .diff_box {
+        /* background-color: rgb(52, 53, 126); */
+        margin-top: 10px;
+        width: 100px;
+        height: 50px;
+        display: flex;
+        color: var(--white-color);
+        justify-content: center;
+        align-items: center;
+    }
+    .diff_number {
+        font-size: 24px;
+        display: flex;
+    }
+    .diff_updown {
+        display: flex;
+        font-size: 42px;
+        position: relative;
+        animation: slideUpDown 1s infinite;
+    }
+    @keyframes slideUpDown {
+        0% {
+            top: 0;
+        }
+        50% {
+            top: -10px;
+        }
+        100% {
+            top: 0;
+        }
+    }
+    .diff {
+        font-size: 10px;
+    }
+    .real_rank {
+        margin-top: 20px;
+        font-size: 42px;
+        color: var(--white-color);
+    }
+    .real_num {
+        font-weight: bold;
+        text-shadow: 1px 1px 4px black;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .HostQuizRanking {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        z-index: 4;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .rank_logo {
+        width: 360px;
+        height: 100%;
+        display: flex;
+        /* background-color: red; */
+        justify-content: center;
+    }
+    .logos {
+        /* width: 500px; */
+        font-size: 56px;
+        color: var( --white-color);
+    }
+    .logos>img {
+        width: 300px;
+    }
+    .rank_box {
+        background-color: var( --ranking-background);
+        width: 360px;
+        height: 570px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .titles {
+        margin-top: 20px;
+        width: 140px;
+        height: 30px;
+        background-color: white;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .crown {
+        width: 200px;
+        height: 200px;
+    }
+    .crown_img {
+        width: 100%;
+        height: 100%;
+    }
+}
