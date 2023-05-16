@@ -62,6 +62,8 @@ public class KafkaConsumerController {
 				gradeService.rollback(quizRollbackRequest);
 				break;
 			case quiz_end:
+				System.out.println("quiz_end 시작");
+				System.out.println(message);
 				KafkaQuizEndRequest quizEndRequest = gson.fromJson(message, KafkaQuizEndRequest.class);
 				gradeService.quizEnd(quizEndRequest);
 				break;

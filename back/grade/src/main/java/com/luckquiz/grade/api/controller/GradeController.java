@@ -76,12 +76,12 @@ public class GradeController {
 		return "quizStart";
 	}
 
-	@PostMapping("/enter")
-	@ResponseBody
-	public String enter(@RequestBody KafkaGradeRequest message) {
-		gradeService.enter(gson.toJson(message));
-		return "quizStart";
-	}
+	// @PostMapping("/enter")
+	// @ResponseBody
+	// public String enter(@RequestBody KafkaGradeRequest message) {
+	// 	gradeService.enter(gson.toJson(message));
+	// 	return "quizStart";
+	// }
 
 	@PostMapping("/gradeend")
 	@ResponseBody

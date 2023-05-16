@@ -15,6 +15,7 @@ public class KafkaGradeRequest {
 	private String message;
 	private String file;
 
+
 	public String getHostId() {
 		return hostId;
 	}
