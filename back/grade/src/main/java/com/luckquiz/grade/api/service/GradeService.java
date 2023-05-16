@@ -1,14 +1,10 @@
 package com.luckquiz.grade.api.service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.springframework.data.redis.core.HashOperations;
@@ -31,7 +27,6 @@ import com.luckquiz.grade.api.request.KafkaQuizRollbackRequest;
 import com.luckquiz.grade.api.request.KafkaQuizStartRequest;
 import com.luckquiz.grade.api.response.KafkaGradeEndResponse;
 import com.luckquiz.grade.api.response.KafkaGradeStartResponse;
-import com.luckquiz.grade.api.response.KafkaRollbackFinishResponse;
 import com.luckquiz.grade.api.response.TemplateDetailResponse;
 import com.luckquiz.grade.api.response.TemplateInfoResponse;
 import com.luckquiz.grade.config.KafkaProducer;
@@ -254,35 +249,68 @@ public class GradeService {
 	}
 
 	//카프카에서 quiz_end 메시지가 올때 실행하는 함수
-	public void quizEnd(Object message) {
-		KafkaQuizEndRequest quizStartMessage = (KafkaQuizEndRequest) message;
-		Integer roomId = quizStartMessage.getRoomId();
-		Set<ZSetOperations.TypedTuple<String>> answerStatics = zSetOperations.rangeWithScores(quizStartMessage.getRoomId()+"statics",0,-1);
-		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
-		Stream<Map.Entry<String,Grade>> entries = hashmap.entrySet().stream();
-		entries.sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->hashmap.put(e.getKey(),e.getValue()));
-		//랭킹점수 받았던거 다시 줄이기.
-		int i = 1;
-		for(Map.Entry<String,Grade> entry: hashmap.entrySet()){
-			entry.getValue().setRankNow(i++);
-			hashGradeOperations.put(roomId+"p",entry.getValue().getPlayerName(),entry.getValue());
+	public void quizEnd(KafkaQuizEndRequest message) {
+		// 방 번호
+		Integer roomId = message.getRoomId();
+		// 템플릿 정보
+		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId),
+			TemplateDetailResponse.class);;
+		// 현재 퀴즈번호
+		Integer quizNum = templateDetailResponse.getQuizNum();;
+		// 전체 커넥션 수.
+		Long connectionCount = hashGradeOperations.size(roomId+"p");
+		// 퀴즈 맞힌사람 수.
+		Integer correctCount = valueOperations.get(roomId+"cnt");
+		// 퀴즈 푼사람 수
+		AtomicInteger solveCount = new AtomicInteger(0);
+		// 플레이어 정보 "아놔" :{"playerName":"아놔","playerImg":14,"scoreGet":0,"rankPre":0,"rankNow":0,"count":0,"quizNum":0}
+		Map<String, Grade> playersInfo = hashGradeOperations.entries(roomId+"p");
+		// answerStatics 통계 (정답별 선택한 수)
+		Set<ZSetOperations.TypedTuple<String>> answerStatics = zSetOperations.rangeWithScores(roomId+"statics",0,-1);
+
+		// answerStatics를 map으로 변경(json으로 만들기 위하여)
+		LinkedHashMap<String, Double> answerData = new LinkedHashMap<>();
+		// 순서가 보장된 linked맵 사용하며, 퀴즈 푼사람수(solveCount) 구하기
+		answerStatics.stream().forEachOrdered((data)->{
+			answerData.put(data.getValue(), data.getScore());
+			solveCount.addAndGet(data.getScore().intValue());
+		});
+
+		// 처음에는 아래의 방법으로 만들었지만, 총 몇명이 참여했는지 까지 1번의 for문으로 구하는 것이 좋기 때문에 변경.
+		// LinkedHashMap<String, Double> answerData = answerStatics.stream().collect(Collectors.toMap(data->data.getValue(),data->data.getScore(),(data1,data2)->data1,LinkedHashMap::new));
+
+
+		// 플레이어 정보 scoreGet(이번 게임에서 얻은 점수) 순으로 정렬
+		// Stream<Map.Entry<String,Grade>> entries = playersInfo.entrySet().stream();
+		playersInfo.entrySet().stream().sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->playersInfo.put(e.getKey(),e.getValue()));
+
+		// 순위(rankNow) 매기기
+		int ranking = 0;
+		int scoreGet = -10000;
+		for(Map.Entry<String,Grade> playerInfo: playersInfo.entrySet()){
+			// 이전 사람 점수와 같으면 같은 등수.
+			if(scoreGet == playerInfo.getValue().getScoreGet()){
+				playerInfo.getValue().setRankNow(ranking);
+			} else {
+				playerInfo.getValue().setRankNow(++ranking);
+			}
+			scoreGet = playerInfo.getValue().getScoreGet();
+
+			// 플레이어 정보에서 ranking 갱신된 것 저장.
+			hashGradeOperations.put(roomId+"p",playerInfo.getValue().getPlayerName(),playerInfo.getValue());
 		}
-		// Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
-		//점수 반영
-		// hashmap.forEach((key, value)->{
-		// 	zSetOperations.incrementScore(roomId+"rank",value.getPlayerName(),value.getScoreGet());
-		// });
-		//초기화
-		// valueOperations.set(roomId+"cnt",0);
-		//채점끝
-		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
-			TemplateDetailResponse.class);
-		Integer quizNum = templateDetailResponse.getQuizNum();
-		Long count = hashGradeOperations.size(roomId+"p");
-		Integer solvedCount = valueOperations.get(roomId+"cnt");
+
+
 		//정답률
-		// Double percent = solvedCount.doubleValue()/count;
-		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue()).connectedCount(count.intValue())
+		Double correctRate = correctCount.doubleValue()/ solveCount.get();
+		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder()
+			.roomId(roomId)
+			.quizNum(quizNum)
+			.solveCount(solveCount.get())
+			.count(connectionCount.intValue())
+			.connectionCount(connectionCount.intValue())
+			.correctCount(correctCount)
+			.correctRate(correctRate)
 			.build();
 		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
