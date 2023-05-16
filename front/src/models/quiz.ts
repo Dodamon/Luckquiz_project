@@ -58,3 +58,18 @@ export interface EmotionResult {
     }
 
 }
+
+export interface HostResult {
+    count: number;
+    playerImg: number;
+    playerName: string;
+    rankNow: number;
+    rankPre: number;
+    scoreGet: number;
+}
+
+export interface GuestResult {
+    isUp: boolean;
+    rankDiff: number;
+    scoreGet: number;
+}

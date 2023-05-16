@@ -2,8 +2,12 @@ import React from 'react';
 import styles from './QuizRanking.module.css'
 import crown from 'assets/images/pngwing.png'
 import rank from 'assets/images/rank.png'
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const QuizRanking = () => {
+    const quizGameType = useSelector((state : RootState) => state.socket.quizItem)
+
     const setList = [1, 3, 4, 5, 2];
     return (
         <div className={styles.QuizRanking}>

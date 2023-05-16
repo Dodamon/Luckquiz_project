@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
 import { EmotionResult, getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
+import { HostResult, GuestResult } from "models/quiz";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
 // const brokerURL = "ws://192.168.1.194:8080/connect/quiz";
@@ -16,7 +17,9 @@ interface SocketState {
   getMessage: boolean;
   getEmotion: boolean;
   emotionResult: EmotionResult | null;
-  endQuiz: number
+  quizEnd: string | null;
+  getHostResult: HostResult[] | null;
+  getGuestResult: GuestResult[] | null;
 }
 
 const initialState: SocketState = {
@@ -27,7 +30,9 @@ const initialState: SocketState = {
   getMessage: false,
   getEmotion: false,
   emotionResult: null,
-  endQuiz: 0,
+  quizEnd: null,
+  getHostResult: null,
+  getGuestResult: null,
 };
 
 const socketSlice = createSlice({
@@ -72,11 +77,12 @@ const socketSlice = createSlice({
 
     getQuizItem: (state, actions) => {
       state.quizItem = actions.payload;
+      state.quizEnd = null;
       console.log(state.quizItem);
     },
 
-    endQuiz: (state, actions) => {
-      state.endQuiz = state.endQuiz + 1;
+    quizEnd: (state, actions) => {
+      state.quizEnd = actions.payload;
     },
 
     getEmotionResult: (state, actions) => {
@@ -85,7 +91,15 @@ const socketSlice = createSlice({
 
     getEmotionMessage: (state, actions) => {
       state.getEmotion = actions.payload;
-    }
+    },
+
+    getHostResult: (state, actions) => {
+      state.getHostResult = actions.payload;
+    },
+
+    getGuestResult: (state, actions) => {
+      state.getGuestResult = actions.payload;
+    },
   },
 });
 
@@ -118,8 +132,10 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       else if (data.type === "emotionResult") {
         dispatch(socketActions.getEmotionResult(data.emotionResult));
         dispatch(socketActions.getEmotionMessage(true));
-      } 
-      // else if (data.type === "endQuiz") dispatch(socketActions.endQuiz)
+      } else if (data.type === "quizEnd") dispatch(socketActions.quizEnd(data.quizEnd));
+      // else if (data.type === "userList") dispatch(socketActions.getHostResult(data.userList));
+      else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
+      else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     }

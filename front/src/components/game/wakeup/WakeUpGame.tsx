@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { socketActions } from "store/webSocket";
 import { useDispatch } from "react-redux";
+import QuizGameTitle from "components/common/QuizGameTitle";
 
 interface Props {
   handleOrder?: Function;
@@ -15,15 +16,11 @@ interface Props {
 
 const WakeUpGame = (props: Props) => {
   const { handleOrder } = props;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  const timer = useSelector((state: RootState) => state.socket.quizItem?.timer);
+  const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
   const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
-  // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
-  const [time, setTime] = useState(timer! - 6.5);
-  // const [timeFormat, setTimeFormat] = useState("");
-  const [isRunning, setIsRunning] = useState(false);
   const [shakeCount, setShakeCount] = useState(0); // 흔든 횟수 제출
   const [isShaking, setIsShaking] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
@@ -74,40 +71,19 @@ const WakeUpGame = (props: Props) => {
   useEffect(() => {
     // web이면, keydown listner작동
     !isMobile && window.addEventListener("keydown", handleWebShake);
-    setIsRunning(true);
+
+    console.log("타이머 시작:", time! - 6);
+    let startGame = setTimeout(() => {
+      setIsBroken(true);
+      window.removeEventListener("keydown", handleWebShake);
+      submitAnswer(); // shake횟수 제출
+    }, (time! - 6) * 1000); // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
+
+    // cleanup 함수에서 setInterval 정리
+    return () => {
+      clearTimeout(startGame);
+    };
   }, []);
-  
-  // 타이머 작동
-  useEffect(() => {
-    if (isRunning && time > 0) {
-      console.log("타이머 시작");
-      let interval = setInterval(() => {
-        setTime((prevTime) => prevTime - 0.01);
-        console.log(time);
-        // 시간이 끝나면 애니메이션 작동 및 interval 중지
-        if (time.toFixed(2) === "0.00") {
-          setIsBroken(true);
-          setIsRunning(false);
-          clearInterval(interval);
-          submitAnswer()  // shake횟수 제출
-          window.removeEventListener("keydown", handleWebShake);
-        }
-      }, 10);
-
-      // setTimeout(() => {
-      //             setIsBroken(true);
-      //             setIsRunning(false);
-      //             window.removeEventListener("keydown", handleWebShake);
-        
-      // }, time);
-
-      // cleanup 함수에서 setInterval 정리
-      return () => {
-        clearInterval(interval);
-        // clearTimeout(startGame)
-      };
-    }
-  }, [time, isRunning]);
 
   useEffect(() => {
     if (isBroken) {
@@ -123,70 +99,72 @@ const WakeUpGame = (props: Props) => {
     if (showluckqui) {
       setTimeout(() => {
         handleOrder && handleOrder(2);
-      }, 5000);
+      }, 4500);
     }
-  });
+  }, [showluckqui]);
 
   return (
-    <div className={styles.content}>
-      <div className={styles.container}>
-        {/* <h1>Shake the Egg!</h1> */}
-        {isBroken ? (
-          showluckqui ? (
-            <>
-              <div className={styles.eggContainer} style={{ marginTop: "100px" }}>
-                <div className={styles.eggImg}>
-                  <img src={egg_top} alt="" className={styles.eggTop} />
-                  <img src={luckqui} alt="" className={styles.luckqui} />
-                  <img src={egg_bottom} alt="" className={styles.eggBottom} />
+    <>
+      <QuizGameTitle title="일어나 럭퀴야 학교 가야지 게임" />
+      <div className={styles.content}>
+        <div className={styles.container}>
+          {/* <h1>Shake the Egg!</h1> */}
+          {isBroken ? (
+            showluckqui ? (
+              <>
+                <div className={styles.eggContainer} style={{ marginTop: "100px" }}>
+                  <div className={styles.eggImg}>
+                    <img src={egg_top} alt="" className={styles.eggTop} />
+                    <img src={luckqui} alt="" className={styles.luckqui} />
+                    <img src={egg_bottom} alt="" className={styles.eggBottom} />
+                  </div>
+                  <div className={styles.eggShadow}></div>
                 </div>
-                <div className={styles.eggShadow}></div>
-              </div>
-              <h2>You woke Luckqui up!</h2>
-            </>
+                <h2>You woke Luckqui up!</h2>
+              </>
+            ) : (
+              <>
+                {/* <div id="time-box">Time Over</div> */}
+                <div id="game-description">
+                  {isMobile ? "알을 터치하여 럭퀴를 깨워주세요" : "스페이스 바를 눌러 럭퀴를 흔들어 깨워주세요"}
+                </div>
+                <div className={styles.eggContainer}>
+                  <div className={styles.egg}></div>
+                  <div className={styles.crack}>
+                    <ul>
+                      <li></li>
+                      <li></li>
+                      <li></li>
+                      <li></li>
+                      <li></li>
+                    </ul>
+                  </div>
+                  <div className={styles.eggShadow}></div>
+                </div>
+              </>
+            )
           ) : (
             <>
-              <div id="time-box">Time Over</div>
+              {/* <div id="time-box">{time.toFixed(2)} 초</div> */}
               <div id="game-description">
                 {isMobile ? "알을 터치하여 럭퀴를 깨워주세요" : "스페이스 바를 눌러 럭퀴를 흔들어 깨워주세요"}
               </div>
               <div className={styles.eggContainer}>
-                <div className={styles.egg}></div>
-                <div className={styles.crack}>
-                  <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                  </ul>
-                </div>
-                <div className={styles.eggShadow}></div>
+                <div
+                  className={isShaking ? styles.shakingEgg : styles.egg}
+                  onTouchStart={(e) => {
+                    isMobile && handleMobileShake(e);
+                  }}
+                ></div>
+                <div className={isShaking ? styles.shakingEggShadow : styles.eggShadow}></div>
+                <p>{shakeCount}번</p>
               </div>
             </>
-          )
-        ) : (
-          <>
-            {/* <div id="time-box">{time.toFixed(2)} 초</div> */}
-            <div id="game-description">
-              {isMobile ? "알을 터치하여 럭퀴를 깨워주세요" : "스페이스 바를 눌러 럭퀴를 흔들어 깨워주세요"}
-            </div>
-            <div className={styles.eggContainer}>
-              <div
-                className={isShaking ? styles.shakingEgg : styles.egg}
-                onTouchStart={(e) => {
-                  isMobile && handleMobileShake(e);
-                }}
-              ></div>
-              <div className={isShaking ? styles.shakingEggShadow : styles.eggShadow}></div>
-              <p>{shakeCount}번</p>
-            </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default WakeUpGame;
-

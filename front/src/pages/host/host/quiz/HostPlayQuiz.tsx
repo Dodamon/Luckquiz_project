@@ -1,7 +1,7 @@
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import QuizShortContent from "components/quiz/QuizShortContent";
 import { getQuizItem } from "models/quiz";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "store";
@@ -16,52 +16,47 @@ import CountdownAni from "components/common/CountdownAni";
 import SubmitChart from "components/host/quiz/SubmitChart";
 import { socketActions } from "store/webSocket";
 import StartFinishText from "components/common/StartFinishText";
-import ReadyBalloonGame from "components/game/balloon/ReadyBalloonGame";
-import ReadyEmotionGame from "components/game/emotion/ReadyEmotionGame";
-import ReadyWakeupGame from "components/game/wakeup/ReadyWakeupGame";
 import ReadyGame from "components/common/ReadyGame";
+import QuizRanking from "components/quiz/QuizRanking";
+import QuizShortAnswer from "components/quiz/QuizShortAnswer";
+import QuizOxAnswer from "components/quiz/QuizOxAnswer";
+import QuizFourAnswer from "components/quiz/QuizFourAnswer";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
-  const dispatch = useDispatch();
-  const [showQuizGame, setShowQuizGame] = useState(false);
+  const quizGameResult = useSelector((state: RootState) => state.socket.getHostResult);
+  const [modalOn, SetModalOn] = useState(quizItem?.quiz ? false : true);
+  const ref = useRef<HTMLDivElement>(null);
+
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
-  // 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
+  // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
   console.log("order:", order);
-  // const [data, Setdata] = useState()
-
-  // const chartConfig = {
-  //   labels: [],
-  //   datasets: [
-  //     {
-  //       data: [42, 58], // 정답율, 오답율
-  //       backgroundColor: ["#1bd392", "#f75555"],
-  //       borderRadius: 30,
-  //       borderColor: "#ffff",
-  //       borderWidth: 2.5,
-  //       cutout: "60%",
-  //       // shadowOffsetX: 30,
-  //       // shadowOffsetY: 30,
-  //       // shadowBlur: 10,
-  //       // shadowColor: "#a3c8ff",
-  //     },
-  //   ],
-  //   options: {
-  //     tooltips: {
-  //       endabled: false,
-  //     },
-  //   },
-  // };
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
   // 게임이면 -1부터 진행
   useEffect(() => {
     quizItem?.quiz ? setOrder(0) : setOrder(-1);
   }, [quizItem]);
+
+  // 퀴즈 채점결과가 들어오면 결과컴포넌트
+  useEffect(() => {
+    quizGameResult && setOrder(3);
+    console.log("호스트가받는결과:", quizGameResult);
+  }, [quizGameResult]);
+
+  // 결과 랭킹 모달 밖에 클릭시, 모달닫기
+  useEffect(() => {
+    const clickOutside = (e: { target: Node | null }) => {
+      if (modalOn && ref.current && !ref.current.contains(e.target)) {
+        SetModalOn(false);
+      }
+    };
+  }, [modalOn]);
 
   // 호스트 기준 퀴즈시간이 끝나면 quizgameend publish
   const quizGameEnd = () => {
@@ -77,7 +72,7 @@ const HostPlayQuiz = () => {
   console.log(quizItem);
   return (
     quizItem && (
-      <div className={styles.container}>
+      <div className={styles.container} ref={ref}>
         {order === -1 && <ReadyGame handleOrder={setOrder} />}
         {order === 0 && <CountdownAni handleOrder={setOrder} />}
         {order === 1 && (
@@ -139,8 +134,6 @@ const HostPlayQuiz = () => {
         {order === 2 && (
           <>
             <StartFinishText title="채점중인뎁숑" />
-
-            {/* 임시로 달아놈 */}
             <div className={styles.nextBtn}>
               <ButtonWithLogo
                 name="다음 퀴즈(임시)"
@@ -159,12 +152,23 @@ const HostPlayQuiz = () => {
           </>
         )}
         {order === 3 && (
-          // 랭킹 컴포넌트
+          // 제출현황 차트 & 랭킹 컴포넌트(모달)
           <>
-            <div className={styles.submitChart}>
-              <SubmitChart myData={[34, 24]} />
+            {quizItem?.quiz && (
+              <div className={styles.submitChart}>
+                <SubmitChart myData={[34, 24, 44, 10]} />
+              </div>
+            )}
+            <div className={styles.quizContainer}>
+              {quizItem?.quiz === "text" && <QuizShortAnswer />}
+              {quizItem?.quiz === "ox" && <QuizOxAnswer />}
+              {quizItem?.quiz === "four" && <QuizFourAnswer />}
             </div>
-            {/* 마지막 문제인지 아닌지 */}
+            {quizItem?.quiz && <div onClick={() => SetModalOn((pre) => !pre)}>현재 전체 랭킹보기</div>}
+            {modalOn && <QuizRanking />}
+
+            {/* 마지막 문제이면 최종결과 버튼*/}
+            {/* 아니면 다음퀴즈 버튼*/}
             {quizItem.quizSize - quizItem.quizNum === 1 ? (
               <div className={styles.nextBtn}>
                 <ButtonWithLogo
@@ -179,6 +183,7 @@ const HostPlayQuiz = () => {
                   //     }),
                   //   );
                   // }}
+                  onClick={() => {navigate(`/host/quiz/${quiz_id}/awards`);}}
                 />
               </div>
             ) : (
