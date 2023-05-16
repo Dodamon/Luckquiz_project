@@ -72,7 +72,7 @@ public class GradingConsumerController {
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
-                String roomInfo =StringValueOperations.get(kafkaGradeEndMessage.getRoomId().toString());
+                String roomInfo = StringValueOperations.get(kafkaGradeEndMessage.getRoomId().toString());
                 TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
                 System.out.println(kafkaGradeEndMessage.getRoomId());
@@ -84,7 +84,11 @@ public class GradingConsumerController {
                     a.setQuizNum(roomInf.getQuizNum());
                     userLList.add(a);
                 }
+
+                StringValueOperations.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage));
+
                 Collections.sort(userLList);
+
 
                 for(Grade gtemp :userLList){
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
