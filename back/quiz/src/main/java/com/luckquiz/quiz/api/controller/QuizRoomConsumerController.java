@@ -94,23 +94,28 @@ public class QuizRoomConsumerController {
 
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
-                String quizInfo = StringValueOperations.get(roomId);
+                quizRoom.setFinishedTime(LocalDateTime.now());
 
+                String quizInfo = StringValueOperations.get(roomId);
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
                 int quizCnt = 0;
                 int gameCnt = 0;
                 for(QGame a : templateDetailResponse.getQuizList()){
+                    QuizReport quizReport = new QuizReport();
                     if("quiz".equals(a.getType())){
                         quizCnt ++;
+                        quizReport.setQuestion(a.getQuestion());
                     }else {
                         gameCnt ++;
                     }
-                    QuizReport quizReport = new QuizReport();
                     quizReport.setQuizGameId(a.getId());
-                    quizReport.setQuestion(a.getQuestion());
                     quizReport.setPinNum(quizRoom.getPinNum());
+                    quizReportRepository.save(quizReport);
                 }
+
+                // quiz report에 solvedcount 랑 correct count 더하기만 남음
+
 
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
@@ -123,9 +128,9 @@ public class QuizRoomConsumerController {
                 int correctCnt = 0;
                 for (String one : users) {
                     Grade g = gson.fromJson(one, Grade.class);
+
                     correctCnt += g.getCount();
                     QuizGuest qguest = QuizGuest.builder()
-                            .correctCount(g.getCount())
                             .guestNickname(g.getPlayerName())
                             .totalCount(templateDetailResponse.getQuizList().size())
                             .pinNum(quizRoom.getPinNum())
@@ -135,8 +140,9 @@ public class QuizRoomConsumerController {
                     quizGuestRepository.save(qguest);
                 }
 
-
                 quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
+
+                int participant_count = 0;
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
@@ -144,10 +150,12 @@ public class QuizRoomConsumerController {
                     if(quizGuest.getGuestNickname().equals(temp.getSender())){
                         quizGuest.setScore(a.getScore());  // 게스트의 총점
                     }
+                    participant_count++;
                     if (host.getName().equals(temp.getSender())) {
-
+                        continue;
                     }
                 }
+                quizRoom.setParticipantCount(participant_count);
 
                 // quiz_report 에 정보입력
 
