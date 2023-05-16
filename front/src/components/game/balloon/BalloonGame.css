@@ -1,12 +1,10 @@
 @media screen and (min-width: 767px) {
   .balloonGamePage {
-    width: 150%;
-    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 20px;
   }
   
   #content {
@@ -132,11 +130,7 @@
 
 @media screen and (max-width: 767px) {
   .balloonGamePage {
-    width: 100%;
-    /* margin-left: 9.5%; */
-    max-width: 767px;
-    min-width: 240px;
-    height: 100%;
+    width: 110%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -144,7 +138,7 @@
   }
   
   #content {
-    width: 90%;
+    width: 80%;
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 10px;   

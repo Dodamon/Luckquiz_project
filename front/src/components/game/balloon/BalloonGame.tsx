@@ -122,7 +122,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
     }, 320);
 
     console.log(time.toFixed(2));
-    // submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
+    submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
     setIsRunning(false);
 
     setTimeout(() => {
@@ -148,7 +148,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   }, [isRunning, time]);
 
   return (
-    <div className="balloonGamePage"> 
+    <> 
       <QuizGameTitle title="풍선 터트리기"/>
       <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
         <div id="time-box">{timeLimit} 초</div>
@@ -514,7 +514,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
           POP !!{" "}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

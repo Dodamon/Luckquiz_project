@@ -65,14 +65,14 @@ const GuestPlayQuiz = () => {
             <div className={styles.header}>
               {quizItem?.game !== "balloon" && <TimerBar handleOrder={setOrder}/>}
             </div>
-            <div className={styles.quizContainer}>
+            <>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "ox" && <QuizOxContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "four" && <QuizFourContent handleAnswer={SetguestAnswer} />}
               {quizItem?.game === "wakeup" && <WakeUpGame handleOrder={setOrder} />}
               {quizItem?.game === "balloon" && <BalloonGame handleOrder={setOrder} />}
               {quizItem?.game === "emotion" && <EmotionGame handleOrder={setOrder} />}
-            </div>
+            </>
             {quizItem?.quiz && (
               <div className={styles.nextBtn}>
                 <ButtonWithLogo
