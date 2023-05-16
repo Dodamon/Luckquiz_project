@@ -1,5 +1,7 @@
 package com.luckquiz.grade.api.response;
 
+import java.util.LinkedHashMap;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,11 +10,12 @@ import lombok.Setter;
 @Setter
 @Builder
 public class KafkaGradeEndResponse {
-	Integer roomId;
-	Integer count;
-	Integer connectionCount;
-	Integer solveCount;
-	Integer correctCount;
-	Double correctRate;
-	Integer quizNum;
+	private Integer roomId;
+	private Integer count;
+	private Integer connectionCount;
+	private Integer solveCount;
+	private Integer correctCount;
+	private Double correctRate;
+	private Integer quizNum;
+	private LinkedHashMap<String, Double> answerData;
 }

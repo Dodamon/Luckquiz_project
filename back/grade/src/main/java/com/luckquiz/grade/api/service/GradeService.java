@@ -168,26 +168,35 @@ public class GradeService {
 	}
 
 	public void pictureGrade(KafkaEmotionRequest gradeRequest){
+		// 방 번호
 		Integer roomId = gradeRequest.getRoomId();
+		// 사용자 이름
 		String playerName = gradeRequest.getSender();
-		// 총 참여자 수
-		Long count = hashGradeOperations.size(roomId+"p");
+		// 퀴즈 번호
+		Integer quizNum = gradeRequest.getQuizNum();
+		// 템플릿 정보
 		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
+
 		if(templateDetailResponse == null){
 			log.warn("템플릿이 비어있네요");
 			return;
 		}
-		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
+		// 정답 (감정 종류)
+		String correctAnswer = templateDetailResponse.getQuizList().get(quizNum).getAnswer();
+		// 사용자 감정 사진에서 받은 데이터
 		KafkaEmotionResult.ValCon answer = gradeRequest.getEmotionResult();
-		//정답이 맞으면, 퀴즈 번호가 같다면.
-		if(gradeRequest.getQuizNum()!=templateDetailResponse.getQuizNum()){
+		//퀴즈 번호가 같다면 현재 진행중인 퀴즈번호가 아니면
+		if(quizNum!=templateDetailResponse.getQuizNum()){
 			throw new CustomException(CustomExceptionType.QUIZ_NUM_ERROR);
 		}
-		// 받은 결과값의 감정이 정답과 같다면.
+		// 랭킹 키를 json string으로 만들어서 조회하기 위해 객체 생성
 		RankKey rankKey = new RankKey();
 		rankKey.setSender(gradeRequest.getSender());
 		rankKey.setImg(gradeRequest.getImg());
+		// 받은 감정 종류의 개수에 +1 (통계용)
+		zSetOperations.incrementScore(roomId+"statics",answer.getValue(),1);
+		// 감정 종류가 제출한 사진 데이터의 감정과 같다면.
 		if(correctAnswer.equals(answer.getValue())){
 			Long scoreGet = (long)(1000*answer.getConfidence());
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
@@ -199,12 +208,10 @@ public class GradeService {
 			//현재 점수 반영
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 		} else {
+			// 감정 종류가 다를 경우.
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),0);
 		}
-		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
-		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
-		// Map<String, Grade> hashmap = hashOperations.entries(roomId+"p");
 	}
 
 
@@ -253,7 +260,7 @@ public class GradeService {
 		// 방 번호
 		Integer roomId = message.getRoomId();
 		// 템플릿 정보
-		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId),
+		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);;
 		// 현재 퀴즈번호
 		Integer quizNum = templateDetailResponse.getQuizNum();;
@@ -285,7 +292,7 @@ public class GradeService {
 		playersInfo.entrySet().stream().sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->playersInfo.put(e.getKey(),e.getValue()));
 
 		// 순위(rankNow) 매기기
-		int ranking = 0;
+		int ranking = 1;
 		int scoreGet = -10000;
 		for(Map.Entry<String,Grade> playerInfo: playersInfo.entrySet()){
 			// 이전 사람 점수와 같으면 같은 등수.
@@ -295,14 +302,14 @@ public class GradeService {
 				playerInfo.getValue().setRankNow(++ranking);
 			}
 			scoreGet = playerInfo.getValue().getScoreGet();
-
 			// 플레이어 정보에서 ranking 갱신된 것 저장.
 			hashGradeOperations.put(roomId+"p",playerInfo.getValue().getPlayerName(),playerInfo.getValue());
 		}
 
 
 		//정답률
-		Double correctRate = correctCount.doubleValue()/ solveCount.get();
+		Double correctRate = correctCount.doubleValue()/ solveCount.doubleValue();
+		// 보낸 메시지 작성
 		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder()
 			.roomId(roomId)
 			.quizNum(quizNum)
@@ -311,6 +318,7 @@ public class GradeService {
 			.connectionCount(connectionCount.intValue())
 			.correctCount(correctCount)
 			.correctRate(correctRate)
+			.answerData(answerData)
 			.build();
 		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
