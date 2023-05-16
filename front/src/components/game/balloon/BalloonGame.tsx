@@ -127,7 +127,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
 
     setTimeout(() => {
       handleOrder(2);
-    }, 400)
+    }, 3000)
   };
 
   useEffect(() => {
@@ -513,6 +513,9 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
           {" "}
           POP !!{" "}
         </button>
+        <div className={!isRunning ? "my-time" : "disable-my-time"}>
+          풍선을 터트린 시간 : {time.toFixed(2)} 초
+        </div>
       </div>
     </>
   );
