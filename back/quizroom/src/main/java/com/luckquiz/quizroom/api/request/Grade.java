@@ -15,6 +15,7 @@ public class Grade implements Comparable<Grade>{
     private int rankPre;
     private int rankNow;
     private int count;
+    private int quizNum;
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
@@ -29,6 +30,9 @@ public class Grade implements Comparable<Grade>{
     }
     public void setPlayerImg(int playerImg) {
         this.playerImg = playerImg;
+    }
+    public void setQuizNum(int quizNum){
+        this.quizNum = quizNum;
     }
     @Override
     public int compareTo(Grade o) {
