@@ -83,8 +83,8 @@ const Modal = ({ isModal, setIsModal }: ModalProps) => {
 
                 <div className={styles.footer_section}>
                     <div>
-                        <button className={styles['btn-left']} onClick={onClickCreate}>Create</button>
-                        <button className={styles['btn-right']} onClick={onClickClose}>Close</button>
+                        <button className={styles['btn-left']} onClick={onClickCreate}>생성</button>
+                        <button className={styles['btn-right']} onClick={onClickClose}>닫기</button>
                     </div>
                 </div>
 

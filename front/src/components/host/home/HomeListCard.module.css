@@ -13,6 +13,7 @@
         padding-left: 7%;
         padding-right: 7%;
         box-sizing: border-box;
+        position: relative;
     }
     .quizBox:hover {
         transform: translateY(-5px);
