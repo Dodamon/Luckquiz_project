@@ -25,7 +25,7 @@
   justify-content: center;
   align-items: center;
   color: var(--placeholder-text);
-  margin-top: 2.5%;
+  margin-top: 1%;
 }
 
 .plus_font {
@@ -62,20 +62,19 @@
   grid-template-columns: repeat(2, 1fr);
   row-gap: 20px;
   column-gap: 100px;
-  width: 90%;
+  width: 80%;
   margin-top: 50px;
 }
 
 .content_answer {
   background-color: var(--white-color);
-  height: 90px;
+  height: 80px;
   border-radius: 20px;
   display: flex;
   align-items: center;
 }
 
 .content_color {
-  background-color: red;
   height: 100%;
   width: 100px;
   border-top-left-radius: 20px;
@@ -124,12 +123,12 @@
   cursor: pointer;
 }
 .outbox:hover {
-  font-size: 46px;
+  font-size: 44px;
 }
 .keepbox {
   cursor: pointer;
 }
 
 .keepbox:hover {
-  font-size: 46px;
+  font-size: 44px;
 }

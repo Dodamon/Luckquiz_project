@@ -1,0 +1,30 @@
+.notification {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 70%;
+    object-fit: contain;
+}
+
+.text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5.5vw;
+    width: 100%;
+    color: white;
+    margin-top: 50px;
+}
+
+.underline {
+    width: 70%;
+    border: 3px solid white;
+    border-radius: 10px;
+    margin-top: 20px;
+}

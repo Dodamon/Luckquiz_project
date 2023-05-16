@@ -1,120 +1,62 @@
-@media screen and (max-width: 767px) {
-.content_nav{
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-}
-
-.nav_left{
-display: flex;
-color: white;
-width: 240px;
-justify-content: space-between;
-}
-
-.nav_left>select{
-    width: 160px;
-    height: 60px;
-    border-radius: 20px;
-    font-size: 18px;
-    /* color: red; */
-  
-}
-
-.nav_right{
-    width: 240px;
-    display: flex;
-    justify-content: end;
-}
-
-.nav_right>div{
-    width: 120px;
-    height: 60px;
-    border-radius: 20px;
-    background-color: var(--select-two);
-    display: flex;
-    font-size: 18px;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    word-break: keep-all;
-    /* font-weight: bold; */
-    color: var( --white-color);
-}
-
-.nav_right>div:hover{
-   opacity: 70%;
-}
-
-.select_form{
-    padding-left: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    /* padding-right: 50px; */
-}
-}
-
-
 @media screen and (min-width: 767px) {
-    
-
-.content_nav{
+  .content_nav {
     display: flex;
-    width: 90%;
+    width: 80%;
     justify-content: space-between;
-}
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
 
-.nav_left{
-display: flex;
-color: white;
-width: 340px;
-justify-content: space-between;
-}
+  .nav_left {
+    display: flex;
+    color: white;
+    /* width: 260px; */
+    /* justify-content: space-between; */
+    gap: 20px;
+  }
 
-.nav_left>select{
-    width: 160px;
-    height: 60px;
+  .nav_left > select {
+    width: 130px;
+    height: 55px;
     border-radius: 20px;
-    font-size: 22px;
+    font-size: 18px;
     /* padding-right: 20px; */
     /* padding-left: 20px; */
     /* padding-right: 50px; */
     /* appearance: none; */
     /* background-image 속성을 사용한 방법 */
-  
-}
+  }
 
-.nav_right{
-    width: 340px;
+  .nav_right {
+    /* width: 260px; */
     display: flex;
     justify-content: end;
-}
+  }
 
-.nav_right>div{
-    width: 160px;
-    height: 60px;
-    border-radius: 20px;
-    background-color: var(--select-two);
+  .nav_right > div {
+    width: 110px;
+    height: 49px;
+    border-radius: 18px;
+    background-color: var(--white-color);
+    border: 3px solid var(--button-two);
     display: flex;
-    font-size: 22px;
+    font-size: 18px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     word-break: keep-all;
     /* font-weight: bold; */
-    color: var( --white-color);
-}
+    /* color: var(--white-color); */
+  }
 
-.nav_right>div:hover{
-   opacity: 70%;
-}
+  .nav_right > div:hover {
+    opacity: 70%;
+  }
 
-.select_form{
+  .select_form {
     padding-left: 15px;
     font-size: 18px;
     font-weight: bold;
     /* padding-right: 50px; */
+  }
 }
-}
-
-

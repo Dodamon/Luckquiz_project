@@ -2,12 +2,13 @@
     width: 70%;
     min-width: 91px;
     background-color: #F2EFFF;
-    border-radius: 20px;
+    border-radius: 18px;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
 }
 
 .menu {
@@ -17,11 +18,23 @@
     padding: 7% 7% 7% 10%;
 }
 
+
+.logout {
+    display: flex;
+    align-items: center;
+    padding: 7% 7% 7% 10%;
+    gap: 8px;
+}
+
+.menu:hover, .logout:hover{
+    background-color: #ded9fa;
+}
+
 .profile {
     display: flex;
     justify-content: center;
     /* background-color: blue; */
-    height: 120px;
+    height: 110px;
     align-items: center;
 }
 
@@ -32,24 +45,24 @@
 }
 
 .profileImg {
-    width: 35%;
+    width: 30%;
     border-radius: 50%;
     aspect-ratio: 1/1;
     object-fit: cover;
+    margin-left: 10px;
     /* border: 4px solid var(--button-one) */
 }
 
 .profil_box {
     display: flex;
     align-items: center;
-    padding: 10% 4%;
+    /* padding: 10% 4%; */
     font-size: 17px;
-    justify-content: space-around;
     background-color: var(--white-color);
     border-radius: 10px;
-    width: 70%;
-    height: 40px;
-    /* border: 2px solid gray; */
+    width: 90%;
+    height: 80px;
+    gap: 20px;
 }
 
 .profileBoard {
@@ -68,3 +81,4 @@
     flex-direction: column;
     justify-content: space-evenly;
 }
+
