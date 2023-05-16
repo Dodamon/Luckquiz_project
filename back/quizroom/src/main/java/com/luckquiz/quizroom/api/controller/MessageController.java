@@ -389,18 +389,20 @@ public class MessageController {
             tempU.setRank(rankNum);
             tempU.setScore(name.getScore().intValue());
             rankNum ++;
-            GuestFinalResultMessage guestFinalResultMessage = GuestFinalResultMessage.builder()
-                    .type("guestFinalResultMessage")
-                    .guestFinalResultMessage(tempU)
-                    .build();
             result.add(tempU);
-            sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+tempU.getSender(),guestFinalResultMessage);
+
         }
         FinalResultMessage finalResultMessage = FinalResultMessage.builder()
                 .type("finalResultList")
                 .finalResultList(result)
                 .build();
+
+        for(ZSetOperations.TypedTuple<String> name : rank){
+            EnterUser user = gson.fromJson(name.getValue(),EnterUser.class);
+            sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+user.getSender(),finalResultMessage);
+        }
         sendingOperations.convertAndSend("/topic/quiz/" + finalRequest.getRoomId(),finalResultMessage);
+
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
     }
