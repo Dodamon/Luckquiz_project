@@ -1,5 +1,5 @@
 import Podium from "components/common/Podium";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Awards.module.css";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useState, useRef, useEffect } from "react";
@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 
 const GuestAwards = () => {
   const { quiz_id } = useParams();
+  const navigate = useNavigate()
   const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const [modalOn, SetModalOn] = useState(false);
@@ -35,17 +36,10 @@ const GuestAwards = () => {
       <Podium />
       { isHost && <div className={styles.btn}  style={ modalOn? { position: "relative", zIndex:"-1"}:{} } >
         <ButtonWithLogo
-          name="퀴즈 종료"
+          name="레포트 보러가기"
           fontSize="18px"
           height="45px"
-        //   onClick={() =>
-        // dispatch(
-        //   socketActions.sendAnswerMessage({
-        //     destination: "/app/quiz/next",
-        //     body: { hostId: userId, roomId: quiz_id },
-        //   }),
-        // )
-        //   }  backdrop-filter: blur(5px); /* 흐림 효과 적용 */
+          onClick={() => navigate('/home/report')}
         />
       </div>}
       <div  className={styles.bgtools} style={modalOn? {backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)'}: {}} ></div>

@@ -26,6 +26,8 @@ const WakeUpGame = (props: Props) => {
   const [isBroken, setIsBroken] = useState(false);
   const [showluckqui, setShowLuckqui] = useState(false);
 
+  console.log(shakeCount, "ssss");
+
   const submitAnswer = () => {
     console.log("자동제출: ", shakeCount);
     dispatch(
@@ -46,9 +48,10 @@ const WakeUpGame = (props: Props) => {
 
   // 모바일 기기에서 작동되는 shake감지 함수
   const handleMobileShake = (event: React.TouchEvent<HTMLDivElement>) => {
-    console.log("shaked");
+    console.log("shaked", shakeCount);
     setIsShaking(true);
     setShakeCount((prev) => prev + 1);
+    console.log("shaked1", shakeCount);
     setTimeout(() => {
       setIsShaking(false);
     }, 500);
@@ -58,9 +61,9 @@ const WakeUpGame = (props: Props) => {
   const handleWebShake = (event: KeyboardEvent) => {
     if (event.code === "Space" && !isBroken) {
       event.preventDefault();
-      console.log("shaked");
       setIsShaking(true);
       setShakeCount((prev) => prev + 1);
+      console.log("shaked", shakeCount);
     }
     setTimeout(() => {
       setIsShaking(false);
