@@ -377,20 +377,23 @@ public class MessageController {
     public void finalEnd(FinalRequest finalRequest){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         System.out.println(finalRequest.getRoomId());
-        Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(finalRequest.getRoomId()+"rank",0,zSetOperations.size(finalRequest.getRoomId()+"rank")-1);
-
+        // 려환님 코드
+        // Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(finalRequest.getRoomId()+"rank",0,zSetOperations.size(finalRequest.getRoomId()+"rank")-1);
+        // 수정 코드 - 윤동근
+        Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(finalRequest.getRoomId()+"rank",0,-1);
         List<ZSetOperations.TypedTuple<String>> rank = new ArrayList<>(all);
         List<UserR> result = new ArrayList<>();
         int rankNum = 1;
+        int tempScore = -1000;
         for(ZSetOperations.TypedTuple<String> name : rank){
             EnterUser user = gson.fromJson(name.getValue(),EnterUser.class);
+            int getScore = name.getScore().intValue();
             UserR tempU = new UserR();
-            System.out.println(tempU.getSender());
+
             tempU.setSender(user.getSender());
             tempU.setImg(user.getImg());
-            tempU.setRank(rankNum);
-            tempU.setScore(name.getScore().intValue());
-            rankNum ++;
+            tempU.setRank(tempScore==getScore?rankNum:++rankNum);
+            tempU.setScore(getScore);
             result.add(tempU);
         }
         FinalResultMessage finalResultMessage = FinalResultMessage.builder()
@@ -403,6 +406,7 @@ public class MessageController {
         }
         sendingOperations.convertAndSend("/topic/quiz/" + finalRequest.getRoomId(),finalResultMessage);
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
+        // kafka topic-server_message로
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
     }
 //    @Scheduled(cron = "0/5 * * * * *" )

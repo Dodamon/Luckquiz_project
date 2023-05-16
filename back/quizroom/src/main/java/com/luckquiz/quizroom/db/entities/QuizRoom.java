@@ -1,6 +1,8 @@
 package com.luckquiz.quizroom.db.entities;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Setter;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "quiz_room")
 @AllArgsConstructor
 @Builder
+@Setter
 public class QuizRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

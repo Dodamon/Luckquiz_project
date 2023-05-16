@@ -8,7 +8,9 @@ import com.luckquiz.quizroom.api.response.GradeEndMessage;
 import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
 import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
 import com.luckquiz.quizroom.db.entities.QuizReport;
+import com.luckquiz.quizroom.db.entities.QuizRoom;
 import com.luckquiz.quizroom.db.repository.QuizReportRepository;
+import com.luckquiz.quizroom.db.repository.QuizRoomRepository;
 import com.luckquiz.quizroom.message.GuestTurnEndMessage;
 import com.luckquiz.quizroom.message.HostTurnEndMessage;
 import com.luckquiz.quizroom.model.UserR;
@@ -35,6 +37,7 @@ import java.util.Map;
 @Slf4j
 public class GradingConsumerController {
     private final QuizReportRepository quizReportRepository;
+    private final QuizRoomRepository quizRoomRepository;
     private  final Gson gson;
     private final SimpMessageSendingOperations sendingOperations;
     private  final StringRedisTemplate stringRedisTemplate;
@@ -68,8 +71,10 @@ public class GradingConsumerController {
                 break;
             case "grade_end":
                 log.info("채점 끝났답니다. 결과 메시지를 보내주는 함수 구현해야 합니다.");
-
+                //     Integer roomId; Integer count; Integer connectionCount; solveCount;
+                //     Integer correctCount; Double correctRate; Integer quizNum;
                 //함수 분리하기;
+
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 String roomInfo =StringValueOperations.get(kafkaGradeEndMessage.getRoomId().toString());
@@ -107,6 +112,8 @@ public class GradingConsumerController {
                             .build();
                     sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),guestTurnEndMessage);
                 }
+
+
                 HostTurnEndMessage hostTurnEndMessage = HostTurnEndMessage.builder()
                         .type("userLList")
                         .userLList(userLList)
@@ -114,6 +121,7 @@ public class GradingConsumerController {
                 sendingOperations.convertAndSend("/topic/quiz/"+kafkaGradeEndMessage.getRoomId(),hostTurnEndMessage);
                 break;
             default:
+                log.warn("kafka에서 알수 없는 key값이 옵니다.");
                 break;
         }
 //        log.info("gson은 신이다 : "+quizStartRequest.getRoomId());
