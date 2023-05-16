@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
-import { EmotionResult, getQuizItem } from "models/quiz";
+import { EmotionResult, FinalResultList, getQuizItem } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 import { HostResult, GuestResult } from "models/quiz";
 
@@ -19,7 +19,8 @@ interface SocketState {
   emotionResult: EmotionResult | null;
   quizEnd: string | null;
   getHostResult: HostResult[] | null;
-  getGuestResult: GuestResult[] | null;
+  getGuestResult: GuestResult | null;
+  getFinalResultList: FinalResultList[] | null;
 }
 
 const initialState: SocketState = {
@@ -33,6 +34,7 @@ const initialState: SocketState = {
   quizEnd: null,
   getHostResult: null,
   getGuestResult: null,
+  getFinalResultList: null,
 };
 
 const socketSlice = createSlice({
@@ -43,7 +45,7 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         console.log("publish");
-        console.log(actions.payload.destination);
+        console.log(actions.payload.destination, actions.payload.body);
         client.publish({
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
@@ -100,6 +102,15 @@ const socketSlice = createSlice({
     getGuestResult: (state, actions) => {
       state.getGuestResult = actions.payload;
     },
+    
+    deleteGuestResult: (state, actions) => {
+      state.getGuestResult = null
+      console.log('delete')
+    },
+
+    getFinalResultList: (state, actions) => {
+      state.getFinalResultList = actions.payload;
+    }
   },
 });
 
@@ -136,6 +147,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       // else if (data.type === "userList") dispatch(socketActions.getHostResult(data.userList));
       else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
       else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));
+      else if (data.type === "finalResultList") dispatch(socketActions.getGuestResult(data.finalResultList));
       else console.log("got empty message");
       // dispatch(socketActions.getQuizItem(data));
     }

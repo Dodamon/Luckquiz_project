@@ -23,11 +23,12 @@ const GuestPlayQuiz = () => {
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  const end = useSelector((state: RootState) => state.socket.quizEnd)
+  const quizGameResult = useSelector((state: RootState) => state.socket.getGuestResult);
+  const end = useSelector((state: RootState) => state.socket.quizEnd);
   const [guestAnswer, SetguestAnswer] = useState("");
   const dispatch = useDispatch();
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
-  // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
+  // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중
   const [order, setOrder] = useState(0);
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
@@ -37,23 +38,22 @@ const GuestPlayQuiz = () => {
     quizItem ? (quizItem?.quiz ? setOrder(0) : setOrder(-1)) : setOrder(2);
   }, [quizItem]);
 
+  // 해당 문제의 퀴즈 채점결과가 들어오면 결과페이지로 이동
+  useEffect(() => {
+    console.log("게스트가받는결과:", quizGameResult);
+    console.log(quizItem?.quizNum, quizGameResult?.quizNum)
+    if (quizItem?.quizNum === quizGameResult?.quizNum) {
+      navigate("/guest/quiz/result");
+    }
+  }, [quizGameResult]);
+
   // 이미 호스트가 해당 퀴즈순서를 종료하고 채점으로 넘어갔을 경우 (퀴즈, emotion game)
   // wakeup과 balloon 게임은 별도로 채점 컨트롤이 없이 자체적으로 게스트화면에서 애니메이션을 다 보여주고 화면 전환(handleOrder(2))
   // useEffect(() => {
-    // end === "success" && quizItem?.game !== "wakeup" && quizItem?.game !== "balloon" && setOrder(2)
+  // end === "success" && quizItem?.game !== "wakeup" && quizItem?.game !== "balloon" && setOrder(2)
   // }, [end])
 
   console.log(guestAnswer);
-
-  // const submitAnswer = () => {
-  //   console.log("자동제출: ", guestAnswer);
-  //   dispatch(
-  //     socketActions.sendAnswerMessage({
-  //       destination: "/app/submit",
-  //       body: { sender: nickname, message: guestAnswer, roomId: roomId, type: "SUBMIT", quizNum: quizItem?.quizNum },
-  //     }),
-  //   );
-  // };
 
   return (
     quizItem && (
@@ -63,7 +63,8 @@ const GuestPlayQuiz = () => {
         {order === 1 && (
           <>
             <div className={styles.header}>
-              {quizItem?.game !== "balloon" && <TimerBar handleOrder={setOrder}/>}
+              {quizItem?.game !== "balloon" && <TimerBar handleOrder={setOrder} />}
+              <div className={styles.quizNum}>{/* {quizItem?.quizNum + 1}/{quizItem?.quizSize} */}</div>
             </div>
             <>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
@@ -91,8 +92,6 @@ const GuestPlayQuiz = () => {
                           type: "SUBMIT",
                           quizNum: quizItem.quizNum,
                         },
-                        // gametype이랑 file은 감정게임에서만
-                        // body: {sender:"ryeo",message:"hihi",roomId:123,type:"SUBMIT",quizNum:2,"gameType":"emotion",file:"filedata"},
                       }),
                     );
                     setOrder(2);
@@ -103,10 +102,6 @@ const GuestPlayQuiz = () => {
           </>
         )}
         {order === 2 && <StartFinishText title="채점중인뎁숑" />}
-        {order === 3 && (
-          // 랭킹 컴포넌트
-          <></>
-        )}
       </div>
     )
   );

@@ -66,10 +66,19 @@ export interface HostResult {
     rankNow: number;
     rankPre: number;
     scoreGet: number;
+    quizNum: number;
 }
 
 export interface GuestResult {
     isUp: boolean;
     rankDiff: number;
     scoreGet: number;
+    quizNum: number;
+}
+
+export interface FinalResultList {
+    sender: string,
+    img: number,
+    rank: number,
+    score: number
 }

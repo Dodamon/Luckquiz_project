@@ -24,6 +24,7 @@ import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
+import GuestResult from "pages/guest/quiz/GuestResult";
 
 
 const router = createBrowserRouter([
@@ -135,7 +136,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/result",
-            element: <></>,
+            element: <GuestResult/>,
           },
           {
             path: "quiz/awards",
