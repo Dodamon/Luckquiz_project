@@ -1,5 +1,5 @@
 .emotion_content {
-    width: 90%;
+    width: 80%;
     height: 90%;
     margin-top: 30px;
     display: flex;
@@ -48,8 +48,8 @@ ul {
 .intro_comment {
     width: 100%;
     word-break: keep-all;
-    height: 100%;
-    font-size: 2rem;
+    height: 15%;
+    font-size: 20px;
     text-align: center;
 }
 
@@ -74,19 +74,17 @@ ul {
     background-color: white;
     border-radius: 10px;
     height: 80px;
-    min-height: 80px;
-    min-width: 300px;
-    max-width: 470px;
+    min-width: 230px;
+    max-width: 300px;
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
 .emotion_box {
-    width: 25%;
+    width: 36%;
     color: white;
     font-size: 48px;
-    background-color: red;
     height: 100%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -96,7 +94,7 @@ ul {
 }
 
 .emotion_ment {
-    font-size: 34px;
+    font-size: 22px;
     width: 75%;
     text-align: center;
 }
