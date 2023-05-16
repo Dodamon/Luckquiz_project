@@ -5,22 +5,48 @@ import rank from 'assets/images/rank.png'
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { HostResult } from 'models/quiz';
-
-
+import img1 from "assets/profile/profile1.png";
+import img2 from "assets/profile/profile2.png";
+import img3 from "assets/profile/profile3.png";
+import img4 from "assets/profile/profile4.png";
+import img5 from "assets/profile/profile5.png";
+import img6 from "assets/profile/profile6.png";
+import img7 from "assets/profile/profile7.png";
+import img8 from "assets/profile/profile8.png";
+import img9 from "assets/profile/profile9.png";
+import img10 from "assets/profile/profile10.png";
+import img11 from "assets/profile/profile11.png";
+import img12 from "assets/profile/profile12.png";
+import img13 from "assets/profile/profile13.png";
+import img14 from "assets/profile/profile14.png";
+import img15 from "assets/profile/profile15.png";
+import img16 from "assets/profile/profile16.png";
 interface HostQuizRankingProps {
     result: HostResult[];
-  }
-//   export interface HostResult {
-//     count: number;
-//     playerImg: number;
-//     playerName: string;
-//     rankNow: number;
-//     rankPre: number;
-//     scoreGet: number;
-const HostQuizRanking= ({ result }: HostQuizRankingProps) => {
+}
+
+const HostQuizRanking = ({ result }: HostQuizRankingProps) => {
     const quizGameType = useSelector((state: RootState) => state.socket.quizItem)
+    const IMAGES = [
+        img1,
+        img2,
+        img3,
+        img4,
+        img5,
+        img6,
+        img7,
+        img8,
+        img9,
+        img10,
+        img11,
+        img12,
+        img13,
+        img14,
+        img15,
+        img16,
+      ];
     
-    const setList = [1, 3, 4, 5, 2];
+
     return (
         <div className={styles.QuizRanking}>
 
@@ -33,7 +59,7 @@ const HostQuizRanking= ({ result }: HostQuizRankingProps) => {
             </div>
             <section className={styles.rank_box}>
                 <header className={styles.titles}>
-                    <div className={styles.title_text}>게임결과</div>
+                    <div className={styles.title_text}>{quizGameType?.game}</div>
                 </header>
 
                 <main className={styles.crown}>
@@ -44,91 +70,26 @@ const HostQuizRanking= ({ result }: HostQuizRankingProps) => {
                 <footer className={styles.ranking}>
                     <ul className={styles.ranking_list}>
 
+                        {
+                            result.map((it,index) => {
+                                return <li className={styles.ranking_item} key={index}>
+                                    <div className={styles.item_left}>
+                                        <div className={styles.item_num}>{it.rankNow}</div>
+                                        <div className={styles.item_img}>
+                                            <img src={ IMAGES[it.playerImg]} alt="img" className={styles.user_img} />
+                                        </div>
+                                        <div className={styles.item_name}>{it.playerName}</div>
+                                    </div>
 
-
-
-                        <li className={styles.ranking_item}>
-                            <div className={styles.item_left}>
-                                <div className={styles.item_num}>1</div>
-                                <div className={styles.item_img}>
-                                    <img src={crown} alt="img" className={styles.user_img} />
-                                </div>
-                                <div className={styles.item_name}>나정원철이다</div>
-                            </div>
-
-                            <div className={styles.item_right}>
-                                <div className={styles.item_score}>2230</div>
-                            </div>
-
-                        </li>
-
-                        <li className={styles.ranking_item}>
-                            <div className={styles.item_left}>
-                                <div className={styles.item_num}>2</div>
-                                <div className={styles.item_img}>
-                                    <img src={crown} alt="img" className={styles.user_img} />
-                                </div>
-                                <div className={styles.item_name}>나정원철이다</div>
-                            </div>
-
-                            <div className={styles.item_right}>
-                                <div className={styles.item_score}>2230</div>
-                            </div>
-
-                        </li>
-
-                        <li className={styles.ranking_item}>
-                            <div className={styles.item_left}>
-                                <div className={styles.item_num}>2</div>
-                                <div className={styles.item_img}>
-                                    <img src={crown} alt="img" className={styles.user_img} />
-                                </div>
-                                <div className={styles.item_name}>나정원철이다</div>
-                            </div>
-
-                            <div className={styles.item_right}>
-                                <div className={styles.item_score}>2230</div>
-                            </div>
-
-                        </li>
-
-                        <li className={styles.ranking_item}>
-                            <div className={styles.item_left}>
-                                <div className={styles.item_num}>2</div>
-                                <div className={styles.item_img}>
-                                    <img src={crown} alt="img" className={styles.user_img} />
-                                </div>
-                                <div className={styles.item_name}>나정원철이다</div>
-                            </div>
-
-                            <div className={styles.item_right}>
-                                <div className={styles.item_score}>2230</div>
-                            </div>
-
-                        </li>
-
-                        <li className={styles.ranking_item}>
-                            <div className={styles.item_left}>
-                                <div className={styles.item_num}>3</div>
-                                <div className={styles.item_img}>
-                                    <img src={crown} alt="img" className={styles.user_img} />
-                                </div>
-                                <div className={styles.item_name}>나정원철이다</div>
-                            </div>
-
-                            <div className={styles.item_right}>
-                                <div className={styles.item_score}>2230</div>
-                            </div>
-
-                        </li>
+                                    <div className={styles.item_right}>
+                                        <div className={styles.item_score}>{it.scoreGet}</div>
+                                    </div>
+                                </li>
+                            })
+                        }
                     </ul>
 
-
                 </footer>
-
-
-
-
             </section>
         </div>
     );
