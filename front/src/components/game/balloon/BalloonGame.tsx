@@ -127,7 +127,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
 
     setTimeout(() => {
       handleOrder(2);
-    }, 3000)
+    }, 5000)
   };
 
   useEffect(() => {
