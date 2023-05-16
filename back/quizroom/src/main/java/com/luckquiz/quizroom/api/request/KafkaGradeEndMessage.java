@@ -14,4 +14,6 @@ public class KafkaGradeEndMessage {
     private Integer count;
     private Integer solvedCount;
     private Integer quizNum;
+    private int connectionCount;
+    private Double correctRate;
 }
