@@ -22,6 +22,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 
 // 꾸글
@@ -265,6 +266,7 @@ public class MessageController {
         quizService.serveQuiz(qsmG,quizStartRequest.getRoomId());
     }
 
+
     @MessageMapping("/quiz/next")
     public void next(NextMessage nextMessage) {
         QGame result = quizService.nextQuiz(nextMessage);
@@ -283,10 +285,12 @@ public class MessageController {
 
         // 참가자들한테 메세지 뿌리기
         QGame toGuest = QGame.serveQgame(result);
+        toGuest.setQuizNum(result.getQuizNum());
         QuizStartMessage qsmG = new QuizStartMessage();
         if("emotion".equals(result.getGame())){
             System.out.println("emotion 찍혔니?");
             toGuest.setAnswer(result.getAnswer());
+
             qsmG.setGetQuizItem(toGuest);
             qsmG.setType("getQuizItem");
         }else {
@@ -396,7 +400,6 @@ public class MessageController {
                 .type("finalResultList")
                 .finalResultList(result)
                 .build();
-
         for(ZSetOperations.TypedTuple<String> name : rank){
             EnterUser user = gson.fromJson(name.getValue(),EnterUser.class);
             sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+user.getSender(),finalResultMessage);
@@ -405,5 +408,9 @@ public class MessageController {
 
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
+    }
+    @Scheduled(cron = "0/5 * * * * *" )
+    public void submitCount(Integer roomId){
+
     }
 }
