@@ -5,6 +5,7 @@ import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.KafkaGradeEndMessage;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.response.GradeEndMessage;
+import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
 import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
 import com.luckquiz.quizroom.db.entities.QuizReport;
 import com.luckquiz.quizroom.db.repository.QuizReportRepository;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -69,6 +71,9 @@ public class GradingConsumerController {
 
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
+                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
+                String roomInfo =StringValueOperations.get(kafkaGradeEndMessage.getRoomId().toString());
+                TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
                 System.out.println(kafkaGradeEndMessage.getRoomId());
                 Map all = hashOperations.entries(kafkaGradeEndMessage.getRoomId()+"p");
@@ -76,9 +81,12 @@ public class GradingConsumerController {
                 List<Grade> userLList = new ArrayList<>();
                 for(String user: users){
                     Grade a = gson.fromJson(user,Grade.class);
+                    a.setQuizNum(roomInf.getQuizNum());
                     userLList.add(a);
                 }
                 Collections.sort(userLList);
+
+                System.out.println("grade end 되고 값 갑니까?");
 
                 for(Grade gtemp :userLList){
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
@@ -92,6 +100,7 @@ public class GradingConsumerController {
                         userTurnEndResponse.setIsUp("true");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
+                    userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
                             .userTurnEndResponse(userTurnEndResponse)
