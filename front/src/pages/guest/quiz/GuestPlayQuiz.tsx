@@ -15,7 +15,6 @@ import StartFinishText from "components/common/StartFinishText";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import ReadyGame from "components/common/ReadyGame";
 import EmotionGame from "components/game/emotion/EmotionGame";
-import guest from "store/guest";
 import BalloonGame from "components/game/balloon/BalloonGame";
 
 const GuestPlayQuiz = () => {
@@ -39,10 +38,13 @@ const GuestPlayQuiz = () => {
     quizItem ? (quizItem?.quiz ? setOrder(0) : setOrder(-1)) : setOrder(2);
   }, [quizItem]);
 
-  // 퀴즈 채점결과가 들어오면 결과페이지로 이동
+  // 해당 문제의 퀴즈 채점결과가 들어오면 결과페이지로 이동
   useEffect(() => {
     console.log("게스트가받는결과:", quizGameResult);
-    quizGameResult && navigate(`/guest/quiz/result`);
+    console.log(quizItem?.quizNum, quizGameResult?.quizNum)
+    if (quizItem?.quizNum === quizGameResult?.quizNum) {
+      navigate("/guest/quiz/result");
+    }
   }, [quizGameResult]);
 
   // 이미 호스트가 해당 퀴즈순서를 종료하고 채점으로 넘어갔을 경우 (퀴즈, emotion game)
@@ -64,14 +66,14 @@ const GuestPlayQuiz = () => {
               {quizItem?.game !== "balloon" && <TimerBar handleOrder={setOrder} />}
               <div className={styles.quizNum}>{/* {quizItem?.quizNum + 1}/{quizItem?.quizSize} */}</div>
             </div>
-            <div className={styles.quizContainer}>
+            <>
               {quizItem?.quiz === "text" && <QuizShortContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "ox" && <QuizOxContent handleAnswer={SetguestAnswer} />}
               {quizItem?.quiz === "four" && <QuizFourContent handleAnswer={SetguestAnswer} />}
               {quizItem?.game === "wakeup" && <WakeUpGame handleOrder={setOrder} />}
               {quizItem?.game === "balloon" && <BalloonGame handleOrder={setOrder} />}
               {quizItem?.game === "emotion" && <EmotionGame handleOrder={setOrder} />}
-            </div>
+            </>
             {quizItem?.quiz && (
               <div className={styles.nextBtn}>
                 <ButtonWithLogo

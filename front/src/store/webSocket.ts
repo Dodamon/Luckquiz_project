@@ -19,7 +19,7 @@ interface SocketState {
   emotionResult: EmotionResult | null;
   quizEnd: string | null;
   getHostResult: HostResult[] | null;
-  getGuestResult: GuestResult[] | null;
+  getGuestResult: GuestResult | null;
   getFinalResultList: FinalResultList[] | null;
 }
 
@@ -45,7 +45,7 @@ const socketSlice = createSlice({
     sendAnswerMessage: (state, actions) => {
       if (client) {
         console.log("publish");
-        console.log(actions);
+        console.log(actions.payload.destination, actions.payload.body);
         client.publish({
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),

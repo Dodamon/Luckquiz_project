@@ -59,7 +59,7 @@ const QuizOxTemplate = ({ num }: pageNum) => {
     return (
         <>
             <div className={styles.content_title}>
-                <input type="text" value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
+                <input type="text"  maxLength={35} value={quiz.question} onChange={questionHandler} placeholder="질문을 입력하세요" />
             </div>
 
             <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>

@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 interface AuthState {
     isAuthenticated: boolean;
     userId: string;
-    nickname: string;
+    name: string;
     image_url: string;
     // connected: boolean;
     choiceIndex: number;
@@ -17,7 +17,7 @@ interface AuthState {
 const initialAuth: AuthState ={
     isAuthenticated: false,
     userId: "",
-    nickname: "",
+    name: "",
     image_url:"",
     // connected: false,
     choiceIndex: 0,
@@ -42,7 +42,7 @@ reducers:{
         // sessionStorage.removeItem("accessToken") // 여기서 세션지우면 안됩니다.
     },
     updateInfo:(state, action)=>{
-        state.nickname = action.payload.nickname;
+        state.name = action.payload.nickname;
         state.userId = action.payload.userId;
         state.image_url = action.payload.image_url;
     }

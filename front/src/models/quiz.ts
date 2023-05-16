@@ -66,6 +66,7 @@ export interface HostResult {
     rankNow: number;
     rankPre: number;
     scoreGet: number;
+    quizNum: number;
 }
 
 export interface GuestResult {

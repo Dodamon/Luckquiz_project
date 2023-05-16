@@ -1,4 +1,12 @@
 @media screen and (min-width: 767px) {
+  .balloonGamePage {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
   #content {
     width: 80%;
     padding: 10px;
@@ -118,9 +126,29 @@
     box-shadow: 0px 0px 10px -4px #3d3d3d;
     font-size: 18px;
   }
+
+  .my-time {
+    background-color: white;
+    border: 3px solid var(--button-two);
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  .disable-my-time {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 767px) {
+  .balloonGamePage {
+    width: 110%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
   #content {
     width: 80%;
     padding: 10px;
@@ -239,5 +267,17 @@
     background-color: var(--button-two);
     box-shadow: 0px 0px 10px -4px #3d3d3d;
     font-size: 16px;
+  }
+
+  .my-time {
+    background-color: white;
+    border: 3px solid var(--button-two);
+    border-radius: 15px;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  .disable-my-time {
+    display: none;
   }
 }
