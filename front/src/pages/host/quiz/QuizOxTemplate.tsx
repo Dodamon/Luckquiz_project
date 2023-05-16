@@ -80,7 +80,7 @@ const QuizOxTemplate = ({ num }: pageNum) => {
                         />
 
                     </div>
-                    <div>이미지 첨부하세요</div>
+                    <div>이미지를 첨부하세요 (선택)</div>
                 </div>
             </div>
 

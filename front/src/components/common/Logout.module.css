@@ -1,9 +1,17 @@
 .logoutBtn {
-    color: rgb(214, 214, 214);
-    margin-bottom: 50px;
+    color: rgb(47, 47, 47);
     cursor: pointer;
 }
 
 .logoutBtn:hover {
     color: black;
+}
+
+.logoutWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 8px;
 }

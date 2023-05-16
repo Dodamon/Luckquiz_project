@@ -1,14 +1,14 @@
 .content_title{
-    width: 90%;
+    width: 80%;
     margin-top: 2%;
     margin-bottom: 3%;
 }
 
 .content_title input{
    width: 100%;
-   height: 90px; 
+   height: 80px; 
    text-align: center;
-   font-size: 36px;
+   font-size: 28px;
    border-radius: 20px;
    border-style: none;
 }
@@ -27,18 +27,18 @@
     align-items: center;
     color: var( --placeholder-text);
     margin-bottom: 2%;
-    margin-top: 2.5%;
+    margin-top: 1%;
 }
 
 .plus_font{
-    font-size: 28px;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .plus_comment{
-    font-size: 48px;
+    font-size: 44px;
     cursor: pointer;
 }
 
@@ -58,23 +58,22 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    width: 90%;
+    width: 80%;
     margin-top: 30px;
 }
 
 
 .content_answer{
     background-color: var(--white-color);
-    height: 65px;
+    height: 70px;
     border-radius: 20px;
     display: flex;
     align-items: center;
-    width: 460px;
+    width: 480px;
     margin-bottom: 20px;
 }
 
 .content_color{
-    background-color: red;
     height: 100%;
     width: 100px;
     border-top-left-radius: 20px;
@@ -85,25 +84,23 @@
 }
 
 .content_color div{
-   font-size: 50px;
+   font-size: 40px;
    display: flex;
    color: var(--white-color);
    
 }
 
 .content_input{
-    /* background-color: red; */
     height: 100%;
     display: flex;
     width: 100%;
-    
+    align-items: center;
 }
 
 .content_input input{
-    width: 90%;
-
-    font-size: 28px;
-    padding-left: 10px;
+    width: 80%;
+    font-size: 22px;
+    padding-left: 20px;
     outline: none;
     border-style: none;
     background-color: transparent;
@@ -112,7 +109,7 @@
 
 .content_add{
     /* background-color: var(--white-color); */
-    font-size: 48px;
+    font-size: 42px;
     display: flex;
     text-align: center;
     width: 90px;

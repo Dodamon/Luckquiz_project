@@ -3,6 +3,7 @@ import styles from "./Logout.module.css";
 import { useNavigate } from "react-router-dom";
 import { authActions } from "store/auth";
 import { RootState } from "store";
+import { Icon } from "@iconify/react";
 
 const Logout = () => {
   const navigate = useNavigate()
@@ -41,13 +42,16 @@ const Logout = () => {
   
 
   return (
-    <div
-      className={styles.logoutBtn}
-      onClick={() => {
-        logout();
-      }}
-    >
-      로그아웃
+    <div className={styles.logoutWrapper}>
+      <Icon icon="ri:logout-circle-r-line" style={{color:"var(--select-one"}}/>
+      <div
+        className={styles.logoutBtn}
+        onClick={() => {
+          logout();
+        }}
+      >
+        로그아웃
+      </div>
     </div>
   );
 };

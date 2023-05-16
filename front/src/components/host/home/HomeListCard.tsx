@@ -120,7 +120,7 @@ const HomeListCard = (props: Props) => {
           {menu === 0 && quiz ? (
             <>
               <div className={styles.quizTitle}>{quiz?.name}</div>
-              <div className={styles.placeholder}>{dateChangeHandler(quiz.date)}</div>
+              <div className={styles.placeholder}>{dateChangeHandler(quiz.date)}에 저장됨</div>
             </>
           ) : (
             <>

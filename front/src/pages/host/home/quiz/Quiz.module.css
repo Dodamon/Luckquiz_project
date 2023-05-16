@@ -5,12 +5,16 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    /* z-index: 0; */
+    background-image: url("/src/assets/images/report_bg.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .title {
     padding: 3.5vh 5% 3.5vh 5%;
-    font-size: 28px;
+    font-size: 22px;
 }
 
 .listColFrame {

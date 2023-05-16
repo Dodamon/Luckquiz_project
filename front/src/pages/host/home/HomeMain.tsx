@@ -7,7 +7,6 @@ import useHostAxios from "hooks/useHostAxios";
 import { useDispatch } from "react-redux";
 import { authActions } from "store/auth";
 import { useEffect, useState } from "react";
-import Logout from "components/common/Logout";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
@@ -68,7 +67,6 @@ const testHandler= ()=>{
       <div className={`${styles[`container`]}`}>
         <div className={`${styles[`side`]}`}>
           <SideMenuTab />
-          <Logout />
         </div>
         
         <Outlet context={{isModals}}></Outlet>

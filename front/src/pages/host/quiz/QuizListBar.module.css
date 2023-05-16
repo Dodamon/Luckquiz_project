@@ -24,9 +24,10 @@
     color: var(--white-color);
     width: 65px;
     height: 21px;
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
     border-top-left-radius: 5px;
+    padding-top: 2px;
 }
 .quiz_sub{
     display: flex;
@@ -38,6 +39,7 @@
     cursor: pointer;
     color: var(--white-color);
     border-top-right-radius: 5px;
+    padding-top: 2px;
 }
 
 .quiz_content {
@@ -54,16 +56,16 @@
 }
 
 .quiz_content>img {
-    width: 95%;
+    width: 96%;
     height: 95%;
-    border-radius: 10px;
+    border-radius: 7px;
 }
 
 
 
 .quiz_content:hover{
     /* background-color: var(--select-four); */
-    background-color: skyblue; 
+    background-color: #7a5ef470; 
 }
 
 
