@@ -409,7 +409,7 @@ public class MessageController {
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
     }
-    @Scheduled(cron = "0/5 * * * * *" )
+//    @Scheduled(cron = "0/5 * * * * *" )
     public void submitCount(Integer roomId){
 
     }
