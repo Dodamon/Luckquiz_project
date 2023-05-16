@@ -53,9 +53,9 @@ const HostPlayQuiz = () => {
   }, [quizGameResult]);
 
   // 최종결과가 들어오면 어워즈페이지로 이동
-  // useEffect(() => {
-  //   navigate(`/host/quiz/${quiz_id}/awards`);
-  // }, [finalResult]);
+  useEffect(() => {
+    finalResult && navigate(`/host/quiz/${quiz_id}/awards`);
+  }, [finalResult]);
 
   // 결과 랭킹 모달 밖에 클릭시, 모달닫기
   useEffect(() => {

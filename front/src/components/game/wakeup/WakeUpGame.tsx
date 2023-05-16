@@ -19,14 +19,13 @@ const WakeUpGame = (props: Props) => {
   const dispatch = useDispatch();
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
+  // const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
+  const time = 15
   const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
   const [shakeCount, setShakeCount] = useState(0); // 흔든 횟수 제출
   const [isShaking, setIsShaking] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
   const [showluckqui, setShowLuckqui] = useState(false);
-
-  console.log(shakeCount, "ssss");
 
   const submitAnswer = () => {
     console.log("자동제출: ", shakeCount);
@@ -48,10 +47,8 @@ const WakeUpGame = (props: Props) => {
 
   // 모바일 기기에서 작동되는 shake감지 함수
   const handleMobileShake = (event: React.TouchEvent<HTMLDivElement>) => {
-    console.log("shaked", shakeCount);
     setIsShaking(true);
     setShakeCount((prev) => prev + 1);
-    console.log("shaked1", shakeCount);
     setTimeout(() => {
       setIsShaking(false);
     }, 500);
@@ -63,7 +60,6 @@ const WakeUpGame = (props: Props) => {
       event.preventDefault();
       setIsShaking(true);
       setShakeCount((prev) => prev + 1);
-      console.log("shaked", shakeCount);
     }
     setTimeout(() => {
       setIsShaking(false);
@@ -79,7 +75,6 @@ const WakeUpGame = (props: Props) => {
     let startGame = setTimeout(() => {
       setIsBroken(true);
       window.removeEventListener("keyup", handleWebShake);
-      submitAnswer(); // shake횟수 제출
     }, (time! - 6) * 1000); // 게임 진행시간보다 애니메이션 노출시간만큼 빨리 끝나게 time 조정
 
     // cleanup 함수에서 setInterval 정리
@@ -90,6 +85,9 @@ const WakeUpGame = (props: Props) => {
 
   useEffect(() => {
     if (isBroken) {
+      console.log("제출할갑숑?", shakeCount);
+      submitAnswer(); // shake횟수 제출
+
       // crack 애니메이션이 끝나면 럭퀴애니메이션 보여주기
       setTimeout(() => {
         setShowLuckqui(true);
