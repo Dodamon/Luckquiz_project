@@ -7,6 +7,7 @@ public class UserR implements Comparable<UserR>{
     private String sender;
     private int img;
     private Integer rank;
+    private int score;
 
     public void setSender(String sender){
         this.sender=sender;
@@ -16,6 +17,10 @@ public class UserR implements Comparable<UserR>{
     }
     public void setRank(Integer rank){
         this.rank = rank;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override

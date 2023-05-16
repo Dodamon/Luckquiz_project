@@ -79,6 +79,7 @@ public class GradingConsumerController {
                     userLList.add(a);
                 }
                 Collections.sort(userLList);
+
                 for(Grade gtemp :userLList){
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());

@@ -11,10 +11,7 @@ import com.luckquiz.quizroom.api.response.*;
 import com.luckquiz.quizroom.api.service.*;
 import com.luckquiz.quizroom.exception.CustomException;
 import com.luckquiz.quizroom.exception.CustomExceptionType;
-import com.luckquiz.quizroom.message.EmotionResultMessage;
-import com.luckquiz.quizroom.message.EnterGuestMessage;
-import com.luckquiz.quizroom.message.QuizStartMessage;
-import com.luckquiz.quizroom.message.TurnEndResponse;
+import com.luckquiz.quizroom.message.*;
 import com.luckquiz.quizroom.model.*;
 
 import lombok.RequiredArgsConstructor;
@@ -23,13 +20,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.messaging.simp.stomp.StompCommand;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.RestController;
 
 // 꾸글
@@ -171,7 +163,6 @@ public class MessageController {
     }
     @MessageMapping("/emotion/submit")
     public void emotionSubmit(EmotionSubmit message) throws  Exception{
-
         System.out.println("이미지 제출 시작합니다.");
         System.out.println("emotionType:   "+message.getEmotionResult().value+", confidence:    "+message.getEmotionResult().confidence + "    sender: "+message.getSender());
         toGradeProducer.emotion(gson.toJson(message));
@@ -365,14 +356,14 @@ public class MessageController {
     @MessageMapping("/quiz/ranking")
     public void totalRank (TotalRank totalRank){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
-        Set<String> all = zSetOperations.reverseRange(totalRank.getRoomId()+"rank",0,zSetOperations.size(totalRank.getRoomId()+"rank")-1);
-        List<String> rank = new ArrayList<>(all);
+        Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(totalRank.getRoomId()+"rank",0,zSetOperations.size(totalRank.getRoomId()+"rank")-1);
+        List<ZSetOperations.TypedTuple<String>> rank = new ArrayList<>(all);
         List<UserR> result = new ArrayList<>();
         int rankNum = 1;
-        for(String name : rank){
-            EnterUser user = gson.fromJson(name,EnterUser.class);
+        for(ZSetOperations.TypedTuple<String> name : rank){
+            EnterUser user = gson.fromJson(name.getValue(),EnterUser.class);
             UserR tempU = new UserR();
-            tempU.setSender(name);
+            tempU.setSender(user.getSender());
             tempU.setImg(user.getImg());
             tempU.setRank(rankNum);
             rankNum ++;
@@ -380,14 +371,37 @@ public class MessageController {
         sendingOperations.convertAndSend("/topic/quiz/" + totalRank.getRoomId(),result);
         sendingOperations.convertAndSend("/queue/quiz/" + totalRank.getRoomId(),result);
     }
-
     @MessageMapping("/finalEnd")
     public void finalEnd(FinalRequest finalRequest){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        System.out.println(finalRequest.getRoomId());
+        Set<ZSetOperations.TypedTuple<String>> all = zSetOperations.reverseRangeWithScores(finalRequest.getRoomId()+"rank",0,zSetOperations.size(finalRequest.getRoomId()+"rank")-1);
+
+        List<ZSetOperations.TypedTuple<String>> rank = new ArrayList<>(all);
+        List<UserR> result = new ArrayList<>();
+        int rankNum = 1;
+        for(ZSetOperations.TypedTuple<String> name : rank){
+            EnterUser user = gson.fromJson(name.getValue(),EnterUser.class);
+            UserR tempU = new UserR();
+            System.out.println(tempU.getSender());
+            tempU.setSender(user.getSender());
+            tempU.setImg(user.getImg());
+            tempU.setRank(rankNum);
+            tempU.setScore(name.getScore().intValue());
+            rankNum ++;
+            GuestFinalResultMessage guestFinalResultMessage = GuestFinalResultMessage.builder()
+                    .type("guestFinalResultMessage")
+                    .guestFinalResultMessage(tempU)
+                    .build();
+            result.add(tempU);
+            sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+tempU.getSender(),guestFinalResultMessage);
+        }
+        FinalResultMessage finalResultMessage = FinalResultMessage.builder()
+                .type("finalResultList")
+                .finalResultList(result)
+                .build();
+        sendingOperations.convertAndSend("/topic/quiz/" + finalRequest.getRoomId(),finalResultMessage);
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
-
     }
-
-
-
 }
