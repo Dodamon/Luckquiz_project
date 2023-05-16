@@ -23,8 +23,6 @@ const GuestResult = (state:GuestResult) => {
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-        console.log("최종결과인뎁숑?:");
-        finalResult && console.log("최종결과인뎁숑?:", finalResult);
     finalResult && navigate('/guest/quiz/awards')
   }, [finalResult])
 

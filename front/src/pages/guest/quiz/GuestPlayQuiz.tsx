@@ -49,9 +49,9 @@ const GuestPlayQuiz = () => {
 
   // 이미 호스트가 해당 퀴즈순서를 종료하고 채점으로 넘어갔을 경우 (퀴즈, emotion game)
   // wakeup과 balloon 게임은 별도로 채점 컨트롤이 없이 자체적으로 게스트화면에서 애니메이션을 다 보여주고 화면 전환(handleOrder(2))
-  // useEffect(() => {
-  // end === "success" && quizItem?.game !== "wakeup" && quizItem?.game !== "balloon" && setOrder(2)
-  // }, [end])
+  useEffect(() => {
+  end === "success" && setOrder(2)
+  }, [end])
 
   console.log(guestAnswer);
 
