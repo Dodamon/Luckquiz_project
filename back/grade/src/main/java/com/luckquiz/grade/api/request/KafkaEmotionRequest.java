@@ -11,7 +11,7 @@ public class KafkaEmotionRequest {
 	private String sender;
 	private Integer quizNum;
 	private KafkaEmotionResult.ValCon emotionResult;
-
+	private Integer img;
 
 	public void setQuizNum(int quizNum){
 		this.quizNum = quizNum;

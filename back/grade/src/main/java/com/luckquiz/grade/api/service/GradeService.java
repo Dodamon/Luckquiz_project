@@ -2,10 +2,12 @@ package com.luckquiz.grade.api.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +38,7 @@ import com.luckquiz.grade.config.KafkaProducer;
 import com.luckquiz.grade.db.entity.Grade;
 import com.luckquiz.grade.db.entity.RankKey;
 
-import io.netty.util.internal.StringUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -64,8 +66,9 @@ public class GradeService {
 	}
 
 	public void grade(KafkaGradeRequest gradeRequest){
-		System.out.println("채점시작");
+		// redisTemplate.expire(gradeRequest.getRoomId()+"statics",30, TimeUnit.SECONDS);
 		zSetOperations.incrementScore(gradeRequest.getRoomId()+"statics",gradeRequest.getMessage(),1);
+		// zSetOperations.removeRange("temp",0,-1);
 		Integer roomId = gradeRequest.getRoomId();
 		String playerName = gradeRequest.getSender();
 		// 총 참여자 수
@@ -75,11 +78,9 @@ public class GradeService {
 		TemplateInfoResponse quiz =  templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum());
 		String answer = gradeRequest.getMessage();
 		// 퀴즈일 경우
-
 		if(quiz.getGame().equals("")){
 			String correctAnswer = quiz.getAnswer();
 			Boolean correct = false;
-			System.out.println(quiz.getQuiz());
 			for(String ans: quiz.getAnswerList()){
 				if(ans.equals(answer)){
 					correct=true;
@@ -88,7 +89,6 @@ public class GradeService {
 			}
 			if( (correctAnswer.equals(answer) ||correct) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
 				//순위에 따른 점수 더해주기
-				System.out.println(quiz.getGame());
 				Integer rank = valueOperations.get(roomId+"cnt");
 				Long scoreGet = (long)(1000*(1d-(rank.doubleValue()/count.doubleValue())));
 				Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
@@ -104,18 +104,18 @@ public class GradeService {
 				rankKey.setSender(gradeRequest.getSender());
 				//현재 점수 반영
 				zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
-				System.out.println("받은 점수 : "+scoreGet + " 내 정답 : " + answer + " 진짜 정답 : " + correctAnswer+ " ");
+				log.info("받은 점수 : "+scoreGet + " 내 정답 : " + answer + " 진짜 정답 : " + correctAnswer+ " ");
 				for(String ans:quiz.getAnswerList()){
-					System.out.println(ans+ " ");
+					log.info(ans+ " ");
 				}
 			} else {
 				RankKey rankKey = new RankKey();
 				rankKey.setImg(gradeRequest.getImg());
 				rankKey.setSender(gradeRequest.getSender());
 				zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),0);
-				System.out.println("받은 점수 : "+"0" + " 내 정답 : " + answer + " 진짜 정답 : " + correctAnswer + " ");
+				log.info("받은 점수 : "+"0" + " 내 정답 : " + answer + " 진짜 정답 : " + correctAnswer + " ");
 				for(String ans:quiz.getAnswerList()){
-					System.out.println(ans+ " ");
+					log.info(ans+ " ");
 				}
 			}
 
@@ -125,7 +125,11 @@ public class GradeService {
 			Grade userGrade;
 			int scoreGet;
 			Game game = Game.valueOf(quiz.getGame());
+			RankKey rankKey = new RankKey();
+			rankKey.setSender(gradeRequest.getSender());
+			rankKey.setImg(gradeRequest.getImg());
 			System.out.println(game);
+
 			switch (game){
 				//많이 클릭
 				case wakeup:
@@ -135,8 +139,8 @@ public class GradeService {
 					userGrade.setScoreGet(scoreGet);
 					userGrade.setCount(userGrade.getCount()+1);
 					hashGradeOperations.put(roomId+"p", playerName, userGrade);
-					zSetOperations.incrementScore(roomId+"rank",playerName,scoreGet);
-					System.out.println("받은점수 : "+scoreGet + "클릭 횟숫 : " + numOfClick);
+					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
+					log.info("받은점수 : "+scoreGet + "클릭 횟수 : " + numOfClick);
 					break;
 				//숫자가 작은 순서대로.
 				case balloon:
@@ -146,11 +150,11 @@ public class GradeService {
 					userGrade.setScoreGet(scoreGet);
 					userGrade.setCount(userGrade.getCount()+1);
 					hashGradeOperations.put(roomId+"p", playerName, userGrade);
-					zSetOperations.incrementScore(roomId+"rank",playerName,scoreGet);
-					System.out.println("받은 점수 :"+scoreGet + " 시간차: " + timeDifference);
+					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
+					log.info("받은 점수 :"+scoreGet + " 시간차: " + timeDifference);
 					break;
 				default:
-					System.out.println("디폴트");
+					log.warn("없는 키값이 카프카 grade 토픽에 들어왔습니다. 확인해주세요.");
 					break;
 			};
 
@@ -169,7 +173,6 @@ public class GradeService {
 	}
 
 	public void pictureGrade(KafkaEmotionRequest gradeRequest){
-		System.out.println("사진채점시작");
 		Integer roomId = gradeRequest.getRoomId();
 		String playerName = gradeRequest.getSender();
 		// 총 참여자 수
@@ -180,7 +183,6 @@ public class GradeService {
 			log.warn("템플릿이 비어있네요");
 			return;
 		}
-		System.out.println("123123123");
 		String correctAnswer = templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum()).getAnswer();
 		KafkaEmotionResult.ValCon answer = gradeRequest.getEmotionResult();
 		//정답이 맞으면, 퀴즈 번호가 같다면.
@@ -188,8 +190,10 @@ public class GradeService {
 			throw new CustomException(CustomExceptionType.QUIZ_NUM_ERROR);
 		}
 		// 받은 결과값의 감정이 정답과 같다면.
+		RankKey rankKey = new RankKey();
+		rankKey.setSender(gradeRequest.getSender());
+		rankKey.setImg(gradeRequest.getImg());
 		if(correctAnswer.equals(answer.getValue())){
-
 			Long scoreGet = (long)(1000*answer.getConfidence());
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
@@ -198,7 +202,10 @@ public class GradeService {
 			//맞힌 사람 수 +1
 			valueOperations.increment(roomId+"cnt",1);
 			//현재 점수 반영
-			zSetOperations.incrementScore(roomId+"rank",playerName,scoreGet);
+			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
+		} else {
+			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
+			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),0);
 		}
 		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
 		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
@@ -227,7 +234,7 @@ public class GradeService {
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
 	public void rollback(Object message) {
-		System.out.println("롤백 시작");
+		log.info("rollback 시작");
 		KafkaQuizRollbackRequest quizRollbackRequest = (KafkaQuizRollbackRequest) message;
 		Integer roomId = quizRollbackRequest.getRoomId();
 
@@ -250,6 +257,7 @@ public class GradeService {
 	public void quizEnd(Object message) {
 		KafkaQuizEndRequest quizStartMessage = (KafkaQuizEndRequest) message;
 		Integer roomId = quizStartMessage.getRoomId();
+		Set<ZSetOperations.TypedTuple<String>> answerStatics = zSetOperations.rangeWithScores(quizStartMessage.getRoomId()+"statics",0,-1);
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		Stream<Map.Entry<String,Grade>> entries = hashmap.entrySet().stream();
 		entries.sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->hashmap.put(e.getKey(),e.getValue()));
@@ -273,8 +281,8 @@ public class GradeService {
 		Long count = hashGradeOperations.size(roomId+"p");
 		Integer solvedCount = valueOperations.get(roomId+"cnt");
 		//정답률
-		Double percent = solvedCount.doubleValue()/count;
-		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue())
+		// Double percent = solvedCount.doubleValue()/count;
+		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder().roomId(roomId).quizNum(quizNum).solvedCount(solvedCount).count(count.intValue()).connectedCount(count.intValue())
 			.build();
 		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
@@ -283,9 +291,9 @@ public class GradeService {
 		KafkaQuizStartRequest quizStartMessage = (KafkaQuizStartRequest) message;
 		Integer roomId = quizStartMessage.getRoomId();
 		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()), TemplateDetailResponse.class);
-		System.out.println("zset 삭제");
-		System.out.println(roomId);
+		log.info("quiz Start 시작, zset 삭제, 방번호 : "+roomId);
 		zSetOperations.removeRange(roomId+"statics",0,-1);
+
 		// zSetOperations.remove(roomId+"statics");
 		// 지웠음
 		// templateDetailResponse.setQuizNum(quizStartMessage.getQuizNum());
@@ -295,9 +303,7 @@ public class GradeService {
 		hashmap.forEach((key, value)->{
 			value.setRankPre(value.getRankNow());
 			value.setScoreGet(0);
-			System.out.println(key);
-			System.out.println("받은 점수 : " + value.getScoreGet());
-			System.out.println("현재 순위 : " + value.getRankNow());
+			log.info("키값 : "+ key+" 받은 점수 : " + value.getScoreGet() + " 현재 순위 : " +value.getRankNow());
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
 		//정답 맞춘 사람수 0으로 초기화
@@ -308,9 +314,23 @@ public class GradeService {
 		kafkaProducer.gradeStart(gson.toJson(gradeStartResponse));
 	}
 	public void finalFinish(KafkaFinalEndRequest kafkaFinalEndRequest){
-		valueOperations.getAndDelete(kafkaFinalEndRequest.getRoomId()+"cnt");
+		// 정리하기
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"statics");
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"rank");
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"p");
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"cnt");
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"l");
+		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId().toString());
+		log.info(kafkaFinalEndRequest.getRoomId()+"방이 끝났습니다.");
+	}
+
+	public void deleteAll(KafkaFinalEndRequest kafkaFinalEndRequest){
 		redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"statics");
-		System.out.println(kafkaFinalEndRequest.getRoomId()+"방이 끝났습니다.");
+		redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"rank");
+		redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"p");
+		redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"cnt");
+		redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"l");
+		redisTemplate.delete(kafkaFinalEndRequest.getRoomId().toString());
 	}
 
 }

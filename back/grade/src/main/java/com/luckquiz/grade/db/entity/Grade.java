@@ -21,7 +21,6 @@ public class Grade implements Serializable{
 	private int rankPre;
 	private int rankNow;
 	private int playerImg;
-
 	private int count;
 	private int quizNum;
 	public String getPlayerName() {

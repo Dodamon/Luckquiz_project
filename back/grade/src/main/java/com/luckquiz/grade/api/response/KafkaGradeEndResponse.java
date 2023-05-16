@@ -10,6 +10,9 @@ import lombok.Setter;
 public class KafkaGradeEndResponse {
 	Integer roomId;
 	Integer count;
+	Integer connectedCount;
 	Integer solvedCount;
+	Integer correctCount;
+	Double correctRatio;
 	Integer quizNum;
 }
