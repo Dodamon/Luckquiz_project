@@ -26,6 +26,8 @@ import ErrorPage from "pages/common/ErrorPage";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
 import GuestResult from "pages/guest/quiz/GuestResult";
+
+import GuestQuizRanking from "components/quiz/GuestQuizRanking";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
 
 
@@ -133,17 +135,24 @@ const router = createBrowserRouter([
             path: "quiz/play",
             element: <GuestPlayQuiz />,
           },
+<<<<<<< front/src/router/index.tsx
+          // {
+          //   path: "quiz/result",
+          //   element: <GuestResult/>,
+          // },
+=======
           {
             path: "quiz/result",
             element: <GuestResult />,
           },
+>>>>>>> front/src/router/index.tsx
           {
             path: "quiz/awards",
             element: <Awards />,
           },
           {
             path: "quiz/ranking",
-            element: <QuizRanking />,
+            element: <QuizRanking/>,
           },
         ],
       },
