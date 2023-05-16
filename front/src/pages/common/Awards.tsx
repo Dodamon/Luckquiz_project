@@ -6,10 +6,13 @@ import { useState, useRef, useEffect } from "react";
 import QuizRanking from "components/quiz/QuizRanking";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { socketActions } from "store/webSocket";
 
-const GuestAwards = () => {
+const Awards = () => {
   const { quiz_id } = useParams();
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const isHost = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const [modalOn, SetModalOn] = useState(false);
@@ -39,7 +42,10 @@ const GuestAwards = () => {
           name="레포트 보러가기"
           fontSize="18px"
           height="45px"
-          onClick={() => navigate('/home/report')}
+          onClick={() => {
+            dispatch(socketActions.resetSocket())  // 퀴즈 종료 -> 웹소켓에 저장된 퀴즈와 결과 데이터 삭제
+            navigate('/home/report')
+          }}
         />
       </div>}
       <div  className={styles.bgtools} style={modalOn? {backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)'}: {}} ></div>
@@ -48,4 +54,4 @@ const GuestAwards = () => {
     </div>
   );
 };
-export default GuestAwards;
+export default Awards;

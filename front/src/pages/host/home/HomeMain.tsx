@@ -50,7 +50,8 @@ const testHandler= ()=>{
   
 // })
   return (
-    <div className={styles.background}>
+    <div className={styles.background} style={isModals ? {zIndex:"0"}:{}}>
+       <div className={styles.bgtools} style={isModals ? { backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)', zIndex:'3' } : {}} ></div>
       <div className={styles.header}>
         <div className={styles.logo} onClick={()=>{navigate('/home')}}>
           <div className={styles.logoImgContainer}>

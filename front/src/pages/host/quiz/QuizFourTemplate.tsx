@@ -12,15 +12,17 @@ type pageNum = {
   num: number;
 };
 const QuizFourTemplate = ({ num }: pageNum) => {
-  const dispatch = useDispatch();
-  const quizList = useSelector((state: RootState) => state.quiz.quizList);
-  const template = useSelector((state: RootState) => state.quiz);
-  const [quiz, setQuiz] = useState(quizList[num]);
+    const dispatch = useDispatch();
+    const quizList = useSelector((state: RootState) => state.quiz.quizList);
+    const template = useSelector((state: RootState) => state.quiz)
+    const [quiz, setQuiz] = useState(quizList[num]);
 
-  console.log("여기 왔습니니다.", num, quiz);
-  useEffect(() => {
-    setQuiz(quizList[num]);
-  }, [num, quizList]);
+
+
+    console.log("여기 왔습니니다.", num, quiz);
+    useEffect(() => {
+        setQuiz(quizList[num]);
+    }, [num, quizList]);
 
   const questionHandler = (e: any) => {
     setQuiz({ ...quiz, question: e.target.value });

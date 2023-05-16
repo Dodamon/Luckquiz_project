@@ -91,19 +91,21 @@ const Quiz = () => {
 
 
 
-
   return (
-    <div className={styles.content} style={isModal || isModals ? { backgroundColor: "darkgray" } : {}}>
-      <div className={styles.title}></div>
-      <div className={styles.listColFrame}>
-        {myQuizList.length === 0 ? <div className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
+    <div className={styles.content} style={isModal || isModals ? {zIndex:"0"}:{}}>
+      <div className={styles.bgtools} style={isModal || isModals ? { backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)' } : {}} ></div>
+      <div className={styles.title}>내가 만든 퀴즈</div>
+      <div className={styles.listColFrame}  style={isModal || isModals ? {zIndex:"-2"}:{}} >
+        {myQuizList.length === 0 ? <div  className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
           <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler} />
         ))}
-        <Modal isModal={isModal} setIsModal={setIsModal} />
+       
         {/* <Link to={"/quiz/create"}> */}
         <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={() => setIsModal(!isModal)} />
+       
         {/* </Link> */}
       </div>
+      <Modal isModal={isModal} setIsModal={setIsModal} />
     </div>
   );
 };
