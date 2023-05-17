@@ -299,7 +299,7 @@ public class MessageController {
         List<ZSetOperations.TypedTuple<String>> rank = new ArrayList<>(all);
         List<TurnEndGraph> results = new ArrayList<>();
 
-        for(ZSetOperations.TypedTuple<String> name : rank){
+        for(ZSetOperations.TypedTuple<String> name : rank){  // 보기별 몇 개씩 제출했는지 보여주는 것.
             TurnEndGraph turnEndGraph = TurnEndGraph.builder()
                     .answer(name.getValue())
                     .count(name.getScore().intValue())
@@ -310,6 +310,8 @@ public class MessageController {
                 .type("quizEnd")
                 .quizEnd(results)
                 .build();
+
+
         GuestTurnEndSignalResponse guestTurnEndSignalResponse = GuestTurnEndSignalResponse.builder()
                 .type("turnEndResponse")
                 .turnEndResponse("success")
@@ -415,6 +417,9 @@ public class MessageController {
             sendingOperations.convertAndSend("/queue/quiz/" + finalRequest.getRoomId()+"/"+user.getSender(),finalResultMessage);
         }
         sendingOperations.convertAndSend("/topic/quiz/" + finalRequest.getRoomId(),finalResultMessage);
+
+
+
         toGradeProducer.FinalEnd(gson.toJson(finalRequest));
         toQuizProducer.FinalEnd(gson.toJson(finalRequest));
     }

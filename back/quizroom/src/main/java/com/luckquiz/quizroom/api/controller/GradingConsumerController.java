@@ -93,7 +93,6 @@ public class GradingConsumerController {
                 break;
             case "grade_end":
                 log.info("채점 끝났답니다. 결과 메시지를 보내주는 함수 구현해야 합니다.");
-
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
@@ -109,14 +108,9 @@ public class GradingConsumerController {
                     a.setQuizNum(roomInf.getQuizNum());
                     userLList.add(a);
                 }
-
                 StringValueOperations.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage)+", ");
-
                 Collections.sort(userLList);
-
-
                 for(Grade gtemp :userLList){
-
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
