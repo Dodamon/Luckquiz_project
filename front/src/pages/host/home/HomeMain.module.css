@@ -84,7 +84,7 @@
 
 .side {
     width: 20%;
-    min-width: 198px;
+    min-width: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
