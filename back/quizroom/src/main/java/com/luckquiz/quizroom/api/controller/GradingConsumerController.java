@@ -84,7 +84,12 @@ public class GradingConsumerController {
                 //함수 분리하기;
                 System.out.println("quiz start host Id "+quizStartRequest1.getHostId());
                 System.out.println("room Id ");
-                QGame qGame = quizService.nextQuiz(quizStartRequest1);
+                // 현재 퀴즈 보내주는 것 넣어야 한다.
+                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
+                String quiz = StringValueOperations.get(quizStartRequest1+"");
+                TemplateDetailResponse templateDetailResponse = gson.fromJson(quiz,TemplateDetailResponse.class);
+                QGame qGame = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
+
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                         .quizNum(qGame.getQuizNum())
                         .hostId(quizStartRequest1.getHostId())
@@ -116,8 +121,8 @@ public class GradingConsumerController {
 
                 //함수 분리하기;
                 KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(in, KafkaGradeEndMessage.class);
-                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
-                String roomInfo = StringValueOperations.get(kafkaGradeEndMessage.getRoomId().toString());
+                ValueOperations<String, String> StringValueOperations2 = stringRedisTemplate.opsForValue();
+                String roomInfo = StringValueOperations2.get(kafkaGradeEndMessage.getRoomId().toString());
                 TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
                 System.out.println(kafkaGradeEndMessage.getRoomId());
@@ -130,7 +135,7 @@ public class GradingConsumerController {
                     userLList.add(a);
                 }
 
-                StringValueOperations.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage)+", ");
+                StringValueOperations2.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage)+", ");
 
                 Collections.sort(userLList);
 
