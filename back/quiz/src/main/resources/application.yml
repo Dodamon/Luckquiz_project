@@ -54,3 +54,5 @@ server:
 app:
   cors:
     allowedOrigins: http://localhost:3000
+  auth:
+    token-secret: Y2Fycm90NzA3X3RoaXNpc19maW5hbF9wcm9qZWN0X0xPVkVfWU9VVVVVX0dVWVNTU1NTY2Fycm90NzA3X3RoaXNpc19maW5hbF9wcm9qZWN0X0xPVkVfWU9VVVVVX0dVWVNTU1NT
