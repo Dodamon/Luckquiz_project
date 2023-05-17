@@ -83,8 +83,8 @@ const socketSlice = createSlice({
       console.log(state.quizItem);
     },
 
-    quizEnd: (state, actions) => {
-      state.quizEnd = actions.payload;
+    quizEnd: (state) => {
+      state.quizEnd = "success";
     },
 
     getEmotionResult: (state, actions) => {
@@ -142,7 +142,7 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       else if (data.type === "emotionResult") {
         dispatch(socketActions.getEmotionResult(data.emotionResult));
         dispatch(socketActions.getEmotionMessage(true));
-      } else if (data.type === "quizEnd") dispatch(socketActions.quizEnd(data.quizEnd));
+      } else if (data.type === "quizEnd") dispatch(socketActions.quizEnd());
       // else if (data.type === "userList") dispatch(socketActions.getHostResult(data.userList));
       else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
       else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));

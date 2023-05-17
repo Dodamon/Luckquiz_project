@@ -1,6 +1,8 @@
 @media screen and (min-width:767px) {
     .QuizShortContent{
-        width: 900px;
+        width: 95;
+        height: 100%;
+        gap: 5%;
     }
     .content_title{
         margin-top: 2%;
@@ -17,6 +19,7 @@
        border-radius: 20px;
        border-style: none;
        background-color: var(--white-color);
+       gap: 5%;
     }
     
     .content_images{
@@ -32,13 +35,11 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        margin-top: 5%;
-        margin-bottom: 5%;
+        /* margin-top: 5%;
+        margin-bottom: 5%; */
         object-fit: cover;
 
     }
-    
- 
     
     .content_answerbox{
         display: flex;
@@ -114,10 +115,11 @@
 @media screen and (max-width: 767px) {
 
     .QuizShortContent{
-        /* display: flex;
-        flex-direction: column;
-        align-items: center; */
-        width: 95;    }
+        width: 95;
+        height: 100%;
+        gap: 20%;
+    }
+
     .content_title{
         margin-top: 2%;
         margin-bottom: 10%;
@@ -145,8 +147,8 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        margin-top: 5%;
-        margin-bottom: 5%;
+        /* margin-top: 5%;
+        margin-bottom: 5%; */
         object-fit: cover;
 
     }
