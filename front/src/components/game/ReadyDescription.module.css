@@ -27,9 +27,6 @@
     font-size: 18px;
     margin: 15px 15px 10px 0;
     line-height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   .gameDescription>p {
     margin-bottom: 9px;
