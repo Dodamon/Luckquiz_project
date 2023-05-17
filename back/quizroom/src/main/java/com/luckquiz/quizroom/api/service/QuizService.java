@@ -59,7 +59,6 @@ public class QuizService {
         QGame firstQuiz = templateDetailResponse.getQuizList().get(0);
         firstQuiz.setQuizNum(0);
         firstQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
-
         templateDetailResponse.setQuizNum(0);
         log.info("host NickName  "+templateDetailResponse.getHostNickName());
         String newVal = gson.toJson(templateDetailResponse);
