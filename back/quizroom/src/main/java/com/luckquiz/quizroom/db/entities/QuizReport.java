@@ -29,10 +29,8 @@ public class QuizReport {
     @Column(name = "submit_count",nullable = true)
     private int submitCount;
 
-    @JoinColumn(name = "quiz_room_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private QuizRoom quizRoom;
+    @Column(name = "quiz_room_id")
+    private int quizRoomId;
 
     @Column(name = "pin_num")
     private Integer pinNum;

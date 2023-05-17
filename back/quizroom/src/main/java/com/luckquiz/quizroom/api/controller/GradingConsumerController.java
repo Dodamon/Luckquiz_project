@@ -95,11 +95,11 @@ public class GradingConsumerController {
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
                     if(rankDiff < 0 ){
-                        userTurnEndResponse.setIsUp("false");
+                        userTurnEndResponse.setIsUp("true");
                     }else if(rankDiff == 0){
                         userTurnEndResponse.setIsUp("same");
                     }else {
-                        userTurnEndResponse.setIsUp("true");
+                        userTurnEndResponse.setIsUp("false");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());

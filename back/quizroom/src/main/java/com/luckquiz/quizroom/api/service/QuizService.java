@@ -6,10 +6,9 @@ import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.request.RTSearch;
 import com.luckquiz.quizroom.api.response.QGame;
+import com.luckquiz.quizroom.api.response.RollbackFinishMessage;
 import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
-import com.luckquiz.quizroom.message.EnterGuestMessage;
-import com.luckquiz.quizroom.message.QuizStartMessage;
-import com.luckquiz.quizroom.message.TurnEndResponse;
+import com.luckquiz.quizroom.message.*;
 import com.luckquiz.quizroom.model.EnterUser;
 import com.luckquiz.quizroom.model.NextMessage;
 import com.luckquiz.quizroom.model.QuizRoom;
@@ -111,6 +110,15 @@ public class QuizService {
         List<String> rank = new ArrayList<>(all);
         for(String name : rank){
             sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,question);
+        }
+    }
+
+    public void serveTurnEndSignal(GuestTurnEndSignalResponse endMessage, Integer roomId){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+        for(String name : rank){
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,endMessage);
         }
     }
 
