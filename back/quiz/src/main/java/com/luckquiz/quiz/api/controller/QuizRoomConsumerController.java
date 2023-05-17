@@ -135,10 +135,14 @@ public class QuizRoomConsumerController {
 
                 log.info("퀴즈 Report를 다시 조회한다");
                 log.info("여기에서 오류 날거 같은데......");
+                log.info("RoomPk:" + templateAndRoomId.getRoomPk());
                 QuizReport quizReport = quizReportRepository.findQuizReportByQuizRoomId(templateAndRoomId.getRoomPk()).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
                 // quiz report에 solvedcount 랑 correct count 더하기만 남음
+
                 String quizCorInfo = StringValueOperations.get(roomId+"-quiz");
+                log.info("quizCorInfo : " + quizCorInfo);
                 String [] quizCorInfoList = quizCorInfo.split(", ");
+                log.info(Arrays.toString(quizCorInfoList));
 
 
                 for (int i = 0; i < quizCorInfoList.length; i++) {
@@ -151,6 +155,7 @@ public class QuizRoomConsumerController {
                 quizRoom.setGameCount(gameCnt);
                 // quiz_room 에 정보를 입력
                 Map all = hashOperations.entries(finalRequest.getRoomId() + "p");
+                log.info(all.toString());
 
                 log.info("퀴즈 게스트 정보 입력 시작");
                 // quiz_guest 에 정보를 입력
@@ -169,8 +174,8 @@ public class QuizRoomConsumerController {
                             .build();
                     quizGuestRepository.save(qguest);
                 }
-
                 quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
+
                 log.info("여기 어디야");
                 int participant_count = 0;
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
