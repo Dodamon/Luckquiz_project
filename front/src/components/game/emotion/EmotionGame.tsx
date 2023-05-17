@@ -16,6 +16,7 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
   const webcamRef = useRef<Webcam>(null);
   const faceBoxRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   const [isFacingModeUser] = useState<boolean>(true);
   const [img, setImg] = useState<string | null | undefined>(); // react-webcam에서 capture로 얻은 image file
