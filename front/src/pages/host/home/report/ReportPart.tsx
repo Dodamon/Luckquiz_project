@@ -132,9 +132,12 @@ const ReportPart = () => {
   const { data, status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/quiz/report/participants?id=${report_id}`,
     })
   }, [])
+
+  console.log(data);
+  
   return (
     <div className={styles.content}>
       <div className={styles.title}>{parti.title}</div>
