@@ -1,6 +1,6 @@
 .gameTitle {
     width: 50%;
-    margin-top: 6%;
+    margin-top: 4.5%;
 }
 
 .shake_content{
@@ -8,9 +8,6 @@
     border-radius: 20px;
     width: 80%;
     padding-top: 30px;
-    /* height: 70%; */
-    /* min-height: 500px; */
-    /* height: 90%; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +16,7 @@
 
 .shake_name {
     font-size: 26px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .shake_title{
     display: flex;
@@ -38,7 +35,7 @@
 .shake_discription {
     margin-top: 20px;
     font-size: 18px;
-    line-height: 28px;
+    line-height: 25px;
     text-align: center;
 }
 
