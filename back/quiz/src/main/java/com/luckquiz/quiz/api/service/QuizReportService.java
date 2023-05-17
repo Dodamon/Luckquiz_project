@@ -47,15 +47,27 @@ public class QuizReportService {
         // Instant 객체 간의 차이를 Duration 객체로 계산
         Duration duration = Duration.between(startInstant, endInstant);
 
-        QuizRoomResponse quizReportResponse = QuizRoomResponse.builder()
-                .quizCount(quizRoom.getQuizCount())
-                .gameCount(quizRoom.getGameCount())
-                .participantCount(quizRoom.getParticipantCount())
-                .successRate(quizRoom.getCorrectCount() / (quizRoom.getSubmitCount() * 1.0))
-                .duration(duration)
-                .title(quizRoom.getTemplateName())
-                .build();
+        QuizRoomResponse quizReportResponse = null;
+        if(quizRoom.getSubmitCount() == 0) {
+            quizReportResponse = QuizRoomResponse.builder()
+                    .quizCount(quizRoom.getQuizCount())
+                    .gameCount(quizRoom.getGameCount())
+                    .participantCount(quizRoom.getParticipantCount())
+                    .successRate(0.0)
+                    .duration(duration)
+                    .title(quizRoom.getTemplateName())
+                    .build();
 
+        } else {
+            quizReportResponse = QuizRoomResponse.builder()
+                    .quizCount(quizRoom.getQuizCount())
+                    .gameCount(quizRoom.getGameCount())
+                    .participantCount(quizRoom.getParticipantCount())
+                    .successRate(quizRoom.getCorrectCount() / (quizRoom.getSubmitCount() * 1.0))
+                    .duration(duration)
+                    .title(quizRoom.getTemplateName())
+                    .build();
+        }
         log.info(quizReportResponse.toString());
         return quizReportResponse;
     }
