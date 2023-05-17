@@ -93,7 +93,7 @@ public class GradingConsumerController {
                 log.info("quiz inf   "+templateDetailResponse.getQuizList().get(0).getQuiz().toString());
                 QGame qGame = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
                 qGame.setQuizNum(templateDetailResponse.getQuizNum());
-                log.info("first quiz " + qGame.getQuiz().toString());
+                qGame.setQuizSize(templateDetailResponse.getQuizList().size());
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                         .quizNum(templateDetailResponse.getQuizNum())
                         .hostId(quizStartRequest1.getHostId())
