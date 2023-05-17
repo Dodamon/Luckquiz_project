@@ -70,7 +70,7 @@ public class QuizRoomConsumerController {
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 redisTransService.quizRedisTrans(roomId, hostId, templateId, host.getName());  // roomId 로
 
-            
+
                 System.out.println("consumer came");
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
                 QuizRoom quizRoom = QuizRoom.builder()
@@ -108,7 +108,7 @@ public class QuizRoomConsumerController {
 
                 quizRoom.setFinishedTime(LocalDateTime.now());
                 String quizInfo = StringValueOperations.get(roomId.toString());
-                log.info(quizInfo);
+
                 log.info("퀴즈방 처리 중간까지 성공 ");
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
@@ -128,7 +128,6 @@ public class QuizRoomConsumerController {
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReport.setQuizRoom(templateAndRoomId.getRoomPk());
                     quizReportRepository.save(quizReport);
-
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
