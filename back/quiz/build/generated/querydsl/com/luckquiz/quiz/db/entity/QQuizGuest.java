@@ -23,6 +23,8 @@ public class QQuizGuest extends EntityPathBase<QuizGuest> {
 
     public final StringPath guestNickname = createString("guestNickname");
 
+    public final ComparablePath<java.util.UUID> hostId = createComparable("hostId", java.util.UUID.class);
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final NumberPath<Integer> pinNum = createNumber("pinNum", Integer.class);

@@ -45,4 +45,5 @@ public class QGame {
     public void setIsValid(String isValid){
         this.isValid=isValid;
     }
+    public void setAnswerList(List<String> answerList){ this.answerList = answerList;}
 }

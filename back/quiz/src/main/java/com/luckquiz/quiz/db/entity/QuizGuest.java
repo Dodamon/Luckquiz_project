@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "quiz_guest")
@@ -39,6 +40,9 @@ public class QuizGuest {
 
     @Column(name = "quiz_room_id")
     private int quizRoomId;
+
+    @Column(name = "host_id")
+    private UUID hostId;
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;

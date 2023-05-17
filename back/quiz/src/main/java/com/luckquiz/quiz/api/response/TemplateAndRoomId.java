@@ -13,4 +13,6 @@ public class TemplateAndRoomId {
     private int roomId;
     private int templateId;
     private int roomPk;
+
+    private String templateName;
 }

@@ -14,6 +14,8 @@ import com.luckquiz.quiz.common.exception.CustomExceptionType;
 import com.luckquiz.quiz.config.RedisConfig;
 import com.luckquiz.quiz.db.entity.*;
 import com.luckquiz.quiz.db.repository.*;
+import com.querydsl.core.util.StringUtils;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -56,7 +58,7 @@ public class QuizRoomConsumerController {
                 UUID hostId = UUID.fromString(parsedData[0]);
                 int roomId = Integer.parseInt(parsedData[1]);
                 int templateId = Integer.parseInt(parsedData[2]);
-
+                Template template = templateRepository.findTemplateById(templateId).orElseThrow(()->new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 u.setSender(hostId.toString());
 
@@ -81,7 +83,7 @@ public class QuizRoomConsumerController {
                         .build();
                 QuizRoom quizRoom1 = quizRoomRepository.save(quizRoom);
 
-                redisTransService.roomTempTrans(roomId, hostId, templateId,quizRoom1.getId());
+                redisTransService.roomTempTrans(roomId, hostId, templateId,quizRoom1.getId(),template.getName());
             }
                 break;
             case "final_end": {
@@ -109,6 +111,7 @@ public class QuizRoomConsumerController {
 
 
                 quizRoom.setFinishedTime(LocalDateTime.now());
+                quizRoom.setTemplateName(templateAndRoomId.getTemplateName());
                 String quizInfo = StringValueOperations.get(roomId.toString());
 
                 log.info("퀴즈방 처리 중간까지 성공 ");
@@ -119,8 +122,9 @@ public class QuizRoomConsumerController {
 
                 log.info("퀴즈 Report 저장 시작 : 퀴즈 한개당 Report를 저장한다");
                 for(QGame a : templateDetailResponse.getQuizList()){
+                    log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
-                    if("quiz".equals(a.getType())){
+                    if(!StringUtils.isNullOrEmpty(a.getQuestion())){
                         quizCnt ++;
                         quizReport.setQuestion(a.getQuestion());
                     }else {
@@ -135,7 +139,7 @@ public class QuizRoomConsumerController {
                 log.info("퀴즈 Report를 다시 조회한다");
                 log.info("여기에서 오류 날거 같은데......");
                 log.info("RoomPk:" + templateAndRoomId.getRoomPk());
-                QuizReport quizReport = quizReportRepository.findQuizReportByQuizRoomId(templateAndRoomId.getRoomPk()).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
+                List<QuizReport> quizReport = quizReportRepository.findQuizReportsByQuizRoomId(templateAndRoomId.getRoomPk());
                 // quiz report에 solvedcount 랑 correct count 더하기만 남음
 
                 String quizCorInfo = StringValueOperations.get(roomId+"-quiz");
@@ -144,13 +148,16 @@ public class QuizRoomConsumerController {
                 log.info(Arrays.toString(quizCorInfoList));
 
                 // 지금 여기까지 옵니다
-                for (int i = 0; i < quizCorInfoList.length-1; i++) {
+                for (int i = 0; i < quizCorInfoList.length; i++) {
                     KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
                     // 한 문제 별 제출 수 와 총 정답 수를 담아보자.
+
                     log.info("CorrectCount : " + kafkaGradeEndMessage.getCorrectCount());
-                    log.info("SubmitCount : " + kafkaGradeEndMessage.getSolvedCount());
-                    quizReport.setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
-                    quizReport.setSubmitCount(kafkaGradeEndMessage.getSolvedCount());
+                    log.info("SubmitCount : " + kafkaGradeEndMessage.getSolveCount());
+                    quizReport.get(i).setQuestion(templateDetailResponse.getQuizList().get(i).getQuestion());
+                    quizReport.get(i).setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
+                    quizReport.get(i).setSubmitCount(kafkaGradeEndMessage.getSolveCount());
+                    quizReport.get(i).setUserId(hostId);
                 }
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
@@ -164,14 +171,15 @@ public class QuizRoomConsumerController {
                 int correctCnt = 0;
                 for (String one : users) {
                     Grade g = gson.fromJson(one, Grade.class);
-
                     correctCnt += g.getCount();
                     QuizGuest qguest = QuizGuest.builder()
                             .guestNickname(g.getPlayerName())
                             .totalCount(templateDetailResponse.getQuizList().size())
                             .pinNum(quizRoom.getPinNum())
                             .templateId(quizRoom.getTemplateId())
+                            .hostId(hostId)
                             .quizRoomId(quizRoom.getId())
+
                             .build();
                     quizGuestRepository.save(qguest);
                 }
@@ -182,14 +190,14 @@ public class QuizRoomConsumerController {
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
+                    if (host.getName().equals(temp.getSender())) {
+                        continue;
+                    }
                     QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
                     if(quizGuest.getGuestNickname().equals(temp.getSender())){
                         quizGuest.setScore(a.getScore());  // 게스트의 총점
                     }
                     participant_count++;
-                    if (host.getName().equals(temp.getSender())) {
-                        continue;
-                    }
                 }
                 quizRoom.setParticipantCount(participant_count);
 
