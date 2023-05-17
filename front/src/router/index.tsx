@@ -25,10 +25,9 @@ import QuizRanking from "components/quiz/QuizRanking";
 import ErrorPage from "pages/common/ErrorPage";
 import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
-import GuestResult from "pages/guest/quiz/GuestResult";
-
 import GuestQuizRanking from "components/quiz/GuestQuizRanking";
 import WakeUpGame from "components/game/wakeup/WakeUpGame";
+import GuestResults from "pages/guest/quiz/GuestResults";
 
 
 
@@ -137,7 +136,7 @@ const router = createBrowserRouter([
           },
           {
             path: "quiz/result",
-            element: <></>,
+            element: <GuestResults/>,
           },
           {
             path: "quiz/awards",

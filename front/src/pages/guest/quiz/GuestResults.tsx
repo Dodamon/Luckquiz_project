@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "store";
 
-const GuestResult = (state:GuestResult) => {
+const GuestResults = () => {
   const navigate = useNavigate();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const result = useSelector((state: RootState) => state.socket.getGuestResult)
@@ -35,4 +35,4 @@ const GuestResult = (state:GuestResult) => {
     </>
   );
 };
-export default GuestResult;
+export default GuestResults;
