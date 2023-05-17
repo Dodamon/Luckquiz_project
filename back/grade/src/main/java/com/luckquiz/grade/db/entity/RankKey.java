@@ -7,6 +7,10 @@ public class RankKey {
 		this.img = img;
 	}
 
+	public String getSender() {
+		return sender;
+	}
+
 	public void setSender(String sender) {
 		this.sender = sender;
 	}

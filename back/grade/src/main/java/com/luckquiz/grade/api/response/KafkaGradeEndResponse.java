@@ -17,4 +17,5 @@ public class KafkaGradeEndResponse {
 	private Double correctRate;
 	private Integer quizNum;
 	private LinkedHashMap<String, Integer> answerData;
+	private LinkedHashMap<String, Integer> rankingData;
 }
