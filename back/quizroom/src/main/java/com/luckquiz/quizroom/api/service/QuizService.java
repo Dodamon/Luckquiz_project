@@ -117,7 +117,8 @@ public class QuizService {
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
         List<String> rank = new ArrayList<>(all);
         for(String name : rank){
-            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,endMessage);
+            EnterUser user = gson.fromJson(name,EnterUser.class);
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+user.getSender(),endMessage);
         }
     }
 
@@ -126,7 +127,8 @@ public class QuizService {
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
         List<String> rank = new ArrayList<>(all);
         for(String name : rank){
-            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,endMessage);
+            EnterUser temp = gson.fromJson(name,EnterUser.class);
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+temp.getSender(),endMessage);
         }
     }
 

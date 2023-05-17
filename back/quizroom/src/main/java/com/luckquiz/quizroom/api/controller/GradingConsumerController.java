@@ -116,6 +116,7 @@ public class GradingConsumerController {
 
 
                 for(Grade gtemp :userLList){
+
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
@@ -128,6 +129,7 @@ public class GradingConsumerController {
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
+                    userTurnEndResponse.setRankNow(gtemp.getRankNow());
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
                             .userTurnEndResponse(userTurnEndResponse)
