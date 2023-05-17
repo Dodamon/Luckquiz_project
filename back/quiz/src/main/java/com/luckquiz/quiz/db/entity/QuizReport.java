@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "quiz_report")
 @AllArgsConstructor
@@ -35,6 +37,9 @@ public class QuizReport {
 
     @Column(name = "quiz_room_id")
     private int quizRoomId;
+
+    @Column(name = "user_id")
+    private UUID userId;
 
     @Column(name = "pin_num")
     private Integer pinNum;

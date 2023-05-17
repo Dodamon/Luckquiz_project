@@ -123,7 +123,7 @@ public class QuizRoomConsumerController {
                     }
                     quizReport.setQuizGameId(a.getId());
                     quizReport.setPinNum(quizRoom.getPinNum());
-                    quizReport.setQuizRoom(templateAndRoomId.getRoomPk());
+                    quizReport.setQuizRoomId(quizRoom.getId());
                     quizReportRepository.save(quizReport);
                 }
 
