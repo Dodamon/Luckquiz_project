@@ -57,16 +57,25 @@ const ReportBasic = () => {
   const { data,status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/report/?roomId=${""}`,
+      url: `/api/quiz/report/info?id=${report_id}`,
     })
   },[])
+
+  console.log("맞냐구용 ㅋㅋ",data);
+  console.log("맞냐구용 ㅋㅋ",report_id);
 
   return (
     <div className={styles.content}>
       <div className={styles.title}>{reportBasic.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
-      <div className={styles.reportContent} style={{ backgroundColor: "white" }}>
+
+      <div className={styles.reportContent} style={{ backgroundColor: "var(--white-color)", display:'flex', flexDirection: "column", alignItems:"center"  }}>
+      <div className={styles.part_title}>
+  <div>퀴즈 정보</div>
+    </div>
+    <div style={{display:'flex', justifyContent:"space-around",alignItems:"center", width:"100%" }}>
         <ul className={styles.reportContentList}>
+        
         <li className={styles.reportContentTitle} >
             {/* <Icon icon="iconoir:user" className={styles.iconStyle} /> */}
             <div className={styles.textTitle}>퀴즈통계</div>
@@ -100,6 +109,7 @@ const ReportBasic = () => {
             <Doughnut data={datas} />
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
