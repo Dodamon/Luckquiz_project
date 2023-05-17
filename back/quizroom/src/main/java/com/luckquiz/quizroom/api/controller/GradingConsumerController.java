@@ -12,6 +12,7 @@ import com.luckquiz.quizroom.db.repository.QuizReportRepository;
 import com.luckquiz.quizroom.message.GuestTurnEndMessage;
 import com.luckquiz.quizroom.message.HostTurnEndMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
+import com.luckquiz.quizroom.model.NextMessage;
 import com.luckquiz.quizroom.model.UserR;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -79,11 +80,11 @@ public class GradingConsumerController {
                 break;
             case "grade_start":
                 log.info("채점 시작했답니다. 퀴즈 끝나면 퀴즈 끝났다고 보내줘야합니다.");
-                QuizStartRequest quizStartRequest1 = gson.fromJson(in,QuizStartRequest.class);
+                NextMessage quizStartRequest1 = gson.fromJson(in,NextMessage.class);
                 //함수 분리하기;
                 System.out.println("quiz start host Id "+quizStartRequest1.getHostId());
                 System.out.println("room Id ");
-                QGame qGame = quizService.startQuiz(quizStartRequest1);
+                QGame qGame = quizService.nextQuiz(quizStartRequest1);
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                         .quizNum(qGame.getQuizNum())
                         .hostId(quizStartRequest1.getHostId())
