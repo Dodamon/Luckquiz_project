@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const ShowPin = () => {
   const { quiz_id } = useParams();
-  const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://luckquiz.co.kr/guest/nickname?pinnum=${quiz_id}`;
+  const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://luckquiz.co.kr/guest/nickname?pinnum=${quiz_id}`;
   // const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://localhost:3000/guest/nickname?pinnum=${quiz_id}`;
   const guestList = useSelector((state: RootState) => state.socket.guestList);
   const navigate = useNavigate();
