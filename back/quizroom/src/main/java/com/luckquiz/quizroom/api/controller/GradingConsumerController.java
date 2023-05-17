@@ -86,8 +86,13 @@ public class GradingConsumerController {
                 System.out.println("room Id ");
                 // 현재 퀴즈 보내주는 것 넣어야 한다.
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
+                log.info("quizStartRequest : " + quizStartRequest1+"");
                 String quiz = StringValueOperations.get(quizStartRequest1+"");
+                log.warn("오류를 확인해보자.");
+                log.info(quiz);
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quiz,TemplateDetailResponse.class);
+                log.info(templateDetailResponse.toString());
+                log.info("templateDetailResponse.getQuizNum() :: " + templateDetailResponse.getQuizNum() );
                 QGame qGame = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
 
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
@@ -99,6 +104,8 @@ public class GradingConsumerController {
                         .type("getQuizItem")
                         .getQuizItem(qGame)
                         .build();
+
+                log.info("qsm2:" + qsm2);
 
                 sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest1.getRoomId(), qsm2);
 
