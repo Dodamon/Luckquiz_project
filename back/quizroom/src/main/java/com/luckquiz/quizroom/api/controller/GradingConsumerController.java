@@ -79,17 +79,10 @@ public class GradingConsumerController {
                 break;
             case "grade_start":
                 log.info("채점 시작했답니다. 퀴즈 끝나면 퀴즈 끝났다고 보내줘야합니다.");
-                @Getter
-                class KafkaGradeStartMessage{
-                    private Integer roomId;
-                    private UUID hostId;
-                }
-                KafkaGradeStartMessage kafkaGradeStartMessage = gson.fromJson(in,KafkaGradeStartMessage.class);
-                QuizStartRequest quizStartRequest1 = QuizStartRequest.builder()
-                        .hostId(kafkaGradeStartMessage.getHostId())
-                        .roomId(kafkaGradeStartMessage.getRoomId())
-                        .build();
+                QuizStartRequest quizStartRequest1 = gson.fromJson(in,QuizStartRequest.class);
                 //함수 분리하기;
+                System.out.println("quiz start host Id "+quizStartRequest1.getHostId());
+                System.out.println("room Id ");
                 QGame qGame = quizService.startQuiz(quizStartRequest1);
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                         .quizNum(qGame.getQuizNum())
