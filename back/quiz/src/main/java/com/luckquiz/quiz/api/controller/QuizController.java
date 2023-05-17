@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/api/quiz")
 @AllArgsConstructor
 public class QuizController {
-    // 요청받았을 때 해당하는 템플릿 쏴주는 것
+    // 요청받았을 때 해당하는 템플릿 쏴주는 것 !!
     private final TemplateService templateService;
     private final GcpService gcpService;
     private final RedisTransService redisTransService;
