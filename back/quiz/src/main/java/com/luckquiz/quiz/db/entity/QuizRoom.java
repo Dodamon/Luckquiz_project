@@ -21,10 +21,8 @@ public class QuizRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)  // 우리 걍 id 아닙니까....? ㅇㅅㅇ
     private int id;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "template_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Template template;
+    @Column(name = "template_id", nullable = false)
+    private int templateId;
     @Column(name = "created_time", nullable = false)
     private LocalDateTime createdTime;
     @Column(name = "inactive", nullable = false)
@@ -46,11 +44,9 @@ public class QuizRoom {
     @Column(name = "game_count", nullable = true)
     private int gameCount;
 
-
-    public void setTemplate(Template template) {
-        this.template = template;
+    public void setTemplateId(int templateId) {
+        this.templateId = templateId;
     }
-
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
