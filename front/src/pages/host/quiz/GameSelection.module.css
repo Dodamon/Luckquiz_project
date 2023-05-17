@@ -3,40 +3,45 @@
 .game_content {
     background-color: var( --white-color);
     width: 95%;
+    min-width: 800px;
     height: 95%;
-    min-height: 680px;
     border-radius: 15px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
 }
 
 .game_list {
-    width: 90%;
-    height: 90%;
+    width: 95%;
+    height: 60%;
+    /* background-color: red; */
+    max-height: 720px;
+    /* min-height: 300px; */
     display: flex;
     justify-content: space-between;
+    /* background-color: red; */
 }
 
 .game_item {
-    background-color: rgb(231, 224, 242);
-    width: 28%;
+    background-color: var( --select-three);
+    width: 25%;
     min-width: 200px;
     height: 100%;
     min-height: 200px;
     border-radius: 20px;
-    box-shadow: 1px 1px 1px 1px rgb(186, 185, 185);
+    box-shadow: 3px 3px 3px 3px rgb(186, 185, 185);
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--white-color);
 }
 
 .game_title {
     /* background-color: red; */
     width: 100%;
     height: 15%;
-    font-size: 20px;
+    font-size: 24px;
     text-align: center;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -48,7 +53,7 @@
 .game_img {
     background-color: var(--white-color);
     width: 100%;
-    height: 70%;
+    height: 75%;
 }
 
 .game_img img {
@@ -72,22 +77,27 @@
     width: 100px;
     /* background-color: red; */
     align-items: center;
-    justify-content: space-around;
+    justify-content: end;
+    margin-right: 5%;
 }
 
 .game_btn {
-    background-color: green;
-    width: 35px;
-    min-width: 30px;
-    height: 35px;
-    min-height: 30px;
+    /* background-color: green; */
+    width: 50px;
+    min-width: 40px;
+    height: 50px;
+    min-height: 40px;
     color: var(--white-color);
     border-radius: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 25px;
+    font-size: 40px;
     cursor: pointer;
+}
+
+.game_btn:hover {
+    font-size: 50px;
 }
 
 .game_item_etc {
@@ -112,4 +122,43 @@
     align-items: center;
     font-size: 70px;
     color: var(--placeholder-text);
+}
+
+.exitbox {
+    width: 95%;
+    display: flex;
+    justify-content: end;
+}
+
+.exit_btn {
+    background-color: var(--ranking-background);
+    width: 100px;
+    height: 40px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--white-color);
+}
+
+.exit_btn:hover {
+    opacity: 80%;
+}
+
+.main_title {
+    background-color: var(--point-color);
+    width: 250px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.main_ment {
+    /* width: 100%; */
+    font-size: 33px;
+    color: var(--white-color);
 }

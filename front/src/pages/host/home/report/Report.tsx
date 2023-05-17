@@ -7,6 +7,8 @@ import HomeListCard from "components/host/home/HomeListCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useHostAxios from "hooks/useHostAxios";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 export interface Report {
   id: number;
@@ -21,6 +23,7 @@ const Report = () => {
   
   // const [myReportList, setMyReportList] = useState<Report[]>([])
   const { data, status, sendHostRequest } = useHostAxios();
+  const userId = useSelector((state: RootState)=> state.auth.userId);
   const myReportList: Report[] = [
     {
       id: 0,
@@ -44,7 +47,7 @@ const Report = () => {
 
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/report/?hostId=${userId}`,
     })
   }, [])
 
