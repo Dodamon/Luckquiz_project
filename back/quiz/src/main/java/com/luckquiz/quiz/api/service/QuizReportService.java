@@ -7,6 +7,7 @@ import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
 import com.luckquiz.quiz.db.entity.QuizReport;
 import com.luckquiz.quiz.db.entity.QuizRoom;
+import com.luckquiz.quiz.db.entity.Template;
 import com.luckquiz.quiz.db.repository.QuizReportCustomRepository;
 import com.luckquiz.quiz.db.repository.QuizReportRepository;
 import com.luckquiz.quiz.db.repository.QuizRoomRepository;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +32,12 @@ public class QuizReportService {
     private final QuizReportCustomRepository quizReportCustomRepository;
 
     @Transactional(readOnly = true)
-    public QuizReportResponse getQuizReport(int pinNum) {
+    public QuizReportResponse getQuizReport(int reportId) {
         // quizRoom 전체 방에 대한 정보
         // quizReport는 문제 하나에 대한 정보
-        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
+        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
+                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
+        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
 
         // LocalDateTime 객체를 Instant 객체로 변환
@@ -48,24 +52,35 @@ public class QuizReportService {
                 .participantCount(quizRoom.getParticipantCount())
                 .successRate(quizRoom.getCorrectCount() / quizRoom.getSubmitCount())
                 .duration(duration)
-                .title(quizRoom.getTemplate().getName())
+                .title(quizReport.getQuestion())
                 .build();
 
         log.info(quizReportResponse.toString());
         return quizReportResponse;
     }
 
+//    public Slice<QuizReportResponse> getQuizReports(UUID userId) {
+//
+//    }
+
     @Transactional(readOnly = true)
-    public Slice<QuizReportGuest> getQuizParticipants(int pinNum, int lastGuestId, Pageable pageable) {
-        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
+    public Slice<QuizReportGuest> getQuizParticipants(int reportId, int lastGuestId, Pageable pageable) {
+        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
+                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
+        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
+
         return quizReportCustomRepository.getParticipants(quizRoom.getPinNum(), lastGuestId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<QuizReportProblem> getQuizProblems(int pinNum) {
-        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
+    public Slice<QuizReportProblem> getQuizProblems(int reportId) {
+
+        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
+                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
+        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-        return quizReportCustomRepository.getProblems(pinNum, quizRoom.getTemplate().getId());
+
+        return quizReportCustomRepository.getProblems(reportId, quizRoom.getTemplateId());
     }
 }
