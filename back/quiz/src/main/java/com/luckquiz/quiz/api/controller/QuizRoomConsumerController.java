@@ -74,7 +74,7 @@ public class QuizRoomConsumerController {
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
                 QuizRoom quizRoom = QuizRoom.builder()
                         .pinNum(roomId)
-                        .template(temp)
+                        .templateId(temp.getId())
                         .hostId(hostId)
                         .createdTime(LocalDateTime.now())
                         .build();
@@ -158,7 +158,7 @@ public class QuizRoomConsumerController {
                             .guestNickname(g.getPlayerName())
                             .totalCount(templateDetailResponse.getQuizList().size())
                             .pinNum(quizRoom.getPinNum())
-                            .templateId(quizRoom.getTemplate().getId())
+                            .templateId(quizRoom.getTemplateId())
                             .quizRoomId(quizRoom.getId())
                             .build();
                     quizGuestRepository.save(qguest);

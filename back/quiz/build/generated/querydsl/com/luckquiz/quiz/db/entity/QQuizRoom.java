@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,8 +16,6 @@ import com.querydsl.core.types.dsl.PathInits;
 public class QQuizRoom extends EntityPathBase<QuizRoom> {
 
     private static final long serialVersionUID = 1163428809L;
-
-    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QQuizRoom quizRoom = new QQuizRoom("quizRoom");
 
@@ -44,27 +41,18 @@ public class QQuizRoom extends EntityPathBase<QuizRoom> {
 
     public final NumberPath<Integer> submitCount = createNumber("submitCount", Integer.class);
 
-    public final QTemplate template;
+    public final NumberPath<Integer> templateId = createNumber("templateId", Integer.class);
 
     public QQuizRoom(String variable) {
-        this(QuizRoom.class, forVariable(variable), INITS);
+        super(QuizRoom.class, forVariable(variable));
     }
 
     public QQuizRoom(Path<? extends QuizRoom> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QQuizRoom(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QQuizRoom(PathMetadata metadata, PathInits inits) {
-        this(QuizRoom.class, metadata, inits);
-    }
-
-    public QQuizRoom(Class<? extends QuizRoom> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.template = inits.isInitialized("template") ? new QTemplate(forProperty("template")) : null;
+        super(QuizRoom.class, metadata);
     }
 
 }
