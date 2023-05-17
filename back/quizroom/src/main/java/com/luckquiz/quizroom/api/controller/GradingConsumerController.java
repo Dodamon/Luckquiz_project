@@ -85,7 +85,7 @@ public class GradingConsumerController {
                     userLList.add(a);
                 }
 
-                StringValueOperations.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage));
+                StringValueOperations.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage)+", ");
 
                 Collections.sort(userLList);
 
