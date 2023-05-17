@@ -239,9 +239,8 @@ public class MessageController {
     // 이 때 quizNum 이 0으로 초기화된다.
     @MessageMapping("/quiz/start")
     public void start(NextMessage quizStartRequest) {
-        QGame result = quizService.nextQuiz(quizStartRequest);
         ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
-                .quizNum(result.getQuizNum())
+                .quizNum(0)
                 .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
