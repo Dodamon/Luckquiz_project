@@ -11,10 +11,6 @@ const GuestLobby: React.FC = () => {
   const navigate = useNavigate();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const guestList = useSelector<RootState, GuestType[]|null>((state) => state.socket.guestList);
-
-  const onClickGame = () => {
-    navigate('/guest/quiz/balloon')
-  };
   
   useEffect(() => {
     console.log("바뀐", guestList);
@@ -29,7 +25,6 @@ const GuestLobby: React.FC = () => {
       <div className={styles.logoContainer}>
         <img src={logo} alt="" className={styles.logo} />
       </div>
-      <button onClick={onClickGame}>풍선게임</button>
       <LobbyComp />
     </div>
   );
