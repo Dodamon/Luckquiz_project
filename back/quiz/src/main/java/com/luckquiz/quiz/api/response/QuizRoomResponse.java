@@ -21,5 +21,5 @@ public class QuizRoomResponse {
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     Duration duration;
-    long successRate;
+    double successRate;
 }
