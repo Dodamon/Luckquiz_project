@@ -194,9 +194,9 @@ public class QuizRoomConsumerController {
                         continue;
                     }
                     QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
-                    if(quizGuest.getGuestNickname().equals(temp.getSender())){
-                        quizGuest.setScore(a.getScore());  // 게스트의 총점
-                    }
+
+                    quizGuest.setScore(a.getScore());  // 게스트의 총점
+
                     participant_count++;
                 }
                 quizRoom.setParticipantCount(participant_count);
