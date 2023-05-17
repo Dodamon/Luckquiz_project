@@ -134,6 +134,7 @@ public class GradingConsumerController {
                 String roomInfo = StringValueOperations2.get(kafkaGradeEndMessage.getRoomId().toString());
                 TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
                 HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+
                 System.out.println(kafkaGradeEndMessage.getRoomId());
                 Map all = hashOperations.entries(kafkaGradeEndMessage.getRoomId()+"p");
                 List<String> users = new ArrayList<>(all.values());

@@ -238,6 +238,10 @@ public class MessageController {
     @MessageMapping("/submit")
     public void submit(QuizMessage message) throws  Exception{
       System.out.println("submited:   "+message.getHostId()+", sender:    "+message.getSender());
+      HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+      String a = hashOperations.get(message.getRoomId()+"p",message.getSender());
+      Grade userInfo = gson.fromJson(a, Grade.class);
+      message.setImg(userInfo.getPlayerImg());
       toGradeProducer.clientSubmit(gson.toJson(message));
 
     }
