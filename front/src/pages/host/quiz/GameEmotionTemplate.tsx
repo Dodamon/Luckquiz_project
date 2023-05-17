@@ -26,12 +26,17 @@ const GameEmotionTemplate = () => {
             <img src={emotions} alt="" />
           </div>
           <div className={styles.intro_explain}>
-            <h5>셀카 감정 분석게임</h5>
+            <div className={styles.intro_title}>셀카 감정 분석게임</div>
             <div className={styles.intro_comment}>
-              상단 메뉴에서 게임이 진행될 시간을 선택하고,
+              <p>
+                상단 메뉴에서 게임이 진행될 시간을 선택하고,
+              </p>
+              <p>
+                하단 메뉴에서 미션으로 제시할 감정을 선택하세요.
+              </p>
             </div>
-            <div className={styles.intro_comment}>
-              하단 메뉴에서 미션으로 제시할 감정을 선택하세요.
+            <div className={styles.intro_discription}>
+              게임이 시작되면 미션으로 주어진 감정에 맞는 표정을 셀카로 찍어 업로드 합니다. 표정을 분석하여 미션 감정의 수치가 가장 높게 나온 사람부터 순차적으로 점수가 부여됩니다.
             </div>
           </div>
         </div>
