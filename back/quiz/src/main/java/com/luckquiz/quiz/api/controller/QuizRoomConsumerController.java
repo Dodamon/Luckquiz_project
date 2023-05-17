@@ -141,10 +141,12 @@ public class QuizRoomConsumerController {
                 String [] quizCorInfoList = quizCorInfo.split(", ");
                 log.info(Arrays.toString(quizCorInfoList));
 
-
-                for (int i = 0; i < quizCorInfoList.length; i++) {
+                // 지금 여기까지 옵니다
+                for (int i = 0; i < quizCorInfoList.length-1; i++) {
                     KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
                     // 한 문제 별 제출 수 와 총 정답 수를 담아보자.
+                    log.info("CorrectCount : " + kafkaGradeEndMessage.getCorrectCount());
+                    log.info("SubmitCount : " + kafkaGradeEndMessage.getSolvedCount());
                     quizReport.setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
                     quizReport.setSubmitCount(kafkaGradeEndMessage.getSolvedCount());
                 }
