@@ -45,7 +45,7 @@ public class QuizRoomConsumerController {
     private final QuizGuestRepository quizGuestRepository;
     private final UserRepository userRepository;
 
-    @KafkaListener(topics = "server_message",groupId = "abc") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
+    @KafkaListener(topics = "server_message",groupId = "test") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
             case "start": {
