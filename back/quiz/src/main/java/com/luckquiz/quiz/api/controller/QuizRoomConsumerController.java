@@ -3,6 +3,7 @@ package com.luckquiz.quiz.api.controller;
 import com.google.gson.Gson;
 import com.luckquiz.quiz.api.request.FinalRequest;
 import com.luckquiz.quiz.api.request.Grade;
+import com.luckquiz.quiz.api.request.KafkaGradeEndMessage;
 import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.response.EnterUser;
 import com.luckquiz.quiz.api.response.TemplateDetailResponse;
@@ -113,10 +114,16 @@ public class QuizRoomConsumerController {
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReportRepository.save(quizReport);
                 }
-
+                QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
                 // quiz report에 solvedcount 랑 correct count 더하기만 남음
-
-
+                String quizCorInfo = StringValueOperations.get(roomId+"-quiz");
+                String [] quizCorInfoList = quizCorInfo.split(", ");
+                for (int i = 0; i < quizCorInfoList.length; i++) {
+                    KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
+                    // 한 문제 별 제출 수 와 총 정답 수를 담아보자.
+                    quizReport.setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
+                    quizReport.setSubmitCount(kafkaGradeEndMessage.getSolvedCount());
+                }
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
 
@@ -146,7 +153,7 @@ public class QuizRoomConsumerController {
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
-                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByPinNum(quizRoom.getPinNum()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
+                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNickname(temp.getSender()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
                     if(quizGuest.getGuestNickname().equals(temp.getSender())){
                         quizGuest.setScore(a.getScore());  // 게스트의 총점
                     }
@@ -158,7 +165,13 @@ public class QuizRoomConsumerController {
                 quizRoom.setParticipantCount(participant_count);
 
                 // quiz_report 에 정보입력
-
+                stringRedisTemplate.delete(roomId+"statics");
+                stringRedisTemplate.delete(roomId+"rank");
+                stringRedisTemplate.delete(roomId+"p");
+                stringRedisTemplate.delete(roomId+"cnt");
+                stringRedisTemplate.delete(roomId+"l");
+                stringRedisTemplate.delete(roomId+"-quiz");
+                stringRedisTemplate.delete(roomId.toString());
 
             }
                 break;
