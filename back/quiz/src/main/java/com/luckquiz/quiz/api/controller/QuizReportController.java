@@ -2,9 +2,13 @@ package com.luckquiz.quiz.api.controller;
 
 
 import com.luckquiz.quiz.api.response.QuizReportGuest;
+import com.luckquiz.quiz.api.response.QuizReportListResponse;
 import com.luckquiz.quiz.api.response.QuizReportProblem;
 import com.luckquiz.quiz.api.response.QuizReportResponse;
 import com.luckquiz.quiz.api.service.QuizReportService;
+import com.luckquiz.quiz.api.service.TokenProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -26,17 +30,17 @@ import java.util.UUID;
 public class QuizReportController {
 
     private final QuizReportService quizReportService;
-//    private final TokenProvider tokenProvider;
-//
-//    @GetMapping("/")
-//    public ResponseEntity<Slice<QuizReportListResponse>> getQuizReportList(HttpServletRequest request) {
-//        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        log.info("access token :  " + bearerToken);
-//        String accessToken = getJwtFromRequest(request);
-//        UUID userId = tokenProvider.getUserIdFromToken(accessToken);
-//        log.info("토큰 까기 성공 : 유저의 리포트 리스트를 가져옵니다");;
-//        return ResponseEntity.ok().body(quizReportService.getQuizReportList(userId));
-//    }
+    private final TokenProvider tokenProvider;
+
+    @GetMapping("/")
+    public ResponseEntity<Slice<QuizReportListResponse>> getQuizReportList(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        log.info("access token :  " + bearerToken);
+        String accessToken = getJwtFromRequest(request);
+        UUID userId = tokenProvider.getUserIdFromToken(accessToken);
+        log.info("토큰 까기 성공 : 유저의 리포트 리스트를 가져옵니다");;
+        return ResponseEntity.ok().body(quizReportService.getQuizReportList(userId));
+    }
     @GetMapping("/info")
     public ResponseEntity<QuizReportResponse> getQuizReport(
             @RequestParam(value = "report", required = true) int reportId,

@@ -21,7 +21,7 @@ public class QuizRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)  // 우리 걍 id 아닙니까....? ㅇㅅㅇ
     private int id;
-    @Column(name = "template_id")
+    @Column(name = "template_id", nullable = false)
     private int templateId;
     @Column(name = "created_time", nullable = false)
     private LocalDateTime createdTime;
@@ -50,7 +50,6 @@ public class QuizRoom {
     public void setTemplateId(int templateId) {
         this.templateId = templateId;
     }
-
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }

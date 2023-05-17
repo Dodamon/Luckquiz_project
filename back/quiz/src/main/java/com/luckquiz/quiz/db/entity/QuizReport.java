@@ -1,8 +1,6 @@
 package com.luckquiz.quiz.db.entity;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +38,9 @@ public class QuizReport {
     @Column(name = "quiz_room_id")
     private int quizRoomId;
 
+    @Column(name = "user_id")
+    private UUID userId;
+
     @Column(name = "pin_num")
     private Integer pinNum;
 
@@ -62,7 +63,7 @@ public class QuizReport {
         this.submitCount = submitCount;
     }
 
-    public void setQuizRoom(int quizRoomId) {
+    public void setQuizRoomId(int quizRoomId) {
         this.quizRoomId = quizRoomId;
     }
 

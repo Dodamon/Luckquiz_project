@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.db.repository;
 
 import com.luckquiz.quiz.api.response.QuizReportGuest;
+import com.luckquiz.quiz.api.response.QuizReportListResponse;
 import com.luckquiz.quiz.api.response.QuizReportProblem;
 import com.luckquiz.quiz.db.entity.QuizType;
 import com.querydsl.core.types.Projections;
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.luckquiz.quiz.db.entity.QQuizGame.quizGame;
 import static com.luckquiz.quiz.db.entity.QQuizGuest.quizGuest;
 import static com.luckquiz.quiz.db.entity.QQuizReport.quizReport;
+import static com.luckquiz.quiz.db.entity.QQuizRoom.quizRoom;
 
 @Repository
 @Slf4j
@@ -105,6 +108,21 @@ public class QuizReportCustomRepository {
 
         results.addAll(mostDifficultProblem);
 
+        return new SliceImpl<>(results);
+    }
+
+    public Slice<QuizReportListResponse> getReports(UUID userId) {
+        List<QuizReportListResponse> results = queryFactory.select(
+                Projections.constructor( QuizReportListResponse.class,
+                        quizReport.id,
+                        quizReport.question,
+                        quizRoom.createdTime,
+                        quizRoom.participantCount))
+                .from(quizReport)
+                .innerJoin(quizRoom).fetchJoin()
+                .on(quizReport.quizRoomId.eq(quizRoom.id))
+                .orderBy(quizReport.id.desc())
+                .fetch();
         return new SliceImpl<>(results);
     }
 }

@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface QuizReportRepository extends JpaRepository<QuizReport, Integer> {
     @Override
     Optional<QuizReport> findById(Integer integer);
+
+    List<QuizReport> findAllByUserId(UUID userId);
+
     Optional<QuizReport> findQuizReportByPinNum(Integer pinNum);
     List<QuizReport> findQuizReportsByQuizRoomId(int quizRoomId);
 
