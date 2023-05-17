@@ -70,7 +70,7 @@ public class QuizRoomConsumerController {
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 redisTransService.quizRedisTrans(roomId, hostId, templateId, host.getName());  // roomId 로
 
-            
+
                 System.out.println("consumer came");
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
                 QuizRoom quizRoom = QuizRoom.builder()
@@ -110,7 +110,7 @@ public class QuizRoomConsumerController {
 
                 quizRoom.setFinishedTime(LocalDateTime.now());
                 String quizInfo = StringValueOperations.get(roomId.toString());
-                log.info(quizInfo);
+
                 log.info("퀴즈방 처리 중간까지 성공 ");
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
@@ -130,7 +130,6 @@ public class QuizRoomConsumerController {
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReport.setQuizRoomId(quizRoom.getId());
                     quizReportRepository.save(quizReport);
-
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
@@ -144,10 +143,12 @@ public class QuizRoomConsumerController {
                 String [] quizCorInfoList = quizCorInfo.split(", ");
                 log.info(Arrays.toString(quizCorInfoList));
 
-
-                for (int i = 0; i < quizCorInfoList.length; i++) {
+                // 지금 여기까지 옵니다
+                for (int i = 0; i < quizCorInfoList.length-1; i++) {
                     KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
                     // 한 문제 별 제출 수 와 총 정답 수를 담아보자.
+                    log.info("CorrectCount : " + kafkaGradeEndMessage.getCorrectCount());
+                    log.info("SubmitCount : " + kafkaGradeEndMessage.getSolvedCount());
                     quizReport.setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
                     quizReport.setSubmitCount(kafkaGradeEndMessage.getSolvedCount());
                 }
