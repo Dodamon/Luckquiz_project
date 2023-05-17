@@ -119,7 +119,7 @@ const ProfileNickname: React.FC = () => {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!paramPin || status === 400) {
+    if (status === 400) {
       alert("존재하지 않는 방입니다. 핀 번호를 다시 확인하세요.");
       navigate("/");
     };
