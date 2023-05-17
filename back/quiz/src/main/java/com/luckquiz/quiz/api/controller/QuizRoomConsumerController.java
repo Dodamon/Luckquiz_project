@@ -44,7 +44,7 @@ public class QuizRoomConsumerController {
     private final QuizGuestRepository quizGuestRepository;
     private final UserRepository userRepository;
 
-    @KafkaListener(topics = "server_message",groupId = "test") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
+    @KafkaListener(topics = "server_message",groupId = "abc") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
             case "start": {
@@ -81,6 +81,7 @@ public class QuizRoomConsumerController {
             }
                 break;
             case "final_end": {
+                log.info("final_end :: 퀴즈 방이 완전히 끝났습니다");
                 //Zset => 랭킹 가져오기위함 template
                 ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
                 //Hash => 맞은 개수 등 가져오기 위한 template
@@ -91,17 +92,22 @@ public class QuizRoomConsumerController {
                 UUID hostId = finalRequest.getHostId();
                 Integer roomId = finalRequest.getRoomId();
 
-                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
+                log.info("hostId : " + hostId);
+                log.info("roomId(pinNum) : " + roomId);
 
+                ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                 quizRoom.setFinishedTime(LocalDateTime.now());
-
                 String quizInfo = StringValueOperations.get(roomId);
+
+                log.info("퀴즈방 처리 중간까지 성공 ");
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
                 int quizCnt = 0;
                 int gameCnt = 0;
+
+                log.info("퀴즈 Report 저장 시작 : 퀴즈 한개당 Report를 저장한다");
                 for(QGame a : templateDetailResponse.getQuizList()){
                     QuizReport quizReport = new QuizReport();
                     if("quiz".equals(a.getType())){
@@ -114,10 +120,15 @@ public class QuizRoomConsumerController {
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReportRepository.save(quizReport);
                 }
+
+                log.info("퀴즈 Report를 다시 조회한다");
+                log.info("여기에서 오류 날거 같은데......");
                 QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
                 // quiz report에 solvedcount 랑 correct count 더하기만 남음
                 String quizCorInfo = StringValueOperations.get(roomId+"-quiz");
                 String [] quizCorInfoList = quizCorInfo.split(", ");
+
+
                 for (int i = 0; i < quizCorInfoList.length; i++) {
                     KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
                     // 한 문제 별 제출 수 와 총 정답 수를 담아보자.
@@ -126,10 +137,10 @@ public class QuizRoomConsumerController {
                 }
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
-
                 // quiz_room 에 정보를 입력
                 Map all = hashOperations.entries(finalRequest.getRoomId() + "p");
 
+                log.info("퀴즈 게스트 정보 입력 시작");
                 // quiz_guest 에 정보를 입력
                 List<String> users = new ArrayList<>(all.values());
                 int correctCnt = 0;
