@@ -13,8 +13,7 @@ import java.util.LinkedHashMap;
 @Builder
 public class KafkaGradeEndMessage {
     private Integer roomId;
-    private Integer count;
-    private Integer solvedCount;
+    private Integer solveCount;
     private Integer quizNum;
     private int connectionCount;
     private int correctCount;

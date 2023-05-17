@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.luckquiz.quizroom.api.request.Grade;
 import com.luckquiz.quizroom.api.request.KafkaGradeEndMessage;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
-import com.luckquiz.quizroom.api.response.GradeEndMessage;
-import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
-import com.luckquiz.quizroom.api.response.UserTurnEndResponse;
+import com.luckquiz.quizroom.api.response.*;
+import com.luckquiz.quizroom.api.service.QuizService;
+import com.luckquiz.quizroom.api.service.ToGradeProducer;
 import com.luckquiz.quizroom.db.entities.QuizReport;
 import com.luckquiz.quizroom.db.repository.QuizReportRepository;
 import com.luckquiz.quizroom.message.GuestTurnEndMessage;
 import com.luckquiz.quizroom.message.HostTurnEndMessage;
+import com.luckquiz.quizroom.message.QuizStartMessage;
 import com.luckquiz.quizroom.model.UserR;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,22 +39,46 @@ public class GradingConsumerController {
     private  final Gson gson;
     private final SimpMessageSendingOperations sendingOperations;
     private  final StringRedisTemplate stringRedisTemplate;
-
+    private final QuizService quizService;
+    private final ToGradeProducer toGradeProducer;
     @KafkaListener(topics = "sign_to_quiz",groupId = "test2")
     public void messageListener(String in, @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) {
 //        QuizStartRequest quizStartRequest = gson.fromJson(in, QuizStartRequest.class);
         System.out.println("컨슈머 들어오는 것 확인 키값 : " + key);
         switch (key){
             case "rollback_finish":
-                log.info("롤백 끝났답니다.");
-                @Getter
-                @Setter
-                class KafkaRollbackFinishMessage{
-                    private Integer roomId;
-                }
-                KafkaRollbackFinishMessage kafkaRollbackFinishMessage = gson.fromJson(in,KafkaRollbackFinishMessage.class);
+                log.info("롤백 끝났답니다. 롤백이 끝났으니, 퀴즈번호를 바꾸고 소켓으로 보내줘야합니다.");
+                // 중요!!  만약 동시성 문제가 생기면은 quizNum의 변경은 grade서버에서 하는 것으로 바꿔야한다.
+                RollbackFinishMessage rollbackFinishMessage = gson.fromJson(in,RollbackFinishMessage.class);
                 //함수 분리하기;
+                QGame result = quizService.nextQuizAfterRollback(rollbackFinishMessage);
 
+                QuizStartMessage qsm = QuizStartMessage.builder()
+                        .type("getQuizItem")
+                        .getQuizItem(result)
+                        .build();
+                sendingOperations.convertAndSend("/topic/quiz/" + rollbackFinishMessage.getRoomId(), qsm);
+                //퀴즈 다음페이지 넘기기.
+
+                // 참가자들한테 메세지 뿌리기
+                QGame toGuest = QGame.serveQgame(result);
+                QuizStartMessage qsmG = new QuizStartMessage();
+                if("emotion".equals(result.getGame())){
+                    System.out.println("emotion 찍혔니?");
+                    toGuest.setAnswer(result.getAnswer());
+                    qsmG.setGetQuizItem(toGuest);
+                    qsmG.setType("getQuizItem");
+                }else {
+                    qsmG.setGetQuizItem(toGuest);
+                    qsmG.setType("getQuizItem");
+                }
+
+                QuizStartRequest quizStartRequest = QuizStartRequest.builder()
+                        .hostId(rollbackFinishMessage.getHostId())
+                        .roomId(rollbackFinishMessage.getRoomId())
+                        .build();
+                quizService.serveQuiz(qsmG,rollbackFinishMessage.getRoomId());
+                toGradeProducer.quizStart(gson.toJson(quizStartRequest));
                 break;
             case "grade_start":
                 log.info("채점 시작했답니다. 퀴즈 끝나면 퀴즈 끝났다고 보내줘야합니다.");
@@ -95,11 +120,11 @@ public class GradingConsumerController {
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
                     if(rankDiff < 0 ){
-                        userTurnEndResponse.setIsUp("false");
+                        userTurnEndResponse.setIsUp("true");
                     }else if(rankDiff == 0){
                         userTurnEndResponse.setIsUp("same");
                     }else {
-                        userTurnEndResponse.setIsUp("true");
+                        userTurnEndResponse.setIsUp("false");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());

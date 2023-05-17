@@ -6,10 +6,9 @@ import com.luckquiz.quizroom.api.request.QuizRoomEnterRequest;
 import com.luckquiz.quizroom.api.request.QuizStartRequest;
 import com.luckquiz.quizroom.api.request.RTSearch;
 import com.luckquiz.quizroom.api.response.QGame;
+import com.luckquiz.quizroom.api.response.RollbackFinishMessage;
 import com.luckquiz.quizroom.api.response.TemplateDetailResponse;
-import com.luckquiz.quizroom.message.EnterGuestMessage;
-import com.luckquiz.quizroom.message.QuizStartMessage;
-import com.luckquiz.quizroom.message.TurnEndResponse;
+import com.luckquiz.quizroom.message.*;
 import com.luckquiz.quizroom.model.EnterUser;
 import com.luckquiz.quizroom.model.NextMessage;
 import com.luckquiz.quizroom.model.QuizRoom;
@@ -79,7 +78,6 @@ public class QuizService {
         stringRedisTemplate.opsForValue().set(nextMessage.getRoomId().toString(),newVal);
         nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
         nextQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
-
         return nextQuiz;
     }
 
@@ -114,6 +112,15 @@ public class QuizService {
         }
     }
 
+    public void serveTurnEndSignal(GuestTurnEndSignalResponse endMessage, Integer roomId){
+        ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
+        Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
+        List<String> rank = new ArrayList<>(all);
+        for(String name : rank){
+            sendingOperations.convertAndSend("/queue/quiz/"+roomId+"/"+name,endMessage);
+        }
+    }
+
     public void serveTurnEnd(TurnEndResponse endMessage, Integer roomId){
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         Set<String> all = zSetOperations.range(roomId+"rank",0,zSetOperations.size(roomId+"rank")-1);
@@ -123,5 +130,20 @@ public class QuizService {
         }
     }
 
+
+    @Transactional
+    public QGame nextQuizAfterRollback(RollbackFinishMessage rollbackFinishMessage) {
+        // host가 받을 다음 문제
+        String room = stringRedisTemplate.opsForValue().get(rollbackFinishMessage.getRoomId().toString());
+        TemplateDetailResponse templateDetailResponse = gson.fromJson(room,TemplateDetailResponse.class);
+        QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum()+1);
+        templateDetailResponse.setQuizNum(templateDetailResponse.getQuizNum()+1);
+
+        String newVal = gson.toJson(templateDetailResponse);
+        stringRedisTemplate.opsForValue().set(rollbackFinishMessage.getRoomId().toString(),newVal);
+        nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
+        nextQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
+        return nextQuiz;
+    }
 
 }

@@ -92,7 +92,6 @@ public class MessageController {
         HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
         ZSetOperations<String, String> zSetOperations = stringRedisTemplate.opsForZSet();
         ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
-        System.out.println("entered:  "+message.getSender());
 
         int roomId = message.getRoomId();
         grade.setPlayerName(message.getSender());
@@ -106,9 +105,7 @@ public class MessageController {
 
 
         String roomIdString = roomId+"";
-        System.out.println(" this is room Id ---->" + roomIdString);
         String roomInfo =StringValueOperations.get(roomIdString);
-        System.out.println("this is roomInfojson  "+ roomInfo);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
 
         if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
@@ -312,7 +309,21 @@ public class MessageController {
                 .type("quizEnd")
                 .quizEnd(results)
                 .build();
+        GuestTurnEndSignalResponse guestTurnEndSignalResponse = GuestTurnEndSignalResponse.builder()
+                .type("turnEndResponse")
+                .turnEndResponse("success")
+                .build();
+        HostTurnEndSignalResponse hostTurnEndSignalResponse = HostTurnEndSignalResponse.builder()
+                .type("hostTurnEndReponse")
+                .hostTurnEndReponse("success")
+                .build();
+        // 턴엔드 잘됐다 신호 주고
+        sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), hostTurnEndSignalResponse);
+        // 결과 서브
         sendingOperations.convertAndSend("/topic/quiz/" + message.getRoomId(), tr);
+        // 턴엔드 잘됐다 신호 주고
+        quizService.serveTurnEndSignal(guestTurnEndSignalResponse,message.getRoomId());
+        // 결과 서브
         quizService.serveTurnEnd(tr,message.getRoomId());
     }
 
@@ -335,6 +346,7 @@ public class MessageController {
     @MessageMapping("/quiz/rollback")
     public void rollBack(RollBackRequest rollBackRequest){
         if(rollBackRequest.getRoomId() != null) toGradeProducer.rollBack(gson.toJson(rollBackRequest));
+
     }
 
 //    @MessageMapping("/quiz/middlerank")
