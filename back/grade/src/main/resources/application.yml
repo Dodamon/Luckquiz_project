@@ -1,50 +1,63 @@
 spring:
   cache:
-    redis:
-      port: '3307'
-      host: k8a707.p.ssafy.io
-      cache-null-values: 'false'
-      time-to-live: '5000'
-      password: 'eodrms1111!'
     type: redis
+    redis:
+      time-to-live: 5000
+      cache-null-values: false
+      host: k8a7071.p.ssafy.io
+      port: 3309
+      password: 'eodrms1111!'
   kafka:
     producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+      bootstrap-servers: http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092
     consumer:
-      group-id: foo
+      group-id: grade_sign_group
       auto-offset-reset: latest
-      bootstrap-servers: http://54.180.165.36:9091, http://54.180.165.36:9092, http://k8a707.p.ssafy.io:9093
+      bootstrap-servers: http://13.125.215.143:9092, http://54.180.139.100:9092, http://54.180.165.36:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring:
           json:
             trusted:
               packages: '*'
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            add:
+              type:
+                headers: 'false'
   jpa:
-    generate-ddl: 'true'
     hibernate:
-      ddl-auto: none
-    show-sql: 'true'
-    open-in-view: 'false'
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false #To beautify or pretty print the SQL
+        show_sql: false #show sql
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    password: eodrms
-    username: eodrms
-    url: jdbc:mariadb://K8A707.p.ssafy.io:3306/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://k8a7071.p.ssafy.io:3308/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: carrot707
+    password: ekdrmsehdrms1111!!
   cloud:
     gcp:
       storage:
-        credentials:
-          locatation: classpath:snappy-analog-384101-5ff843401827.json
-        project-id: snappy-analog-384101
         bucket: luckquiz
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+        project-id: snappy-analog-384101
+        credentials:
+          location: classpath:snappy-analog-384101-5ff843401827.json
   jackson:
     serialization:
       fail-on-empty-beans: 'false'
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  tomcat:
+    max-http-form-post-size: 3MB
+  port: 8081

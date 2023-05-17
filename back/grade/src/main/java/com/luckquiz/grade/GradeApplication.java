@@ -8,7 +8,6 @@ public class GradeApplication {
 
 	public static void main(String[] args) {
 
-		// System.setProperty("spring.devtools.restart.enabled","false");
 		SpringApplication.run(GradeApplication.class, args);
 	}
 

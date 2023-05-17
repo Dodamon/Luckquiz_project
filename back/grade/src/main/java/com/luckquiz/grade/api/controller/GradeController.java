@@ -7,7 +7,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
 import com.luckquiz.grade.api.request.KafkaGradeRequest;
+import com.luckquiz.grade.api.request.KafkaQuizEndRequest;
+import com.luckquiz.grade.api.request.KafkaQuizRollbackRequest;
+import com.luckquiz.grade.api.request.KafkaQuizStartRequest;
+import com.luckquiz.grade.api.response.KafkaGradeEndResponse;
+import com.luckquiz.grade.api.response.KafkaGradeStartResponse;
+import com.luckquiz.grade.api.response.KafkaRollbackFinishResponse;
 import com.luckquiz.grade.api.service.GradeService;
 import com.luckquiz.grade.config.KafkaProducer;
 
@@ -19,59 +26,67 @@ import lombok.RequiredArgsConstructor;
 public class GradeController {
 	private final KafkaProducer producer;
 	private final GradeService gradeService;
+	private final Gson gson;
 	@PostMapping("/rollbackfinish")
 	@ResponseBody
-	public String rollbackFinish(@RequestBody String roomId) {
-		producer.rollbackFinish(roomId);
+	public String rollbackFinish(@RequestBody KafkaRollbackFinishResponse message) {
+		producer.rollbackFinish(gson.toJson(message));
 		return "success";
 	}
 
 	@PostMapping("/gradestart")
 	@ResponseBody
-	public String gradeStart(@RequestBody String roomId) {
-		producer.gradeStart(roomId);
+	public String gradeStart(@RequestBody KafkaGradeStartResponse message) {
+		producer.gradeStart(gson.toJson(message));
 		return "submit";
 	}
 
 	@PostMapping("/gradefinish")
 	@ResponseBody
-	public String gradeFinish(@RequestBody String roomId) {
-		producer.gradeEnd(roomId);
+	public String gradeFinish(@RequestBody KafkaGradeEndResponse message) {
+		producer.gradeEnd(gson.toJson(message));
 		return "submit";
 	}
 
 	@PostMapping("/fortest")
 	@ResponseBody
-	public String grade(@RequestBody KafkaGradeRequest kafkaGradeRequest) {
-		producer.gradeTest(kafkaGradeRequest);
+	public String grade(@RequestBody KafkaGradeRequest message) {
+		producer.gradeTest(gson.toJson(message));
 		return "submit";
 	}
 
 	@PostMapping("/rollback")
 	@ResponseBody
-	public String rollback(@RequestBody String roomId) {
-		producer.rollback(roomId);
+	public String rollback(@RequestBody KafkaQuizRollbackRequest message) {
+		producer.rollback(gson.toJson(message));
 		return "submit";
 	}
 
 	@PostMapping("/quizstart")
 	@ResponseBody
-	public String quizStart(@RequestBody String roomId) {
-		producer.quizStart(roomId);
+	public String quizStart(@RequestBody KafkaQuizStartRequest message) {
+		producer.quizStart(gson.toJson(message));
 		return "quizStart";
 	}
 
 	@PostMapping("/quizend")
 	@ResponseBody
-	public String quizEnd(@RequestBody String roomId) {
-		producer.quizEnd(roomId);
+	public String quizEnd(@RequestBody KafkaQuizEndRequest message) {
+		producer.quizEnd(gson.toJson(message));
 		return "quizStart";
 	}
 
-	@PostMapping("/enter")
+	// @PostMapping("/enter")
+	// @ResponseBody
+	// public String enter(@RequestBody KafkaGradeRequest message) {
+	// 	gradeService.enter(gson.toJson(message));
+	// 	return "quizStart";
+	// }
+
+	@PostMapping("/gradeend")
 	@ResponseBody
-	public String enter(@RequestBody KafkaGradeRequest kafkaGradeRequest) {
-		gradeService.enter(kafkaGradeRequest);
+	public String gradeend(@RequestBody KafkaGradeEndResponse message) {
+		producer.gradeEnd(gson.toJson(message));
 		return "quizStart";
 	}
 }

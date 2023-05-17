@@ -1,4 +1,4 @@
-package com.luckquiz.grade.common.exception;
+package com.luckquiz.grade.api.common.exception;
 
 public class CustomException extends RuntimeException{
 	private final CustomExceptionType exception;

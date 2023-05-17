@@ -1,7 +1,9 @@
-package com.luckquiz.grade.common.exception;
+package com.luckquiz.grade.api.common.exception;
 
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.kafka.common.errors.SerializationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +14,12 @@ import com.luckquiz.grade.api.response.ExceptionResponse;
 @Slf4j
 public class GlobalExceptionAdvice {
 	//1. 에러가 우리 customException에서 잡아낸 에러
+	@ExceptionHandler(value = SerializationException.class)
+	public ResponseEntity<ExceptionResponse> kafakExceptionHandler(SerializationException se){
+		log.info("세리얼라이즈가 안돼");
+		return getResponseEntity(CustomExceptionType.KAFKA_SERIALIZE_ERROR);
+	}
+
 	@ExceptionHandler(value = CustomException.class)
 	public ResponseEntity<ExceptionResponse> customExceptionHandler(CustomException e){
 		return getResponseEntity(e.getException());
