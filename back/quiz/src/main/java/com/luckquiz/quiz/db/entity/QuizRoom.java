@@ -44,6 +44,8 @@ public class QuizRoom {
     @Column(name = "game_count", nullable = true)
     private int gameCount;
 
+    @Column(name = "template_name")
+    private String templateName;
 
     public void setTemplateId(int templateId) {
         this.templateId = templateId;
@@ -84,4 +86,6 @@ public class QuizRoom {
     public void setGameCount(int gameCount) {
         this.gameCount = gameCount;
     }
+
+    public void setTemplateName(String templateName){this.templateName = templateName;}
 }
