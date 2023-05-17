@@ -248,7 +248,7 @@ public class MessageController {
     public void start(NextMessage quizStartRequest) {
         QGame qGame = quizService.nextQuiz(quizStartRequest);
         ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
-                .quizNum(0)
+                .quizNum(qGame.getQuizNum())
                 .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
@@ -259,30 +259,11 @@ public class MessageController {
     @MessageMapping("/quiz/next")
     public void next(NextMessage nextMessage) {
         QGame result = quizService.nextQuiz(nextMessage);
-        QuizStartMessage qsm = QuizStartMessage.builder()
-                .type("getQuizItem")
-                .getQuizItem(result)
-                .build();
-        sendingOperations.convertAndSend("/topic/quiz/" + nextMessage.getRoomId(), qsm);
-        //퀴즈 다음페이지 넘기기.
-
-        // 참가자들한테 메세지 뿌리기
-        QGame toGuest = QGame.serveQgame(result);
-        QuizStartMessage qsmG = new QuizStartMessage();
-        if("emotion".equals(result.getGame())){
-            System.out.println("emotion 찍혔니?");
-            toGuest.setAnswer(result.getAnswer());
-            qsmG.setGetQuizItem(toGuest);
-            qsmG.setType("getQuizItem");
-        }else {
-            qsmG.setGetQuizItem(toGuest);
-            qsmG.setType("getQuizItem");
-        }
         QuizStartRequest quizStartRequest = QuizStartRequest.builder()
+                .quizNum(result.getQuizNum())
                 .hostId(nextMessage.getHostId())
                 .roomId(nextMessage.getRoomId())
                 .build();
-        quizService.serveQuiz(qsmG,nextMessage.getRoomId());
         toGradeProducer.quizStart(gson.toJson(quizStartRequest));
     }
 

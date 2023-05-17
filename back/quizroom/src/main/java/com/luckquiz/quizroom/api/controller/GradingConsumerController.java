@@ -83,20 +83,19 @@ public class GradingConsumerController {
                 NextMessage quizStartRequest1 = gson.fromJson(in,NextMessage.class);
                 //함수 분리하기;
                 System.out.println("quiz start host Id "+quizStartRequest1.getHostId());
-                System.out.println("room Id ");
+                System.out.println("room Id "+ quizStartRequest1.getRoomId());
+
                 // 현재 퀴즈 보내주는 것 넣어야 한다.
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
-                log.info("quizStartRequest : " + quizStartRequest1+"");
-                String quiz = StringValueOperations.get(quizStartRequest1+"");
-                log.warn("오류를 확인해보자.");
-                log.info(quiz);
+                String quiz = StringValueOperations.get(quizStartRequest1.getRoomId()+"");
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quiz,TemplateDetailResponse.class);
-                log.info(templateDetailResponse.toString());
-                log.info("templateDetailResponse.getQuizNum() :: " + templateDetailResponse.getQuizNum() );
+                log.info("quiz Num:  "+templateDetailResponse.getQuizNum());
+                log.info("quiz inf   "+templateDetailResponse.getQuizList().get(0).getQuiz().toString());
                 QGame qGame = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
-
+                qGame.setQuizNum(templateDetailResponse.getQuizNum());
+                log.info("first quiz " + qGame.getQuiz().toString());
                 ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
-                        .quizNum(qGame.getQuizNum())
+                        .quizNum(templateDetailResponse.getQuizNum())
                         .hostId(quizStartRequest1.getHostId())
                         .roomId(quizStartRequest1.getRoomId())
                         .build();
@@ -162,6 +161,7 @@ public class GradingConsumerController {
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
                     userTurnEndResponse.setRankNow(gtemp.getRankNow());
+
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
                             .userTurnEndResponse(userTurnEndResponse)
