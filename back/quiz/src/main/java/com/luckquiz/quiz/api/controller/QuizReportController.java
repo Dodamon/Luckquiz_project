@@ -36,7 +36,6 @@ public class QuizReportController {
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("access token :  " + accessToken);
-        log.info("토큰 까기 성공 : 유저의 리포트 리스트를 가져옵니다");;
         return ResponseEntity.ok().body(quizReportService.getQuizRoomList(hostId));
     }
 
