@@ -53,6 +53,63 @@ const parti = {
       answer: 99,
       score: 998,
     },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+
+    
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
+    {
+      rank: 7,
+      name: "체고두뇌 서노지",
+      answer: 99,
+      score: 998,
+    },
   ],
 };
 type listType ={
@@ -82,7 +139,10 @@ const ReportPart = () => {
     <div className={styles.content}>
       <div className={styles.title}>{parti.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
-      <div className={styles.reportContent} style={{ backgroundColor: "var(--point-color)", display:'flex', flexDirection: "column", justifyContent:"start"  }}>
+      <div className={styles.reportContent} style={{ backgroundColor: "var(--point-color)", display:'flex', flexDirection: "column", justifyContent:"space-around"  }}>
+        <div className={styles.part_title}>
+          <div>참가자순위</div>
+        </div>
         <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={parti.list} />
       </div>
     </div>
