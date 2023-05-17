@@ -76,8 +76,15 @@ reducers:{
      state.quizList = action.payload.quizList; 
     //  state = action.payload;
     },
+    resetUpdate:(state)=>{
+        console.log("내 퀴즈 업데이트가 됐당께요");
+         state.hostId = "";
+         state.templateId = -1;
+         state.isValid= false;
+         state.quizList = [];
+    },
 }
-    
+
 }
 )
 

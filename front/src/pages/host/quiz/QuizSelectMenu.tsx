@@ -87,30 +87,30 @@ const QuizSelectMenu = () => {
         {quizInfo[selectInfo]?.type === "quiz" ? (
           <select className={styles.select_form} value={selectedQuizOption} onChange={quizTypeHandler}>
             <option value="four">사지선다</option>
-            <option value="ox">OX 선택</option>
+            <option value="ox">O/X 선택</option>
             <option value="text">주관식</option>
           </select>
         ) : (
           <select className={styles.select_form} value={selectedGameOption} onChange={gameTypeHandler}>
-            <option value="emotion">emotion</option>
-            <option value="wakeup">wakeup</option>
-            <option value="balloon">balloon</option>
+            <option value="emotion">연기왕 도전</option>
+            <option value="wakeup">럭퀴 깨우기</option>
+            <option value="balloon">시간 맞추기</option>
           </select>
         )}
 
         <select className={styles.select_form} value={selectedTimeOption} onChange={quizTimeHandler}>
           {quizInfo[selectInfo]?.type === "game" && quizInfo[selectInfo]?.game === "emotion" ? (
             <>
-              <option value="30">30초</option>
-              <option value="45">45초</option>
-              <option value="60">60초</option>
+              <option value="30">30초 진행</option>
+              <option value="45">45초 진행</option>
+              <option value="60">60초 진행</option>
             </>
           ) : (
             <>
-              <option value="15">15초</option>
-              <option value="30">30초</option>
-              <option value="45">45초</option>
-              <option value="60">60초</option>
+              <option value="15">15초 진행</option>
+              <option value="30">30초 진행</option>
+              <option value="45">45초 진행</option>
+              <option value="60">60초 진행</option>
             </>
           )}
         </select>

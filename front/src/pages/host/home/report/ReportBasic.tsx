@@ -11,11 +11,11 @@ import useHostAxios from "hooks/useHostAxios";
 
 interface basicType {
   title: string,
-  parti: number,
-  quizs: number,
-  games: number,
-  times: number,
-  percentage: number,
+  participantCount: number,
+  quizCount: number,
+  gameCount: number,
+  duration: string,
+  successRate: number,
 }
 const reportBasic = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -57,7 +57,7 @@ const ReportBasic = () => {
   const { data,status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/report/?roomId=${""}`,
     })
   },[])
 

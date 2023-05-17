@@ -77,7 +77,7 @@
 
 .content_answer {
     background-color: var(--white-color);
-    height: 70px;
+    height: 60px;
     border-radius: 20px;
     display: flex;
     align-items: center;
