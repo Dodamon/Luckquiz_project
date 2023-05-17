@@ -179,6 +179,10 @@ public class MessageController {
     @MessageMapping("/emotion/submit")
     public void emotionSubmit(EmotionSubmit message) throws  Exception{
         System.out.println("이미지 제출 시작합니다.");
+        HashOperations<String, String, String> hashOperations = stringRedisTemplate.opsForHash();
+        String a = hashOperations.get(message.getRoomId()+"p",message.getSender());
+        Grade userInfo = gson.fromJson(a, Grade.class);
+        message.setImg(userInfo.getPlayerImg());
         System.out.println("emotionType:   "+message.getEmotionResult().value+", confidence:    "+message.getEmotionResult().confidence + "    sender: "+message.getSender());
         toGradeProducer.emotion(gson.toJson(message));
     }

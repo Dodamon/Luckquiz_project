@@ -18,5 +18,10 @@ public class EmotionSubmit {
     private Integer roomId;
     private String sender;
     private Integer quizNum;
+    private int img;
     private com.luckquiz.quizroom.model.EmotionResult.ValCon emotionResult;
+
+    public void setImg(int img) {
+        this.img = img;
+    }
 }
