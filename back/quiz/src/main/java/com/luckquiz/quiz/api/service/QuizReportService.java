@@ -51,7 +51,7 @@ public class QuizReportService {
                 .quizCount(quizRoom.getQuizCount())
                 .gameCount(quizRoom.getGameCount())
                 .participantCount(quizRoom.getParticipantCount())
-                .successRate(quizRoom.getCorrectCount() / quizRoom.getSubmitCount())
+                .successRate(quizRoom.getCorrectCount() / (quizRoom.getSubmitCount() * 1.0))
                 .duration(duration)
                 .title(quizRoom.getTemplateName())
                 .build();
