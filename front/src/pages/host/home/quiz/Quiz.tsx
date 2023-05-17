@@ -12,6 +12,7 @@ import { RootState } from "store";
 import { useDispatch } from "react-redux";
 import { authActions } from "store/auth";
 import useHostAxios from "hooks/useHostAxios";
+import { quizAtions } from "store/quiz";
 
 
 export interface Quiz {
