@@ -12,6 +12,7 @@ import com.luckquiz.quizroom.db.repository.QuizReportRepository;
 import com.luckquiz.quizroom.message.GuestTurnEndMessage;
 import com.luckquiz.quizroom.message.HostTurnEndMessage;
 import com.luckquiz.quizroom.message.QuizStartMessage;
+import com.luckquiz.quizroom.model.EnterUser;
 import com.luckquiz.quizroom.model.NextMessage;
 import com.luckquiz.quizroom.model.UserR;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -28,6 +30,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -140,27 +143,28 @@ public class GradingConsumerController {
                     a.setQuizNum(roomInf.getQuizNum());
                     userLList.add(a);
                 }
-
+                //총합 점수가 적힌랭킹 데이터 추가
+//                Set<ZSetOperations.TypedTuple<String>> rankingData = stringRedisTemplate.opsForZSet().rangeWithScores(kafkaGradeEndMessage.getRoomId()+"rank",0,-1);
+                // 받은 랭킹데이터를 <유저 이름, 점수>의 HashMap으로 변경.
+//                HashMap<String, Integer> rankingDataMap = rankingData.stream().collect(Collectors.toMap(data->gson.fromJson(data.getValue(), EnterUser.class).getSender() , data->data.getScore().intValue(),(a, b)->a,HashMap::new));
+                LinkedHashMap<String, Integer> rankingData = kafkaGradeEndMessage.getRankingData();
                 StringValueOperations2.append(kafkaGradeEndMessage.getRoomId()+"-quiz",gson.toJson(kafkaGradeEndMessage)+", ");
-
                 Collections.sort(userLList);
-
-
                 for(Grade gtemp :userLList){
-
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
                     if(rankDiff < 0 ){
-                        userTurnEndResponse.setIsUp("true");
+                        userTurnEndResponse.setIsUp("false");
                     }else if(rankDiff == 0){
                         userTurnEndResponse.setIsUp("same");
                     }else {
-                        userTurnEndResponse.setIsUp("false");
+                        userTurnEndResponse.setIsUp("true");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
                     userTurnEndResponse.setRankNow(gtemp.getRankNow());
+                    userTurnEndResponse.setTotalScore(rankingData.get(gtemp.getPlayerName()));
 
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
@@ -171,6 +175,12 @@ public class GradingConsumerController {
                 HostTurnEndMessage hostTurnEndMessage = HostTurnEndMessage.builder()
                         .type("userLList")
                         .userLList(userLList)
+                        .answerStatistics(kafkaGradeEndMessage.getAnswerData())
+                        .connectionCount(kafkaGradeEndMessage.getConnectionCount())
+                        .correctCount(kafkaGradeEndMessage.getCorrectCount())
+                        .correctRate(kafkaGradeEndMessage.getCorrectRate())
+                        .solveCount(kafkaGradeEndMessage.getSolveCount())
+                        .rankingData(rankingData)
                         .build();
                 sendingOperations.convertAndSend("/topic/quiz/"+kafkaGradeEndMessage.getRoomId(),hostTurnEndMessage);
                 break;
