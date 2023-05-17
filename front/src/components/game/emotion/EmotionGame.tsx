@@ -88,6 +88,8 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
     dispatch(socketActions.getEmotionResult(null));
     setImg("");
     dispatch(socketActions.getEmotionMessage(false));
+    resultRef.current!.style.display = "none";
+    faceBoxRef.current!.style.display = "none";
   };
 
   const onClickAnalyze = () => {
@@ -125,6 +127,8 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
     };
     dispatch(socketActions.sendAnswerMessage(data));
     await handleOrder(2);
+    dispatch(socketActions.getEmotionResult(null));
+    dispatch(socketActions.getEmotionMessage(false));
   };
 
   const translateKor = (emotion: string) => {
@@ -161,26 +165,26 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
         const top = faceImg.offsetTop;
 
         faceBoxRef.current!.style.boxSizing = "border-box";
-        faceBoxRef!.current!.style.border = "3px solid #1bd392";
-        faceBoxRef!.current!.style.borderRadius = "10px";
-        faceBoxRef!.current!.style.position = "absolute";
-        faceBoxRef!.current!.style.top = `${top + emotionResult!.roi.y}px`;
-        faceBoxRef!.current!.style.left = `${left + emotionResult!.roi.x}px`;
-        faceBoxRef!.current!.style.width = `${emotionResult!.roi.width}px`;
-        faceBoxRef!.current!.style.height = `${emotionResult!.roi.height}px`;
+        faceBoxRef.current!.style.border = "3px solid #1bd392";
+        faceBoxRef.current!.style.borderRadius = "10px";
+        faceBoxRef.current!.style.position = "absolute";
+        faceBoxRef.current!.style.top = `${top + emotionResult!.roi.y - 15}px`;
+        faceBoxRef.current!.style.left = `${left + emotionResult!.roi.x - 15}px`;
+        faceBoxRef.current!.style.width = `${emotionResult!.roi.width + 15}px`;
+        faceBoxRef.current!.style.height = `${emotionResult!.roi.height + 15}px`;
 
-        resultRef!.current!.style.top = `${top + emotionResult!.roi.y - 45}px`;
-        resultRef!.current!.style.left = `${left + emotionResult!.roi.x}px`;
-        resultRef!.current!.style.position = "absolute";
-        resultRef!.current!.style.width = "130px";
-        resultRef!.current!.style.height = "40px";
-        resultRef!.current!.style.color = "white";
-        resultRef!.current!.style.backgroundColor = `#000000b8`;
-        resultRef!.current!.style.borderRadius = `10px`;
-        resultRef!.current!.style.display = "flex";
-        resultRef!.current!.style.justifyContent = "center";
-        resultRef!.current!.style.alignItems = "center";
-        resultRef!.current!.style.gap = "10px";
+        resultRef.current!.style.top = `${top + emotionResult!.roi.y - 60}px`;
+        resultRef.current!.style.left = `${left + emotionResult!.roi.x - 15}px`;
+        resultRef.current!.style.position = "absolute";
+        resultRef.current!.style.width = "130px";
+        resultRef.current!.style.height = "40px";
+        resultRef.current!.style.color = "white";
+        resultRef.current!.style.backgroundColor = `#000000b8`;
+        resultRef.current!.style.borderRadius = `10px`;
+        resultRef.current!.style.display = "flex";
+        resultRef.current!.style.justifyContent = "center";
+        resultRef.current!.style.alignItems = "center";
+        resultRef.current!.style.gap = "10px";
       }
     }
     if (gotEmotion && !emotionResult) alert("인식된 얼굴이 없습니다. 다시 찍어보세요.");
@@ -188,6 +192,8 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
 
   useEffect(() => {
     setMission(translateKor(emotion!));
+    dispatch(socketActions.getEmotionResult(null));
+    dispatch(socketActions.getEmotionMessage(false));
   }, []);
 
   return (
