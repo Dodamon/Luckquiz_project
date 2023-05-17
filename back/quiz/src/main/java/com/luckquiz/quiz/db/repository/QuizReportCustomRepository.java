@@ -1,9 +1,8 @@
 package com.luckquiz.quiz.db.repository;
 
-import com.luckquiz.quiz.api.response.QuizReportGuest;
-import com.luckquiz.quiz.api.response.QuizReportListResponse;
-import com.luckquiz.quiz.api.response.QuizReportProblem;
-import com.luckquiz.quiz.db.entity.QuizType;
+import com.luckquiz.quiz.api.response.QuizRoomGuest;
+import com.luckquiz.quiz.api.response.QuizRoomQuestion;
+import com.luckquiz.quiz.api.response.QuizRoomListResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,11 +13,9 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 import java.util.UUID;
 
-import static com.luckquiz.quiz.db.entity.QQuizGame.quizGame;
 import static com.luckquiz.quiz.db.entity.QQuizGuest.quizGuest;
 import static com.luckquiz.quiz.db.entity.QQuizReport.quizReport;
 import static com.luckquiz.quiz.db.entity.QQuizRoom.quizRoom;
@@ -43,7 +40,7 @@ public class QuizReportCustomRepository {
     }
 
     // 무한 스크롤 방식 처리하는 메서드
-    private Slice<QuizReportGuest> checkLastPage(Pageable pageable, List<QuizReportGuest> results) {
+    private Slice<QuizRoomGuest> checkLastPage(Pageable pageable, List<QuizRoomGuest> results) {
         boolean hasNext = false;
         // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
         if (results.size() > pageable.getPageSize()) {
@@ -53,18 +50,31 @@ public class QuizReportCustomRepository {
         return new SliceImpl<>(results, pageable, hasNext);
     }
 
-    public Slice<QuizReportGuest> getParticipants(int pinNum, int lastGuestId, Pageable pageable) {
-        List<QuizReportGuest> results = queryFactory.select(
-                Projections.constructor( QuizReportGuest.class,
+    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+        List<QuizRoomListResponse> results = queryFactory.select(
+                        Projections.constructor( QuizRoomListResponse.class,
+                                quizRoom.id,
+                                quizRoom.templateName,
+                                quizRoom.createdTime,
+                                quizRoom.participantCount))
+                .from(quizRoom)
+                .orderBy(quizRoom.id.desc())
+                .fetch();
+        return new SliceImpl<>(results);
+    }
+
+    public Slice<QuizRoomGuest> getParticipants(int roomId, int lastGuestId, Pageable pageable) {
+        List<QuizRoomGuest> results = queryFactory.select(
+                Projections.constructor( QuizRoomGuest.class,
                         quizGuest.id,
                         quizGuest.guestNickname,
-                        quizGuest.correctCount.divide(quizGuest.totalCount),
+                        quizGuest.correctCount.divide(quizGuest.totalCount).longValue(),
                         quizGuest.score)
                 )
                 .from(quizGuest)
                 .where(
                         ltQuizGuestId(lastGuestId),
-                        quizGuest.pinNum.eq(pinNum)
+                        quizGuest.quizRoomId.eq(roomId)
                 )
                 .orderBy(quizGuest.id.desc(), quizGuest.score.desc())
                 .limit(pageable.getPageSize() + 1)
@@ -72,16 +82,17 @@ public class QuizReportCustomRepository {
         return checkLastPage(pageable, results);
     }
 
-    public Slice<QuizReportProblem> getProblems(int pinNum, int templateId) {
-        List<QuizReportProblem> mostDifficultProblem =  queryFactory.select(
-                        Projections.constructor( QuizReportProblem.class,
-                                quizReport.quizGameId,
+    public Slice<QuizRoomQuestion> getQuestions(int roomId) {
+
+        List<QuizRoomQuestion> mostDifficultProblem =  queryFactory.select(
+                        Projections.constructor( QuizRoomQuestion.class,
+                                quizReport.id,
                                 quizReport.question,
-                                quizReport.correctCount.divide(quizGuest.totalCount))
+                                quizReport.correctCount.divide(quizReport.submitCount).longValue())
                 )
-                .from(quizGuest)
+                .from(quizReport)
                 .where(
-                        quizGame.type.eq(QuizType.quiz)
+                        quizReport.quizRoomId.eq(roomId)
                 )
                 .orderBy(
                         quizReport.correctCount.divide(quizReport.submitCount).asc()
@@ -89,40 +100,22 @@ public class QuizReportCustomRepository {
                 .limit(1)
                 .fetch();
 
-        List<QuizReportProblem> results = queryFactory.select(
-                Projections.constructor( QuizReportProblem.class,
-                        quizReport.quizGameId,
-                        quizGame.quiz,
-                        quizReport.correctCount.divide(quizGuest.totalCount))
+        List<QuizRoomQuestion> results = queryFactory.select(
+                Projections.constructor( QuizRoomQuestion.class,
+                        quizReport.id,
+                        quizReport.question,
+                        quizReport.correctCount.divide(quizReport.submitCount).longValue())
                 )
-                .from(quizGuest)
-                .innerJoin(quizGame).fetchJoin()
-                .on(quizGame.id.eq(quizReport.quizGameId))
+                .from(quizReport)
                 .where(
-                        quizGame.type.eq(QuizType.quiz)
+                        quizReport.quizRoomId.eq(roomId)
                 )
                 .orderBy(
                         quizReport.id.asc()
                 )
                 .fetch();
-
         results.addAll(mostDifficultProblem);
 
-        return new SliceImpl<>(results);
-    }
-
-    public Slice<QuizReportListResponse> getReports(UUID userId) {
-        List<QuizReportListResponse> results = queryFactory.select(
-                Projections.constructor( QuizReportListResponse.class,
-                        quizReport.id,
-                        quizReport.question,
-                        quizRoom.createdTime,
-                        quizRoom.participantCount))
-                .from(quizReport)
-                .innerJoin(quizRoom).fetchJoin()
-                .on(quizReport.quizRoomId.eq(quizRoom.id))
-                .orderBy(quizReport.id.desc())
-                .fetch();
         return new SliceImpl<>(results);
     }
 }
