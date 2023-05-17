@@ -8,7 +8,21 @@
     background-position: top center;
     background-size: cover;
     background-attachment: fixed;
+    overflow-y: scroll; 
 }
+.content::-webkit-scrollbar {
+    width: 5px;
+}
+.content::-webkit-scrollbar-thumb {
+    height: 10%; /* 스크롤바의 길이 */
+    background: rgba(111, 111, 111, 0.538); /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+.content::-webkit-scrollbar-track {
+    /* margin: 12px 0 12px 0; */
+    background: rgba(255, 255, 255, 0.1);  /*스크롤바 뒷 배경 색상*/
+}
+
 
 .title {
     padding: 3.5vh 5% 3.5vh 5%;
@@ -70,12 +84,19 @@
     box-sizing: border-box;
 }
 
+
 .listColFrame {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 0% 6% 6% 6%;
+}
+
+.listColFrame>a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .quizRowFrame {

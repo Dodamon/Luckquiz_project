@@ -56,7 +56,7 @@
   .select_form {
     padding-left: 15px;
     font-size: 18px;
-    font-weight: bold;
+    /* font-weight: bold; */
     /* padding-right: 50px; */
   }
 }

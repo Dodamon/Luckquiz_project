@@ -11,7 +11,15 @@ const ReadyBalloonGame: React.FC = () => {
       <div className={styles.gameDescriptionWrapper}>
         <div className={styles.gameName}>풍선 터트리기</div>
         <div className={styles.gameDescription}>
-          게임이 시작되면 마음 속으로 초를 세보세요. 주어진 시간이 흘렀다고 생각될 때 풍선을 터트립니다. 가장 근접한 시간에 풍선을 터트린 사람부터 점수를 부여받습니다.
+          <p>
+            게임이 시작되면 마음 속으로 초를 세보세요.
+          </p>
+          <p>
+            9.49초가 흘렀다고 생각될 때 풍선을 터트립니다.
+          </p>
+          <p>
+            가장 근접한 시간에 풍선을 터트린 사람부터 순차적으로 점수를 부여받습니다.
+          </p>
         </div>
       </div>
     </>
