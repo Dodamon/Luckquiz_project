@@ -5,9 +5,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10% 10%;
+  padding: 10%;
   box-sizing: border-box;
-  gap: 5%;
+  gap: 1%;
+}
+
+.qrPinWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 4%;
 }
 
 .logo {
@@ -16,10 +26,11 @@
   min-width: 160px;
   justify-self: center;
   align-self: center;
+  margin-top: 4%;
 }
 
 .whiteBox {
-  width: max-content;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -42,9 +53,13 @@
   font-size: 3vw;
 }
 
+.lobby {
+  width: 100%;
+  height: 100%;
+}
 @media screen and (min-width: 767px) {
   .whiteBox {
-    width: 57%;
+    width: 80%;
     flex-direction: row;
     padding: 1%;
     padding-right: 2%;

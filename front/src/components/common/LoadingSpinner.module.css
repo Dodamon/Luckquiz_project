@@ -4,7 +4,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 5%;
+        margin-top: -70%;
     }
     
     .waitTxt {
@@ -27,7 +27,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-top: 8%;
+        margin-top: -30%;
         height: 150px;
         width: 150px;
     }
