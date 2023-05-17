@@ -14,6 +14,7 @@ public class UserTurnEndResponse {
     private String isUp;
     private int rankDiff;
     private int quizNum;
+    private int rankNow;
 
     public void setScoreGet(int scoreGet){
         this.scoreGet = scoreGet;
@@ -25,4 +26,8 @@ public class UserTurnEndResponse {
         this.rankDiff = rankDiff;
     }
     public void setQuizNum(int quizNum){this.quizNum = quizNum;}
+
+    public void setRankNow(int rankNow) {
+        this.rankNow = rankNow;
+    }
 }

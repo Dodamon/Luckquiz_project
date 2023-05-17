@@ -159,6 +159,7 @@ public class MessageController {
         d.setCheckGuestName(check);
         sendingOperations.convertAndSend("/queue/quiz/" + message.getRoomId()+"/"+message.getSender(), d);
     }
+
     @MessageMapping("/emotion/submit")
     public void emotionSubmit(EmotionSubmit message) throws  Exception{
         System.out.println("이미지 제출 시작합니다.");
