@@ -2,19 +2,51 @@ import { Chart, ChartConfiguration } from "chart.js";
 import { useEffect, useRef } from "react";
 import styles from "./SubmitChart.module.css";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { useDispatch } from "react-redux";
-import { socketActions } from "store/webSocket";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { SubmitAnswerResult } from "models/quiz";
 
-const SubmitChart = (props: { myData: number[] }) => {
-  // const myData = useSelector((state: RootState) => {state.socket.})
-  const { myData } = props;
-  const dispatch = useDispatch();
+const dataProcess = (props: SubmitAnswerResult[]) => {
+  if (props.length >= 1) {
+    if (
+      props[0].answer === "one" ||
+      props[0].answer === "two" ||
+      props[0].answer === "three" ||
+      props[0].answer === "four"
+    ) {
+      const resultArray = [0, 0, 0, 0];
+      props.forEach((q) => {
+        if (q.answer === "one") {
+          resultArray[0] = q.count || 0;
+        }
+        if (q.answer === "two") {
+          resultArray[1] = q.count || 0;
+        }
+        if (q.answer === "three") {
+          resultArray[2] = q.count || 0;
+        }
+        if (q.answer === "four") {
+          resultArray[3] = q.count || 0;
+        }
+      });
 
-  // useEffect(() => {
-  //   dispatch(socketActions.sendRequest());
-  // }, []);
+      return resultArray;
+    } else if (props[0].answer === "o" || props[0].answer === "x") {
+      const resultArray = [0, 0];
+      props.forEach((q) => {
+        q.answer === "o" && (resultArray[0] = q.count || 0);
+        q.answer === "x" && (resultArray[1] = q.count || 0);
+      });
+
+      return resultArray;
+    }
+  }
+};
+
+const SubmitChart = () => {
+  const result = useSelector((state: RootState) => state.socket.getSubmitAnswerResult);
+  const data = dataProcess(result!);
+  console.log("data:", data);
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
@@ -25,11 +57,11 @@ const SubmitChart = (props: { myData: number[] }) => {
   const chartConfig: ChartConfiguration = {
     type: "bar",
     data: {
-      labels: myData, // label은 보여주지 않지만 canvas 너비 사이즈를 위해 라벨 갯수를 맞춰야함.
+      labels: data, // label은 보여주지 않지만 canvas 너비 사이즈를 위해 라벨 갯수를 맞춰야함.
       datasets: [
         {
           label: "# of Votes",
-          data: myData,
+          data: data!,
           borderWidth: 1,
           backgroundColor: ["#F75555", "#1BD392", "#FF981F", "#3779FF"],
           borderRadius: 20,
@@ -82,11 +114,7 @@ const SubmitChart = (props: { myData: number[] }) => {
     }
   }, []);
 
-  return (
-    <div className={styles.container}>
-      <canvas ref={chartRef} className={styles.x} />
-    </div>
-  );
+  return <div className={styles.container}>{data && <canvas ref={chartRef} className={styles.x} />}</div>;
 };
 
 export default SubmitChart;

@@ -39,7 +39,7 @@
   align-items: center;
   cursor: pointer;
   padding: 8px 15px;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--side-bar);
   border-radius: 20px;
   gap: 5px;
 }

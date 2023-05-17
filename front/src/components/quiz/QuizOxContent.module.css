@@ -23,6 +23,7 @@
     .content_images{
         display: flex;
         justify-content: center;
+         margin-top: 5%;
     }
     
     .content_images>img{
@@ -33,7 +34,7 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        margin-top: 5%;
+        /* margin-top: 5%; */
         /* margin-bottom: 5%; */
         object-fit: cover;
     }
@@ -128,6 +129,7 @@
     .content_images{
         display: flex;
         justify-content: center;
+         margin-top: 5%;
     }
     
     .content_images>img{
@@ -139,7 +141,7 @@
         color: var( --placeholder-text);
         /* display: none; */
         object-fit: cover;
-        margin-top: 5%;
+        /* margin-top: 5%; */
         /* margin-bottom: 5%; */
         
     }

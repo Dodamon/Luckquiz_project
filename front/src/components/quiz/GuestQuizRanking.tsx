@@ -6,14 +6,13 @@ import { Icon } from "@iconify/react";
 import { IMAGES } from "components/guest/ProfileNickname";
 
 const GuestQuizRanking = () => {
-  const guestResult = useSelector((state: RootState) => state.socket.getGuestResult)
-  const profileImg = useSelector((state: RootState) => state.guest.image)
+  const guestResult = useSelector((state: RootState) => state.socket.getGuestResult);
+  const profileImg = useSelector((state: RootState) => state.guest.image);
   return (
     <div className={styles.QuizRanking}>
       <div className={styles.rank_logo}>
         <div className={styles.logos}>
-        <img src={rank} alt="logo" />
-
+          <img src={rank} alt="logo" />
         </div>
       </div>
       <section className={styles.rank_box}>
@@ -22,21 +21,22 @@ const GuestQuizRanking = () => {
         </main>
 
         <div className={styles.real_rank}>
-          <div className={styles.real_num}>{guestResult?.rankDiff}위</div>
+          <div className={styles.real_num}>{guestResult?.rankNow}위</div>
         </div>
-
-        <div className={styles.diff_box}>
-          <div className={styles.diff_updown}>
-            {guestResult?.isUp === "true" ? (
-              <Icon icon="mdi:arrow-down-bold" color="green" rotate={2} />
+        {guestResult?.quizNum !== 0 && (
+          <div className={styles.diff_box}>
+            <div className={styles.diff_updown}>
+              {guestResult?.isUp === "true" ? (
+                <Icon icon="mdi:arrow-down-bold" color="green" rotate={2} />
               ) : guestResult?.isUp === "false" ? (
                 <Icon icon="mdi:arrow-down-bold" color="red" />
-                ) : (
-                  <Icon icon="mdi:menu-swap" color="gray" />
-                  )}
+              ) : (
+                <Icon icon="mdi:menu-swap" color="gray" />
+              )}
+            </div>
+            <div className={styles.diff_number}>{Math.abs(guestResult?.rankDiff!)}</div>
           </div>
-                  <div className={styles.diff_number}>{Math.abs(guestResult?.rankDiff!)}</div>
-        </div>
+        )}
 
         <div className={styles.score_box}>
           <div className={styles.score_number}>+{guestResult?.scoreGet}</div>
