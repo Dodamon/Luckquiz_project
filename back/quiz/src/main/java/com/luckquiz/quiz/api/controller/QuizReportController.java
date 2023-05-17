@@ -31,12 +31,11 @@ public class QuizReportController {
     private final TokenProvider tokenProvider;
 
     // 유저가 열었던 모든 quiz room 정보를 가져옵니다
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Slice<QuizRoomListResponse>> getQuizRoomList(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("access token :  " + bearerToken);
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
+        log.info("access token :  " + accessToken);
         log.info("토큰 까기 성공 : 유저의 리포트 리스트를 가져옵니다");;
         return ResponseEntity.ok().body(quizReportService.getQuizRoomList(hostId));
     }
@@ -71,6 +70,7 @@ public class QuizReportController {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
+        log.info(bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());
         }
