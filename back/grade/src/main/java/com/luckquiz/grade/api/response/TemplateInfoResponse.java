@@ -1,5 +1,7 @@
 package com.luckquiz.grade.api.response;
 
+import java.util.List;
+
 import com.luckquiz.grade.api.common.enums.QuizType;
 import com.luckquiz.grade.api.common.exception.CustomException;
 import com.luckquiz.grade.api.common.exception.CustomExceptionType;
@@ -23,9 +25,12 @@ public class TemplateInfoResponse {
 	private String two;
 	private String three;
 	private String four;
-	private String[] answerList;
+	private List<String> answerList;
 	private String game;
 	private Integer timer;
+	private Integer quizSize;
+	private String hostNickname;
+	private Integer quizNum;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -95,7 +100,7 @@ public class TemplateInfoResponse {
 		return four;
 	}
 
-	public String[] getAnswerList() {
+	public List<String> getAnswerList() {
 
 		return answerList;
 	}
@@ -149,7 +154,7 @@ public class TemplateInfoResponse {
 		this.four = four;
 	}
 
-	public void setAnswerList(String[] answerList) {
+	public void setAnswerList(List<String> answerList) {
 		this.answerList = answerList;
 	}
 
