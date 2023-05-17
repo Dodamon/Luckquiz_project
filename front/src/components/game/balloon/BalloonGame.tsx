@@ -149,7 +149,7 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
 
   return (
     <> 
-      <QuizGameTitle title="풍선 터트리기"/>
+      <QuizGameTitle title="9.49초 맞추기"/>
       <div id="content" ref={content as MutableRefObject<HTMLDivElement>}>
         <div id="time-box">{timeLimit} 초</div>
         <div id="game-description">위 시간과 가장 근접한 시간에 풍선을 터트린 사람부터 점수가 부여됩니다.</div>
