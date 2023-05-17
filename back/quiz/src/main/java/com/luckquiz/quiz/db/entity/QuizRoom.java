@@ -36,7 +36,7 @@ public class QuizRoom {
     @Column(name = "correct_count", nullable = true)
     private int correctCount;
     @Column(name = "host_id")
-    private UUID hostId;
+    private UUID hostId; // 추가
     @Column(name = "pin_num",nullable = true)
     private Integer pinNum;
     @Column(name = "quiz_count", nullable = true)
