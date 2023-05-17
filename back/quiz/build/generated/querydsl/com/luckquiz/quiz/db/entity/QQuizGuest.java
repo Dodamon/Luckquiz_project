@@ -31,7 +31,7 @@ public class QQuizGuest extends EntityPathBase<QuizGuest> {
 
     public final NumberPath<Integer> quizRoomId = createNumber("quizRoomId", Integer.class);
 
-    public final NumberPath<Double> score = createNumber("score", Double.class);
+    public final NumberPath<Integer> score = createNumber("score", Integer.class);
 
     public final NumberPath<Integer> templateId = createNumber("templateId", Integer.class);
 

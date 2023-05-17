@@ -48,7 +48,7 @@ public class QuizRoomConsumerController {
     private final UserRepository userRepository;
 
     @Transactional
-    @KafkaListener(topics = "server_message",groupId = "test2") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
+    @KafkaListener(topics = "server_message",groupId = "test3") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
             case "start": {
@@ -115,25 +115,32 @@ public class QuizRoomConsumerController {
                 String quizInfo = StringValueOperations.get(roomId.toString());
 
                 log.info("퀴즈방 처리 중간까지 성공 ");
+
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
                 int quizCnt = 0;
                 int gameCnt = 0;
-
+                log.info(templateDetailResponse.getHostNickName());
                 log.info("퀴즈 Report 저장 시작 : 퀴즈 한개당 Report를 저장한다");
                 for(QGame a : templateDetailResponse.getQuizList()){
+                    Boolean isGame = true;
                     log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
                     if(!StringUtil.isNullOrEmpty(a.getQuestion())){
+                        isGame = false;
                         quizCnt ++;
                         quizReport.setQuestion(a.getQuestion());
                     }else {
+                        isGame = true;
                         gameCnt ++;
                     }
                     quizReport.setQuizGameId(a.getId());
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReport.setQuizRoomId(quizRoom.getId());
-                    quizReportRepository.save(quizReport);
+                    if(!isGame){  // 퀴즈일 때만 저장을 하자.
+                        quizReportRepository.save(quizReport);
+                    }
+
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
@@ -154,11 +161,14 @@ public class QuizRoomConsumerController {
 
                     log.info("CorrectCount : " + kafkaGradeEndMessage.getCorrectCount());
                     log.info("SubmitCount : " + kafkaGradeEndMessage.getSolveCount());
+
                     quizReport.get(i).setQuestion(templateDetailResponse.getQuizList().get(i).getQuestion());
                     quizReport.get(i).setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
                     quizReport.get(i).setSubmitCount(kafkaGradeEndMessage.getSolveCount());
                     quizReport.get(i).setUserId(hostId);
                 }
+
+
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
                 // quiz_room 에 정보를 입력
@@ -179,7 +189,6 @@ public class QuizRoomConsumerController {
                             .templateId(quizRoom.getTemplateId())
                             .hostId(hostId)
                             .quizRoomId(quizRoom.getId())
-
                             .build();
                     quizGuestRepository.save(qguest);
                 }
@@ -195,7 +204,7 @@ public class QuizRoomConsumerController {
                     }
                     QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
 
-                    quizGuest.setScore(a.getScore());  // 게스트의 총점
+                    quizGuest.setScore(a.getScore().intValue());  // 게스트의 총점
 
                     participant_count++;
                 }
