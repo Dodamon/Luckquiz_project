@@ -71,9 +71,8 @@ public class QuizService {
         // host가 받을 다음 문제
         String room = stringRedisTemplate.opsForValue().get(nextMessage.getRoomId().toString());
         TemplateDetailResponse templateDetailResponse = gson.fromJson(room,TemplateDetailResponse.class);
-        QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum()+1);
         templateDetailResponse.setQuizNum(templateDetailResponse.getQuizNum()+1);
-
+        QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
 
         String newVal = gson.toJson(templateDetailResponse);
         stringRedisTemplate.opsForValue().set(nextMessage.getRoomId().toString(),newVal);
