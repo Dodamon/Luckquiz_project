@@ -18,5 +18,7 @@ public class KafkaGradeEndMessage {
     private int connectionCount;
     private int correctCount;
     private Double correctRate;
-    private LinkedHashMap<String, Double> answerData;
+    private LinkedHashMap<String, Integer> answerData;
+    private LinkedHashMap<String, Integer> rankingData;
+
 }

@@ -15,6 +15,7 @@ public class UserTurnEndResponse {
     private int rankDiff;
     private int quizNum;
     private int rankNow;
+    private int totalScore;
 
     public void setScoreGet(int scoreGet){
         this.scoreGet = scoreGet;
