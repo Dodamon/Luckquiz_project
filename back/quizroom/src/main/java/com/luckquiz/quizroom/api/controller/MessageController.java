@@ -108,17 +108,19 @@ public class MessageController {
         String roomInfo =StringValueOperations.get(roomIdString);
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
 
+
         if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
             Set<String> users = zSetOperations.range(roomId+"rank",0,-1);
             for(String user:users){
-                EnterUser u = gson.fromJson(user,EnterUser.class);  // 입장하는 유저 중복을 거르는 로직
+                EnterUser u= gson.fromJson(user,EnterUser.class);  // 입장하는 유저 중복을 거르는 로직
                 if(message.getSender().equals(u.getSender())){
                     zSetOperations.remove(roomId+"rank",gson.toJson(u));
                 }
             }
             zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         }
+
 
         String allList = StringValueOperations.get(roomId+"l",0,-1);
         String [] arr = allList.split(", ");
@@ -236,8 +238,8 @@ public class MessageController {
     // 퀴즈가 시작 요청이 오면 맨 처음 문제를 반환한다.
     // 이 때 quizNum 이 0으로 초기화된다.
     @MessageMapping("/quiz/start")
-    public void start(QuizStartRequest quizStartRequest) {
-        QGame result = quizService.startQuiz(quizStartRequest);
+    public void start(NextMessage quizStartRequest) {
+        QGame result = quizService.nextQuiz(quizStartRequest);
         ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
                 .quizNum(result.getQuizNum())
                 .hostId(quizStartRequest.getHostId())

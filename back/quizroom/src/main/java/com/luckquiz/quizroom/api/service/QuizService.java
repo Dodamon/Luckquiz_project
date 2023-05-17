@@ -74,6 +74,7 @@ public class QuizService {
         QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum()+1);
         templateDetailResponse.setQuizNum(templateDetailResponse.getQuizNum()+1);
 
+
         String newVal = gson.toJson(templateDetailResponse);
         stringRedisTemplate.opsForValue().set(nextMessage.getRoomId().toString(),newVal);
         nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
