@@ -36,7 +36,7 @@ public class QuizGuest {
     private int totalCount;
 
     @Column(name = "score")
-    private Double score;
+    private int score;
 
     @Column(name = "quiz_room_id")
     private int quizRoomId;
@@ -64,7 +64,7 @@ public class QuizGuest {
         this.totalCount = totalCount;
     }
 
-    public void setScore(Double score) {
+    public void setScore(int score) {
         this.score = score;
     }
 }
