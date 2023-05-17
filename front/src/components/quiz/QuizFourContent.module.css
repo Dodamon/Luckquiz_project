@@ -7,7 +7,6 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        gap: 5%;
     }
 
 
@@ -41,8 +40,8 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        /* margin-top: 5%;
-        margin-bottom: 5%; */
+        margin-top: 5%;
+        /* margin-bottom: 5%; */
         object-fit: cover;
     }
     
@@ -120,7 +119,6 @@
     .QuizFourContent{
         display: flex;
         flex-direction: column;
-        gap: 5%;
     }
     .content_title{
         margin-top: 2%;
@@ -150,8 +148,8 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        /* margin-top: 5%;
-        margin-bottom: 5%; */
+        margin-top: 5%;
+        /* margin-bottom: 5%; */
         object-fit: cover;
     }
     
@@ -163,7 +161,7 @@
         row-gap: 20px;
         column-gap: 10px;
         /* width: 100%; */
-        /* margin-top: 30px; */
+        margin-top: 5%;
 
     }
     

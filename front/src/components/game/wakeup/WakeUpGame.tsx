@@ -19,8 +19,7 @@ const WakeUpGame = (props: Props) => {
   const dispatch = useDispatch();
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  // const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
-  const time = 15;
+  const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
   const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
   const [shakeCount, setShakeCount] = useState(0); // 흔든 횟수 제출
   const [isShaking, setIsShaking] = useState(false);
@@ -105,10 +104,12 @@ const WakeUpGame = (props: Props) => {
 
   return (
     <div>
-      <QuizGameTitle title="일어나 럭퀴야 학교 가야지 게임" />
+      <div>
+        <QuizGameTitle title="일어나 럭퀴야 학교 가야지 게임" />
+      </div>
       <div className={styles.content}>
         <div className={styles.container}>
-          {/* <h1>Shake the Egg!</h1> */}
+          <div id="game-description"></div>
           {isBroken ? (
             showluckqui ? (
               <>

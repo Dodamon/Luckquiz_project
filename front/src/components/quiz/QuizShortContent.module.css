@@ -2,7 +2,6 @@
     .QuizShortContent{
         width: 95;
         height: 100%;
-        gap: 5%;
     }
     .content_title{
         margin-top: 2%;
@@ -35,8 +34,8 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        /* margin-top: 5%;
-        margin-bottom: 5%; */
+        margin-top: 5%;
+        /* margin-bottom: 5%; */
         object-fit: cover;
 
     }
@@ -47,6 +46,8 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+        margin-bottom: 5%;
+
     }
     
     .content_answer{
@@ -117,7 +118,6 @@
     .QuizShortContent{
         width: 95;
         height: 100%;
-        gap: 20%;
     }
 
     .content_title{
@@ -147,8 +147,8 @@
         border-radius: 20px;
         opacity: 90%;
         color: var( --placeholder-text);
-        /* margin-top: 5%;
-        margin-bottom: 5%; */
+        margin-top: 5%;
+        /* margin-bottom: 5%; */
         object-fit: cover;
 
     }
@@ -161,6 +161,8 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+        margin-bottom: 5%;
+
     }
     
     .content_answer{
