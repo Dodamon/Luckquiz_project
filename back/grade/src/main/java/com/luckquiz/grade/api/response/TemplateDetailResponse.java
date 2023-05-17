@@ -48,4 +48,8 @@ public class TemplateDetailResponse {
 		}
 		return quizNum;
 	}
+
+	public UUID getHostId() {
+		return hostId;
+	}
 }

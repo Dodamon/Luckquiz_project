@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.data.redis.core.HashOperations;
@@ -61,29 +62,51 @@ public class GradeService {
 	}
 
 	public void grade(KafkaGradeRequest gradeRequest){
-		// redisTemplate.expire(gradeRequest.getRoomId()+"statics",30, TimeUnit.SECONDS);
-		zSetOperations.incrementScore(gradeRequest.getRoomId()+"statics",gradeRequest.getMessage(),1);
 		// zSetOperations.removeRange("temp",0,-1);
 		Integer roomId = gradeRequest.getRoomId();
-		String playerName = gradeRequest.getSender();
-		// 총 참여자 수
-		Long count = hashGradeOperations.size(roomId+"p");
 		//null 값이면 에러.
 		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),TemplateDetailResponse.class);
 		TemplateInfoResponse quiz =  templateDetailResponse.getQuizList().get(gradeRequest.getQuizNum());
+		// 문제 번호가 다르면 그냥 넘어가기.
+		if(gradeRequest.getQuizNum()!=templateDetailResponse.getQuizNum()) {
+			log.info("퀴즈 번호가 달라서 무효처리 합니다.");
+			return;
+		}
+		// redisTemplate.expire(gradeRequest.getRoomId()+"statics",30, TimeUnit.SECONDS);
+		zSetOperations.incrementScore(gradeRequest.getRoomId()+"statics",gradeRequest.getMessage(),1);
+
+		String playerName = gradeRequest.getSender();
+		// 총 참여자 수
+		Long count = hashGradeOperations.size(roomId+"p");
+
 		String answer = gradeRequest.getMessage();
 		// 퀴즈일 경우
 		if(quiz.getGame().equals("")){
+			//단일 정답.
 			String correctAnswer = quiz.getAnswer();
 			Boolean correct = false;
-			for(String ans: quiz.getAnswerList()){
-				if(ans.equals(answer)){
-					correct=true;
-					break;
+			Boolean several = false;
+			System.out.println(quiz.getAnswerList());
+			if(quiz.getAnswerList().length == 0){
+
+				System.out.println("중복 정답 없는 문제입니다.");
+			} else {
+				several = true;
+				for(String ans: quiz.getAnswerList()){
+					System.out.println(ans);
+					if(ans.equals(answer)){
+						System.out.println("중복 정답입니다.");
+						correct=true;
+						break;
+					}
 				}
 			}
-			if( (correctAnswer.equals(answer) ||correct) && gradeRequest.getQuizNum()==templateDetailResponse.getQuizNum()){
+
+			// 여러개 정답.
+
+			if( ((!several) && correctAnswer.equals(answer)) || (correct) ){
 				//순위에 따른 점수 더해주기
+				System.out.println("정답입니다. " + playerName);
 				Integer rank = valueOperations.get(roomId+"cnt");
 				Long scoreGet = (long)(1000*(1d-(rank.doubleValue()/count.doubleValue())));
 				Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
@@ -113,8 +136,6 @@ public class GradeService {
 					log.info(ans+ " ");
 				}
 			}
-
-
 		} else {
 			//게임일 경우
 			Grade userGrade;
@@ -177,6 +198,10 @@ public class GradeService {
 		// 템플릿 정보
 		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
 			TemplateDetailResponse.class);
+		if(gradeRequest.getQuizNum() != templateDetailResponse.getQuizNum()){
+			log.info("퀴즈 번호가 달라서 무효처리 합니다.");
+			return;
+		}
 
 		if(templateDetailResponse == null){
 			log.warn("템플릿이 비어있네요");
@@ -235,11 +260,12 @@ public class GradeService {
 
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
-	public void rollback(Object message) {
+	public void rollback(KafkaQuizRollbackRequest message) {
 		log.info("rollback 시작");
-		KafkaQuizRollbackRequest quizRollbackRequest = (KafkaQuizRollbackRequest) message;
-		Integer roomId = quizRollbackRequest.getRoomId();
-
+		Integer roomId = message.getRoomId();
+		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
+			TemplateDetailResponse.class);
+		message.setHostId(templateDetailResponse.getHostId());
 		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
 		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
@@ -252,7 +278,8 @@ public class GradeService {
 		});
 
 		// KafkaRollbackFinishResponse kafkaRollbackFinishResponse = (KafkaRollbackFinishResponse) message;
-		kafkaProducer.rollbackFinish(gson.toJson(quizRollbackRequest));
+
+		kafkaProducer.rollbackFinish(gson.toJson(message));
 	}
 
 	//카프카에서 quiz_end 메시지가 올때 실행하는 함수
@@ -273,28 +300,33 @@ public class GradeService {
 		// 플레이어 정보 "아놔" :{"playerName":"아놔","playerImg":14,"scoreGet":0,"rankPre":0,"rankNow":0,"count":0,"quizNum":0}
 		Map<String, Grade> playersInfo = hashGradeOperations.entries(roomId+"p");
 		// answerStatics 통계 (정답별 선택한 수)
-		Set<ZSetOperations.TypedTuple<String>> answerStatics = zSetOperations.rangeWithScores(roomId+"statics",0,-1);
+		Set<ZSetOperations.TypedTuple<String>> answerStatics = zSetOperations.reverseRangeWithScores(roomId+"statics",0,-1);
 
 		// answerStatics를 map으로 변경(json으로 만들기 위하여)
-		LinkedHashMap<String, Double> answerData = new LinkedHashMap<>();
+		LinkedHashMap<String, Integer> answerData = new LinkedHashMap<>();
 		// 순서가 보장된 linked맵 사용하며, 퀴즈 푼사람수(solveCount) 구하기
-		answerStatics.stream().forEachOrdered((data)->{
-			answerData.put(data.getValue(), data.getScore());
+
+		answerStatics.stream().forEachOrdered ((data)->{
+			System.out.println(" 선택 정답 :" + data.getValue() + " 정답 선택 수 : "+ data.getScore().intValue());
+			answerData.put(data.getValue(), data.getScore().intValue());
 			solveCount.addAndGet(data.getScore().intValue());
 		});
 
 		// 처음에는 아래의 방법으로 만들었지만, 총 몇명이 참여했는지 까지 1번의 for문으로 구하는 것이 좋기 때문에 변경.
 		// LinkedHashMap<String, Double> answerData = answerStatics.stream().collect(Collectors.toMap(data->data.getValue(),data->data.getScore(),(data1,data2)->data1,LinkedHashMap::new));
-
+		LinkedHashMap<String, Grade> sortedPlayerInfo = playersInfo.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.comparing((data)->-data.getScoreGet()))).collect(LinkedHashMap::new,(map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
+		// sortedPlayerInfo.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.comparing((data)->-data.getScoreGet()))).collect(LinkedHashMap::new,(map, entry) -> map.put(entry.getKey(), entry.getValue()), LinkedHashMap::putAll);
 
 		// 플레이어 정보 scoreGet(이번 게임에서 얻은 점수) 순으로 정렬
 		// Stream<Map.Entry<String,Grade>> entries = playersInfo.entrySet().stream();
 		playersInfo.entrySet().stream().sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->playersInfo.put(e.getKey(),e.getValue()));
 
 		// 순위(rankNow) 매기기
-		int ranking = 1;
+		int ranking = 0;
 		int scoreGet = -10000;
-		for(Map.Entry<String,Grade> playerInfo: playersInfo.entrySet()){
+
+		for(Map.Entry<String,Grade> playerInfo: sortedPlayerInfo.entrySet()){
+			System.out.println("플레이어 이름 : " +playerInfo.getKey() + " 플레이어 얻은 점수 : " + playerInfo.getValue().getScoreGet() + "플레이어 현재 순위 : " + playerInfo.getValue().getRankNow());
 			// 이전 사람 점수와 같으면 같은 등수.
 			if(scoreGet == playerInfo.getValue().getScoreGet()){
 				playerInfo.getValue().setRankNow(ranking);
@@ -302,19 +334,19 @@ public class GradeService {
 				playerInfo.getValue().setRankNow(++ranking);
 			}
 			scoreGet = playerInfo.getValue().getScoreGet();
-			// 플레이어 정보에서 ranking 갱신된 것 저장.
+			// 플레이어 정보에서 ranking 갱신된 것 저장.0
 			hashGradeOperations.put(roomId+"p",playerInfo.getValue().getPlayerName(),playerInfo.getValue());
 		}
 
 
 		//정답률
-		Double correctRate = correctCount.doubleValue()/ solveCount.doubleValue();
+		Double correctRate = solveCount.equals(0)?correctCount.doubleValue()/ solveCount.doubleValue():0;
+
 		// 보낸 메시지 작성
 		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder()
 			.roomId(roomId)
 			.quizNum(quizNum)
 			.solveCount(solveCount.get())
-			.count(connectionCount.intValue())
 			.connectionCount(connectionCount.intValue())
 			.correctCount(correctCount)
 			.correctRate(correctRate)

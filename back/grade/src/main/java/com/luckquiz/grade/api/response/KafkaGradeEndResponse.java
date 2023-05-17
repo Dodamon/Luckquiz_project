@@ -11,11 +11,10 @@ import lombok.Setter;
 @Builder
 public class KafkaGradeEndResponse {
 	private Integer roomId;
-	private Integer count;
 	private Integer connectionCount;
 	private Integer solveCount;
 	private Integer correctCount;
 	private Double correctRate;
 	private Integer quizNum;
-	private LinkedHashMap<String, Double> answerData;
+	private LinkedHashMap<String, Integer> answerData;
 }
