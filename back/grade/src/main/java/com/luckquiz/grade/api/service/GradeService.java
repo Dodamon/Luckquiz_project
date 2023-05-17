@@ -63,6 +63,8 @@ public class GradeService {
 	}
 
 	public void grade(KafkaGradeRequest gradeRequest){
+
+		System.out.println("유저의 이름, img 확인 : " + gradeRequest.getSender() + "  " + gradeRequest.getImg());
 		// zSetOperations.removeRange("temp",0,-1);
 		Integer roomId = gradeRequest.getRoomId();
 		//null 값이면 에러.
@@ -190,6 +192,9 @@ public class GradeService {
 	}
 
 	public void pictureGrade(KafkaEmotionRequest gradeRequest){
+		System.out.println("사진 채점 유저의 이름, img 확인 : " + gradeRequest.getSender() + "  " + gradeRequest.getImg());
+
+		System.out.println();
 		// 방 번호
 		Integer roomId = gradeRequest.getRoomId();
 		// 사용자 이름
@@ -265,6 +270,7 @@ public class GradeService {
 
 	// 카프카에서 rollback 메시지가 왔을때 실행하는 함수
 	public void rollback(KafkaQuizRollbackRequest message) {
+
 		log.info("rollback 시작");
 		Integer roomId = message.getRoomId();
 		TemplateDetailResponse templateDetailResponse =  gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()),
@@ -275,8 +281,12 @@ public class GradeService {
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		//랭킹점수 받았던거 다시 줄이기.
 		hashmap.forEach((key, value)->{
+			System.out.println("유저의 이름, img 확인 : " + key + "  " + value.getPlayerImg());
+			RankKey rankKey = new RankKey();
+			rankKey.setImg(value.getPlayerImg());
+			rankKey.setSender(value.getPlayerName());
 			value.setRankNow(value.getRankPre());
-			zSetOperations.incrementScore(roomId+"rank",value.getPlayerName(),-value.getScoreGet());
+			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),-value.getScoreGet());
 			value.setScoreGet(0);
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
