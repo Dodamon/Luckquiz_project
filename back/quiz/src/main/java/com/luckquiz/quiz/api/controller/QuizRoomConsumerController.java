@@ -14,7 +14,6 @@ import com.luckquiz.quiz.common.exception.CustomExceptionType;
 import com.luckquiz.quiz.config.RedisConfig;
 import com.luckquiz.quiz.db.entity.*;
 import com.luckquiz.quiz.db.repository.*;
-import com.querydsl.core.util.StringUtils;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,7 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -124,7 +124,7 @@ public class QuizRoomConsumerController {
                 for(QGame a : templateDetailResponse.getQuizList()){
                     log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
-                    if(!StringUtils.isNullOrEmpty(a.getQuestion())){
+                    if(!StringUtil.isNullOrEmpty(a.getQuestion())){
                         quizCnt ++;
                         quizReport.setQuestion(a.getQuestion());
                     }else {

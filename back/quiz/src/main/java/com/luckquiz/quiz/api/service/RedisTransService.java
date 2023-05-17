@@ -27,7 +27,7 @@ public class RedisTransService {
         System.out.println("레디스로 보내기 시작");
         // 템플릿 가져오기.
         TemplateDetailResponse templateDetailResponse = templateService.findTemplateDetail(templateId, hostId);
-        templateDetailResponse.setQuizNum(0);
+        templateDetailResponse.setQuizNum(-1);
         templateDetailResponse.setHostNickName(hostNickName);
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
 
