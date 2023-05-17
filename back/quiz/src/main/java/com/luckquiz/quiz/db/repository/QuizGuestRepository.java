@@ -9,6 +9,6 @@ public interface QuizGuestRepository extends JpaRepository<QuizGuest, Integer> {
     Optional<QuizGuest> findByTemplateId(Integer templateId);
     Optional<QuizGuest> findQuizGuestByPinNum(Integer pinNum);
 
-    Optional<QuizGuest> findQuizGuestByGuestNickname(String guestNickname);
+    Optional<QuizGuest> findQuizGuestByGuestNicknameAndQuizRoomId(String guestNickname,int quizRoomId);
 }
 

@@ -11,6 +11,5 @@ public interface QuizRoomRepository extends JpaRepository<QuizRoom, Integer> {
 //    Page<QuizRoom> findQuizRoomsByTemplateId(int id, Pageable pageable);
 
     Optional<QuizRoom> findQuizRoomByPinNum(Integer pinNum);
-    @Override
-    Optional<QuizRoom> findById(Integer integer);
+    Optional<QuizRoom> findQuizRoomById(Integer id);
 }

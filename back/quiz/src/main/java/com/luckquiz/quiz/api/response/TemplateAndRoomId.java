@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class TemplateAndRoomId {
     private int roomId;
     private int templateId;
+    private int roomPk;
 }

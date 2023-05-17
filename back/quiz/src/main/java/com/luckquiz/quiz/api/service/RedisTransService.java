@@ -47,7 +47,7 @@ public class RedisTransService {
     }
 
     @Transactional
-    public void roomTempTrans(int roomId, UUID hostId, int templateId) throws Exception{
+    public void roomTempTrans(int roomId, UUID hostId, int templateId,int roomPk) throws Exception{
         System.out.println("템플릿과 룸아이디 조회");
         // 템플릿 가져오기.
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
@@ -55,6 +55,7 @@ public class RedisTransService {
         TemplateAndRoomId val = TemplateAndRoomId.builder()
                 .roomId(roomId)
                 .templateId(templateId)
+                .roomPk(roomPk)
                 .build();
         String value = gson.toJson(val);
         stringStringValueOperations.set(keyVal ,value);
