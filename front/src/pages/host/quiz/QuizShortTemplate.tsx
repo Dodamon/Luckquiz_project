@@ -52,7 +52,10 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   }
   };
 
-
+  const imageDeleteHandler = ()=>{
+    const content = {...quiz, quizUrl:""};
+    dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
+  }
 
   const questionHandler = (e: any) => {
     setQuiz({ ...quiz, question: e.target.value });
@@ -76,19 +79,28 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
         <div
 
-          className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  ><div>
+          className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  >      <div>
+          <div className={styles.font_box}>
             <label htmlFor="file-upload" className={styles.plus_comment}>
               <Icon icon="ic:round-plus" />
             </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".jpg, .png"
-              onChange={imageUploadHandler}
-              style={{ display: "none" }}
-            />
+
+            {
+             quiz.quizUrl&&<div className={styles.plus_comment}>
+                <Icon icon="ph:trash-bold" onClick={imageDeleteHandler} />
+              </div>
+            }
 
           </div>
+          <input
+            id="file-upload"
+            type="file"
+            accept=".jpg, .png"
+            onChange={imageUploadHandler}
+            style={{ display: "none" }}
+          />
+
+        </div>
           <div>이미지를 첨부하세요 (선택)</div>
         </div>
       </div>

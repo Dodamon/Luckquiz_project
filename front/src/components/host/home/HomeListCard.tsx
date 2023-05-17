@@ -34,15 +34,9 @@ const HomeListCard = (props: Props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const hostName = useSelector((state: RootState) => state.auth.name);
-  const { data, status, sendHostRequest } = useHostAxios();
+  const { data, sendHostRequest } = useHostAxios();
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
-
-
-  if(quiz){
-    console.log("서버에서 받은 데이터를 카드로 바로 받은 데이터", quiz.isValid);
-  }
- 
 
   useEffect(() => {
     if (data) {
@@ -85,12 +79,10 @@ const HomeListCard = (props: Props) => {
         hostId: userId
       }
   
-      axios.post("https://k8a707.p.ssafy.io/api/quiz/template/delete", deleteItem).then(res => {
-        console.log("삭제할때 가는 데이터", res.data);
+      axios.post(`${process.env.REACT_APP_HOST}/api/quiz/template/delete`, deleteItem).then(res => {
         if(onDeleteQuiz){
           onDeleteQuiz(quiz.templateId);
         }
-      
         setOpen(true);
       })
     }

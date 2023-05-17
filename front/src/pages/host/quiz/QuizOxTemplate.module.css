@@ -44,14 +44,22 @@
 .effect_font{
     display: none;
 }
-.content_images:hover .effect_font{
+.content_images:hover .effect_font {
     font-size: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-
+    padding: 15px;
+    background-color: rgb(45, 50, 54);
+    opacity: 70%;
+    color: var(--white-color);
+    border-radius: 5px;
+  
+  }
+  
+  .plus_comment:hover {
+    color: lightgrey;
+  }
 
 .content_answerbox{
     display: grid;
@@ -135,3 +143,6 @@
 .keepbox:hover{
     font-size: 44px;
 }
+.font_box{
+    display: flex;
+  }

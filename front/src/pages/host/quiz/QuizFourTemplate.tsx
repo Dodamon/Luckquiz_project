@@ -12,21 +12,25 @@ type pageNum = {
   num: number;
 };
 const QuizFourTemplate = ({ num }: pageNum) => {
-    const dispatch = useDispatch();
-    const quizList = useSelector((state: RootState) => state.quiz.quizList);
-    const template = useSelector((state: RootState) => state.quiz)
-    const [quiz, setQuiz] = useState(quizList[num]);
+  const dispatch = useDispatch();
+  const quizList = useSelector((state: RootState) => state.quiz.quizList);
+  const template = useSelector((state: RootState) => state.quiz)
+  const [quiz, setQuiz] = useState(quizList[num]);
 
 
 
-    console.log("여기 왔습니니다.", num, quiz);
-    useEffect(() => {
-        setQuiz(quizList[num]);
-    }, [num, quizList]);
+  console.log("여기 왔습니니다.", num, quiz);
+  useEffect(() => {
+    setQuiz(quizList[num]);
+  }, [num, quizList]);
 
   const questionHandler = (e: any) => {
     setQuiz({ ...quiz, question: e.target.value });
   };
+  const imageDeleteHandler = ()=>{
+    const content = {...quiz, quizUrl:""};
+    dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
+  }
 
   useEffect(() => {
     const intervalId = setInterval(async () => {
@@ -41,12 +45,10 @@ const QuizFourTemplate = ({ num }: pageNum) => {
         content.question
       ) {
         dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
-        // const item = template;
-        // const res = await axios.post("https://k8a707.p.ssafy.io/api/quiz/template/contents-create", item);
       }
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [quiz, num, dispatch, template]);
+  }, [quiz,setQuiz, num, dispatch, template ]);
 
   const imageUploadHandler = async (event: any) => {
     const file = event.target.files[0];
@@ -56,12 +58,14 @@ const QuizFourTemplate = ({ num }: pageNum) => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post("https://k8a707.p.ssafy.io/api/quiz/upload", formData);
+      const response = await axios.post(`${process.env.REACT_APP_HOST}/api/quiz/upload`, formData);
       setQuiz({ ...quiz, quizUrl: response.data });
     } catch (error) {
       console.error(error);
     }
   };
+
+ 
 
   const answerInputHandler = (e: any, num: string) => {
     if (num === "one") {
@@ -96,19 +100,28 @@ const QuizFourTemplate = ({ num }: pageNum) => {
         style={
           quiz.quizUrl
             ? {
-                backgroundImage: `url(${quiz.quizUrl})`,
-                backgroundSize: "contain",
-                backgroundPosition: "center center",
-                backgroundRepeat: "no-repeat",
-              }
+              backgroundImage: `url(${quiz.quizUrl})`,
+              backgroundSize: "contain",
+              backgroundPosition: "center center",
+              backgroundRepeat: "no-repeat",
+            }
             : {}
         }
       >
         <div className={!quiz.quizUrl ? styles["plus_font"] : styles["effect_font"]}>
           <div>
-            <label htmlFor="file-upload" className={styles.plus_comment}>
-              <Icon icon="ic:round-plus" />
-            </label>
+            <div className={styles.font_box}>
+              <label htmlFor="file-upload" className={styles.plus_comment}>
+                <Icon icon="ic:round-plus" />
+              </label>
+
+              {
+               quiz.quizUrl&&<div className={styles.plus_comment}>
+                  <Icon icon="ph:trash-bold" onClick={imageDeleteHandler} />
+                </div>
+              }
+
+            </div>
             <input
               id="file-upload"
               type="file"
@@ -116,7 +129,9 @@ const QuizFourTemplate = ({ num }: pageNum) => {
               onChange={imageUploadHandler}
               style={{ display: "none" }}
             />
+
           </div>
+
           <div>이미지를 첨부하세요 (선택)</div>
         </div>
       </div>
