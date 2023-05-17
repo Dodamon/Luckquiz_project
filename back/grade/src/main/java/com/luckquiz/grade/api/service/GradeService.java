@@ -88,7 +88,7 @@ public class GradeService {
 			Boolean correct = false;
 			Boolean several = false;
 			System.out.println(quiz.getAnswerList());
-			if(quiz.getAnswerList().length == 0){
+			if(quiz.getAnswerList().size() == 0){
 
 				System.out.println("중복 정답 없는 문제입니다.");
 			} else {
