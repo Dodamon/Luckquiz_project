@@ -15,20 +15,14 @@
     gap: 20px;
   }
 
-  .nav_left > select {
-    width: 130px;
+  .nav_left > .select_form {
+    width: 145px;
     height: 55px;
     border-radius: 20px;
     font-size: 18px;
-    /* padding-right: 20px; */
-    /* padding-left: 20px; */
-    /* padding-right: 50px; */
-    /* appearance: none; */
-    /* background-image 속성을 사용한 방법 */
   }
 
   .nav_right {
-    /* width: 260px; */
     display: flex;
     justify-content: end;
   }
@@ -45,8 +39,6 @@
     align-items: center;
     cursor: pointer;
     word-break: keep-all;
-    /* font-weight: bold; */
-    /* color: var(--white-color); */
   }
 
   .nav_right > div:hover {
@@ -54,9 +46,18 @@
   }
 
   .select_form {
-    padding-left: 15px;
     font-size: 18px;
-    /* font-weight: bold; */
-    /* padding-right: 50px; */
+    text-align: center;
+    -webkit-appearance: none; /* for chrome */
+    -moz-appearance: none; /*for firefox*/
+    appearance: none;
+    background: url("/src/assets/images/arrow.png") no-repeat 90% 50%/15px auto white;;
+    padding-right: 20px;
+    outline: none;
   }
+
+  .select_form::-ms-expand {
+    display: none; /*for IE10,11*/
+  }
+
 }
