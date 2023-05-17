@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { setQuizItem } from "models/quiz";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import QuizShortContent from "components/quiz/QuizShortContent";
@@ -23,7 +22,7 @@ const GuestPlayQuiz = () => {
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const nickname = useSelector((state: RootState) => state.guest.nickname);
-  const quizGameResult = useSelector((state: RootState) => state.socket.getGuestResult);
+  const guestResult = useSelector((state: RootState) => state.socket.getGuestResult);
   const end = useSelector((state: RootState) => state.socket.quizEnd);
   const [guestAnswer, SetguestAnswer] = useState("");
   const dispatch = useDispatch();
@@ -40,15 +39,14 @@ const GuestPlayQuiz = () => {
 
   // 해당 문제의 퀴즈 채점결과가 들어오면 결과페이지로 이동
   useEffect(() => {
-    console.log("게스트가받는결과:", quizGameResult);
-    console.log(quizItem?.quizNum, quizGameResult?.quizNum)
-    if (quizItem?.quizNum === quizGameResult?.quizNum) {
+    console.log("게스트가받는결과:", guestResult);
+    console.log(quizItem?.quizNum, guestResult?.quizNum)
+    if (quizItem?.quizNum === guestResult?.quizNum) {
       navigate("/guest/quiz/result");
     }
-  }, [quizGameResult]);
+  }, [guestResult]);
 
-  // 이미 호스트가 해당 퀴즈순서를 종료하고 채점으로 넘어갔을 경우 (퀴즈, emotion game)
-  // wakeup과 balloon 게임은 별도로 채점 컨트롤이 없이 자체적으로 게스트화면에서 애니메이션을 다 보여주고 화면 전환(handleOrder(2))
+  // 이미 호스트가 해당 퀴즈순서를 종료하고 채점으로 넘어갔을 경우, 채점중으로 이동
   useEffect(() => {
   end === "success" && setOrder(2)
   }, [end])

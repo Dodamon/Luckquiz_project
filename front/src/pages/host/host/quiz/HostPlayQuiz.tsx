@@ -1,12 +1,10 @@
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import QuizShortContent from "components/quiz/QuizShortContent";
-import { getQuizItem } from "models/quiz";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "store";
 import styles from "./HostPlayQuiz.module.css";
-import { findByText } from "@testing-library/react";
 import QuizOxContent from "components/quiz/QuizOxContent";
 import QuizFourContent from "components/quiz/QuizFourContent";
 import "chart.js/auto";
@@ -17,7 +15,6 @@ import SubmitChart from "components/host/quiz/SubmitChart";
 import { socketActions } from "store/webSocket";
 import StartFinishText from "components/common/StartFinishText";
 import ReadyGame from "components/common/ReadyGame";
-import QuizRanking from "components/quiz/QuizRanking";
 import QuizShortAnswer from "components/quiz/QuizShortAnswer";
 import QuizOxAnswer from "components/quiz/QuizOxAnswer";
 import QuizFourAnswer from "components/quiz/QuizFourAnswer";
@@ -30,7 +27,7 @@ const HostPlayQuiz = () => {
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
-  const quizGameResult = useSelector((state: RootState) => state.socket.getHostResult);
+  const hostResult = useSelector((state: RootState) => state.socket.getHostResult);
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList);
 
   const [modalOn, SetModalOn] = useState(quizItem?.quiz ? false : true);
@@ -49,9 +46,9 @@ const HostPlayQuiz = () => {
 
   // 퀴즈 채점결과가 들어오면 결과컴포넌트
   useEffect(() => {
-    quizGameResult && setOrder(3);
-    console.log("호스트가받는결과:", quizGameResult);
-  }, [quizGameResult]);
+    hostResult && setOrder(3);
+    console.log("호스트가받는결과:", hostResult);
+  }, [hostResult]);
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
@@ -101,11 +98,11 @@ const HostPlayQuiz = () => {
             {quizItem?.game ? (
               <ReadyGame />
             ) : (
-              <div className={styles.quizContainer}>
+              <>
                 {quizItem?.quiz === "text" && <QuizShortContent />}
                 {quizItem?.quiz === "ox" && <QuizOxContent />}
                 {quizItem?.quiz === "four" && <QuizFourContent />}
-              </div>
+              </>
             )}
             <>
               {/* 
@@ -160,12 +157,10 @@ const HostPlayQuiz = () => {
           // 제출현황 차트 & 랭킹 컴포넌트(모달)
           <>
             {quizItem?.quiz && (
-              // <div className={styles.submitChart} style={{ position: "relative", zIndex: "-1" }}>
               <div className={styles.submitChart}>
                 <SubmitChart myData={[34, 24, 44, 10]} />
               </div>
             )}
-            {/* <div className={styles.quizContainer} ref={ref} style={{ position: "relative", zIndex: "-1" }}> */}
             <div className={styles.quizContainer} ref={ref}>
               {quizItem?.quiz === "text" && <QuizShortAnswer />}
               {quizItem?.quiz === "ox" && <QuizOxAnswer />}
@@ -174,19 +169,14 @@ const HostPlayQuiz = () => {
             {quizItem?.quiz && (
               <div
                 onClick={() => SetModalOn((pre) => !pre)}
-                // style={modalOn ? { position: "relative", zIndex: "-2" } : {}}
               >
                 현재 전체 랭킹보기
               </div>
             )}
-            {quizItem.game && quizGameResult && <HostGameRanking result={quizGameResult} />}
-            {quizItem.quiz && modalOn && quizGameResult ? (
+            {quizItem.game && hostResult && <HostGameRanking/>}
+            {quizItem.quiz && modalOn && hostResult ? (
               <>
-                <HostQuizRanking result={quizGameResult} />
-                {/* <div
-                  className={styles.bgtools}
-                  style={modalOn ? { backgroundColor: "rgba(0, 0, 0, 0.5)", backdropFilter: "blur(3px)" } : {}}
-                ></div> */}
+                <HostQuizRanking/>
               </>
             ) : (
               <></>
@@ -195,8 +185,7 @@ const HostPlayQuiz = () => {
             {/* 마지막 문제이면 최종결과 버튼*/}
             {/* 아니면 다음퀴즈 버튼*/}
             {quizItem.quizSize - quizItem.quizNum === 1 ? (
-              // <div className={styles.nextBtn} style={modalOn ? { position: "relative", zIndex: "-2" } : {}}>
-              <div className={styles.nextBtn}>
+              // <div className={styles.nextBtn}>
                 <ButtonWithLogo
                   name="최종 결과보기"
                   fontSize="18px"
@@ -210,9 +199,8 @@ const HostPlayQuiz = () => {
                     )
                   }
                 />
-              </div>
+              // </div>
             ) : (
-              // <div className={styles.nextBtn} style={modalOn ? { position: "relative", zIndex: "-2" } : {}}>
               <div className={styles.nextBtn}>
                 <ButtonWithLogo
                   name="건너뛰기"
