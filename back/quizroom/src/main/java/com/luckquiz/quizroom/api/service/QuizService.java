@@ -78,7 +78,6 @@ public class QuizService {
         stringRedisTemplate.opsForValue().set(nextMessage.getRoomId().toString(),newVal);
         nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
         nextQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
-
         return nextQuiz;
     }
 
@@ -131,5 +130,20 @@ public class QuizService {
         }
     }
 
+
+    @Transactional
+    public QGame nextQuizAfterRollback(RollbackFinishMessage rollbackFinishMessage) {
+        // host가 받을 다음 문제
+        String room = stringRedisTemplate.opsForValue().get(rollbackFinishMessage.getRoomId().toString());
+        TemplateDetailResponse templateDetailResponse = gson.fromJson(room,TemplateDetailResponse.class);
+        QGame nextQuiz = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum()+1);
+        templateDetailResponse.setQuizNum(templateDetailResponse.getQuizNum()+1);
+
+        String newVal = gson.toJson(templateDetailResponse);
+        stringRedisTemplate.opsForValue().set(rollbackFinishMessage.getRoomId().toString(),newVal);
+        nextQuiz.setQuizNum(templateDetailResponse.getQuizNum());
+        nextQuiz.setQuizSize(templateDetailResponse.getQuizList().size());
+        return nextQuiz;
+    }
 
 }
