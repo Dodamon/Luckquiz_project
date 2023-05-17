@@ -6,6 +6,7 @@ import com.luckquiz.quiz.api.request.Grade;
 import com.luckquiz.quiz.api.request.KafkaGradeEndMessage;
 import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.response.EnterUser;
+import com.luckquiz.quiz.api.response.TemplateAndRoomId;
 import com.luckquiz.quiz.api.response.TemplateDetailResponse;
 import com.luckquiz.quiz.api.service.RedisTransService;
 import com.luckquiz.quiz.common.exception.CustomException;
@@ -67,7 +68,7 @@ public class QuizRoomConsumerController {
 
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 redisTransService.quizRedisTrans(roomId, hostId, templateId, host.getName());  // roomId 로
-                redisTransService.roomTempTrans(roomId, hostId, templateId);
+
 
                 System.out.println("consumer came");
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
@@ -77,7 +78,9 @@ public class QuizRoomConsumerController {
                         .hostId(hostId)
                         .createdTime(LocalDateTime.now())
                         .build();
-                quizRoomRepository.save(quizRoom);
+                QuizRoom quizRoom1 = quizRoomRepository.save(quizRoom);
+
+                redisTransService.roomTempTrans(roomId, hostId, templateId,quizRoom1.getId());
             }
                 break;
             case "final_end": {
@@ -97,7 +100,9 @@ public class QuizRoomConsumerController {
 
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
-                QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+                String forRoomId = StringValueOperations.get(hostId);
+                TemplateAndRoomId templateAndRoomId = gson.fromJson(forRoomId, TemplateAndRoomId.class);
+                QuizRoom quizRoom = quizRoomRepository.findQuizRoomById(templateAndRoomId.getRoomPk()).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                 quizRoom.setFinishedTime(LocalDateTime.now());
                 String quizInfo = StringValueOperations.get(roomId);
 
@@ -118,12 +123,13 @@ public class QuizRoomConsumerController {
                     }
                     quizReport.setQuizGameId(a.getId());
                     quizReport.setPinNum(quizRoom.getPinNum());
+                    quizReport.setQuizRoom(templateAndRoomId.getRoomPk());
                     quizReportRepository.save(quizReport);
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
                 log.info("여기에서 오류 날거 같은데......");
-                QuizReport quizReport = quizReportRepository.findQuizReportByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
+                QuizReport quizReport = quizReportRepository.findQuizReportByQuizRoomId(templateAndRoomId.getRoomPk()).orElseThrow(()-> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
                 // quiz report에 solvedcount 랑 correct count 더하기만 남음
                 String quizCorInfo = StringValueOperations.get(roomId+"-quiz");
                 String [] quizCorInfoList = quizCorInfo.split(", ");
@@ -164,7 +170,7 @@ public class QuizRoomConsumerController {
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
-                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNickname(temp.getSender()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
+                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
                     if(quizGuest.getGuestNickname().equals(temp.getSender())){
                         quizGuest.setScore(a.getScore());  // 게스트의 총점
                     }

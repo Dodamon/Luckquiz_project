@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,8 +16,6 @@ import com.querydsl.core.types.dsl.PathInits;
 public class QQuizReport extends EntityPathBase<QuizReport> {
 
     private static final long serialVersionUID = 1354388642L;
-
-    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QQuizReport quizReport = new QQuizReport("quizReport");
 
@@ -32,29 +29,20 @@ public class QQuizReport extends EntityPathBase<QuizReport> {
 
     public final NumberPath<Integer> quizGameId = createNumber("quizGameId", Integer.class);
 
-    public final QQuizRoom quizRoom;
+    public final NumberPath<Integer> quizRoomId = createNumber("quizRoomId", Integer.class);
 
     public final NumberPath<Integer> submitCount = createNumber("submitCount", Integer.class);
 
     public QQuizReport(String variable) {
-        this(QuizReport.class, forVariable(variable), INITS);
+        super(QuizReport.class, forVariable(variable));
     }
 
     public QQuizReport(Path<? extends QuizReport> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QQuizReport(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QQuizReport(PathMetadata metadata, PathInits inits) {
-        this(QuizReport.class, metadata, inits);
-    }
-
-    public QQuizReport(Class<? extends QuizReport> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.quizRoom = inits.isInitialized("quizRoom") ? new QQuizRoom(forProperty("quizRoom"), inits.get("quizRoom")) : null;
+        super(QuizReport.class, metadata);
     }
 
 }
