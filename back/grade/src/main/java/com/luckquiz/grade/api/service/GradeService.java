@@ -1,5 +1,6 @@
 package com.luckquiz.grade.api.service;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -108,10 +109,10 @@ public class GradeService {
 				//순위에 따른 점수 더해주기
 				System.out.println("정답입니다. " + playerName);
 				Integer rank = valueOperations.get(roomId+"cnt");
-				Long scoreGet = (long)(1000*(1d-(rank.doubleValue()/count.doubleValue())));
+				Long scoreGet = Math.round(1000*(1d-(rank.doubleValue()/count.doubleValue())));
 				Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 				userGrade.setScoreGet(scoreGet.intValue());
-				userGrade.setRankNow(rank+1);
+				// userGrade.setRankNow(rank+1);
 				userGrade.setCount(userGrade.getCount()+1);
 				//얻은 점수 기록해두기
 				hashGradeOperations.put(roomId+"p", playerName, userGrade);
@@ -153,7 +154,7 @@ public class GradeService {
 					scoreGet = (int)(10L*numOfClick);
 					userGrade = hashGradeOperations.get(roomId+"p", playerName);
 					userGrade.setScoreGet(scoreGet);
-					userGrade.setCount(userGrade.getCount()+1);
+					// userGrade.setCount(userGrade.getCount()+1);
 					hashGradeOperations.put(roomId+"p", playerName, userGrade);
 					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 					log.info("받은점수 : "+scoreGet + "클릭 횟수 : " + numOfClick);
@@ -161,10 +162,10 @@ public class GradeService {
 				//숫자가 작은 순서대로.
 				case balloon:
 					Double timeDifference = Double.parseDouble(answer);
-					scoreGet = (int)((1d/(0.65d+timeDifference))*650d);
+					scoreGet = (int) Math.round((1d/(0.65d+timeDifference))*650d);
 					userGrade = hashGradeOperations.get(roomId+"p", playerName);
 					userGrade.setScoreGet(scoreGet);
-					userGrade.setCount(userGrade.getCount()+1);
+					// userGrade.setCount(userGrade.getCount()+1);
 					hashGradeOperations.put(roomId+"p", playerName, userGrade);
 					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 					log.info("받은 점수 :"+scoreGet + " 시간차: " + timeDifference);
@@ -222,8 +223,11 @@ public class GradeService {
 		// 받은 감정 종류의 개수에 +1 (통계용)
 		zSetOperations.incrementScore(roomId+"statics",answer.getValue(),1);
 		// 감정 종류가 제출한 사진 데이터의 감정과 같다면.
+		if (answer.getValue()=="laugh"){
+			answer.setValue("smile");
+		}
 		if(correctAnswer.equals(answer.getValue())){
-			Long scoreGet = (long)(1000*answer.getConfidence());
+			Long scoreGet = Math.round(1000*answer.getConfidence());
 			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
 			//얻은 점수 기록해두기
@@ -296,7 +300,7 @@ public class GradeService {
 		// 퀴즈 맞힌사람 수.
 		Integer correctCount = valueOperations.get(roomId+"cnt");
 		// 퀴즈 푼사람 수
-		AtomicInteger solveCount = new AtomicInteger(0);
+		Integer solveCount = 0;
 		// 플레이어 정보 "아놔" :{"playerName":"아놔","playerImg":14,"scoreGet":0,"rankPre":0,"rankNow":0,"count":0,"quizNum":0}
 		Map<String, Grade> playersInfo = hashGradeOperations.entries(roomId+"p");
 		// answerStatics 통계 (정답별 선택한 수)
@@ -306,11 +310,12 @@ public class GradeService {
 		LinkedHashMap<String, Integer> answerData = new LinkedHashMap<>();
 		// 순서가 보장된 linked맵 사용하며, 퀴즈 푼사람수(solveCount) 구하기
 
-		answerStatics.stream().forEachOrdered ((data)->{
-			System.out.println(" 선택 정답 :" + data.getValue() + " 정답 선택 수 : "+ data.getScore().intValue());
-			answerData.put(data.getValue(), data.getScore().intValue());
-			solveCount.addAndGet(data.getScore().intValue());
-		});
+		for (ZSetOperations.TypedTuple<String> answerStatic : answerStatics) {
+			System.out.println(" 선택 정답 :" + answerStatic.getValue() + " 정답 선택 수 : "+ answerStatic.getScore().intValue());
+			answerData.put(answerStatic.getValue(), answerStatic.getScore().intValue());
+			solveCount += answerStatic.getScore().intValue();
+		}
+
 
 		// 처음에는 아래의 방법으로 만들었지만, 총 몇명이 참여했는지 까지 1번의 for문으로 구하는 것이 좋기 때문에 변경.
 		// LinkedHashMap<String, Double> answerData = answerStatics.stream().collect(Collectors.toMap(data->data.getValue(),data->data.getScore(),(data1,data2)->data1,LinkedHashMap::new));
@@ -322,11 +327,10 @@ public class GradeService {
 		playersInfo.entrySet().stream().sorted(Comparator.comparing(e->e.getValue().getScoreGet())).forEachOrdered(e->playersInfo.put(e.getKey(),e.getValue()));
 
 		// 순위(rankNow) 매기기
-		int ranking = 0;
 		int scoreGet = -10000;
+		int ranking = 0;
 
 		for(Map.Entry<String,Grade> playerInfo: sortedPlayerInfo.entrySet()){
-			System.out.println("플레이어 이름 : " +playerInfo.getKey() + " 플레이어 얻은 점수 : " + playerInfo.getValue().getScoreGet() + "플레이어 현재 순위 : " + playerInfo.getValue().getRankNow());
 			// 이전 사람 점수와 같으면 같은 등수.
 			if(scoreGet == playerInfo.getValue().getScoreGet()){
 				playerInfo.getValue().setRankNow(ranking);
@@ -335,18 +339,19 @@ public class GradeService {
 			}
 			scoreGet = playerInfo.getValue().getScoreGet();
 			// 플레이어 정보에서 ranking 갱신된 것 저장.0
+			System.out.println("갱신 후 플레이어 이름: " + playerInfo.getKey() + " 점수 : " + playerInfo.getValue().getScoreGet() + " 바뀐 후 순위 : " + playerInfo.getValue().getRankNow());
 			hashGradeOperations.put(roomId+"p",playerInfo.getValue().getPlayerName(),playerInfo.getValue());
 		}
 
 
 		//정답률
-		Double correctRate = solveCount.equals(0)?correctCount.doubleValue()/ solveCount.doubleValue():0;
+		Double correctRate = solveCount==0?correctCount.doubleValue()/ solveCount.doubleValue() :0;
 
 		// 보낸 메시지 작성
 		KafkaGradeEndResponse gradeFinish = KafkaGradeEndResponse.builder()
 			.roomId(roomId)
 			.quizNum(quizNum)
-			.solveCount(solveCount.get())
+			.solveCount(solveCount)
 			.connectionCount(connectionCount.intValue())
 			.correctCount(correctCount)
 			.correctRate(correctRate)
@@ -355,9 +360,8 @@ public class GradeService {
 		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
 	//카프카에서 quiz_start 메시지가 올때 실행하는 함수
-	public void quizStart(Object message) {
-		KafkaQuizStartRequest quizStartMessage = (KafkaQuizStartRequest) message;
-		Integer roomId = quizStartMessage.getRoomId();
+	public void quizStart(KafkaQuizStartRequest message) {
+		Integer roomId = message.getRoomId();
 		TemplateDetailResponse templateDetailResponse = gson.fromJson(redisTemplate.opsForValue().get(roomId.toString()), TemplateDetailResponse.class);
 		log.info("quiz Start 시작, zset 삭제, 방번호 : "+roomId);
 		zSetOperations.removeRange(roomId+"statics",0,-1);
@@ -371,6 +375,7 @@ public class GradeService {
 		hashmap.forEach((key, value)->{
 			value.setRankPre(value.getRankNow());
 			value.setScoreGet(0);
+			value.setRankNow(0);
 			log.info("키값 : "+ key+" 받은 점수 : " + value.getScoreGet() + " 현재 순위 : " +value.getRankNow());
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
@@ -379,8 +384,10 @@ public class GradeService {
 		//채점 시작한다고 신호주기
 		KafkaGradeStartResponse gradeStartResponse = new KafkaGradeStartResponse();
 		gradeStartResponse.setRoomId(roomId);
+		gradeStartResponse.setHostId(message.getHostId());
 		kafkaProducer.gradeStart(gson.toJson(gradeStartResponse));
 	}
+
 	public void finalFinish(KafkaFinalEndRequest kafkaFinalEndRequest){
 		// 정리하기
 		// redisTemplate.delete(kafkaFinalEndRequest.getRoomId()+"statics");
