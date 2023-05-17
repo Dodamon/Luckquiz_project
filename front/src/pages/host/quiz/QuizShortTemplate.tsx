@@ -22,7 +22,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
     const intervalId = setInterval(() => {
 
       const content = quiz;
-      if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl) {
+      if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl || content.answerList) {
         dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
       }
     }, 1000);
@@ -38,8 +38,6 @@ const QuizShortTemplate = ({ num }: pageNum) => {
 
   const imageUploadHandler = async (event: any) => {
     const file = event.target.files[0];
-    console.log(file);
-
     const formData = new FormData();
     formData.append('file', file);
 
@@ -69,6 +67,19 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       ),
     });
   };
+
+  // const answerAddHandler = () => {
+  //   if (quiz.answerList.length === 3) return;
+  //   const newItem = [...quiz.answerList, ""];
+  //   setQuiz({ ...quiz, answerList: newItem });
+  // }
+
+  const deleteAnswerHandler = (idx:number)=>{
+    const beforeAnswerList = quiz.answerList.filter((it, index)=>{
+      return index!==idx;
+    })
+    setQuiz({ ...quiz, answerList: beforeAnswerList });
+  }
 
   return (
     <>
@@ -108,11 +119,21 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       <div className={styles.content_answerbox}>
         {
           quiz.answerList.map((it, index) => {
-            return <div className={styles.content_answer} key={index}> <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}><div><Icon icon="ic:round-menu" /></div></div>
+            return <div className={styles.content_answer} key={index}> 
+            <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}>
+             {
+              quiz.answerList.length===1 && index===0 ? 
+              <div><Icon style={{display:"block"}} icon="ic:round-menu" /></div>:
+              <div><Icon className={styles.deleteFont} icon="ic:round-do-not-disturb-on" color="red" onClick={()=>{deleteAnswerHandler(index)}}/><Icon className={styles.menuFont} icon="ic:round-menu" />
+              </div>
+             }
+         
+              </div>
               <div className={styles.content_input}>
                 <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
-              <div className={styles.content_add} onClick={answerAddHandler} style={index ===2? {visibility:"hidden"}:{}}><Icon icon="ic:round-plus" /></div></div>
+              <div className={styles.content_add} onClick={answerAddHandler} style={index ===2? {visibility:"hidden"}:{}}><Icon icon="ic:round-plus" /></div>
+              </div>
           })
         }
 
