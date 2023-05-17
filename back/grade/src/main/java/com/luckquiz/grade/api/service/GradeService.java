@@ -344,6 +344,8 @@ public class GradeService {
 		}
 
 
+		Set<ZSetOperations.TypedTuple<String>> rankingData = zSetOperations.reverseRangeWithScores(roomId+"rank",0,-1);
+		LinkedHashMap<String, Integer> rankingDataMap = rankingData.stream().collect(Collectors.toMap(data->gson.fromJson(data.getValue(), RankKey.class).getSender() , data->data.getScore().intValue(),(a, b)->a,LinkedHashMap::new));
 		//정답률
 		Double correctRate = solveCount==0?correctCount.doubleValue()/ solveCount.doubleValue() :0;
 
@@ -356,6 +358,7 @@ public class GradeService {
 			.correctCount(correctCount)
 			.correctRate(correctRate)
 			.answerData(answerData)
+			.rankingData(rankingDataMap)
 			.build();
 		kafkaProducer.gradeEnd(gson.toJson(gradeFinish));
 	}
