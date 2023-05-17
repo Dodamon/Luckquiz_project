@@ -181,7 +181,7 @@ public class QuizRoomConsumerController {
                 }
                 quizRoom.setParticipantCount(participant_count);
 
-                // quiz_report 에 정보입력
+                // 끝나고 삭제
                 stringRedisTemplate.delete(roomId+"statics");
                 stringRedisTemplate.delete(roomId+"rank");
                 stringRedisTemplate.delete(roomId+"p");
