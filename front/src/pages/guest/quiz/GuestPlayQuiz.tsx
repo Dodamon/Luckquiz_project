@@ -30,12 +30,12 @@ const GuestPlayQuiz = () => {
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
   // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중
   const [order, setOrder] = useState(0);
+  console.log("order:", order);
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
   // 게임이면 -1부터 진행
-  // 호스트가 퀴즈채점으로 넘기면 (endquiz : end) 2로 전환
   useEffect(() => {
-    quizItem ? (quizItem?.quiz ? setOrder(0) : setOrder(-1)) : setOrder(2);
+    quizItem?.quiz ? setOrder(0) : setOrder(-1)
   }, [quizItem]);
 
   // 해당 문제의 퀴즈 채점결과가 들어오면 결과페이지로 이동
@@ -53,13 +53,11 @@ const GuestPlayQuiz = () => {
   end === "success" && setOrder(2)
   }, [end])
 
-  console.log(guestAnswer);
-
   return (
     quizItem && (
       <div className={styles.container}>
         {order === -1 && <ReadyGame handleOrder={setOrder} />}
-        {order === 0 && <CountdownAni handleOrder={setOrder} />}
+        {order === 0 && <CountdownAni handleOrder={setOrder} order={order} />}
         {order === 1 && (
           <>
             <div className={styles.header}>

@@ -142,6 +142,7 @@ const router = createBrowserRouter([
             path: "quiz/awards",
             element: <Awards />,
           },
+          // test
           {
             path: "quiz/ranking",
             element: <QuizRanking/>,

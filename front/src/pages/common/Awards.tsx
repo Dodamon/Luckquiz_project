@@ -34,10 +34,11 @@ const Awards = () => {
 
   
   return (
-    <div className={styles.container}  >
+    <div className={styles.container} ref={ref}  >
        {modalOn && <QuizRanking />}
       <Podium />
-      { isHost && <div className={styles.btn}  style={ modalOn? { position: "relative", zIndex:"-1"}:{} } >
+      {/* { isHost && <div className={styles.btn}  style={ modalOn? { position: "relative", zIndex:"-1"}:{} } > */}
+      { isHost && <div className={styles.btn}>
         <ButtonWithLogo
           name="레포트 보러가기"
           fontSize="18px"
@@ -48,8 +49,8 @@ const Awards = () => {
           }}
         />
       </div>}
-      <div  className={styles.bgtools} style={modalOn? {backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)'}: {}} ></div>
-      <div ref={ref} className={styles.open_btn} onClick={() => SetModalOn((pre) => !pre)}>현재 전체 랭킹보기</div>
+      {/* <div  className={styles.bgtools} style={modalOn? {backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)'}: {}} ></div> */}
+      <div className={styles.open_btn} onClick={() => SetModalOn((pre) => !pre)}>현재 전체 랭킹보기</div>
      
     </div>
   );

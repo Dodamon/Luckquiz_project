@@ -22,6 +22,7 @@ import QuizShortAnswer from "components/quiz/QuizShortAnswer";
 import QuizOxAnswer from "components/quiz/QuizOxAnswer";
 import QuizFourAnswer from "components/quiz/QuizFourAnswer";
 import HostQuizRanking from "components/quiz/HostQuizRanking";
+import HostGameRanking from "components/quiz/HostGameRanking";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const HostPlayQuiz = () => {
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-    console.log('최종결과인뎁숑?:')
+    console.log("최종결과인뎁숑?:");
     finalResult && console.log("최종결과인뎁숑?:", finalResult);
     finalResult && navigate(`/host/quiz/${quiz_id}/awards`);
   }, [finalResult]);
@@ -88,7 +89,7 @@ const HostPlayQuiz = () => {
     quizItem && (
       <div className={styles.container}>
         {order === -1 && <ReadyGame handleOrder={setOrder} />}
-        {order === 0 && <CountdownAni handleOrder={setOrder} />}
+        {order === 0 && <CountdownAni handleOrder={setOrder} order={order} />}
         {order === 1 && (
           <>
             <div className={styles.header}>
@@ -112,21 +113,9 @@ const HostPlayQuiz = () => {
                   <Doughnut data={chartConfig} />
                 </div> 
               */}
-              <div className={styles.nextBtn}>
-                <ButtonWithLogo
-                  name="건너뛰기"
-                  fontSize="18px"
-                  height="45px"
-                  onClick={() =>
-                    dispatch(
-                      socketActions.sendAnswerMessage({
-                        destination: "/app/quiz/rollback",
-                        body: { hostId: userId, roomId: quiz_id },
-                      }),
-                    )
-                  }
-                />
-                {quizItem.quiz && (
+
+              {quizItem.quiz && (
+                <div className={styles.nextBtn}>
                   <ButtonWithLogo
                     name="채점하기"
                     fontSize="18px"
@@ -142,8 +131,8 @@ const HostPlayQuiz = () => {
                       setOrder(2);
                     }}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </>
           </>
         )}
@@ -171,11 +160,13 @@ const HostPlayQuiz = () => {
           // 제출현황 차트 & 랭킹 컴포넌트(모달)
           <>
             {quizItem?.quiz && (
-              <div className={styles.submitChart} style={{ position: "relative", zIndex: "-1" }}>
+              // <div className={styles.submitChart} style={{ position: "relative", zIndex: "-1" }}>
+              <div className={styles.submitChart}>
                 <SubmitChart myData={[34, 24, 44, 10]} />
               </div>
             )}
-            <div className={styles.quizContainer} ref={ref} style={{ position: "relative", zIndex: "-1" }}>
+            {/* <div className={styles.quizContainer} ref={ref} style={{ position: "relative", zIndex: "-1" }}> */}
+            <div className={styles.quizContainer} ref={ref}>
               {quizItem?.quiz === "text" && <QuizShortAnswer />}
               {quizItem?.quiz === "ox" && <QuizOxAnswer />}
               {quizItem?.quiz === "four" && <QuizFourAnswer />}
@@ -183,21 +174,29 @@ const HostPlayQuiz = () => {
             {quizItem?.quiz && (
               <div
                 onClick={() => SetModalOn((pre) => !pre)}
-                style={modalOn ? { position: "relative", zIndex: "-2" } : {}}
+                // style={modalOn ? { position: "relative", zIndex: "-2" } : {}}
               >
                 현재 전체 랭킹보기
               </div>
             )}
-            {quizItem.game && quizGameResult && <HostQuizRanking result={quizGameResult} />}
-            {!quizItem.game && modalOn && quizGameResult && <HostQuizRanking result={quizGameResult} />}
-            <div
-              className={styles.bgtools}
-              style={modalOn ? { backgroundColor: "rgba(0, 0, 0, 0.5)", backdropFilter: "blur(3px)" } : {}}
-            ></div>
+            {quizItem.game && quizGameResult && <HostGameRanking result={quizGameResult} />}
+            {quizItem.quiz && modalOn && quizGameResult ? (
+              <>
+                <HostQuizRanking result={quizGameResult} />
+                {/* <div
+                  className={styles.bgtools}
+                  style={modalOn ? { backgroundColor: "rgba(0, 0, 0, 0.5)", backdropFilter: "blur(3px)" } : {}}
+                ></div> */}
+              </>
+            ) : (
+              <></>
+            )}
+
             {/* 마지막 문제이면 최종결과 버튼*/}
             {/* 아니면 다음퀴즈 버튼*/}
             {quizItem.quizSize - quizItem.quizNum === 1 ? (
-              <div className={styles.nextBtn} style={modalOn ? { position: "relative", zIndex: "-2" } : {}}>
+              // <div className={styles.nextBtn} style={modalOn ? { position: "relative", zIndex: "-2" } : {}}>
+              <div className={styles.nextBtn}>
                 <ButtonWithLogo
                   name="최종 결과보기"
                   fontSize="18px"
@@ -213,7 +212,21 @@ const HostPlayQuiz = () => {
                 />
               </div>
             ) : (
+              // <div className={styles.nextBtn} style={modalOn ? { position: "relative", zIndex: "-2" } : {}}>
               <div className={styles.nextBtn}>
+                <ButtonWithLogo
+                  name="건너뛰기"
+                  fontSize="18px"
+                  height="45px"
+                  onClick={() =>
+                    dispatch(
+                      socketActions.sendAnswerMessage({
+                        destination: "/app/quiz/rollback",
+                        body: { hostId: userId, roomId: quiz_id },
+                      }),
+                    )
+                  }
+                />
                 <ButtonWithLogo
                   name="다음 퀴즈"
                   fontSize="18px"

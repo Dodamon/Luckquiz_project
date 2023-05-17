@@ -1,15 +1,25 @@
+import { useEffect } from "react";
 import styles from "./CountdownAni.module.css";
 
 interface Props {
   handleOrder: Function;
+  order: number;
 }
 
 const CountdownAni = (props: Props) => {
-  const { handleOrder } = props;
+  const { handleOrder, order } = props;
+  console.log("countdown:", order);
 
-  setTimeout(() => {
-    handleOrder(1);
-  }, 3800);
+  useEffect(() => {
+    // if (order === 0) {
+      let timeout = setTimeout(() => {
+        handleOrder(1);
+      }, 3800);
+      return () => {
+        clearTimeout(timeout);
+      };
+    // }
+  }, []);
 
   return (
     <div className={styles.container}>

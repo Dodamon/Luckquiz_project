@@ -1,15 +1,4 @@
 @media screen and (min-width:767px) {
-    .HostQuizRanking {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: fixed;
-        /* background-color: red; */
-        z-index: 4;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
     .rank_logo {
         display: flex;
         justify-content: center;
@@ -114,16 +103,6 @@
 }
 
 @media screen and (max-width: 767px) {
-    .HostQuizRanking {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: fixed;
-        z-index: 4;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
     .rank_logo {
         width: 360px;
         height: 100%;

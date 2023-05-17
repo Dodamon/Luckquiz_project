@@ -71,7 +71,7 @@ const WakeUpGame = (props: Props) => {
     // web이면, keydown listner작동
     !isMobile && window.addEventListener("keyup", handleWebShake);
 
-    console.log("타이머 시작:", time! - 6);
+    // console.log("타이머 시작:", time! - 6);
     let startGame = setTimeout(() => {
       setIsBroken(true);
       window.removeEventListener("keyup", handleWebShake);
@@ -85,7 +85,6 @@ const WakeUpGame = (props: Props) => {
 
   useEffect(() => {
     if (isBroken) {
-      console.log("제출할갑숑?", shakeCount);
       submitAnswer(); // shake횟수 제출
 
       // crack 애니메이션이 끝나면 럭퀴애니메이션 보여주기
