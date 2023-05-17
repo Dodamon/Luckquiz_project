@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuizReportProblem {
-    int num;
-    String problem;
+public class QuizRoomGuest {
+    int rank;
+    String nickName;
     long successRate;
+    double totalScore;
 }

@@ -1,14 +1,12 @@
 package com.luckquiz.quiz.api.controller;
 
 
-import com.luckquiz.quiz.api.response.QuizReportGuest;
-import com.luckquiz.quiz.api.response.QuizReportListResponse;
-import com.luckquiz.quiz.api.response.QuizReportProblem;
-import com.luckquiz.quiz.api.response.QuizReportResponse;
+import com.luckquiz.quiz.api.response.QuizRoomGuest;
+import com.luckquiz.quiz.api.response.QuizRoomQuestion;
+import com.luckquiz.quiz.api.response.QuizRoomResponse;
+import com.luckquiz.quiz.api.response.QuizRoomListResponse;
 import com.luckquiz.quiz.api.service.QuizReportService;
 import com.luckquiz.quiz.api.service.TokenProvider;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -32,43 +30,43 @@ public class QuizReportController {
     private final QuizReportService quizReportService;
     private final TokenProvider tokenProvider;
 
+    // 유저가 열었던 모든 quiz room 정보를 가져옵니다
     @GetMapping("/")
-    public ResponseEntity<Slice<QuizReportListResponse>> getQuizReportList(HttpServletRequest request) {
+    public ResponseEntity<Slice<QuizRoomListResponse>> getQuizRoomList(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("access token :  " + bearerToken);
         String accessToken = getJwtFromRequest(request);
-        UUID userId = tokenProvider.getUserIdFromToken(accessToken);
+        UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("토큰 까기 성공 : 유저의 리포트 리스트를 가져옵니다");;
-        return ResponseEntity.ok().body(quizReportService.getQuizReportList(userId));
+        return ResponseEntity.ok().body(quizReportService.getQuizRoomList(hostId));
     }
+
+    // 퀴즈룸 하나의 기본 정보를 가져옵니다
     @GetMapping("/info")
-    public ResponseEntity<QuizReportResponse> getQuizReport(
-            @RequestParam(value = "report", required = true) int reportId,
-            @RequestParam(value = "id", required = false) int userId) {
-        log.info("reportId : " + String.valueOf(reportId));
-        log.info("userId : " +  String.valueOf(userId));
-        QuizReportResponse quizReportResponse = quizReportService.getQuizReport(reportId);
+    public ResponseEntity<QuizRoomResponse> getQuizRoomInfo(
+            @RequestParam(value = "id", required = true) int roomId) {
+        log.info("roomId : " + String.valueOf(roomId));
+        QuizRoomResponse quizReportResponse = quizReportService.getQuizRoomInfo(roomId);
         return ResponseEntity.ok().body(quizReportResponse);
     }
 
-
-    @GetMapping("/questions")
-    public ResponseEntity<Slice<QuizReportProblem>> getQuizReportDetail(
-            @RequestParam(value = "report", required = true) int reportId,
-            @RequestParam(value = "id", required = false) int userId) {
-        log.info("reportId : " + String.valueOf(reportId));
-        log.info("userId : " +  String.valueOf(userId));
-        return ResponseEntity.ok().body(quizReportService.getQuizProblems(reportId));
+    // 퀴즈룸의 참여자 정보를 가져온다
+    @GetMapping("/participants")
+    public ResponseEntity<Slice<QuizRoomGuest>> getQuizRoomParticipants(
+            @RequestParam(value = "id", required = true) int roomId,
+            @RequestParam(value = "next", defaultValue = "0") int lastGuestId,
+            @PageableDefault(size = 10, sort="score", direction = Sort.Direction.DESC) Pageable pageable) {
+        log.info("roomId : " + String.valueOf(roomId));
+        log.info("lastGuestId : " +  String.valueOf(lastGuestId));
+        return ResponseEntity.ok().body(quizReportService.getQuizRoomParticipants(roomId, lastGuestId, pageable));
     }
 
-    @GetMapping("/participants")
-    public ResponseEntity<Slice<QuizReportGuest>> getQuizReportParticipants(
-            @RequestParam(value = "report", required = true) int reportId,
-            @RequestParam(value = "idx", defaultValue = "0") int lastGuestId,
-            @PageableDefault(size = 10, sort="score", direction = Sort.Direction.DESC) Pageable pageable) {
-        log.info("reportId : " + String.valueOf(reportId));
-        log.info("lastGuestId : " +  String.valueOf(lastGuestId));
-        return ResponseEntity.ok().body(quizReportService.getQuizParticipants(reportId, lastGuestId, pageable));
+    // 퀴즈룸의 모든 문제들의 정보를 가져온다
+    @GetMapping("/questions")
+    public ResponseEntity<Slice<QuizRoomQuestion>> getQuizRoomQuestions(
+            @RequestParam(value = "id", required = true) int roomId) {
+        log.info("roomId : " + String.valueOf(roomId));
+        return ResponseEntity.ok().body(quizReportService.getQuizQuestions(roomId));
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

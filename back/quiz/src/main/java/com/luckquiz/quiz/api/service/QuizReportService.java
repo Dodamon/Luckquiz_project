@@ -1,14 +1,12 @@
 package com.luckquiz.quiz.api.service;
 
-import com.luckquiz.quiz.api.response.QuizReportGuest;
-import com.luckquiz.quiz.api.response.QuizReportListResponse;
-import com.luckquiz.quiz.api.response.QuizReportProblem;
-import com.luckquiz.quiz.api.response.QuizReportResponse;
+import com.luckquiz.quiz.api.response.QuizRoomGuest;
+import com.luckquiz.quiz.api.response.QuizRoomQuestion;
+import com.luckquiz.quiz.api.response.QuizRoomResponse;
+import com.luckquiz.quiz.api.response.QuizRoomListResponse;
 import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
-import com.luckquiz.quiz.db.entity.QuizReport;
 import com.luckquiz.quiz.db.entity.QuizRoom;
-import com.luckquiz.quiz.db.entity.Template;
 import com.luckquiz.quiz.db.repository.QuizReportCustomRepository;
 import com.luckquiz.quiz.db.repository.QuizReportRepository;
 import com.luckquiz.quiz.db.repository.QuizRoomRepository;
@@ -22,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,12 +31,14 @@ public class QuizReportService {
     private final QuizReportCustomRepository quizReportCustomRepository;
 
     @Transactional(readOnly = true)
-    public QuizReportResponse getQuizReport(int reportId) {
+    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+        return quizReportCustomRepository.getQuizRoomList(userId);
+    }
+    @Transactional(readOnly = true)
+    public QuizRoomResponse getQuizRoomInfo(int roomId) {
         // quizRoom 전체 방에 대한 정보
         // quizReport는 문제 하나에 대한 정보
-        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
-                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
-        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
+        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
 
         // LocalDateTime 객체를 Instant 객체로 변환
@@ -48,41 +47,28 @@ public class QuizReportService {
         // Instant 객체 간의 차이를 Duration 객체로 계산
         Duration duration = Duration.between(startInstant, endInstant);
 
-        QuizReportResponse quizReportResponse = QuizReportResponse.builder()
+        QuizRoomResponse quizReportResponse = QuizRoomResponse.builder()
                 .quizCount(quizRoom.getQuizCount())
                 .gameCount(quizRoom.getGameCount())
                 .participantCount(quizRoom.getParticipantCount())
                 .successRate(quizRoom.getCorrectCount() / quizRoom.getSubmitCount())
                 .duration(duration)
-                .title(quizReport.getQuestion())
+                .title(quizRoom.getTemplateName())
                 .build();
 
         log.info(quizReportResponse.toString());
         return quizReportResponse;
     }
 
-    public Slice<QuizReportListResponse> getQuizReportList(UUID userId) {
-        return quizReportCustomRepository.getReports(userId);
+    // 퀴즈룸에 참여한 참여자들의 정보를 가져옵니다.
+    // quiz_guest
+    @Transactional(readOnly = true)
+    public Slice<QuizRoomGuest> getQuizRoomParticipants(int roomId, int lastGuestId, Pageable pageable) {
+        return quizReportCustomRepository.getParticipants(roomId, lastGuestId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public Slice<QuizReportGuest> getQuizParticipants(int reportId, int lastGuestId, Pageable pageable) {
-        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
-                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
-        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
-                () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-
-        return quizReportCustomRepository.getParticipants(quizRoom.getPinNum(), lastGuestId, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public Slice<QuizReportProblem> getQuizProblems(int reportId) {
-
-        QuizReport quizReport = quizReportRepository.findById(reportId).orElseThrow(
-                () -> new CustomException(CustomExceptionType.REPORT_NOT_FOUND));
-        QuizRoom quizRoom = quizRoomRepository.findById(quizReport.getQuizRoomId()).orElseThrow(
-                () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-
-        return quizReportCustomRepository.getProblems(reportId, quizRoom.getTemplateId());
+    public Slice<QuizRoomQuestion> getQuizQuestions(int roomId) {
+        return quizReportCustomRepository.getQuestions(roomId);
     }
 }
