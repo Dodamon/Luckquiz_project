@@ -22,7 +22,7 @@ const QuizShortTemplate = ({ num }: pageNum) => {
     const intervalId = setInterval(() => {
 
       const content = quiz;
-      if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl) {
+      if (content.question || content.answerList.every((option) => option !== "") || content.answer || content.quizUrl || content.answerList) {
         dispatch(quizAtions.contentsUpdate({ index: num, content: content }))
       }
     }, 1000);
@@ -38,8 +38,6 @@ const QuizShortTemplate = ({ num }: pageNum) => {
 
   const imageUploadHandler = async (event: any) => {
     const file = event.target.files[0];
-    console.log(file);
-
     const formData = new FormData();
     formData.append('file', file);
 
@@ -52,7 +50,10 @@ const QuizShortTemplate = ({ num }: pageNum) => {
   }
   };
 
-
+  const imageDeleteHandler = ()=>{
+    const content = {...quiz, quizUrl:""};
+    dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
+  }
 
   const questionHandler = (e: any) => {
     setQuiz({ ...quiz, question: e.target.value });
@@ -67,6 +68,19 @@ const QuizShortTemplate = ({ num }: pageNum) => {
     });
   };
 
+  // const answerAddHandler = () => {
+  //   if (quiz.answerList.length === 3) return;
+  //   const newItem = [...quiz.answerList, ""];
+  //   setQuiz({ ...quiz, answerList: newItem });
+  // }
+
+  const deleteAnswerHandler = (idx:number)=>{
+    const beforeAnswerList = quiz.answerList.filter((it, index)=>{
+      return index!==idx;
+    })
+    setQuiz({ ...quiz, answerList: beforeAnswerList });
+  }
+
   return (
     <>
       <div className={styles.content_title}>
@@ -76,19 +90,28 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
         <div
 
-          className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  ><div>
+          className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  >      <div>
+          <div className={styles.font_box}>
             <label htmlFor="file-upload" className={styles.plus_comment}>
               <Icon icon="ic:round-plus" />
             </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".jpg, .png"
-              onChange={imageUploadHandler}
-              style={{ display: "none" }}
-            />
+
+            {
+             quiz.quizUrl&&<div className={styles.plus_comment}>
+                <Icon icon="ph:trash-bold" onClick={imageDeleteHandler} />
+              </div>
+            }
 
           </div>
+          <input
+            id="file-upload"
+            type="file"
+            accept=".jpg, .png"
+            onChange={imageUploadHandler}
+            style={{ display: "none" }}
+          />
+
+        </div>
           <div>이미지를 첨부하세요 (선택)</div>
         </div>
       </div>
@@ -96,13 +119,21 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       <div className={styles.content_answerbox}>
         {
           quiz.answerList.map((it, index) => {
-            return <div className={styles.content_answer} key={index}> <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}><div><Icon icon="ic:round-menu" /></div></div>
+            return <div className={styles.content_answer} key={index}> 
+            <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}>
+              <div><Icon style={{display:"block"}} icon="ic:round-menu" /></div>
+              </div>
               <div className={styles.content_input}>
                 <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
-              <div className={styles.content_add} onClick={answerAddHandler} style={index ===2? {visibility:"hidden"}:{}}><Icon icon="ic:round-plus" /></div></div>
+              <div className={styles.content_add}  style={index ===0 && quiz.answerList.length===1 ? {visibility:"hidden"}:{}}><Icon icon="ic:round-minus" onClick={()=>deleteAnswerHandler(index)}  /></div>
+              </div>
           })
         }
+        {
+         quiz.answerList.length!==3 && <div className={styles.add_btn}><Icon icon="material-symbols:add-circle-outline-rounded" onClick={answerAddHandler}/></div>
+        }
+        
 
 
 

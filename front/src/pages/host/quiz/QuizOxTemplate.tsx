@@ -16,7 +16,10 @@ const QuizOxTemplate = ({ num }: pageNum) => {
     const quizList = useSelector((state: RootState) => state.quiz.quizList);
     const [quiz, setQuiz] = useState(quizList[num]);
     const navigate = useNavigate()
-
+    const imageDeleteHandler = ()=>{
+        const content = {...quiz, quizUrl:""};
+        dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
+      }
     console.log("여기 왔습니니다.", num, quiz);
     useEffect(() => {
         setQuiz(quizList[num]);
@@ -65,21 +68,28 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             </div>
 
             <div className={styles.content_images} style={quiz.quizUrl ? { backgroundImage: `url(${quiz.quizUrl})`, backgroundSize: "contain", backgroundPosition: 'center center', backgroundRepeat: "no-repeat" } : {}}>
-                <div
+                <div className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  >      <div>
+            <div className={styles.font_box}>
+              <label htmlFor="file-upload" className={styles.plus_comment}>
+                <Icon icon="ic:round-plus" />
+              </label>
 
-                    className={!quiz.quizUrl ? styles['plus_font'] : styles['effect_font']}  ><div>
-                        <label htmlFor="file-upload" className={styles.plus_comment}>
-                            <Icon icon="ic:round-plus" />
-                        </label>
-                        <input
-                            id="file-upload"
-                            type="file"
-                            accept=".jpg, .png"
-                            onChange={imageUploadHandler}
-                            style={{ display: "none" }}
-                        />
+              {
+               quiz.quizUrl&&<div className={styles.plus_comment}>
+                  <Icon icon="ph:trash-bold" onClick={imageDeleteHandler} />
+                </div>
+              }
 
-                    </div>
+            </div>
+            <input
+              id="file-upload"
+              type="file"
+              accept=".jpg, .png"
+              onChange={imageUploadHandler}
+              style={{ display: "none" }}
+            />
+
+          </div>
                     <div>이미지를 첨부하세요 (선택)</div>
                 </div>
             </div>
