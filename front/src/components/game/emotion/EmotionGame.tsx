@@ -12,7 +12,7 @@ interface HandleOrderProps {
 
 const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
   const dispatch = useDispatch();
-  
+
   const webcamRef = useRef<Webcam>(null);
   const faceBoxRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -26,9 +26,9 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
   const sender = useSelector((state: RootState) => state.guest.nickname);
   const roomId = useSelector((state: RootState) => state.socket.pinNum);
   const emotionResult = useSelector((state: RootState) => state.socket.emotionResult);
-  const quizNum = useSelector((state:RootState) => state.socket.quizItem?.quizNum);
-  const gotEmotion = useSelector((state:RootState) => state.socket.getEmotion);
-  const emotion = useSelector((state:RootState) => state.socket.quizItem?.answer);
+  const quizNum = useSelector((state: RootState) => state.socket.quizItem?.quizNum);
+  const gotEmotion = useSelector((state: RootState) => state.socket.getEmotion);
+  const emotion = useSelector((state: RootState) => state.socket.quizItem?.answer);
 
   const resizeImage = (img: string, maxSize: number) => {
     return new Promise<string | null>((resolve, reject) => {
@@ -136,23 +136,23 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
     let emotionKor: string;
 
     if (emotion === "angry") {
-      return emotionKor = "화남";
+      return (emotionKor = "화남");
     } else if (emotion === "disgust") {
-      return emotionKor = "혐오";
+      return (emotionKor = "혐오");
     } else if (emotion === "fear") {
-      return emotionKor = "두려움";
+      return (emotionKor = "두려움");
     } else if (emotion === "laugh" || emotion === "smile") {
-      return emotionKor = "기쁨";
+      return (emotionKor = "기쁨");
     } else if (emotion === "neutral") {
-      return emotionKor = "무표정";
+      return (emotionKor = "무표정");
     } else if (emotion === "sad") {
-      return emotionKor = "슬픔";
+      return (emotionKor = "슬픔");
     } else if (emotion === "surprise") {
-      return emotionKor = "놀람";
+      return (emotionKor = "놀람");
     } else if (emotion === "talking") {
-      return emotionKor = "수다";
-    };   
-    return emotionKor = "";
+      return (emotionKor = "수다");
+    }
+    return (emotionKor = "");
   };
 
   useEffect(() => {
