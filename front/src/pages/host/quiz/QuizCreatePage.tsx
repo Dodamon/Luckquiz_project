@@ -17,9 +17,16 @@ const QuizCreatePage: React.FC = () => {
   // const [quizInfo, setQuizInfo] = useState(useSelector((state: RootState) => state.quiz.quizList))
   const quizInfo = useSelector((state: RootState) => state.quiz.quizList);
   const authInfo = useSelector((state: RootState) => state.auth);
-
+  const quizTemplateId = useSelector((state: RootState) => state.quiz.templateId);
   const navigate = useNavigate();
+  const isLogined = useSelector((state:RootState)=> state.auth.isAuthenticated);
+  useEffect(()=>{
+    (!isLogined) && navigate("/");
+  },[]);
 
+  useEffect(()=>{
+    (quizTemplateId===-1) && navigate("/home");
+  },[]);
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();

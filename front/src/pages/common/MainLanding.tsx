@@ -2,9 +2,20 @@ import styles from "./MainLanding.module.css";
 import EnterPin from "components/guest/EnterPin";
 import { Mobile, Default } from "hooks/mediaQuery";
 import Login from "components/login/Login";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 
 const MainLanding: React.FC = () => {
+  const isLogined = useSelector((state:RootState)=> state.auth.isAuthenticated);
+  const navigate = useNavigate()
+  useEffect(()=>{
+    isLogined && navigate("home");
+  },[]);
+
+
   return (
       <div className={styles.container}>
         <EnterPin />
