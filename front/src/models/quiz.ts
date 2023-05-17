@@ -70,13 +70,11 @@ export interface HostResult {
 }
 
 export interface GuestResult {
-    playerName: string,
     isUp: string;
     rankDiff: number;
     scoreGet: number;
     quizNum: number;
-
-    
+    rankNow: number;
 }
 
 export interface FinalResultList {
@@ -84,4 +82,9 @@ export interface FinalResultList {
     img: number,
     rank: number,
     score: number
+}
+
+export interface SubmitAnswerResult {
+    answer?: string;
+    count?: number
 }

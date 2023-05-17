@@ -9,7 +9,7 @@ const QuizFourAnswer = () => {
   const content = useSelector((state: RootState) => state.socket.quizItem!);
 
   return (
-    <div className={styles.QuizFourContent}>
+    // <div className={styles.QuizFourContent}>
       <div className={styles.content_answerbox}>
         <div
           className={styles.content_answer}
@@ -67,7 +67,7 @@ const QuizFourAnswer = () => {
           </div>
         </div>
       </div>
-    </div>
+    // </div>
   );
 };
 

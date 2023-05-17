@@ -8,7 +8,7 @@ import styles from "./HostPlayQuiz.module.css";
 import QuizOxContent from "components/quiz/QuizOxContent";
 import QuizFourContent from "components/quiz/QuizFourContent";
 import "chart.js/auto";
-import { Doughnut } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
 import TimerBar from "components/common/TimerBar";
 import CountdownAni from "components/common/CountdownAni";
 import SubmitChart from "components/host/quiz/SubmitChart";
@@ -20,6 +20,7 @@ import QuizOxAnswer from "components/quiz/QuizOxAnswer";
 import QuizFourAnswer from "components/quiz/QuizFourAnswer";
 import HostQuizRanking from "components/quiz/HostQuizRanking";
 import HostGameRanking from "components/quiz/HostGameRanking";
+import pngwing from "assets/images/pngwing.png";
 
 const HostPlayQuiz = () => {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ const HostPlayQuiz = () => {
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const hostResult = useSelector((state: RootState) => state.socket.getHostResult);
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList);
+  const submitAnswerResult = useSelector((state: RootState) => state.socket.getSubmitAnswerResult);
+  console.log("sar:", submitAnswerResult)
 
   const [modalOn, SetModalOn] = useState(quizItem?.quiz ? false : true);
   const ref = useRef<HTMLDivElement>(null);
@@ -105,7 +108,7 @@ const HostPlayQuiz = () => {
               </>
             )}
             <>
-              {/* 
+              {/*               
                 <div className={styles.currenSubmitChart}>
                   <Doughnut data={chartConfig} />
                 </div> 
@@ -157,26 +160,27 @@ const HostPlayQuiz = () => {
           // 제출현황 차트 & 랭킹 컴포넌트(모달)
           <>
             {quizItem?.quiz && (
-              <div className={styles.submitChart}>
-                <SubmitChart myData={[34, 24, 44, 10]} />
-              </div>
+              <>
+                <div className={styles.flexend} onClick={() => SetModalOn((pre) => !pre)}>
+                  <div ref={ref} className={styles.open_btn}>
+                    <img src={pngwing} alt="" />
+                    <div className={styles.text}>전체 랭킹</div>
+                  </div>
+                </div>
+                <div className={styles.submitChart}>
+                  <SubmitChart />
+                </div>
+                <div ref={ref}>
+                  {quizItem?.quiz === "text" && <QuizShortAnswer />}
+                  {quizItem?.quiz === "ox" && <QuizOxAnswer />}
+                  {quizItem?.quiz === "four" && <QuizFourAnswer />}
+                </div>
+              </>
             )}
-            <div className={styles.quizContainer} ref={ref}>
-              {quizItem?.quiz === "text" && <QuizShortAnswer />}
-              {quizItem?.quiz === "ox" && <QuizOxAnswer />}
-              {quizItem?.quiz === "four" && <QuizFourAnswer />}
-            </div>
-            {quizItem?.quiz && (
-              <div
-                onClick={() => SetModalOn((pre) => !pre)}
-              >
-                현재 전체 랭킹보기
-              </div>
-            )}
-            {quizItem.game && hostResult && <HostGameRanking/>}
+            {quizItem.game && hostResult && <HostGameRanking />}
             {quizItem.quiz && modalOn && hostResult ? (
               <>
-                <HostQuizRanking/>
+                <HostQuizRanking />
               </>
             ) : (
               <></>
@@ -185,21 +189,19 @@ const HostPlayQuiz = () => {
             {/* 마지막 문제이면 최종결과 버튼*/}
             {/* 아니면 다음퀴즈 버튼*/}
             {quizItem.quizSize - quizItem.quizNum === 1 ? (
-              // <div className={styles.nextBtn}>
-                <ButtonWithLogo
-                  name="최종 결과보기"
-                  fontSize="18px"
-                  height="45px"
-                  onClick={() =>
-                    dispatch(
-                      socketActions.sendAnswerMessage({
-                        destination: "/app/finalEnd",
-                        body: { hostId: userId, roomId: quiz_id },
-                      }),
-                    )
-                  }
-                />
-              // </div>
+              <ButtonWithLogo
+                name="최종 결과보기"
+                fontSize="18px"
+                height="45px"
+                onClick={() =>
+                  dispatch(
+                    socketActions.sendAnswerMessage({
+                      destination: "/app/finalEnd",
+                      body: { hostId: userId, roomId: quiz_id },
+                    }),
+                  )
+                }
+              />
             ) : (
               <div className={styles.nextBtn}>
                 <ButtonWithLogo

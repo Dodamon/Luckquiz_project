@@ -1,7 +1,6 @@
 import LobbyComp from "components/common/lobby/LobbyComp";
 import styles from "./ShowPin.module.css";
 import logo from "assets/images/logo.png";
-import qr_sample from "assets/images/qr_sample.png";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
@@ -18,7 +17,6 @@ const HostLobby = () => {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
   const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=https://luckquiz.co.kr/guest/nickname?pinnum=${quiz_id}`;
-  // const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://localhost:3000/guest/nickname?pinnum=${quiz_id}`;
 
   useEffect(() => {
     quizItem && navigate(`/host/quiz/${quiz_id}/play`);
@@ -44,6 +42,7 @@ const HostLobby = () => {
         </div>
       </div>
       <LobbyComp />
+      <div className={styles.btn}>
       <ButtonWithLogo
         name="시작하기"
         height="40px"
@@ -54,9 +53,10 @@ const HostLobby = () => {
               destination: "/app/quiz/start",
               body: { hostId: userId, roomId: quiz_id },
             }),
-          )
-        }
-      />
+            )
+          }
+          />
+          </div>
     </div>
   );
 };
