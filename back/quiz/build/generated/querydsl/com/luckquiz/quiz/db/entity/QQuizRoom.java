@@ -43,6 +43,8 @@ public class QQuizRoom extends EntityPathBase<QuizRoom> {
 
     public final NumberPath<Integer> templateId = createNumber("templateId", Integer.class);
 
+    public final StringPath templateName = createString("templateName");
+
     public QQuizRoom(String variable) {
         super(QuizRoom.class, forVariable(variable));
     }

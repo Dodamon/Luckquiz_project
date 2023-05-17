@@ -44,9 +44,6 @@ public class QuizReport {
     @Column(name = "pin_num")
     private Integer pinNum;
 
-    @Column(name = "user_id")
-    private UUID userId;
-
     public void setQuizGameId(int quizGameId) {
         this.quizGameId = quizGameId;
     }
