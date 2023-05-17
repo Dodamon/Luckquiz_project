@@ -30,4 +30,8 @@ public class UserTurnEndResponse {
     public void setRankNow(int rankNow) {
         this.rankNow = rankNow;
     }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
 }

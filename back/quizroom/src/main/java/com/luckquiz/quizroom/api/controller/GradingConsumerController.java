@@ -145,16 +145,15 @@ public class GradingConsumerController {
 
 
                 for(Grade gtemp :userLList){
-
                     UserTurnEndResponse userTurnEndResponse = new UserTurnEndResponse();
                     userTurnEndResponse.setScoreGet(gtemp.getScoreGet());
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
                     if(rankDiff < 0 ){
-                        userTurnEndResponse.setIsUp("true");
+                        userTurnEndResponse.setIsUp("false");
                     }else if(rankDiff == 0){
                         userTurnEndResponse.setIsUp("same");
                     }else {
-                        userTurnEndResponse.setIsUp("false");
+                        userTurnEndResponse.setIsUp("true");
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
