@@ -24,6 +24,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,6 +45,7 @@ public class QuizRoomConsumerController {
     private final QuizGuestRepository quizGuestRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     @KafkaListener(topics = "server_message",groupId = "test2") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
@@ -68,7 +70,7 @@ public class QuizRoomConsumerController {
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
                 redisTransService.quizRedisTrans(roomId, hostId, templateId, host.getName());  // roomId 로
 
-
+            
                 System.out.println("consumer came");
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
                 QuizRoom quizRoom = QuizRoom.builder()
@@ -104,11 +106,11 @@ public class QuizRoomConsumerController {
                 TemplateAndRoomId templateAndRoomId = gson.fromJson(forRoomId, TemplateAndRoomId.class);
                 log.info("templateAndRoomId" + templateAndRoomId);
                 QuizRoom quizRoom = quizRoomRepository.findQuizRoomById(templateAndRoomId.getRoomPk()).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
-                log.info("quizRoom : " + quizRoom);
-                quizRoom.setFinishedTime(LocalDateTime.now());
-                String quizInfo = StringValueOperations.get(roomId);
-                log.info("quizInfo" + quizInfo);
 
+
+                quizRoom.setFinishedTime(LocalDateTime.now());
+                String quizInfo = StringValueOperations.get(roomId.toString());
+                log.info(quizInfo);
                 log.info("퀴즈방 처리 중간까지 성공 ");
                 // 퀴즈 정보 가져오기
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quizInfo,TemplateDetailResponse.class);
@@ -128,6 +130,7 @@ public class QuizRoomConsumerController {
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReport.setQuizRoomId(quizRoom.getId());
                     quizReportRepository.save(quizReport);
+
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
@@ -168,7 +171,7 @@ public class QuizRoomConsumerController {
                 }
 
                 quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
-
+                log.info("여기 어디야");
                 int participant_count = 0;
                 Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
