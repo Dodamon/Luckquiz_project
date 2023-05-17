@@ -3,6 +3,7 @@ package com.luckquiz.grade.api.request;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class KafkaEmotionResult {
@@ -44,6 +45,7 @@ public class KafkaEmotionResult {
 	}
 
 	@Getter
+	@Setter
 	public class ValCon {
 		public String value;
 		public double confidence;
