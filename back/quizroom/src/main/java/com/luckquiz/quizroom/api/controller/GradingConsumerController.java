@@ -26,10 +26,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -83,13 +80,42 @@ public class GradingConsumerController {
             case "grade_start":
                 log.info("채점 시작했답니다. 퀴즈 끝나면 퀴즈 끝났다고 보내줘야합니다.");
                 @Getter
-                @Setter
                 class KafkaGradeStartMessage{
                     private Integer roomId;
+                    private UUID hostId;
                 }
                 KafkaGradeStartMessage kafkaGradeStartMessage = gson.fromJson(in,KafkaGradeStartMessage.class);
+                QuizStartRequest quizStartRequest1 = QuizStartRequest.builder()
+                        .hostId(kafkaGradeStartMessage.getHostId())
+                        .roomId(kafkaGradeStartMessage.getRoomId())
+                        .build();
                 //함수 분리하기;
+                QGame qGame = quizService.startQuiz(quizStartRequest1);
+                ToGradeStartMessage toGradeStartMessage = ToGradeStartMessage.builder()
+                        .quizNum(qGame.getQuizNum())
+                        .hostId(quizStartRequest1.getHostId())
+                        .roomId(quizStartRequest1.getRoomId())
+                        .build();
+                QuizStartMessage qsm2 = QuizStartMessage.builder()
+                        .type("getQuizItem")
+                        .getQuizItem(qGame)
+                        .build();
+                toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
+                sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest1.getRoomId(), qsm2);
 
+                // 참가자들한테 메세지 뿌리기
+                QGame toGuest2 = QGame.serveQgame(qGame);
+                QuizStartMessage qsmG2 = new QuizStartMessage();
+                if("emotion".equals(qGame.getGame())){
+                    System.out.println("emotion 찍혔니?");
+                    toGuest2.setAnswer(qGame.getAnswer());
+                    qsmG2.setGetQuizItem(toGuest2);
+                    qsmG2.setType("getQuizItem");
+                }else {
+                    qsmG2.setGetQuizItem(toGuest2);
+                    qsmG2.setType("getQuizItem");
+                }
+                quizService.serveQuiz(qsmG2,quizStartRequest1.getRoomId());
                 break;
             case "grade_end":
                 log.info("채점 끝났답니다. 결과 메시지를 보내주는 함수 구현해야 합니다.");
