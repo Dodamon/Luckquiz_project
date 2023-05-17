@@ -98,7 +98,7 @@ const WakeUpGame = (props: Props) => {
   useEffect(() => {
     if (showluckqui) {
       setTimeout(() => {
-        // handleOrder && handleOrder(2);
+        handleOrder && handleOrder(2);
       }, 4500);
     }
   }, [showluckqui]);
