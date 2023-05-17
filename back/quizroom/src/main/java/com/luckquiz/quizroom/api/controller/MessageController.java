@@ -110,6 +110,13 @@ public class MessageController {
 
         if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
+            Set<String> users = zSetOperations.range(roomId+"rank",0,-1);
+            for(String user:users){
+                EnterUser u = gson.fromJson(user,EnterUser.class);  // 입장하는 유저 중복을 거르는 로직
+                if(message.getSender().equals(u.getSender())){
+                    zSetOperations.remove(roomId+"rank",gson.toJson(u));
+                }
+            }
             zSetOperations.add(roomId+"rank",gson.toJson(enterUser),0);
         }
 
@@ -236,26 +243,7 @@ public class MessageController {
                 .hostId(quizStartRequest.getHostId())
                 .roomId(quizStartRequest.getRoomId())
                 .build();
-        QuizStartMessage qsm = QuizStartMessage.builder()
-                .type("getQuizItem")
-                .getQuizItem(result)
-                .build();
         toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
-        sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest.getRoomId(), qsm);
-
-        // 참가자들한테 메세지 뿌리기
-        QGame toGuest = QGame.serveQgame(result);
-        QuizStartMessage qsmG = new QuizStartMessage();
-        if("emotion".equals(result.getGame())){
-            System.out.println("emotion 찍혔니?");
-            toGuest.setAnswer(result.getAnswer());
-            qsmG.setGetQuizItem(toGuest);
-            qsmG.setType("getQuizItem");
-        }else {
-            qsmG.setGetQuizItem(toGuest);
-            qsmG.setType("getQuizItem");
-        }
-        quizService.serveQuiz(qsmG,quizStartRequest.getRoomId());
     }
 
 
