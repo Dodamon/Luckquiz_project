@@ -89,6 +89,11 @@ public class ClovarVisionService{
                 }
                 br.close();
                 result = gson.fromJson(response.toString(),EmotionResult.class);
+                if(result.getFaces().size()!=0){
+                    if(result.getFaces().get(0).getEmotion().getValue().equals("laugh")){
+                        result.getFaces().get(0).getEmotion().setValue("smile");
+                    }
+                }
             } else {
                 log.info("네이버 클로바쪽 에러");
             }

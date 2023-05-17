@@ -1,6 +1,7 @@
 package com.luckquiz.quizroom.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 @Getter
@@ -43,6 +44,7 @@ public class EmotionResult {
     }
 
     @Getter
+    @Setter
     public static class ValCon {
         public String value;
         public double confidence;
