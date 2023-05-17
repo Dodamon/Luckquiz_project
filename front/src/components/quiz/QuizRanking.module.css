@@ -57,12 +57,11 @@
     .ranking {
         display: flex;
         flex-direction: column;
-        height: fit-content;
+        height: 55%;
     }
     
     .ranking_list {
         width: 450px;
-        height: 60%;
         overflow: auto;
         overflow-x: hidden;
     }
@@ -192,11 +191,11 @@
 .ranking {
     display: flex;
     flex-direction: column;
+    height: 55%;
 }
 
 .ranking_list {
     width: 340px;
-    height: 80%;
     overflow: auto;
     overflow-x: hidden;
 }

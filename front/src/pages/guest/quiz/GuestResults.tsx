@@ -23,7 +23,7 @@ const GuestResults = () => {
   useEffect(() => {
     finalResult && navigate('/guest/quiz/awards')
   }, [finalResult])
-  console.log(result)
+
   return (
     <>
     {

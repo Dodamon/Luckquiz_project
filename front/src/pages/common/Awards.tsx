@@ -8,6 +8,7 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { socketActions } from "store/webSocket";
+import pngwing from "assets/images/pngwing.png";
 
 const Awards = () => {
   const { quiz_id } = useParams();
@@ -31,8 +32,14 @@ const Awards = () => {
   }, []);
 
   return (
-    <div className={styles.container} >
+    <div className={styles.container}>
       {modalOn && <QuizRanking />}
+      <div className={styles.flexend}>
+        <div ref={ref} className={styles.open_btn} onClick={() => SetModalOn((pre) => !pre)}>
+          <img src={pngwing} alt="" />
+          <div className={styles.text}>전체 랭킹</div>
+        </div>
+      </div>
       <div className={styles.podium}>
         <Podium />
       </div>
@@ -47,9 +54,6 @@ const Awards = () => {
           }}
         />
       )}
-      <div ref={ref} className={styles.open_btn} onClick={() => SetModalOn((pre) => !pre)}>
-        현재 전체 랭킹보기
-      </div>
     </div>
   );
 };
