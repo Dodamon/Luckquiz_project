@@ -121,21 +121,19 @@ const QuizShortTemplate = ({ num }: pageNum) => {
           quiz.answerList.map((it, index) => {
             return <div className={styles.content_answer} key={index}> 
             <div className={styles.content_color} style={{ backgroundColor: "var( --button-two)" }}>
-             {
-              quiz.answerList.length===1 && index===0 ? 
-              <div><Icon style={{display:"block"}} icon="ic:round-menu" /></div>:
-              <div><Icon className={styles.deleteFont} icon="ic:round-do-not-disturb-on" color="red" onClick={()=>{deleteAnswerHandler(index)}}/><Icon className={styles.menuFont} icon="ic:round-menu" />
-              </div>
-             }
-         
+              <div><Icon style={{display:"block"}} icon="ic:round-menu" /></div>
               </div>
               <div className={styles.content_input}>
                 <input maxLength={10} type="text" value={it} onChange={(event) => handleChangeOption(event, index)} />
               </div>
-              <div className={styles.content_add} onClick={answerAddHandler} style={index ===2? {visibility:"hidden"}:{}}><Icon icon="ic:round-plus" /></div>
+              <div className={styles.content_add}  style={index ===0 && quiz.answerList.length===1 ? {visibility:"hidden"}:{}}><Icon icon="ic:round-minus" onClick={()=>deleteAnswerHandler(index)}  /></div>
               </div>
           })
         }
+        {
+         quiz.answerList.length!==3 && <div className={styles.add_btn}><Icon icon="material-symbols:add-circle-outline-rounded" onClick={answerAddHandler}/></div>
+        }
+        
 
 
 

@@ -149,3 +149,13 @@
 .content_color:hover .menuFont {
     display: none;
 }
+
+.add_btn{
+    color: lightgrey;
+    font-size: 42px;
+    cursor: pointer;
+}
+
+.add_btn:hover{
+    color: var(--white-color);
+}
