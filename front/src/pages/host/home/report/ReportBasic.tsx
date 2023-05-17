@@ -57,12 +57,12 @@ const ReportBasic = () => {
   const { data,status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quiz/report/info?id=${416}`,
+      url: `/api/quiz/report/info?id=${report_id}`,
     })
   },[])
 
   console.log("맞냐구용 ㅋㅋ",data);
-
+  console.log("맞냐구용 ㅋㅋ",report_id);
 
   return (
     <div className={styles.content}>

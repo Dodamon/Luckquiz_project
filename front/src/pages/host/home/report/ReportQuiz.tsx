@@ -74,9 +74,13 @@ const ReportQuiz = () => {
   const { data, status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/quiz/report/questions?id=${report_id}`,
     })
   }, [])
+
+
+  console.log(data);
+  
 
 
   return (
