@@ -93,7 +93,7 @@ public class GradingConsumerController {
                         .type("getQuizItem")
                         .getQuizItem(qGame)
                         .build();
-                toGradeProducer.quizStart(gson.toJson(toGradeStartMessage));
+
                 sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest1.getRoomId(), qsm2);
 
                 // 참가자들한테 메세지 뿌리기
