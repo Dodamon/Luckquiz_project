@@ -37,7 +37,8 @@
     .rank_box {
         background-color: var( --ranking-background);
         width: 500px;
-        height: 500px;
+        /* height: 500px; */
+        height: 70vh;
         border-radius: 20px;
         display: flex;
         flex-direction: column;
@@ -171,7 +172,8 @@
 .rank_box {
     background-color: var( --ranking-background);
     width: 360px;
-    height: 500px;
+    /* height: 500px; */
+    height: 70vh;
     border-radius: 20px;
     display: flex;
     flex-direction: column;

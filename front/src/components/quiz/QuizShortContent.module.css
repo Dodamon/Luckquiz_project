@@ -48,7 +48,7 @@
         align-items: center;
         width: 100%;
         margin-top: 5%;
-
+        gap: 2vh
     }
     
     .content_answer{
@@ -164,7 +164,6 @@
         align-items: center;
         width: 100%;
         margin-top: 5%;
-
     }
     
     .content_answer{
