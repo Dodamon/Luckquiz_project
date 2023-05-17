@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:mariadb://k8a707.p.ssafy.io:3308</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="0@k8a707.p.ssafy.io" uuid="7a299e0d-9c3f-4d93-9c27-56b6614f98ea">
+    <data-source source="LOCAL" name="0@k8a7071.p.ssafy.io" uuid="7a299e0d-9c3f-4d93-9c27-56b6614f98ea">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
-      <jdbc-url>jdbc:redis://k8a707.p.ssafy.io:3309/0</jdbc-url>
+      <jdbc-url>jdbc:redis://k8a7071.p.ssafy.io:3309/0</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

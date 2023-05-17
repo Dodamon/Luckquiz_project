@@ -105,10 +105,17 @@ public class MessageController {
 
 
         String roomIdString = roomId+"";
+        // 레디스에서 퀴즈방 정보 가져옴. roomInfo 는 퀴즈방 정보
+        //{"id":191,"name":"egg","hostId":"8c35436e-4ad9-4cd3-8c3f-1eb8f84db75b"
+        // ,"quizList":[{"id":2100,"quiz":"","question":"","quizUrl":"","answer":"","answerList":[],"one":"","two":"","three":"","four":"","game":"wakeup","timer":15,"quizNum":0,"quizSize":1}]
+        // ,"quizNum":0,"hostNickName":"Yejin Lee"}
         String roomInfo =StringValueOperations.get(roomIdString);
+        //
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
-
-
+        log.info("Enter MessageMapping Controller");
+        log.info(roomInf.toString());
+        log.info(message.getSender());
+        log.info(roomInf.getHostNickName());
         if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
             Set<String> users = zSetOperations.range(roomId+"rank",0,-1);
