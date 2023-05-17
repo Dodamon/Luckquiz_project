@@ -33,6 +33,8 @@ public class QQuizReport extends EntityPathBase<QuizReport> {
 
     public final NumberPath<Integer> submitCount = createNumber("submitCount", Integer.class);
 
+    public final ComparablePath<java.util.UUID> userId = createComparable("userId", java.util.UUID.class);
+
     public QQuizReport(String variable) {
         super(QuizReport.class, forVariable(variable));
     }

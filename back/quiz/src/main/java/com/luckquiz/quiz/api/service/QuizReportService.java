@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.api.service;
 
 import com.luckquiz.quiz.api.response.QuizReportGuest;
+import com.luckquiz.quiz.api.response.QuizReportListResponse;
 import com.luckquiz.quiz.api.response.QuizReportProblem;
 import com.luckquiz.quiz.api.response.QuizReportResponse;
 import com.luckquiz.quiz.common.exception.CustomException;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,9 +61,9 @@ public class QuizReportService {
         return quizReportResponse;
     }
 
-//    public Slice<QuizReportResponse> getQuizReports(UUID userId) {
-//
-//    }
+    public Slice<QuizReportListResponse> getQuizReportList(UUID userId) {
+        return quizReportCustomRepository.getReports(userId);
+    }
 
     @Transactional(readOnly = true)
     public Slice<QuizReportGuest> getQuizParticipants(int reportId, int lastGuestId, Pageable pageable) {
