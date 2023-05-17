@@ -48,7 +48,7 @@ public class QuizReportService {
                 .participantCount(quizRoom.getParticipantCount())
                 .successRate(quizRoom.getCorrectCount() / quizRoom.getSubmitCount())
                 .duration(duration)
-                .title(quizRoom.getTemplate().getName())
+
                 .build();
 
         log.info(quizReportResponse.toString());
@@ -66,6 +66,7 @@ public class QuizReportService {
     public Slice<QuizReportProblem> getQuizProblems(int pinNum) {
         QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(pinNum).orElseThrow(
                 () -> new CustomException(CustomExceptionType.QUIZ_NOT_FOUND));
-        return quizReportCustomRepository.getProblems(pinNum, quizRoom.getTemplate().getId());
+        return quizReportCustomRepository.getProblems(pinNum, quizRoom.getTemplateId());
+
     }
 }

@@ -2,6 +2,7 @@ package com.luckquiz.quiz.api.service;
 
 import com.google.api.client.json.Json;
 import com.google.gson.Gson;
+import com.luckquiz.quiz.api.request.QGame;
 import com.luckquiz.quiz.api.response.TemplateAndRoomId;
 import com.luckquiz.quiz.api.response.TemplateDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,12 @@ public class RedisTransService {
         templateDetailResponse.setQuizNum(0);
         templateDetailResponse.setHostNickName(hostNickName);
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
+
+        for(QGame a : templateDetailResponse.getQuizList()){
+            if(!"text".equals(a.getQuiz())){
+                a.setAnswerList(new ArrayList<>());
+            }
+        }
         int temp = templateDetailResponse.getId();
         UUID host = templateDetailResponse.getHostId();
         String keyVal = roomId+"";
@@ -47,7 +55,7 @@ public class RedisTransService {
     }
 
     @Transactional
-    public void roomTempTrans(int roomId, UUID hostId, int templateId,int roomPk) throws Exception{
+    public void roomTempTrans(int roomId, UUID hostId, int templateId,int roomPk,String templateName) throws Exception{
         System.out.println("템플릿과 룸아이디 조회");
         // 템플릿 가져오기.
         final ValueOperations<String, String> stringStringValueOperations = redisTemplate.opsForValue();
@@ -56,6 +64,7 @@ public class RedisTransService {
                 .roomId(roomId)
                 .templateId(templateId)
                 .roomPk(roomPk)
+                .templateName(templateName)
                 .build();
         String value = gson.toJson(val);
         stringStringValueOperations.set(keyVal ,value);
