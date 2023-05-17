@@ -100,7 +100,7 @@ public class QuizRoomConsumerController {
 
                 ValueOperations<String, String> StringValueOperations = stringRedisTemplate.opsForValue();
                 User host = userRepository.findUserById(hostId).orElseThrow(() -> new CustomException(CustomExceptionType.USER_NOT_FOUND));
-                String forRoomId = StringValueOperations.get(hostId);
+                String forRoomId = StringValueOperations.get(hostId.toString());
                 TemplateAndRoomId templateAndRoomId = gson.fromJson(forRoomId, TemplateAndRoomId.class);
                 QuizRoom quizRoom = quizRoomRepository.findQuizRoomById(templateAndRoomId.getRoomPk()).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                 quizRoom.setFinishedTime(LocalDateTime.now());
