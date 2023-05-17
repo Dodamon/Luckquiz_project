@@ -22,6 +22,7 @@ public class TemplateDetailResponse {
 	private List<TemplateInfoResponse> quizList;
 	private Integer quizNum;
 	private String hostNickName;
+	private String isValid;
 
 	public void setQuizNum(Integer quizNum) {
 		this.quizNum = quizNum;
