@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -25,13 +26,19 @@ import static com.luckquiz.quiz.db.entity.QQuizRoom.quizRoom;
 @Repository
 @Slf4j
 public class QuizReportCustomRepository {
+    private final QuizReportRepository quizReportRepository;
+    private final QuizRoomRepository quizRoomRepository;
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
-    public QuizReportCustomRepository(EntityManager em)
+    public QuizReportCustomRepository(EntityManager em,
+                                      QuizRoomRepository quizRoomRepository,
+                                      QuizReportRepository quizReportRepository)
     {
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
+        this.quizRoomRepository = quizRoomRepository;
+        this.quizReportRepository = quizReportRepository;
     }
 
     private BooleanExpression ltQuizGuestId(int guestId) {
@@ -52,7 +59,24 @@ public class QuizReportCustomRepository {
         return new SliceImpl<>(results, pageable, hasNext);
     }
 
-    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+//    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+//        List<QuizRoomListResponse> results = queryFactory.select(
+//                        Projections.constructor( QuizRoomListResponse.class,
+//                                quizRoom.id,
+//                                quizRoom.templateName,
+//                                quizRoom.createdTime,
+//                                quizRoom.participantCount))
+//                .from(quizRoom)
+//                .where(
+//                        quizRoom.hostId.eq(userId),
+//                        quizRoom.finishedTime.isNotNull()
+//                        )
+//                .orderBy(quizRoom.id.desc())
+//                .fetch();
+//        return new SliceImpl<>(results);
+//    }
+
+    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
         List<QuizRoomListResponse> results = queryFactory.select(
                         Projections.constructor( QuizRoomListResponse.class,
                                 quizRoom.id,
@@ -63,11 +87,12 @@ public class QuizReportCustomRepository {
                 .where(
                         quizRoom.hostId.eq(userId),
                         quizRoom.finishedTime.isNotNull()
-                        )
+                )
                 .orderBy(quizRoom.id.desc())
                 .fetch();
-        return new SliceImpl<>(results);
+        return results;
     }
+
 
     public Slice<QuizRoomGuest> getParticipants(int roomId, int lastGuestId, Pageable pageable) {
         List<QuizRoomGuest> results = queryFactory.select(

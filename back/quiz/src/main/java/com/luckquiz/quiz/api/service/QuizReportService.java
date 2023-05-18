@@ -40,7 +40,7 @@ public class QuizReportService {
     private final QuizReportCustomRepository quizReportCustomRepository;
 
     @Transactional(readOnly = true)
-    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
         return quizReportCustomRepository.getQuizRoomList(userId);
     }
     @Transactional(readOnly = true)
@@ -110,7 +110,7 @@ public class QuizReportService {
     }
 
     @Transactional
-    public Slice<QuizRoomListResponse> deleteQuizReport(int roomId, UUID hostId) {
+    public List<QuizRoomListResponse> deleteQuizReport(int roomId, UUID hostId) {
         QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
         quizRoomRepository.delete(quizRoom);
         return getQuizRoomList(hostId);
@@ -119,6 +119,12 @@ public class QuizReportService {
     @Transactional(readOnly = true)
     public String getTemplateName(int roomId){
         QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(()->new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+        return quizRoom.getTemplateName();
+    }
+
+    @Transactional(readOnly = true)
+    public String getTemplateNamebyHostId(UUID hostId){
+        QuizRoom quizRoom = quizRoomRepository.findQuizRoomByHostId(hostId).orElseThrow(()->new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
         return quizRoom.getTemplateName();
     }
 }
