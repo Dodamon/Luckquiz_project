@@ -26,10 +26,10 @@
   .gameDescription {
     font-size: 18px;
     margin: 15px 15px 10px 0;
-    line-height: 25px;
-  }
-  .gameDescription>p {
-    margin-bottom: 9px;
+    line-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -61,7 +61,7 @@
   .gameDescription {
     font-size: 16px;
     margin: 5px 5px 5px 0;
-    line-height: 25px;
+    line-height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;

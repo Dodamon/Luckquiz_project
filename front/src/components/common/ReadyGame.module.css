@@ -18,7 +18,7 @@
     }
     
     .gameContainer {
-        width: 80%;
+        width: 90%;
         height: fit-content;
         max-width: 750px;
         background-color: var(--white-color);
@@ -48,7 +48,7 @@
     }
     
     .gameContainer {
-        width: 80%;
+        width: 90%;
         height: fit-content;
         max-width: 600px;
         min-width: 210px;
