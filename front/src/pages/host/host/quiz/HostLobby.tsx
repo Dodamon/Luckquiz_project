@@ -17,7 +17,8 @@ const HostLobby = () => {
   const { quiz_id } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
-  const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://k8a707.p.ssafy.io/guest/nickname?pinnum=${quiz_id}`;
+  const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://luckquiz.co.kr/guest/nickname?pinnum=${quiz_id}`;
+  // const qrCode = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=https://localhost:3000/guest/nickname?pinnum=${quiz_id}`;
 
   useEffect(() => {
     quizItem && navigate(`/host/quiz/${quiz_id}/play`);

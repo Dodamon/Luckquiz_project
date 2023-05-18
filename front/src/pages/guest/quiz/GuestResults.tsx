@@ -1,8 +1,5 @@
 import GuestQuizRanking from "components/quiz/GuestQuizRanking";
-import QuizRanking from "components/quiz/QuizRanking";
-import { GuestResult } from "models/quiz";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "store";
@@ -30,7 +27,7 @@ const GuestResults = () => {
   return (
     <>
     {
-      result &&<GuestQuizRanking result={result}/>
+      result &&<GuestQuizRanking/>
     }
       
     </>
