@@ -160,6 +160,8 @@ public class QuizRoomConsumerController {
                 String [] quizCorInfoList = quizCorInfo.split(", ");
                 log.info(Arrays.toString(quizCorInfoList));
 
+                int totalSubmitCnt = 0;
+                int totalCorrectCnt = 0;
                 // 지금 여기까지 옵니다
                 for (int i = 0; i < quizCorInfoList.length; i++) {
                     KafkaGradeEndMessage kafkaGradeEndMessage = gson.fromJson(quizCorInfoList[i],KafkaGradeEndMessage.class);
@@ -170,12 +172,15 @@ public class QuizRoomConsumerController {
 
                     quizReport.get(i).setQuestion(templateDetailResponse.getQuizList().get(i).getQuestion());
                     quizReport.get(i).setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
+                    totalCorrectCnt += kafkaGradeEndMessage.getCorrectCount();
                     quizReport.get(i).setSubmitCount(kafkaGradeEndMessage.getSolveCount());
+                    totalSubmitCnt += kafkaGradeEndMessage.getSolveCount();
                     quizReport.get(i).setUserId(hostId);
                 }
 
 
-
+                quizRoom.setCorrectCount(totalCorrectCnt);
+                quizRoom.setSubmitCount(totalSubmitCnt);
                 quizRoom.setQuizCount(quizCnt);
                 quizRoom.setGameCount(gameCnt);
                 // quiz_room 에 정보를 입력
@@ -205,7 +210,7 @@ public class QuizRoomConsumerController {
 
                 log.info("여기 어디야");
                 int participant_count = 0;
-                Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, zSetOperations.size(finalRequest.getRoomId() + "rank") - 1);
+                Set<ZSetOperations.TypedTuple<String>> rank = zSetOperations.reverseRangeByScoreWithScores(finalRequest.getRoomId() + "rank", 0, - 1);
                 for (ZSetOperations.TypedTuple a : rank) {
                     EnterUser temp = gson.fromJson(a.getValue().toString(), EnterUser.class);
                     if (host.getName().equals(temp.getSender())) {
