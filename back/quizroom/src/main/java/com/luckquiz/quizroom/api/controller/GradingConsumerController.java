@@ -153,7 +153,7 @@ public class GradingConsumerController {
                     int rankDiff = gtemp.getRankNow() - gtemp.getRankPre();
                     if(rankDiff < 0 ){
                         userTurnEndResponse.setIsUp("false");
-                    }else if(rankDiff == 0){
+                    }else if(rankDiff == 0 || 0 == userTurnEndResponse.getQuizNum()){
                         userTurnEndResponse.setIsUp("same");
                     }else {
                         userTurnEndResponse.setIsUp("true");
