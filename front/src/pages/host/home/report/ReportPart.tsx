@@ -32,7 +32,6 @@ const ReportPart = () => {
     setBasicReport(data);
   }, [data]);
 
-  console.log(data);
 
   return (
     <div className={styles.content}>

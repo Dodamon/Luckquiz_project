@@ -8,7 +8,6 @@ interface Props {
 
 const CountdownAni = (props: Props) => {
   const { handleOrder, order } = props;
-  console.log("countdown:", order);
 
   useEffect(() => {
     // if (order === 0) {

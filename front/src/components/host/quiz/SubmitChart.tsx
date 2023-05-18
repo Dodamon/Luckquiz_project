@@ -46,7 +46,6 @@ const dataProcess = (props: SubmitAnswerResult[]) => {
 const SubmitChart = () => {
   const result = useSelector((state: RootState) => state.socket.getSubmitAnswerResult);
   const data = dataProcess(result!);
-  console.log("data:", data);
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);

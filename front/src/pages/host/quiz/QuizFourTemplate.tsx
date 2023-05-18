@@ -17,9 +17,6 @@ const QuizFourTemplate = ({ num }: pageNum) => {
   const template = useSelector((state: RootState) => state.quiz)
   const [quiz, setQuiz] = useState(quizList[num]);
 
-
-
-  console.log("여기 왔습니니다.", num, quiz);
   useEffect(() => {
     setQuiz(quizList[num]);
   }, [num, quizList]);
@@ -52,8 +49,6 @@ const QuizFourTemplate = ({ num }: pageNum) => {
 
   const imageUploadHandler = async (event: any) => {
     const file = event.target.files[0];
-    console.log(file);
-
     const formData = new FormData();
     formData.append("file", file);
 

@@ -31,7 +31,6 @@ const HostPlayQuiz = () => {
   const hostResult = useSelector((state: RootState) => state.socket.getHostResult);
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList);
   const submitAnswerResult = useSelector((state: RootState) => state.socket.getSubmitAnswerResult);
-  console.log("sar:", submitAnswerResult)
 
   const [modalOn, SetModalOn] = useState(quizItem?.quiz ? false : true);
   const ref = useRef<HTMLDivElement>(null);
@@ -39,7 +38,6 @@ const HostPlayQuiz = () => {
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
   // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중, 3: 정답 및 랭킹 발표
   const [order, setOrder] = useState(0);
-  console.log("order:", order);
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
   // 게임이면 -1부터 진행
@@ -50,13 +48,10 @@ const HostPlayQuiz = () => {
   // 퀴즈 채점결과가 들어오면 결과컴포넌트
   useEffect(() => {
     hostResult && setOrder(3);
-    console.log("호스트가받는결과:", hostResult);
   }, [hostResult]);
 
   // 최종결과가 들어오면 어워즈페이지로 이동
   useEffect(() => {
-    console.log("최종결과인뎁숑?:");
-    finalResult && console.log("최종결과인뎁숑?:", finalResult);
     finalResult && navigate(`/host/quiz/${quiz_id}/awards`);
   }, [finalResult]);
 
@@ -75,7 +70,6 @@ const HostPlayQuiz = () => {
 
   // 호스트 기준 퀴즈시간이 끝나면 quizgameend publish
   const quizGameEnd = () => {
-    console.log("자동채점");
     dispatch(
       socketActions.sendAnswerMessage({
         destination: "/app/turnEnd", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송
@@ -84,7 +78,6 @@ const HostPlayQuiz = () => {
     );
   };
 
-  console.log(quizItem);
   return (
     quizItem && (
       <div className={styles.container}>
@@ -121,7 +114,6 @@ const HostPlayQuiz = () => {
                     fontSize="18px"
                     height="45px"
                     onClick={() => {
-                      console.log("수동채점");
                       dispatch(
                         socketActions.sendAnswerMessage({
                           destination: "/app/turnEnd", // 퀴즈 끝났다는 end publish 출제자가 직접 컨트롤 or 시간 다 가면 자동으로 전송

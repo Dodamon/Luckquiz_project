@@ -49,7 +49,6 @@ const QuizShortTemplate = ({ num }: pageNum) => {
       const response = await axios.post(`${process.env.REACT_APP_HOST}/api/quiz/upload`, formData);
       setQuiz({ ...quiz, quizUrl: response.data });
     } catch (err) {
-      console.log(err);
       navigate("/error", { state: { code: err } });
     }
   };

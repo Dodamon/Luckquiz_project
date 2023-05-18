@@ -20,7 +20,6 @@ const QuizOxTemplate = ({ num }: pageNum) => {
         const content = {...quiz, quizUrl:""};
         dispatch(quizAtions.contentsUpdate({ index: num, content: content }));
       }
-    console.log("여기 왔습니니다.", num, quiz);
     useEffect(() => {
         setQuiz(quizList[num]);
     }, [num, quizList]);
@@ -39,7 +38,6 @@ const QuizOxTemplate = ({ num }: pageNum) => {
 
     const imageUploadHandler = async (event: any) => {
         const file = event.target.files[0];
-        console.log(file);
 
         const formData = new FormData();
         formData.append('file', file);
@@ -48,7 +46,6 @@ const QuizOxTemplate = ({ num }: pageNum) => {
             const response = await axios.post(`${process.env.REACT_APP_HOST}/api/quiz/upload`, formData);
             setQuiz({ ...quiz, quizUrl: response.data });
         } catch (err) {
-            console.log(err);
             navigate('/error', { state: { code:err}});
         }
     };

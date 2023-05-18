@@ -25,7 +25,6 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   let audio = new Audio("http://soundbible.com/mp3/Balloon%20Popping-SoundBible.com-1247261379.mp3");
 
   const submitAnswer = ( answer : number) => {
-    console.log("자동제출: ", );
     dispatch(
       socketActions.sendAnswerMessage({
         destination: "/app/submit",
@@ -121,7 +120,6 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
       if (needle.current) needle!.current.style.visibility = "hidden";
     }, 320);
 
-    console.log(time.toFixed(2));
     submitAnswer(Math.abs(timeLimit-Number(time.toFixed(2))))  // 정해진 초와 게스트가 클릭한 시간의 차 제출
     setIsRunning(false);
 
@@ -131,7 +129,6 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   };
 
   useEffect(() => {
-    console.log("타이머 시작");
     setIsRunning(true);
   }, []);
 

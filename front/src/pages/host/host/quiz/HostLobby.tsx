@@ -33,10 +33,10 @@ const HostLobby = () => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        console.log("Text copied to clipboard:", url);
+        // console.log("Text copied to clipboard:", url);
       })
       .catch((error) => {
-        console.error("Failed to copy text to clipboard:", error);
+        // console.error("Failed to copy text to clipboard:", error);
       });
   };
 

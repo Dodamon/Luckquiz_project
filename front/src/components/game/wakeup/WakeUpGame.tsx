@@ -27,7 +27,6 @@ const WakeUpGame = (props: Props) => {
   const [showluckqui, setShowLuckqui] = useState(false);
 
   const submitAnswer = () => {
-    console.log("자동제출: ", shakeCount);
     dispatch(
       socketActions.sendAnswerMessage({
         destination: "/app/submit",
@@ -70,7 +69,6 @@ const WakeUpGame = (props: Props) => {
     // web이면, keydown listner작동
     !isMobile && window.addEventListener("keyup", handleWebShake);
 
-    // console.log("타이머 시작:", time! - 6);
     let startGame = setTimeout(() => {
       setIsBroken(true);
       window.removeEventListener("keyup", handleWebShake);
@@ -90,7 +88,6 @@ const WakeUpGame = (props: Props) => {
       setTimeout(() => {
         setShowLuckqui(true);
       }, 1500);
-      console.log("show");
     }
   }, [isBroken, setShowLuckqui]);
 

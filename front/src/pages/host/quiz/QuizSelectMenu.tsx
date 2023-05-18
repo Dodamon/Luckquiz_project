@@ -76,7 +76,6 @@ const QuizSelectMenu = () => {
     const saveData = { ...template, isValid: !isValid, quizList: checkedList };
 
     axios.post(`${process.env.REACT_APP_HOST}/api/quiz/template/contents-create`, saveData).then((res) => {
-      console.log(res);
       navigate("/home", { replace: true });
     });
   };

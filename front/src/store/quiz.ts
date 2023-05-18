@@ -58,7 +58,6 @@ reducers:{
         });
     },
     templateIdUpdate:(state, action)=>{
-        console.log("맞잖아",action.payload);
         state.templateId = action.payload;
     },
 
@@ -70,14 +69,12 @@ reducers:{
     },
 
     receiveUpdate:(state, action)=>{
-    console.log("디스패치 왔는디요",action.payload);
      state.hostId = action.payload.hostId; 
      state.templateId = !action.payload.templateId? state.templateId:action.payload.templateId; 
      state.quizList = action.payload.quizList; 
     //  state = action.payload;
     },
     resetUpdate:(state)=>{
-        console.log("내 퀴즈 업데이트가 됐당께요");
          state.hostId = "";
          state.templateId = -1;
          state.isValid= false;
