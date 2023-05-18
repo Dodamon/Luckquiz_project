@@ -1,6 +1,7 @@
 package com.luckquiz.quiz.api.controller;
 
 
+import com.luckquiz.quiz.api.request.QuizReportIdRequest;
 import com.luckquiz.quiz.api.response.QuizRoomGuest;
 import com.luckquiz.quiz.api.response.QuizRoomQuestion;
 import com.luckquiz.quiz.api.response.QuizRoomResponse;
@@ -67,6 +68,13 @@ public class QuizReportController {
         return ResponseEntity.ok().body(quizReportService.getQuizQuestions(roomId));
     }
 
+    @PostMapping("/delete")
+    public ResponseEntity<Slice<QuizRoomListResponse>> deleteQuizRoom(@RequestBody QuizReportIdRequest quizRoomIdRequest, HttpServletRequest request) {
+        String accessToken = getJwtFromRequest(request);
+        UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
+        log.info("access token :  " + accessToken);
+        return ResponseEntity.ok().body(quizReportService.deleteQuizReport(quizRoomIdRequest.getReportId(), hostId));
+    }
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         log.info(bearerToken);

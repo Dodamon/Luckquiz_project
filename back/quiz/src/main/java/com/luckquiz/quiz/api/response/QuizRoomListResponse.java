@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class QuizRoomListResponse {
 
-    int reportId;
+    int reportId; //roomId
     String title;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone="Asia/Seoul")
