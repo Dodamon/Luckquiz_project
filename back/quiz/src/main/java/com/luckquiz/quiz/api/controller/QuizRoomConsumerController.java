@@ -219,11 +219,12 @@ public class QuizRoomConsumerController {
                     QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
 
                     quizGuest.setScore(a.getScore().intValue());  // 게스트의 총점
-
+                    log.info("참가자의 총점   "+ quizGuest.getScore());
                     participant_count++;
                 }
                 quizRoom.setParticipantCount(participant_count);
-                log.info("참여 인원"+quizRoom.getParticipantCount());
+
+                log.info("참여 전체 인원"+quizRoom.getParticipantCount());
 
                 // 끝나고 삭제
                 stringRedisTemplate.delete(roomId+"statics");
