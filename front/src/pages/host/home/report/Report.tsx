@@ -39,9 +39,12 @@ const Report = () => {
   return (
       <div className={styles.content} style={{ backgroundImage: report_bg }}>
         <div className={styles.title}></div>
+   
         <div className={styles.scrollWrapper}>
           <div className={styles.listColFrame}>
-            {data&& data.content.map((report:Report, index:number) => (
+        
+            {(data && data.content.length===0)?<div  className={styles.empty_comment}>기록된 레포트가 없습니다.</div>:
+            data &&data.content.map((report:Report, index:number) => (
               <Link key={index} to={`/home/report/${report.reportId}/basicinfo`} style={{width:"100%"}}>
                 <HomeListCard menu={1} report={report}/>
               </Link>
