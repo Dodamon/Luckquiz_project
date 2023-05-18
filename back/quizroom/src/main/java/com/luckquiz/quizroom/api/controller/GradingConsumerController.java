@@ -53,7 +53,6 @@ public class GradingConsumerController {
                 RollbackFinishMessage rollbackFinishMessage = gson.fromJson(in,RollbackFinishMessage.class);
                 //함수 분리하기;
                 QGame result = quizService.nextQuizAfterRollback(rollbackFinishMessage);
-
                 QuizStartMessage qsm = QuizStartMessage.builder()
                         .type("getQuizItem")
                         .getQuizItem(result)
@@ -93,7 +92,6 @@ public class GradingConsumerController {
                 String quiz = StringValueOperations.get(quizStartRequest1.getRoomId()+"");
                 TemplateDetailResponse templateDetailResponse = gson.fromJson(quiz,TemplateDetailResponse.class);
                 log.info("quiz Num:  "+templateDetailResponse.getQuizNum());
-                log.info("quiz inf   "+templateDetailResponse.getQuizList().get(0).getQuiz().toString());
                 QGame qGame = templateDetailResponse.getQuizList().get(templateDetailResponse.getQuizNum());
                 qGame.setQuizNum(templateDetailResponse.getQuizNum());
                 qGame.setQuizSize(templateDetailResponse.getQuizList().size());
@@ -106,8 +104,6 @@ public class GradingConsumerController {
                         .type("getQuizItem")
                         .getQuizItem(qGame)
                         .build();
-
-                log.info("qsm2:" + qsm2);
 
                 sendingOperations.convertAndSend("/topic/quiz/" + quizStartRequest1.getRoomId(), qsm2);
 
@@ -164,8 +160,11 @@ public class GradingConsumerController {
                     }
                     userTurnEndResponse.setRankDiff(rankDiff);
                     userTurnEndResponse.setQuizNum(roomInf.getQuizNum());
+                    System.out.println(gtemp.getRankNow());
                     userTurnEndResponse.setRankNow(gtemp.getRankNow());
                     userTurnEndResponse.setTotalScore(rankingData.get(gtemp.getPlayerName()));
+                    userTurnEndResponse.setTotalRankNow(gtemp.getTotalRankNow());
+                    userTurnEndResponse.setTotalRankPre(gtemp.getTotalRankPre());
 
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
@@ -173,6 +172,7 @@ public class GradingConsumerController {
                             .build();
                     sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),guestTurnEndMessage);
                 }
+                // 퀴즈가 끝나고 host가 받는 결과 메시지
                 HostTurnEndMessage hostTurnEndMessage = HostTurnEndMessage.builder()
                         .type("userLList")
                         .userLList(userLList)
