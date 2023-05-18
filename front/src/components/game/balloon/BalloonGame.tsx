@@ -22,7 +22,6 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
   const content = useRef<HTMLDivElement>();
   const needle = useRef<HTMLDivElement>();
   const normalMotion = useRef<HTMLButtonElement>();
-  let audio = new Audio("http://soundbible.com/mp3/Balloon%20Popping-SoundBible.com-1247261379.mp3");
 
   const submitAnswer = ( answer : number) => {
     dispatch(
@@ -58,7 +57,6 @@ const BalloonGame:React.FC<Props> = ({handleOrder}) => {
     }, 110);
 
     setTimeout(() => {
-      audio.play();
       if (mainSvg.current) mainSvg!.current.style.visibility = "hidden";
       if (secondSvg.current) secondSvg!.current.style.visibility = "visible";
     }, 130);
