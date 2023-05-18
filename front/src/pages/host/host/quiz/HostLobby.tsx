@@ -44,20 +44,20 @@ const HostLobby = () => {
       </div>
       <LobbyComp />
       <div className={styles.btn}>
-      <ButtonWithLogo
-        name="시작하기"
-        height="40px"
-        fontSize="20px"
-        onClick={() =>
-          dispatch(
-            socketActions.sendAnswerMessage({
-              destination: "/app/quiz/start",
-              body: { hostId: userId, roomId: quiz_id },
-            }),
+        <ButtonWithLogo
+          name="시작하기"
+          height="40px"
+          fontSize="20px"
+          onClick={() =>
+            dispatch(
+              socketActions.sendAnswerMessage({
+                destination: "/app/quiz/start",
+                body: { hostId: userId, roomId: quiz_id },
+              }),
             )
           }
-          />
-          </div>
+        />
+      </div>
     </div>
   );
 };

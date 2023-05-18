@@ -5,6 +5,7 @@ import ReportTable from "components/host/home/report/ReportTable";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useEffect, useState } from "react";
 import useHostAxios from "hooks/useHostAxios";
+import orangeCat from "assets/images/orange_logo.png";
 
 const quiz = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -35,17 +36,16 @@ const hardest = [
   },
 ];
 
-type listType ={
-  id: number,
-  title: string,
-  answer: number,
-}
+type listType = {
+  id: number;
+  title: string;
+  answer: number;
+};
 
 interface quizType {
-  title: string,
-  list :listType[]
+  title: string;
+  list: listType[];
 }
-
 
 const ReportQuiz = () => {
   const { report_id } = useParams();
@@ -58,30 +58,31 @@ const ReportQuiz = () => {
     });
   }, []);
 
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
 
   console.log(data);
-  
-
 
   return (
     <div className={styles.content}>
       <div className={styles.title}>{quiz.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
-  
+
       <div
         className={styles.reportContent}
         style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "start", gap: "6%" }}
       >
-         <div className={styles.part_title} >
-          <div  style={{ backgroundColor: "orange"}}>퀴즈정보</div>
+        <div className={styles.reportWrapper}>
+          <div className={styles.quizType}>
+            <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
+            <div>가장 어려웠던 문제</div>
+          </div>
+          <ReportTable property={[]} data={hardest} />
+          <div className={styles.quizType}>
+            <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
+            <div>전체 문제</div>
+          </div>
+          <ReportTable property={[]} data={quiz.list} />
         </div>
-        <ButtonWithLogo name={"가장 어려웠던 문제"} color="var(--select-three)" fontSize="18px" height="40px"/>
-        <ReportTable property={[]} data={hardest} />
-        <ButtonWithLogo name={"전체 문제 보기"} color="var(--select-three)" fontSize="18px" height="40px"/>
-        <ReportTable property={[]} data={quiz.list} />
       </div>
     </div>
   );
