@@ -80,6 +80,7 @@ public class QuizRoomConsumerController {
                     QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                     quizRoom.setCreatedTime(LocalDateTime.now());
                     quizRoom.setHostId(hostId);
+                    quizRoom.setTemplateName(temp.getName());
                     quizRoom.setTemplateId(templateId);
                 }else {
                     System.out.println("없니?");
@@ -87,11 +88,11 @@ public class QuizRoomConsumerController {
                             .pinNum(roomId)
                             .templateId(temp.getId())
                             .hostId(hostId)
+                            .templateName(temp.getName())
                             .createdTime(LocalDateTime.now())
                             .build();
                     quizRoomRepository.save(quizRoom);
                 }
-
                 redisTransService.roomTempTrans(roomId, hostId, templateId,2,template.getName());
             }
                 break;
