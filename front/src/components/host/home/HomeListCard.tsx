@@ -115,9 +115,10 @@ const HomeListCard = (props: Props) => {
               <div className={styles.placeholder}>{dateChangeHandler(quiz.date)}에 저장됨</div>
             </>
           ) : (
-            <>
+            report&& <>
+             
               <div className={styles.quizTitle}>{report?.title}</div>
-              <div className={styles.placeholder}>{report?.createdTime}</div>
+              <div className={styles.placeholder}>{dateChangeHandler(report?.createdTime)} 기록</div>
             </>
           )}
         </div>
