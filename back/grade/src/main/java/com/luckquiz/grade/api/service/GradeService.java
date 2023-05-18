@@ -100,7 +100,6 @@ public class GradeService {
 			Boolean several = false;
 			System.out.println(quiz.getAnswerList());
 			if(quiz.getAnswerList().size() == 0){
-
 				System.out.println("중복 정답 없는 문제입니다.");
 			} else {
 				several = true;
@@ -124,9 +123,9 @@ public class GradeService {
 				userGrade.setScoreGet(scoreGet.intValue());
 				// userGrade.setRankNow(rank+1);
 				userGrade.setCount(userGrade.getCount()+1);
-				userGrade.setCorrectCount(userGrade.getCount()+1);
+				userGrade.setCorrectCount(userGrade.getCorrectCount()+1);
 				//얻은 점수 기록해두기
-				hashGradeOperations.put(roomId+"p", playerName, userGrade);
+
 				//맞힌 사람 수 +1
 				valueOperations.increment(roomId+"cnt",1);
 				RankKey rankKey = new RankKey();
@@ -147,6 +146,7 @@ public class GradeService {
 				for(String ans:quiz.getAnswerList()){
 					log.info(ans+ " ");
 				}
+				hashGradeOperations.put(roomId+"p", playerName, userGrade);
 			}
 		} else {
 			//게임일 경우
@@ -182,6 +182,7 @@ public class GradeService {
 					break;
 				default:
 					log.warn("없는 키값이 카프카 grade 토픽에 들어왔습니다. 확인해주세요.");
+					hashGradeOperations.put(roomId+"p", playerName, userGrade);
 					break;
 			};
 
@@ -248,8 +249,7 @@ public class GradeService {
 		if(correctAnswer.equals(answer.getValue())){
 			Long scoreGet = Math.round(1000*answer.getConfidence());
 			userGrade.setScoreGet(scoreGet.intValue());
-			//얻은 점수 기록해두기
-			hashGradeOperations.put(roomId+"p", playerName, userGrade);
+
 			//맞힌 사람 수 +1
 			valueOperations.increment(roomId+"cnt",1);
 			//현재 점수 반영
@@ -258,6 +258,8 @@ public class GradeService {
 			// 감정 종류가 다를 경우.
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),0);
 		}
+		//얻은 점수 기록해두기
+		hashGradeOperations.put(roomId+"p", playerName, userGrade);
 	}
 
 

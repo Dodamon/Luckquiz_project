@@ -24,12 +24,8 @@ public class Grade implements Serializable{
 	private int count;
 	private int quizNum;
 
-	public int getSubmitCount() {
-		return submitCount;
-	}
-
-	public int getTotalCount() {
-		return totalCount;
+	public int getCorrectCount() {
+		return correctCount;
 	}
 
 	private int totalRankNow;
@@ -38,16 +34,24 @@ public class Grade implements Serializable{
 	private boolean done;
 	private int correctCount;
 
+	private int totalRankPre;
+	private int totalScore;
 	public boolean isDone() {
 		return done;
 	}
 
+	public int getSubmitCount() {
+		return submitCount;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
 	public int getTotalScore() {
 		return totalScore;
 	}
 
-	private int totalRankPre;
-	private int totalScore;
+
 
 	public int getTotalRankNow() {
 		return totalRankNow;
