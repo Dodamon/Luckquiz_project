@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -82,5 +83,12 @@ public class QuizReportService {
     @Transactional(readOnly = true)
     public Slice<QuizRoomQuestion> getQuizQuestions(int roomId) {
         return quizReportCustomRepository.getQuestions(roomId);
+    }
+
+    @Transactional
+    public Slice<QuizRoomListResponse> deleteQuizReport(int roomId, UUID hostId) {
+        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+        quizRoomRepository.delete(quizRoom);
+        return getQuizRoomList(hostId);
     }
 }
