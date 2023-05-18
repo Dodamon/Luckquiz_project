@@ -113,9 +113,7 @@ public class MessageController {
         //
         TemplateDetailResponse roomInf = gson.fromJson(roomInfo,TemplateDetailResponse.class);
         log.info("Enter MessageMapping Controller");
-        log.info(roomInf.toString());
-        log.info(message.getSender());
-        log.info(roomInf.getHostNickName());
+        log.info("roomInfo!!  "+roomInf.getHostNickName());
         if(!message.getSender().equals(roomInf.getHostNickName())) {  // 요놈이 걸러준다.
             hashOperations.put(roomId+"p", message.getSender(), gson.toJson(grade));
             Set<String> users = zSetOperations.range(roomId+"rank",0,-1);
