@@ -7,12 +7,15 @@ import HomeListCard from "components/host/home/HomeListCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import useHostAxios from "hooks/useHostAxios";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
+import { log } from "console";
 
 export interface Report {
-  id: number;
+  reportId: number;
   title: string;
-  date: string;
-  participants: number;
+  createdTime: string;
+  participantCount: number;
 }
 
  
@@ -21,41 +24,25 @@ const Report = () => {
   
   // const [myReportList, setMyReportList] = useState<Report[]>([])
   const { data, status, sendHostRequest } = useHostAxios();
-  const myReportList: Report[] = [
-    {
-      id: 0,
-      title: "ssafy 스타트 캠프 퀴즈",
-      date: "2023년 03월 11일",
-      participants: 342,
-    },
-    {
-      id: 1,
-      title: "CS Study 퀴즈",
-      date: "2023년 03월 10일",
-      participants: 123,
-    },
-    {
-      id: 2,
-      title: "갯벌소프트 퀴즈",
-      date: "2023년 03월 03일",
-      participants: 7,
-    },
-  ];
+  const userId = useSelector((state: RootState)=> state.auth.userId);
+  const [reportList, setReportList]=useState<Report[]>([]);
 
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/quiz/report`,
     })
   }, [])
 
+  console.log("ssss", data);
+  
 
   return (
       <div className={styles.content} style={{ backgroundImage: report_bg }}>
         <div className={styles.title}></div>
         <div className={styles.scrollWrapper}>
           <div className={styles.listColFrame}>
-            {myReportList.map((report, index) => (
-              <Link key={index} to={`/home/report/${report.id}/basicinfo`} style={{width:"100%"}}>
+            {data&& data.content.map((report:Report, index:number) => (
+              <Link key={index} to={`/home/report/${report.reportId}/basicinfo`} style={{width:"100%"}}>
                 <HomeListCard menu={1} report={report}/>
               </Link>
             ))}

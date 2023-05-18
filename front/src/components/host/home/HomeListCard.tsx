@@ -117,7 +117,7 @@ const HomeListCard = (props: Props) => {
           ) : (
             <>
               <div className={styles.quizTitle}>{report?.title}</div>
-              <div className={styles.placeholder}>{report?.date}</div>
+              <div className={styles.placeholder}>{report?.createdTime}</div>
             </>
           )}
         </div>
@@ -167,7 +167,7 @@ const HomeListCard = (props: Props) => {
         ) : (
           // report에서 쓰이는 경우 (menu = 1)
           <>   
-            <div className={styles.parti}>참여 {report?.participants} 명 </div>
+            <div className={styles.parti}>참여 {report?.participantCount} 명 </div>
           </>
         )}
       </div>

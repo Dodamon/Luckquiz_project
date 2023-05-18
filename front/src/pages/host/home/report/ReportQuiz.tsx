@@ -74,19 +74,27 @@ const ReportQuiz = () => {
   const { data, status, sendHostRequest } = useHostAxios();
   useEffect(()=>{
     sendHostRequest({
-      url: `/api/quizroom/create`,
+      url: `/api/quiz/report/questions?id=${report_id}`,
     })
   }, [])
+
+
+  console.log(data);
+  
 
 
   return (
     <div className={styles.content}>
       <div className={styles.title}>{quiz.title}</div>
       <ReportTab report_id={report_id}></ReportTab>
+  
       <div
         className={styles.reportContent}
         style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "start", gap: "6%" }}
       >
+         <div className={styles.part_title} >
+          <div  style={{ backgroundColor: "orange"}}>퀴즈정보</div>
+        </div>
         <ButtonWithLogo name={"가장 어려웠던 문제"} color="var(--select-three)" fontSize="18px" height="40px"/>
         <ReportTable property={[]} data={hardest} />
         <ButtonWithLogo name={"전체 문제 보기"} color="var(--select-three)" fontSize="18px" height="40px"/>

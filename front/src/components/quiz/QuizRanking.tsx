@@ -23,7 +23,7 @@ const QuizRanking = () => {
             <img src={crown} alt="crown" className={styles.crown_img} />
           </main>
 
-          {/* <footer className={styles.ranking}> */}
+          <footer className={styles.ranking}>
             <ul className={styles.ranking_list}>
               {finalResult?.map((it, index) => {
                 return (
@@ -43,7 +43,7 @@ const QuizRanking = () => {
                 );
               })}
             </ul>
-          {/* </footer> */}
+          </footer>
         </section>
       </div>
     </div>

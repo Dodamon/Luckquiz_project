@@ -22,7 +22,9 @@ const QuizShortContent = ({ handleAnswer }: QuizShortContentProps) => {
   return (
     <div>
       <div className={styles.QuizShortContent}>
-        <QuizGameTitle title={content.question} />
+        <div>
+          <QuizGameTitle title={content.question} />
+        </div>
 
         {content.quizUrl && (
           <div className={styles.content_images}>

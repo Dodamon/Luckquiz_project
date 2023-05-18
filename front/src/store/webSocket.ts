@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Client } from "@stomp/stompjs";
-import { EmotionResult, FinalResultList, getQuizItem } from "models/quiz";
+import { EmotionResult, FinalResultList, getQuizItem, SubmitAnswerResult } from "models/quiz";
 import { GuestType, SocketPropsType } from "models/guest";
 import { HostResult, GuestResult } from "models/quiz";
 
 const brokerURL = "wss://k8a707.p.ssafy.io/connect/quiz";
-// const brokerURL = "ws://192.168.1.194:8080/connect/quiz";
 
 export const client = new Client({ brokerURL: brokerURL });
 
@@ -21,6 +20,7 @@ interface SocketState {
   getHostResult: HostResult[] | null;
   getGuestResult: GuestResult | null;
   getFinalResultList: FinalResultList[] | null;
+  getSubmitAnswerResult: SubmitAnswerResult[] | null;
 }
 
 const initialState: SocketState = {
@@ -35,6 +35,7 @@ const initialState: SocketState = {
   getHostResult: null,
   getGuestResult: null,
   getFinalResultList: null,
+  getSubmitAnswerResult: null,
 };
 
 const socketSlice = createSlice({
@@ -103,13 +104,17 @@ const socketSlice = createSlice({
       state.getGuestResult = actions.payload;
     },
 
+    getSubmitAnswerResult: (state, actions) => {
+      state.getSubmitAnswerResult = actions.payload;
+    },
+
     getFinalResultList: (state, actions) => {
       state.getFinalResultList = actions.payload;
     },
 
     resetSocket: (state) => {
       Object.assign(state, initialState);
-    }
+    },
   },
 });
 
@@ -142,13 +147,12 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       else if (data.type === "emotionResult") {
         dispatch(socketActions.getEmotionResult(data.emotionResult));
         dispatch(socketActions.getEmotionMessage(true));
-      } else if (data.type === "quizEnd") dispatch(socketActions.quizEnd());
+      } else if (data.type === "quizEnd") { dispatch(socketActions.quizEnd()); dispatch(socketActions.getSubmitAnswerResult(data.quizEnd)) }
       // else if (data.type === "userList") dispatch(socketActions.getHostResult(data.userList));
       else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
       else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));
       else if (data.type === "finalResultList") dispatch(socketActions.getFinalResultList(data.finalResultList));
       else console.log("got empty message");
-      // dispatch(socketActions.getQuizItem(data));
     }
   };
 

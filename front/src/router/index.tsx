@@ -17,19 +17,13 @@ import ReportPart from "pages/host/home/report/ReportPart";
 import ReportQuiz from "pages/host/home/report/ReportQuiz";
 import SocialRedirect from "components/login/SocialRedirect";
 import GuestPlayQuiz from "pages/guest/quiz/GuestPlayQuiz";
-import BalloonGame from "components/game/balloon/BalloonGame";
 import MainLanding from "pages/common/MainLanding";
 import HostLobby from "pages/host/host/quiz/HostLobby";
 import HostPlayQuiz from "pages/host/host/quiz/HostPlayQuiz";
 import QuizRanking from "components/quiz/QuizRanking";
 import ErrorPage from "pages/common/ErrorPage";
-import EmotionGame from "components/game/emotion/EmotionGame";
 import Awards from "pages/common/Awards";
-import GuestQuizRanking from "components/quiz/GuestQuizRanking";
-import WakeUpGame from "components/game/wakeup/WakeUpGame";
 import GuestResults from "pages/guest/quiz/GuestResults";
-
-
 
 const router = createBrowserRouter([
   {

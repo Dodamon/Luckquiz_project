@@ -18,11 +18,11 @@ const SideMenuTab = () => {
       <div className={styles.profile}>
           <div  className={styles.profil_box}>
         <img className={styles.profileImg} src={userInfo.image_url} alt="" />
-        <div className={styles.profileRight}>
+        {/* <div className={styles.profileRight}> */}
           {/* <div className={styles.profileBoard}>MANAGER</div> */}
         <div className={styles.profileName}>{userInfo.name}</div>
         </div>
-        </div>
+        {/* </div> */}
       </div>
       <Link to={"/home"}>
         <div className={styles.menu} style={{ backgroundColor: bgcolor[0] }}>
