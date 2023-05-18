@@ -49,7 +49,7 @@ const theme = createTheme({
   palette: {
     custom: {
       light: "#ffa726",
-      main: "var(--select-three)",
+      main: "#DAD2FF",
       dark: "#ef6c00",
       contrastText: "rgba(0, 0, 0, 0.87)",
     },
@@ -61,8 +61,8 @@ const theme = createTheme({
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.custom?.main,
-    color: theme.palette.common.white,
+    backgroundColor :theme.palette.custom?.main,
+    color: theme.palette.common.black,
     fontSize: 18,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -71,7 +71,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
+  "&:nth-of-type(even)": {
     backgroundColor: theme.palette.action.hover,
   },
   // hide last border
@@ -91,13 +91,13 @@ const ReportTable = (props: Props) => {
     <ThemeProvider theme={theme}>
       <TableContainer  sx={{
     "&::-webkit-scrollbar": {
-	  width: 10
+	  width: 5
     },
     "&::-webkit-scrollbar-track": {
-	  backgroundColor: "orange"
+	  backgroundColor: "rgb(179, 178, 233)"
     },
     "&::-webkit-scrollbar-thumb": {
-	  backgroundColor: 'var(--button-two)',
+	  backgroundColor: 'rgb(134, 133, 229)',
 	  borderRadius: 0
     },
     overflowX:"hidden"

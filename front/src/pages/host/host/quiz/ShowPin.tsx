@@ -18,6 +18,7 @@ const ShowPin = () => {
     if (guestList && guestList.length >= 1) {
       navigate(`/host/quiz/${quiz_id}/lobby`);
     }
+    
   }, [guestList, navigate, quiz_id]);
 
   return (

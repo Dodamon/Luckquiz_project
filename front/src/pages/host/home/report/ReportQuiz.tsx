@@ -4,12 +4,7 @@ import ReportTab from "components/host/home/report/ReportTab";
 import ReportTable from "components/host/home/report/ReportTable";
 import ButtonWithLogo from "components/common/ButtonWithLogo";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import useHostAxios from "hooks/useHostAxios";
-
-
-
-
 
 const quiz = {
   title: "SSAFY 스타트 캠프 퀴즈",
@@ -29,22 +24,6 @@ const quiz = {
       title: "SSAFY 월급은 얼마일까요?",
       answer: 78.7,
     },
-    // {
-    //   id: 3,
-    //   title: "SSAFY 월급은 얼마일까요?",
-    //   answer: 78.7,
-    // },
-    // {
-    //   id: 3,
-    //   title: "SSAFY 월급은 얼마일까요?",
-    //   answer: 78.7,
-    // },
-    // {
-    //   id: 3,
-    //   title:
-    //     "SSAFY 월급은 얼마일까요?",
-    //   answer: 78.7,
-    // },
   ],
 };
 
@@ -72,12 +51,16 @@ const ReportQuiz = () => {
   const { report_id } = useParams();
   const [basicReport, setBasicReport] = useState<quizType>();
   const { data, status, sendHostRequest } = useHostAxios();
-  useEffect(()=>{
+
+  useEffect(() => {
     sendHostRequest({
       url: `/api/quiz/report/questions?id=${report_id}`,
-    })
-  }, [])
+    });
+  }, []);
 
+  useEffect(() => {
+    
+  }, []);
 
   console.log(data);
   

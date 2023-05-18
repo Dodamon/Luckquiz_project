@@ -32,32 +32,40 @@
 }
 
 .title {
-    padding: 3.5vh 5% 3.5vh 5%;
-    font-size: 28px;
+    padding: 2vh 3%;
+    font-size: 22px;
+    /* background-color: white; */
+    /* border-radius: 10px; */
+    width: 25%;
+    margin: 2% 5.5% 2% 5.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 3px solid var(--point-color);
+    border-bottom: 3px solid var(--point-color);
 }
 
 .reportContent {
     /* width: 80%; */
-    height: 57%;
+    height: 50%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin: 0px 70px 0px 70px;
     padding: 5% 6% 5% 6%;
-    border-radius: 0px 20px 20px 20px;
-    box-shadow: 5px 5px #00000015;
+    border-radius: 20px;
 }
 
 .reportContentList {
     list-style: none;
-    font-size: 20px;
-    height: 400px;
-    background-color: var(--button-one);
+    font-size: 19px;
+    height: 230px;
+    width: 70%;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    box-shadow: 2px 2px 2.5px 2.5px rgb(179, 178, 233);
+    justify-content: center;
+    padding: 2% 2% 0 2%;
 }
 
 .reportContentItem {
@@ -65,22 +73,20 @@
     margin-bottom: 2vh;
     margin-left: 3vh;
     margin-right: 3vh;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     border-radius: 5px;
-    color: white;
+    /* color: white; */
     word-break: break-all;
 }
 
 .reportContentTitle {
     margin: 3vh;
-    background-color: rgb(86, 86, 212);
     width: 100px;
     height: 40px;
     border-radius: 5px;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--white-color);
+    font-size: 22px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,6 +111,7 @@
     justify-content: center;
     align-items: center;
     padding: 0% 6% 6% 6%;
+    margin-top: 6%;
 }
 
 .listColFrame>a {
@@ -134,7 +141,7 @@
 .iconStyle {
     font-size: 35px;
     margin-right: 20px;
-    background-color: rgb(86, 86, 212);
+    /* background-color: rgb(86, 86, 212); */
     border-radius: 50px;
     width: 30px;
     height: 30px;
@@ -142,13 +149,14 @@
 }
 
 .chartContainer {
-    width: 50%;
-    height: 420px;
+    width: 70%;
+    height: 200px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 8vh;
+    margin-top: 10px;
+    /* margin-bottom: 8vh; */
 }
 
 .textStyle {
@@ -162,31 +170,34 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    box-shadow: 2px 2px 2.5px 2.5px #1bd39250;
-    background-color: #1bd392;
-    padding: 3% 3% 3% 3%;
+    box-shadow: 2px 2px 2.5px 2.5px rgb(179, 178, 233);
+    /* background-color: #1bd392; */
+    padding: 3%;
     position: relative;
+    gap: 5%;
 }
 
 .pieStyle {
-    width: 40%;
-    height: 70%;
+    height: 80%;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+.pieStyle>canvas {
+    width: 100px !important;
+    height: 100px !important;
+}
 .percentageBox {
     display: flex;
     justify-content: space-evenly;
-    background-color: rgb(59, 161, 122);
+    /* background-color: rgb(59, 161, 122); */
     width: 170px;
     height: 50px;
     border-radius: 5px;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--white-color);
+    font-size: 20px;
+    /* font-weight: bold; */
+    /* color: var(--white-color); */
 }
 
 .reportContent {
@@ -215,7 +226,7 @@
     border-radius: 5px;
     color: var(--white-color);
     margin-bottom: 20px;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .empty_comment {
