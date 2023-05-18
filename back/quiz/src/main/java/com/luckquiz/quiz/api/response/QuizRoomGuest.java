@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class QuizRoomGuest {
-    int rank;
+    Integer rank;
     String nickName;
-    long successRate;
+    Long successRate;
     Double totalScore;
 }
