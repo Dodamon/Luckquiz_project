@@ -53,7 +53,7 @@ public class QuizReportController {
     public ResponseEntity<Slice<QuizRoomGuest>> getQuizRoomParticipants(
             @RequestParam(value = "id", required = true) int roomId,
             @RequestParam(value = "next", defaultValue = "0") int lastGuestId,
-            @PageableDefault(size = 10, sort="score", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 30, sort="score", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("roomId : " + String.valueOf(roomId));
         log.info("lastGuestId : " +  String.valueOf(lastGuestId));
         return ResponseEntity.ok().body(quizReportService.getQuizRoomParticipants(roomId, lastGuestId, pageable));
