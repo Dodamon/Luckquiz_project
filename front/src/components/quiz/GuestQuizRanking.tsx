@@ -23,7 +23,7 @@ const GuestQuizRanking = () => {
         <div className={styles.real_rank}>
           <div className={styles.real_num}>{guestResult?.totalRankNow}위</div>
         </div>
-        {guestResult && guestResult?.quizNum !== 0 && (
+        {guestResult && guestResult?.quizNum !== 0 && guestResult?.totalRankPre !== 0 && (
           <div className={styles.diff_box}>
             <div className={styles.diff_updown}>
               {guestResult?.totalRankPre - guestResult?.totalRankNow > 0 ? (
