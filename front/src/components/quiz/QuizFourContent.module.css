@@ -35,7 +35,7 @@
     .content_images>img{
         background-color: var(--white-color);
         width: 400px;
-        height: 200px;
+        height: 250px;
         min-height: 200px;
         border-radius: 20px;
         opacity: 90%;
@@ -144,7 +144,7 @@
     .content_images>img{
         background-color: var(--white-color);
         width: 250px;
-        height: 140px;
+        height: 180px;
         /* min-height: 200px; */
         border-radius: 20px;
         opacity: 90%;
