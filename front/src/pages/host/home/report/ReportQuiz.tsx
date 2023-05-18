@@ -14,12 +14,13 @@ type listType = {
 
 interface quizType {
   title: string;
-  list: listType[];
+  content: listType[];
 }
 
 const ReportQuiz = () => {
   const { report_id } = useParams();
   const [basicReport, setBasicReport] = useState<quizType>();
+  const [title, setTitle] = useState<string>("");
   const { data, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
@@ -29,16 +30,19 @@ const ReportQuiz = () => {
   }, []);
 
   useEffect(() => {
-    if (data) setBasicReport(data);
+    if (data) {
+      setBasicReport(data.slice);
+      setTitle(data.title);
+    }
   }, [data]);
 
   console.log(data);
 
   return (
     <div className={styles.content}>
-      {basicReport && <div className={styles.title}>{basicReport.title}</div>}
+      {basicReport && <div className={styles.title}>{title}</div>}
       <ReportTab report_id={report_id}></ReportTab>
-      {basicReport && basicReport.list ? (
+      {basicReport && basicReport.content.length > 0 ? (
         <div
           className={styles.reportContent}
           style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "center", gap: "6%" }}
@@ -51,7 +55,7 @@ const ReportQuiz = () => {
 
             <ReportTable
               property={["번호", "문제", "정답률"]}
-              data={[basicReport.list[basicReport.list.length - 1]]}
+              data={[basicReport.content[basicReport.content.length - 1]]}
               type="quiz"
             />
 
@@ -59,7 +63,7 @@ const ReportQuiz = () => {
               <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
               <div>전체 문제</div>
             </div>
-            <ReportTable property={[]} data={basicReport.list.slice(0,basicReport.list.length-1)} type="quiz" />
+            <ReportTable property={[]} data={basicReport.content.slice(0,basicReport.content.length-1)} type="quiz" />
           </div>
         </div>
       ) : (
