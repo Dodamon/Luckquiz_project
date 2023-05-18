@@ -139,11 +139,8 @@ public class QuizReportCustomRepository {
                         Projections.constructor( QuizRoomQuestion.class,
                                 quizReport.id,
                                 quizReport.question,
-                                quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100),
-                                quizRoom.templateName))
+                                quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100)))
                 .from(quizReport)
-                .innerJoin(quizRoom)
-                .on(quizReport.quizRoomId.eq(quizRoom.id))
                 .where(
                         quizReport.quizRoomId.eq(roomId),
                         quizReport.question.isNotNull(),
@@ -159,11 +156,8 @@ public class QuizReportCustomRepository {
                 Projections.constructor( QuizRoomQuestion.class,
                         quizReport.id,
                         quizReport.question,
-                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100),
-                        quizRoom.templateName))
+                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100)))
                 .from(quizReport)
-                .innerJoin(quizRoom)
-                .on(quizReport.quizRoomId.eq(quizRoom.id))
                 .where(
                         quizReport.quizRoomId.eq(roomId),
                         quizReport.question.isNotNull(),
