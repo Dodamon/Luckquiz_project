@@ -10,7 +10,7 @@ const HostQuizRanking = () => {
 
   return (
     <div className={styles.modalBack}>
-      <div className={styles.QuizRanking} style={{width:"100%", height:"100%", justifyContent:"center"}}>
+      <div className={styles.QuizRanking} style={{ width: "100%", height: "100%", justifyContent: "center" }}>
         <div className={styles.rank_logo}>
           <div className={styles.logos}>
             <img src={rank} alt="logo" />
@@ -26,17 +26,13 @@ const HostQuizRanking = () => {
               {hostResult?.map((it, index) => {
                 return (
                   <li className={styles.ranking_item} key={index}>
-                    <div className={styles.item_left}>
-                      <div className={styles.item_num}>{it.rankNow}</div>
-                      <div className={styles.item_img}>
-                        <img src={IMAGES[it.playerImg]} alt="img" className={styles.user_img} />
-                      </div>
-                      <div className={styles.item_name}>{it.playerName}</div>
+                    <div className={styles.item_num}>{it.rankNow}</div>
+                    <div className={styles.item_img}>
+                      <img src={IMAGES[it.playerImg]} alt="img" className={styles.user_img} />
                     </div>
+                    <div className={styles.item_name}>{it.playerName}</div>
 
-                    <div className={styles.item_right}>
-                      <div className={styles.item_score}>{it.scoreGet}</div>
-                    </div>
+                    <div className={styles.item_score}>{it.scoreGet}</div>
                   </li>
                 );
               })}

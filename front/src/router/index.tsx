@@ -141,6 +141,11 @@ const router = createBrowserRouter([
             path: "quiz/:quiz_id",
             element: <QuizLobbyRedirect />,
           },
+          {
+            path: "test",
+            element: <QuizRanking/>
+          },
+
         ],
       },
       {
