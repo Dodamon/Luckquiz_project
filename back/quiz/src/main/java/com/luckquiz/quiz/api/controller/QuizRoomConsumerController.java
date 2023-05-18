@@ -47,7 +47,7 @@ public class QuizRoomConsumerController {
     private final QuizGuestRepository quizGuestRepository;
     private final UserRepository userRepository;
     @Transactional
-    @KafkaListener(topics = "server_message",groupId = "test4") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
+    @KafkaListener(topics = "server_message",groupId = "test2") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
             case "start": {
@@ -197,7 +197,9 @@ public class QuizRoomConsumerController {
                             .build();
                     quizGuestRepository.save(qguest);
                 }
+
                 quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
+                log.info("정답수가 잘 오니"+quizRoom.getCorrectCount());
 
                 log.info("여기 어디야");
                 int participant_count = 0;
@@ -214,6 +216,7 @@ public class QuizRoomConsumerController {
                     participant_count++;
                 }
                 quizRoom.setParticipantCount(participant_count);
+                log.info("참여 인원"+quizRoom.getParticipantCount());
 
                 // 끝나고 삭제
                 stringRedisTemplate.delete(roomId+"statics");
