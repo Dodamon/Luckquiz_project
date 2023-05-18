@@ -16,6 +16,9 @@ public class Grade implements Comparable<Grade>{
     private int rankNow;
     private int count;
     private int quizNum;
+    private int totalRankPre;
+    private int totalRankNow;
+    private int totalScore;
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }

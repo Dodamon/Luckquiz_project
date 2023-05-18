@@ -16,6 +16,8 @@ public class UserTurnEndResponse {
     private int quizNum;
     private int rankNow;
     private int totalScore;
+    private int totalRankNow;
+    private int totalRankPre;
 
     public void setScoreGet(int scoreGet){
         this.scoreGet = scoreGet;
@@ -34,5 +36,11 @@ public class UserTurnEndResponse {
 
     public void setTotalScore(int totalScore) {
         this.totalScore = totalScore;
+    }
+    public void setTotalRankNow(int totalRankNow) {
+        this.totalRankNow = totalRankNow;
+    }
+    public void setTotalRankPre(int totalRankPre) {
+        this.totalRankPre = totalRankPre;
     }
 }

@@ -163,6 +163,8 @@ public class GradingConsumerController {
                     System.out.println(gtemp.getRankNow());
                     userTurnEndResponse.setRankNow(gtemp.getRankNow());
                     userTurnEndResponse.setTotalScore(rankingData.get(gtemp.getPlayerName()));
+                    userTurnEndResponse.setTotalRankNow(gtemp.getTotalRankNow());
+                    userTurnEndResponse.setTotalRankPre(gtemp.getTotalRankPre());
 
                     GuestTurnEndMessage guestTurnEndMessage = GuestTurnEndMessage.builder()
                             .type("userTurnEndResponse")
@@ -170,6 +172,7 @@ public class GradingConsumerController {
                             .build();
                     sendingOperations.convertAndSend("/queue/quiz/"+kafkaGradeEndMessage.getRoomId()+"/"+gtemp.getPlayerName(),guestTurnEndMessage);
                 }
+                // 퀴즈가 끝나고 host가 받는 결과 메시지
                 HostTurnEndMessage hostTurnEndMessage = HostTurnEndMessage.builder()
                         .type("userLList")
                         .userLList(userLList)
