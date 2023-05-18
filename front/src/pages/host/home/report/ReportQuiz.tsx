@@ -22,6 +22,7 @@ const ReportQuiz = () => {
   const [basicReport, setBasicReport] = useState<quizType>();
   const [title, setTitle] = useState<string>("");
   const { data, sendHostRequest } = useHostAxios();
+  // console.log(data)
 
   useEffect(() => {
     sendHostRequest({
@@ -51,12 +52,14 @@ const ReportQuiz = () => {
               <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
               <div>가장 어려웠던 문제</div>
             </div>
-
+            <div className={styles.oneLine}>
+               
             <ReportTable
               property={["번호", "문제", "정답률"]}
               data={[basicReport.content[basicReport.content.length - 1]]}
               type="quiz"
-            />
+              />
+              </div> 
 
             <div className={styles.quizTypeTwo}>
               <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />

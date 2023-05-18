@@ -21,7 +21,7 @@ const ReportPart = () => {
   const { report_id } = useParams();
   const [basicReport, setBasicReport] = useState<mainType | null>(null);
   const { data, status, sendHostRequest } = useHostAxios();
-  
+
   useEffect(() => {
     sendHostRequest({
       url: `/api/quiz/report/participants?id=${report_id}`,
@@ -31,7 +31,6 @@ const ReportPart = () => {
   useEffect(() => {
     setBasicReport(data);
   }, [data]);
-
 
   return (
     <div className={styles.content}>
@@ -47,17 +46,31 @@ const ReportPart = () => {
             justifyContent: "space-around",
           }}
         >
-          <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={basicReport.list} type="part"/>
+          <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={basicReport.list} type="part" />
         </div>
       ) : (
-        <div className={styles.reportContent} style={{
-          backgroundColor: "var(--point-color)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          fontSize: "20px",
-        }}>
-          <div style={{color: "var(--placeholder-text", backgroundColor: "white", width: "100%", height: "100%", borderRadius: "20px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <div
+          className={styles.reportContent}
+          style={{
+            backgroundColor: "var(--point-color)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            fontSize: "20px",
+          }}
+        >
+          <div
+            style={{
+              color: "var(--placeholder-text",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+              borderRadius: "20px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             참여자 정보가 없습니다.
           </div>
         </div>
