@@ -136,7 +136,7 @@ public class QuizRoomConsumerController {
                     Boolean isGame = true;
                     log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
-                    if(!Strings.isEmpty(a.getQuestion())){
+                    if(!Strings.isBlank(a.getQuestion())){
                         isGame = false;
                         quizCnt ++;
                         quizReport.setQuestion(a.getQuestion());
