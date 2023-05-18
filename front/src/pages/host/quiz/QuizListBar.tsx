@@ -12,6 +12,7 @@ import text from '../../../assets/images/text.png';
 import game from '../../../assets/images/game.png';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const newQuizItem: setQuizItem = {
     id: 0,
@@ -97,7 +98,7 @@ const QuizListBar = () => {
 
     const addQuizHandler = () => {
         if (quizInfo.quizList.length === 15) {
-            alert("퀴즈 한도인 15개를 이미 추가하셨습니다.")
+            toast.warning("퀴즈 한도인 15개를 이미 추가하셨습니다.")
             return;
         }
         dispatch(quizAtions.addQuiz(newQuizItem));
@@ -107,7 +108,7 @@ const QuizListBar = () => {
 
     const addGameHandler = () => {
         if (quizInfo.quizList.length === 15) {
-            alert("퀴즈 한도인 15개를 이미 추가하셨습니다.")
+            toast.warning("퀴즈 한도인 15개를 이미 추가하셨습니다.")
             return;
         }
         dispatch(quizAtions.addQuiz(newGameItem))

@@ -50,6 +50,15 @@
   /* margin-right: 13%; */
 }
 
+.qrCode {
+  cursor: pointer;
+}
+.qrCode:hover {
+  scale: 1.05;
+  filter: brightness(90%);
+  border-radius: 20px;
+}
+
 .pinNum {
   font-size: 3vw;
 }

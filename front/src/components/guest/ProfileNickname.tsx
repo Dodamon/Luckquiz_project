@@ -25,6 +25,7 @@ import { connectAndSubscribe, socketActions } from "store/webSocket";
 import useGuestAxios from "hooks/useGuestAxios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const IMAGES = [
     img1,
@@ -70,11 +71,11 @@ const ProfileNickname: React.FC = () => {
     // 닉네임 유효성 검사
     const enteredTxt = nicknameRef.current!.value.trim();
     if (enteredTxt.length === 0) {
-      alert("닉네임을 입력하세요.");
+      toast.info("닉네임을 입력하세요.");
       nicknameRef.current?.focus();
       return;
     } else if (enteredTxt.length > 6) {
-      alert("닉네임은 6자 이하로 작성하세요.");
+      toast.warning("닉네임은 6자 이하로 작성하세요.");
       nicknameRef.current!.value = "";
       nicknameRef.current?.focus();
       return;
@@ -96,7 +97,7 @@ const ProfileNickname: React.FC = () => {
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enteredTxt = e.target.value;
     if (enteredTxt.length > 6) {
-      alert("닉네임은 6자 이하로 작성하세요.");
+      toast.warning("닉네임은 6자 이하로 작성하세요.");
       nicknameRef.current!.value = "";
       nicknameRef.current?.focus();
     }
@@ -120,7 +121,7 @@ const ProfileNickname: React.FC = () => {
   useEffect(() => {
     if (isLoading) return;
     if (status === 400) {
-      alert("존재하지 않는 방입니다. 핀 번호를 다시 확인하세요.");
+      toast.error("존재하지 않는 방입니다. 핀 번호를 다시 확인하세요.");
       navigate("/");
     };
     if (!status || status !== 200) return;
