@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { authActions } from "store/auth";
 import { RootState } from "store";
 import useHostAxios from "hooks/useHostAxios";
+import { toast } from "react-toastify";
 
 const SocialRedirect = () => {
   const navigate = useNavigate();
@@ -26,11 +27,11 @@ const SocialRedirect = () => {
           url: `/api/auth/user/info`,
         });
       } else {
-        alert("로그인실패");
+        toast.error("로그인실패");
         navigate("/");
       }
     } else {
-      alert("로그인실패");
+      toast.error("로그인실패");
       navigate("/");
     }
   }, [searchParams]);

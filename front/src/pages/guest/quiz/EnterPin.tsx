@@ -6,6 +6,7 @@ import styles from "./EnterPin.module.css";
 import { socketActions } from "store/webSocket";
 import { RootState } from "store";
 import { Client } from "@stomp/stompjs";
+import { toast } from "react-toastify";
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const EnterPin: React.FC = () => {
     e.preventDefault();
     const enteredPin = inputRef.current!.value.trim();
     if (enteredPin.length === 0) {
-      alert("핀 번호를 입력하세요.");
+      toast.info("핀 번호를 입력하세요.");
       inputRef.current?.focus();
       return;
     }

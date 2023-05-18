@@ -24,6 +24,7 @@ import QuizRanking from "components/quiz/QuizRanking";
 import ErrorPage from "pages/common/ErrorPage";
 import Awards from "pages/common/Awards";
 import GuestResults from "pages/guest/quiz/GuestResults";
+import QuizLobbyRedirect from "pages/guest/quiz/QuizLobbyRedirect";
 
 const router = createBrowserRouter([
   {
@@ -136,6 +137,10 @@ const router = createBrowserRouter([
             path: "quiz/awards",
             element: <Awards />,
           },
+          {
+            path: "quiz/:quiz_id",
+            element: <QuizLobbyRedirect />,
+          }
         ],
       },
       {

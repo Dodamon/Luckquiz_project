@@ -5,6 +5,7 @@ import Webcam from "react-webcam";
 import styles from "./EmotionGame.module.css";
 import { socketActions } from "store/webSocket";
 import { RootState } from "store";
+import { toast } from "react-toastify";
 
 interface HandleOrderProps {
   handleOrder: Function;
@@ -77,7 +78,8 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
   };
 
   const handleUserMediaError = () => {
-    window.alert("cant access your camera");
+    // window.alert("cant access your camera");
+    toast.warning("카메라 접근을 수락해주세요")
   };
 
   const onClickPhoto = async () => {
@@ -187,7 +189,7 @@ const EmotionGame: React.FC<HandleOrderProps> = ({ handleOrder }) => {
         resultRef.current!.style.gap = "10px";
       }
     }
-    if (gotEmotion && !emotionResult) alert("인식된 얼굴이 없습니다. 다시 찍어보세요.");
+    if (gotEmotion && !emotionResult) toast.warning("인식된 얼굴이 없습니다. 다시 찍어보세요.");
   }, [emotionResult, gotEmotion]);
 
   useEffect(() => {

@@ -5,6 +5,8 @@ import logo from "assets/images/logo.png";
 import styles from "./EnterPin.module.css";
 import { socketActions } from "store/webSocket";
 import { guestActions } from "store/guest";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EnterPin: React.FC = () => {
   const navigate = useNavigate();
@@ -15,11 +17,11 @@ const EnterPin: React.FC = () => {
     e.preventDefault();
     const enteredPin = inputRef.current!.value;
     if (enteredPin.length === 0) {
-      alert("핀 번호를 입력하세요.");
+      toast.info("핀 번호를 입력하세요")
       inputRef.current?.focus();
       return;
     } else if (enteredPin.length !== 7) {
-      alert("올바른 핀 번호를 입력하세요");
+      toast.error("올바른 핀 번호를 입력하세요")
       inputRef.current?.focus();
       return;
     }

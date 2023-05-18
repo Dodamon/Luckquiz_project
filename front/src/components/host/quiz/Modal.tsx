@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { quizAtions } from "store/quiz";
 import { setQuizSet } from "models/quiz";
+import { toast } from "react-toastify";
 type ModalProps = {
     isModal: boolean;
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,7 +31,7 @@ const Modal = ({ isModal, setIsModal }: ModalProps) => {
     function onClickCreate() {
 
         if(name.length===0){
-            alert("최소 글자수를 맞춰주세요!");
+            toast.warning("최소 글자수를 맞춰주세요!");
             return;
         }
     
