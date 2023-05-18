@@ -35,7 +35,7 @@ public class QuizReportController {
 
     // 유저가 열었던 모든 quiz room 정보를 가져옵니다
     @GetMapping("")
-    public ResponseEntity<List<QuizRoomListResponse>> getQuizRoomList(HttpServletRequest request) {
+    public ResponseEntity<Slice<QuizRoomListResponse>> getQuizRoomList(HttpServletRequest request) {
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("access token :  " + accessToken);
@@ -72,7 +72,7 @@ public class QuizReportController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<List<QuizRoomListResponse>> deleteQuizRoom(@RequestBody QuizReportIdRequest quizRoomIdRequest, HttpServletRequest request) {
+    public ResponseEntity<Slice<QuizRoomListResponse>> deleteQuizRoom(@RequestBody QuizReportIdRequest quizRoomIdRequest, HttpServletRequest request) {
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("access token :  " + accessToken);
