@@ -136,14 +136,25 @@ public class QuizRoomConsumerController {
                     Boolean isGame = true;
                     log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
-                    if(!Strings.isEmpty(a.getQuestion())){
-                        isGame = false;
-                        quizCnt ++;
-                        quizReport.setQuestion(a.getQuestion());
-                    }else {
+                    if(Strings.isBlank(a.getQuestion())) {
+                        log.info("빈문자");
                         isGame = true;
                         quizReport.setQuestion("game");
                         gameCnt ++;
+                    } else if(Strings.isEmpty(a.getQuestion())){
+                        log.warn("빈값이니");
+                        isGame = true;
+                        quizReport.setQuestion("game");
+                        gameCnt ++;
+                    } else if("game".equals(a.getType())) {
+                        log.warn("game 이니");
+                        quizReport.setQuestion(null);
+                        gameCnt ++;
+                    } else {
+                        log.warn("퀴즈니");
+                        isGame = false;
+                        quizCnt ++;
+                        quizReport.setQuestion(a.getQuestion());
                     }
                     quizReport.setQuizGameId(a.getId());
                     quizReport.setPinNum(quizRoom.getPinNum());
