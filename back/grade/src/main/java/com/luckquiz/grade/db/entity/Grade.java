@@ -23,7 +23,24 @@ public class Grade implements Serializable{
 	private int playerImg;
 	private int count;
 	private int quizNum;
+
+	public int getSubmitCount() {
+		return submitCount;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
 	private int totalRankNow;
+	private int submitCount;
+	private int totalCount;
+	private boolean done;
+	private int correctCount;
+
+	public boolean isDone() {
+		return done;
+	}
 
 	public int getTotalScore() {
 		return totalScore;

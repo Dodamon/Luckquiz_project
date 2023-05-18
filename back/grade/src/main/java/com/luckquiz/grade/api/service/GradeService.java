@@ -75,17 +75,26 @@ public class GradeService {
 			log.info("퀴즈 번호가 달라서 무효처리 합니다.");
 			return;
 		}
+
 		// redisTemplate.expire(gradeRequest.getRoomId()+"statics",30, TimeUnit.SECONDS);
 		zSetOperations.incrementScore(gradeRequest.getRoomId()+"statics",gradeRequest.getMessage(),1);
 
 		String playerName = gradeRequest.getSender();
+		Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
+		if(userGrade.isDone()){
+			log.info(playerName+ "님은 이미 제출했습니다.");
+			return;
+		} else {
+			userGrade.setDone(true);
+		}
 		// 총 참여자 수
 		Long count = hashGradeOperations.size(roomId+"p");
-
+		userGrade.setTotalCount(userGrade.getTotalCount()+1);
 		String answer = gradeRequest.getMessage();
 		// 퀴즈일 경우
 		if(quiz.getGame().equals("")){
 			//단일 정답.
+			userGrade.setSubmitCount(userGrade.getSubmitCount()+1);
 			String correctAnswer = quiz.getAnswer();
 			Boolean correct = false;
 			Boolean several = false;
@@ -112,10 +121,10 @@ public class GradeService {
 				System.out.println("정답입니다. " + playerName);
 				Integer rank = valueOperations.get(roomId+"cnt");
 				Long scoreGet = Math.round(1000*(1d-(rank.doubleValue()/count.doubleValue())));
-				Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 				userGrade.setScoreGet(scoreGet.intValue());
 				// userGrade.setRankNow(rank+1);
 				userGrade.setCount(userGrade.getCount()+1);
+				userGrade.setCorrectCount(userGrade.getCount()+1);
 				//얻은 점수 기록해두기
 				hashGradeOperations.put(roomId+"p", playerName, userGrade);
 				//맞힌 사람 수 +1
@@ -141,7 +150,6 @@ public class GradeService {
 			}
 		} else {
 			//게임일 경우
-			Grade userGrade;
 			int scoreGet;
 			Game game = Game.valueOf(quiz.getGame());
 			RankKey rankKey = new RankKey();
@@ -193,7 +201,6 @@ public class GradeService {
 
 	public void pictureGrade(KafkaEmotionRequest gradeRequest){
 		System.out.println("사진 채점 유저의 이름, img 확인 : " + gradeRequest.getSender() + "  " + gradeRequest.getImg());
-
 		System.out.println();
 		// 방 번호
 		Integer roomId = gradeRequest.getRoomId();
@@ -208,7 +215,14 @@ public class GradeService {
 			log.info("퀴즈 번호가 달라서 무효처리 합니다.");
 			return;
 		}
-
+		Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
+		if(userGrade.isDone()){
+			log.info(playerName+ "님은 이미 제출했습니다.");
+			return;
+		} else {
+			userGrade.setDone(true);
+		}
+		userGrade.setTotalCount(userGrade.getTotalCount()+1);
 		if(templateDetailResponse == null){
 			log.warn("템플릿이 비어있네요");
 			return;
@@ -233,7 +247,6 @@ public class GradeService {
 		}
 		if(correctAnswer.equals(answer.getValue())){
 			Long scoreGet = Math.round(1000*answer.getConfidence());
-			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			userGrade.setScoreGet(scoreGet.intValue());
 			//얻은 점수 기록해두기
 			hashGradeOperations.put(roomId+"p", playerName, userGrade);
@@ -243,7 +256,6 @@ public class GradeService {
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 		} else {
 			// 감정 종류가 다를 경우.
-			Grade userGrade = hashGradeOperations.get(roomId+"p", playerName);
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),0);
 		}
 	}
@@ -278,6 +290,7 @@ public class GradeService {
 		message.setHostId(templateDetailResponse.getHostId());
 		// Set<ZSetOperations.TypedTuple<String>> tp = zSetOperations.rangeWithScores(roomId+"rank",0,-1);
 		// Set<String> ZSet = zSetOperations.range (roomId+"rank",0,-1);
+		//유저 정보
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		//랭킹점수 받았던거 다시 줄이기.
 		hashmap.forEach((key, value)->{
@@ -286,6 +299,7 @@ public class GradeService {
 			rankKey.setImg(value.getPlayerImg());
 			rankKey.setSender(value.getPlayerName());
 			value.setRankNow(value.getRankPre());
+			value.setDone(false);
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),-value.getScoreGet());
 			value.setTotalScore(value.getTotalScore()-value.getScoreGet());
 			value.setTotalRankNow(value.getTotalRankPre());
@@ -363,16 +377,14 @@ public class GradeService {
 		ranking = 0;
 		for(Map.Entry<String,Integer> data :rankingDataMap.entrySet()){
 			Grade grade = sortedPlayerInfo.get(data.getKey());
-			RankKey rankKey = new RankKey();
-			rankKey.setSender(grade.getPlayerName());
-			rankKey.setImg(grade.getPlayerImg());
 			grade.setTotalScore(data.getValue());
+			grade.setDone(false);
 			if(scoreGet == data.getValue()){
 				grade.setTotalRankNow(ranking);
-				hashGradeOperations.put(roomId+"p", gson.toJson(rankKey), grade);
+				hashGradeOperations.put(roomId+"p", data.getKey(), grade);
 			} else {
 				grade.setTotalRankNow(++ranking);
-				hashGradeOperations.put(roomId+"p", gson.toJson(rankKey), grade);
+				hashGradeOperations.put(roomId+"p", data.getKey(), grade);
 			}
 			scoreGet = data.getValue();
 		}
