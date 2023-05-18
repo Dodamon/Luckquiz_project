@@ -9,14 +9,22 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 @NoArgsConstructor
 public class Grade implements Comparable<Grade>{
     private String playerName;
-    private int playerImg;
     private int scoreGet;
     private int rankPre;
     private int rankNow;
+    private int playerImg;
     private int count;
     private int quizNum;
-    private int totalRankPre;
+
+
+
     private int totalRankNow;
+    private int submitCount;
+    private int totalCount;
+    private boolean done;
+    private int correctCount;
+
+    private int totalRankPre;
     private int totalScore;
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
