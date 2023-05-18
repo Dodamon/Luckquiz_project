@@ -141,6 +141,7 @@ public class QuizRoomConsumerController {
                         quizReport.setQuestion(a.getQuestion());
                     }else {
                         isGame = true;
+                        quizReport.setQuestion(null);
                         gameCnt ++;
                     }
                     quizReport.setQuizGameId(a.getId());
