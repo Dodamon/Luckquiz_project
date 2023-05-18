@@ -10,6 +10,7 @@ import { RootState } from 'store';
 import { useDispatch } from 'react-redux';
 import { quizAtions } from 'store/quiz';
 import { useNavigate } from 'react-router';
+import { authActions } from 'store/auth';
 
 
 const GameSelection = () => {
@@ -19,7 +20,12 @@ const GameSelection = () => {
     const gameSelectHandler = (gameType: string) => {
         dispatch(quizAtions.gameTypeUpdate({ index: selectInfo, gameType: gameType }));
     }
-
+    const deleteContentHandler = () => {
+        if (selectInfo !== 0) {
+            dispatch(authActions.selectIndex(selectInfo - 1));
+        }
+        dispatch(quizAtions.removeQuiz(selectInfo));
+    }
 
 
     return (
@@ -65,9 +71,9 @@ const GameSelection = () => {
 
      
 
-                <div className={styles.exitbox}>
-                <div className={styles.exit_btn} >
-                    <div className={styles.btn_comment} onClick={()=>  navigate("/home",{replace: true})}>나가기</div>
+                <div className={styles.exitbox} >
+                <div className={styles.exit_btn}  onClick={deleteContentHandler} >
+                    <div className={styles.btn_comment} >취소</div>
                     
                 </div>
                 </div>

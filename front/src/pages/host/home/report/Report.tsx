@@ -26,25 +26,28 @@ const Report = () => {
   const { data, status, sendHostRequest } = useHostAxios();
   const userId = useSelector((state: RootState)=> state.auth.userId);
   const [reportList, setReportList]=useState<Report[]>([]);
-
+  const [updataChk, setUpdateChk] = useState(false);
   useEffect(()=>{
     sendHostRequest({
       url: `/api/quiz/report`,
     })
-  }, [])
+  }, [updataChk])
 
-  console.log("ssss", data);
+  
   
 
   return (
       <div className={styles.content} style={{ backgroundImage: report_bg }}>
         <div className={styles.title}></div>
+   
         <div className={styles.scrollWrapper}>
           <div className={styles.listColFrame}>
-            {data&& data.content.map((report:Report, index:number) => (
-              <Link key={index} to={`/home/report/${report.reportId}/basicinfo`} style={{width:"100%"}}>
-                <HomeListCard menu={1} report={report}/>
-              </Link>
+        
+            {(data && data.content.length===0)?<div  className={styles.empty_comment}>기록된 레포트가 없습니다.</div>:
+            data &&data.content.map((report:Report, index:number) => (
+              <a key={index}  style={{width:"100%"}}>
+                <HomeListCard menu={1} report={report} setUpdateChk={setUpdateChk} updataChk={updataChk}/>
+              </a>
             ))}
           </div>
         </div>
