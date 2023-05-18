@@ -48,7 +48,7 @@ public class QuizRoomConsumerController {
     private final UserRepository userRepository;
 
     @Transactional
-    @KafkaListener(topics = "server_message",groupId = "test3") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
+    @KafkaListener(topics = "server_message",groupId = "test4") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
         switch(key){
             case "start": {
@@ -74,16 +74,16 @@ public class QuizRoomConsumerController {
 
 
                 System.out.println("consumer came");
-                Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND));
-                QuizRoom quizRoom = QuizRoom.builder()
-                        .pinNum(roomId)
-                        .templateId(temp.getId())
-                        .hostId(hostId)
-                        .createdTime(LocalDateTime.now())
-                        .build();
-                QuizRoom quizRoom1 = quizRoomRepository.save(quizRoom);
+                Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND)); // 유효성 검사
 
-                redisTransService.roomTempTrans(roomId, hostId, templateId,quizRoom1.getId(),template.getName());
+                if(quizRoomRepository.existsQuizRoomByPinNum(roomId)){
+                    System.out.println("이미 있네");
+                    QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+                    quizRoom.setCreatedTime(LocalDateTime.now());
+                    quizRoom.setHostId(hostId);
+                    quizRoom.setTemplateId(templateId);
+                }
+                redisTransService.roomTempTrans(roomId, hostId, templateId,2,template.getName());
             }
                 break;
             case "final_end": {
@@ -137,10 +137,7 @@ public class QuizRoomConsumerController {
                     quizReport.setQuizGameId(a.getId());
                     quizReport.setPinNum(quizRoom.getPinNum());
                     quizReport.setQuizRoomId(quizRoom.getId());
-                    if(!isGame){  // 퀴즈일 때만 저장을 하자.
-                        quizReportRepository.save(quizReport);
-                    }
-
+                    quizReportRepository.save(quizReport);
                 }
 
                 log.info("퀴즈 Report를 다시 조회한다");
@@ -167,6 +164,7 @@ public class QuizRoomConsumerController {
                     quizReport.get(i).setSubmitCount(kafkaGradeEndMessage.getSolveCount());
                     quizReport.get(i).setUserId(hostId);
                 }
+
 
 
                 quizRoom.setQuizCount(quizCnt);
