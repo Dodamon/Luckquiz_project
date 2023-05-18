@@ -68,6 +68,11 @@ const ReportBasic = () => {
   console.log("basic_data : ", data);
   console.log("basic_reportID : ", report_id);
 
+  const floatChangeHandler= (num:number)=>{
+    const percentage = (num * 100).toFixed(1);
+    return percentage;
+  }
+
   return (
     <div className={styles.content}>
       {basicReport && <div className={styles.title}>{basicReport.title}</div>}
@@ -96,7 +101,7 @@ const ReportBasic = () => {
             <div className={styles.chartBox}>
               <div className={styles.percentageBox} style={{ display: "flex", alignItems: "center" }}>
                 <div className={styles.textStyle}>총 정답률</div>
-                {basicReport && <div className={styles.textStyle}>{basicReport.successRate}%</div>}
+                {basicReport && <div className={styles.textStyle}>{floatChangeHandler(basicReport.successRate)}%</div>}
               </div>
               <div className={styles.pieStyle}>{pieData && <Doughnut data={pieData} />}</div>
             </div>
