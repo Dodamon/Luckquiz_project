@@ -70,7 +70,7 @@ public class QuizReportCustomRepository {
                         quizGuest.id,
                         quizGuest.guestNickname,
                         quizGuest.correctCount.divide(quizGuest.totalCount).longValue(),
-                        quizGuest.score)
+                        quizGuest.score.doubleValue())
                 )
                 .from(quizGuest)
                 .where(
