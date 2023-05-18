@@ -58,7 +58,10 @@ public class QuizReportCustomRepository {
                                 quizRoom.createdTime,
                                 quizRoom.participantCount))
                 .from(quizRoom)
-                .where(quizRoom.hostId.eq(userId))
+                .where(
+                        quizRoom.hostId.eq(userId),
+                        quizRoom.finishedTime.isNotNull()
+                        )
                 .orderBy(quizRoom.id.desc())
                 .fetch();
         return new SliceImpl<>(results);
