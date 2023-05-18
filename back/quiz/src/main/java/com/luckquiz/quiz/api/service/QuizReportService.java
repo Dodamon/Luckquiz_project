@@ -6,10 +6,15 @@ import com.luckquiz.quiz.api.response.QuizRoomResponse;
 import com.luckquiz.quiz.api.response.QuizRoomListResponse;
 import com.luckquiz.quiz.common.exception.CustomException;
 import com.luckquiz.quiz.common.exception.CustomExceptionType;
+import com.luckquiz.quiz.db.entity.QuizGuest;
+import com.luckquiz.quiz.db.entity.QuizReport;
 import com.luckquiz.quiz.db.entity.QuizRoom;
+import com.luckquiz.quiz.db.repository.QuizGuestRepository;
 import com.luckquiz.quiz.db.repository.QuizReportCustomRepository;
 import com.luckquiz.quiz.db.repository.QuizReportRepository;
 import com.luckquiz.quiz.db.repository.QuizRoomRepository;
+import com.luckquiz.quiz.db.repository.TemplateRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +33,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class QuizReportService {
+    private final TemplateRepository templateRepository;
+    private final QuizGuestRepository quizGuestRepository;
     private final QuizReportRepository quizReportRepository;
     private final QuizRoomRepository quizRoomRepository;
     private final QuizReportCustomRepository quizReportCustomRepository;
@@ -73,11 +81,16 @@ public class QuizReportService {
         return quizReportResponse;
     }
 
-    // 퀴즈룸에 참여한 참여자들의 정보를 가져옵니다.
+    // 퀴즈룸에 참여한 참여자들의 정보를 가져옵니다. -> 무한 스크롤 버전
     // quiz_guest
+    // @Transactional(readOnly = true)
+    // public Slice<QuizRoomGuest> getQuizRoomParticipants(int roomId, int lastGuestId, Pageable pageable) {
+    //     return quizReportCustomRepository.getParticipants(roomId, lastGuestId, pageable);
+    // }
+
     @Transactional(readOnly = true)
-    public Slice<QuizRoomGuest> getQuizRoomParticipants(int roomId, int lastGuestId, Pageable pageable) {
-        return quizReportCustomRepository.getParticipants(roomId, lastGuestId, pageable);
+    public List<QuizRoomGuest> getQuizRoomParticipants(int roomId) {
+        return quizReportCustomRepository.getParticipants(roomId);
     }
 
     @Transactional(readOnly = true)
@@ -90,5 +103,11 @@ public class QuizReportService {
         QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
         quizRoomRepository.delete(quizRoom);
         return getQuizRoomList(hostId);
+    }
+
+    @Transactional(readOnly = true)
+    public String getTemplateName(int roomId){
+        QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(()->new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+        return quizRoom.getTemplateName();
     }
 }

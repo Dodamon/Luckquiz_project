@@ -2,6 +2,7 @@ package com.luckquiz.quiz.api.controller;
 
 
 import com.luckquiz.quiz.api.request.QuizReportIdRequest;
+import com.luckquiz.quiz.api.response.ParticipantsWithTemplateNameResponse;
 import com.luckquiz.quiz.api.response.QuizRoomGuest;
 import com.luckquiz.quiz.api.response.QuizRoomQuestion;
 import com.luckquiz.quiz.api.response.QuizRoomResponse;
@@ -20,6 +21,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -51,13 +54,14 @@ public class QuizReportController {
 
     // 퀴즈룸의 참여자 정보를 가져온다
     @GetMapping("/participants")
-    public ResponseEntity<Slice<QuizRoomGuest>> getQuizRoomParticipants(
-            @RequestParam(value = "id", required = true) int roomId,
-            @RequestParam(value = "next", defaultValue = "0") int lastGuestId,
-            @PageableDefault(size = 30, sort="score", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<ParticipantsWithTemplateNameResponse> getQuizRoomParticipants(
+            @RequestParam(value = "id", required = true) int roomId) {
         log.info("roomId : " + String.valueOf(roomId));
-        log.info("lastGuestId : " +  String.valueOf(lastGuestId));
-        return ResponseEntity.ok().body(quizReportService.getQuizRoomParticipants(roomId, lastGuestId, pageable));
+        ParticipantsWithTemplateNameResponse participants = ParticipantsWithTemplateNameResponse.builder()
+            .list(quizReportService.getQuizRoomParticipants(roomId))
+            .title(quizReportService.getTemplateName(roomId))
+            .build();
+        return ResponseEntity.ok().body(participants);
     }
 
     // 퀴즈룸의 모든 문제들의 정보를 가져온다
