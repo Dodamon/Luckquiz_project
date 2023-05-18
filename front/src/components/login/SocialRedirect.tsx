@@ -38,7 +38,6 @@ const SocialRedirect = () => {
   useEffect(() => {
     if (data) {
       dispatch(authActions.updateInfo({ nickname: data.name, userId: data.id, image_url: data.image_url }));
-      alert("로그인성공");
       navigate("/home");
     }
   }, [data]);
