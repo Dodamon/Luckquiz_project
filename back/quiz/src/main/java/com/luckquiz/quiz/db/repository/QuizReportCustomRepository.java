@@ -84,6 +84,24 @@ public class QuizReportCustomRepository {
         return checkLastPage(pageable, results);
     }
 
+    public List<QuizRoomGuest> getParticipants(int roomId) {
+        List<QuizRoomGuest> results = queryFactory.select(
+                Projections.constructor( QuizRoomGuest.class,
+                    quizGuest.id,
+                    quizGuest.guestNickname,
+                    quizGuest.correctCount.divide(quizGuest.totalCount).longValue(),
+                    quizGuest.score.intValue())
+            )
+            .from(quizGuest)
+            .where(
+                quizGuest.quizRoomId.eq(roomId),
+                quizGuest.totalCount.ne(0)
+            )
+            .orderBy(quizGuest.score.desc(), quizGuest.id.desc())
+            .fetch();
+        return results;
+    }
+
     public Slice<QuizRoomQuestion> getQuestions(int roomId) {
 
         List<QuizRoomQuestion> mostDifficultProblem =  queryFactory.select(
