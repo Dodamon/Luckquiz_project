@@ -139,7 +139,7 @@ public class QuizRoomConsumerController {
                     if(Strings.isBlank(a.getQuestion())) {
                         log.info("빈문자");
                         isGame = true;
-                        quizReport.setQuestion("game");
+                        quizReport.setQuestion(null);
                         gameCnt ++;
                     } else if(Strings.isEmpty(a.getQuestion())){
                         log.warn("빈값이니");
@@ -183,7 +183,7 @@ public class QuizRoomConsumerController {
                     log.info("CorrectCount : " + kafkaGradeEndMessage.getCorrectCount());
                     log.info("SubmitCount : " + kafkaGradeEndMessage.getSolveCount());
 
-                    quizReport.get(i).setQuestion(templateDetailResponse.getQuizList().get(i).getQuestion());
+
                     quizReport.get(i).setCorrectCount(kafkaGradeEndMessage.getCorrectCount());
                     totalCorrectCnt += kafkaGradeEndMessage.getCorrectCount();
                     quizReport.get(i).setSubmitCount(kafkaGradeEndMessage.getSolveCount());
