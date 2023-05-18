@@ -1,8 +1,13 @@
-import { Outlet } from "react-router-dom";
-import styles from "./HostQuiz.module.css"
+import { Outlet, useNavigate } from "react-router-dom";
+import styles from "./HostQuiz.module.css";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { socketActions } from "store/webSocket";
 
 const HostQuiz = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -17,7 +22,8 @@ const HostQuiz = () => {
         // ...
 
         // 페이지를 벗어납니다.
-        
+        dispatch(socketActions.resetSocket());
+        navigate("/home");
       } else {
         // 뒤로가기 동작을 취소합니다.
         window.history.pushState(null, "", window.location.pathname);
