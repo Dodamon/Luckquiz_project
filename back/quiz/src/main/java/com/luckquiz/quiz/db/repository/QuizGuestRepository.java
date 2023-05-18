@@ -10,7 +10,7 @@ public interface QuizGuestRepository extends JpaRepository<QuizGuest, Integer> {
     Optional<QuizGuest> findByTemplateId(Integer templateId);
     Optional<QuizGuest> findQuizGuestByPinNum(Integer pinNum);
 
-    boolean existsByGuestNickname(String guestNickName);
+    boolean existsByGuestNicknameAndQuizRoomId(String guestNickName,int roomId);
     Optional<QuizGuest> findQuizGuestByGuestNicknameAndQuizRoomId(String guestNickname,int quizRoomId);
     List<QuizGuest> findQuizGuestsByQuizRoomId(int roomId);
 }

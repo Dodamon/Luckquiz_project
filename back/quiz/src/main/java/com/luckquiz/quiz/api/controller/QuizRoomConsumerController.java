@@ -204,7 +204,7 @@ public class QuizRoomConsumerController {
                             .score(g.getTotalScore())  // 참가자의 총점
                             .quizRoomId(quizRoom.getId())
                             .build();
-                    if(!quizGuestRepository.existsByGuestNickname(g.getPlayerName())){
+                    if(!quizGuestRepository.existsByGuestNicknameAndQuizRoomId(g.getPlayerName(),quizRoom.getId())){
                         quizGuestRepository.save(qguest);
                     }
                     log.info("참가자---->"+qguest.getGuestNickname());
