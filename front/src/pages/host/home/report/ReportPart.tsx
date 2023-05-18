@@ -21,6 +21,7 @@ const ReportPart = () => {
   const { report_id } = useParams();
   const [basicReport, setBasicReport] = useState<mainType | null>(null);
   const { data, status, sendHostRequest } = useHostAxios();
+  
   useEffect(() => {
     sendHostRequest({
       url: `/api/quiz/report/participants?id=${report_id}`,
@@ -47,7 +48,7 @@ const ReportPart = () => {
             justifyContent: "space-around",
           }}
         >
-          <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={basicReport.list} />
+          <ReportTable property={["순위", "닉네임", "정답률", "총점"]} data={basicReport.list} type="part"/>
         </div>
       ) : (
         <div className={styles.reportContent} style={{

@@ -52,6 +52,7 @@ const ReportBasic = () => {
             data: [data.successRate, 100 - data.successRate],
             backgroundColor: ["#7557ff", "#f75555"],
             borderRadius: 30,
+            border: "white",
             cutout: "60%",
           },
         ],
