@@ -142,7 +142,7 @@ const QuizListBar = () => {
                                                 <div className={styles.quiz_title} style={item.type === "quiz" ? { backgroundColor: `var(--point-color)` } : { backgroundColor: `var(--button-two)` }}>{item.type} {index + 1}</div>
                                                 <div className={styles.quiz_delete} onClick={() => deleteContentHandler(index)}>x</div>
                                             </div>
-                                            <div className={styles.quiz_content} style={index === focusedItem ? { backgroundColor: "#7657ff98" } : {}} onClick={() => itemSelectHandler(index)}>
+                                            <div className={styles.quiz_content} style={index === authInfo.choiceIndex ? { backgroundColor: "#7657ff98" } : {}} onClick={() => itemSelectHandler(index)}>
                                                 {
                                                     item.type === "game" ? <img src={game} alt="contents" /> : item.quiz === "four" ? <img src={four} alt="contents" /> :
                                                         item.quiz === "ox" ? <img src={ox} alt="contents" /> : item.quiz === "text" ? <img src={text} alt="contents" /> : <></>

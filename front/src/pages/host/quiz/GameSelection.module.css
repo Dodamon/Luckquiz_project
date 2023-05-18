@@ -47,6 +47,7 @@
     border-top-right-radius: 20px;
     display: flex;
     justify-content: center;
+    /* word-break: break-all; */
     align-items: center;
 }
 
