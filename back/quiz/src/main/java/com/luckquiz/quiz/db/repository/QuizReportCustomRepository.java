@@ -75,7 +75,8 @@ public class QuizReportCustomRepository {
                 .from(quizGuest)
                 .where(
                         ltQuizGuestId(lastGuestId),
-                        quizGuest.quizRoomId.eq(roomId)
+                        quizGuest.quizRoomId.eq(roomId),
+                        quizGuest.totalCount.ne(0)
                 )
                 .orderBy(quizGuest.score.desc(), quizGuest.id.desc())
                 .limit(pageable.getPageSize() + 1)
@@ -93,7 +94,9 @@ public class QuizReportCustomRepository {
                 )
                 .from(quizReport)
                 .where(
-                        quizReport.quizRoomId.eq(roomId)
+                        quizReport.quizRoomId.eq(roomId),
+                        quizReport.question.isNotNull(),
+                        quizReport.submitCount.ne(0)
                 )
                 .orderBy(
                         quizReport.correctCount.divide(quizReport.submitCount).asc()
@@ -109,7 +112,9 @@ public class QuizReportCustomRepository {
                 )
                 .from(quizReport)
                 .where(
-                        quizReport.quizRoomId.eq(roomId)
+                        quizReport.quizRoomId.eq(roomId),
+                        quizReport.question.isNotNull(),
+                        quizReport.submitCount.ne(0)
                 )
                 .orderBy(
                         quizReport.id.asc()
