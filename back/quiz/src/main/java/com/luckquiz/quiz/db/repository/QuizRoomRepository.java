@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface QuizRoomRepository extends JpaRepository<QuizRoom, Integer> {
     // 어떤 템플릿으로 열린 퀴즈방들 찾기.
 //    Page<QuizRoom> findQuizRoomsByTemplateId(int id, Pageable pageable);
-
+    boolean existsQuizRoomByPinNum(int pinNum);
     Optional<QuizRoom> findQuizRoomByPinNum(Integer pinNum);
     Optional<QuizRoom> findQuizRoomById(Integer id);
 }

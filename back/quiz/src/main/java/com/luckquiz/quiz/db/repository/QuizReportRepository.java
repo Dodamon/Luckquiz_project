@@ -17,6 +17,8 @@ public interface QuizReportRepository extends JpaRepository<QuizReport, Integer>
     Optional<QuizReport> findQuizReportByPinNum(Integer pinNum);
     List<QuizReport> findQuizReportsByQuizRoomId(int quizRoomId);
 
+    boolean deleteQuizReportById(int id);
+
     // 이거 api 짜면서 그 때 그 때 맹그시지요... 역시 알 톡 챗 켓 텍 카 노 리 갑자기 저도 안됩니다?
     // 좋읍니다.. 기본적인것만 해뒀읍니다.아놔 임포트 왤캐 안돼
     // find 씀돠 저는..... get은 안써봤는디
