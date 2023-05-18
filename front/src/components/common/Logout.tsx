@@ -31,14 +31,13 @@ const Logout = () => {
 
 
     if (sessionStorage.getItem("accessToken")===null) {
-      console.log(sessionStorage.getItem("accessToken"))
-      alert('로그아웃 성공')
-      navigate('/')
+      console.log(sessionStorage.getItem("accessToken"));
+      navigate('/');
     } else {
-      console.log(sessionStorage.getItem("accessToken"))
-      alert('로그아웃 실패')
-    }
-  }
+      console.log(sessionStorage.getItem("accessToken"));
+      alert('로그아웃 실패');
+    };
+  };
   
 
   return (

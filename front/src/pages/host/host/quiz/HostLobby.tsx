@@ -25,7 +25,7 @@ const HostLobby = () => {
   return (
     <div className={styles.container}>
       <div className={styles.qrPinWrapper}>
-        <img src={logo} alt="" className={styles.logo} />
+        <img src={logo} alt="" className={styles.lobbyLogo} />
         <div className={styles.whiteBox}>
           <img
             src={qrCode}
@@ -36,7 +36,7 @@ const HostLobby = () => {
             className={styles.qrCode}
           />
           <div className={styles.pinBox}>
-            <p>퀴즈 입장 pin번호</p>
+            <p>퀴즈 입장 핀 번호</p>
             <p>{quiz_id}</p>
           </div>
         </div>
