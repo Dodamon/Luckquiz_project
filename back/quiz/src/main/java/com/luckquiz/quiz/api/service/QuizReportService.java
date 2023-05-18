@@ -103,9 +103,27 @@ public class QuizReportService {
     @Transactional(readOnly = true)
     public Slice<QuizRoomQuestion> getQuizQuestions(int roomId) {
         Slice<QuizRoomQuestion> questions = quizReportCustomRepository.getQuestions(roomId);
-        int userNum = 1;
+        int mostQuestionReportId = 0;
+        if(questions.getContent().size() != 0) {
+            // 가장 어려운 문제
+            QuizRoomQuestion mostQuestion = questions.getContent().get(questions.getContent().size() - 1);
+            // 가장 어려운 문제의 문제 아이디
+            mostQuestionReportId = mostQuestion.getNum();
+        }
+
+        int mostQuestionNum = 0;
+        int questionNum = 1;
         for (QuizRoomQuestion question : questions) {
-            question.setNum(userNum++);
+            if (question.getNum().equals(mostQuestionReportId)) {
+                if(mostQuestionNum == 0) {
+                    mostQuestionNum = questionNum;
+                    question.setNum(questionNum++);
+                } else {
+                    question.setNum(mostQuestionNum);
+                }
+            } else {
+                question.setNum(questionNum++);
+            }
         }
         return  questions;
     }
