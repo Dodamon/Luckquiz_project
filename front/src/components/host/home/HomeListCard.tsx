@@ -110,6 +110,18 @@ const HomeListCard = (props: Props) => {
     return formattedDate;
   };
 
+  const dateAndHourChangeHandler = (dateValue: string) => {
+    const data = dateValue;
+    const formattedDate = new Date(data).toLocaleString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+    return formattedDate;
+  };
+
   const navigateHandler = (event: React.MouseEvent) => {
     event.stopPropagation();
     if (report) {
@@ -177,7 +189,7 @@ const HomeListCard = (props: Props) => {
             report && (
               <>
                 <div className={styles.quizTitle}>{report?.title}</div>
-                <div className={styles.placeholder}>{dateChangeHandler(report?.createdTime)} 기록</div>
+                <div className={styles.placeholder}>{dateAndHourChangeHandler(report?.createdTime)} 기록</div>
               </>
             )
           )}

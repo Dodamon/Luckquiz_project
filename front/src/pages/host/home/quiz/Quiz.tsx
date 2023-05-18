@@ -56,33 +56,37 @@ const Quiz = () => {
       .then(res => {
         console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;
+        console.log(newQuizList);
+        
 
-        const finishList = [...newQuizList].filter(it=> it.is)
-
-        const sortedItems = [...newQuizList].sort((a: any, b: any) => {
-          // true인 경우를 먼저 오도록 정렬
-          if (a.isValid === "true" && b.isValid !== "true") {
-            return -1;
-          }
-          if (a.isValid !== "true" && b.isValid === "true") {
-            return 1;
-          }
-
+        const finishList = [...newQuizList].filter(it=> it.isValid==="true").sort((a: any, b: any) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
-
-          // 이후 날짜 정렬
           if (dateA < dateB) {
-            return -1;
-          }
-          if (dateA > dateB) {
             return 1;
           }
-
+          if (dateA > dateB) {
+            return -1;
+          }
+          return 0;
+        });
+        const nonFinishList = [...newQuizList].filter(it=> it.isValid==="false").sort((a: any, b: any) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          if (dateA < dateB) {
+            return 1;
+          }
+          if (dateA > dateB) {
+            return -1;
+          }
           return 0;
         });
 
-        setMyQuizList(sortedItems);
+        console.log(nonFinishList);
+        console.log(finishList);
+        
+
+        setMyQuizList([...finishList, ...nonFinishList]);
         dispatch(authActions.selectIndex(0));
       }).catch(err =>{
         navigate('/error', { state: { code:err.response.status}});
@@ -97,9 +101,17 @@ const Quiz = () => {
     <div className={styles.content} style={isModal || isModals ? {zIndex:"0"}:{}}>
       <div className={styles.bgtools} style={isModal || isModals ? { backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)' } : {}} ></div>
       <div className={styles.listColFrame}  style={isModal || isModals ? {zIndex:"-2"}:{}} >
-        {myQuizList.length === 0 ? <div  className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
+        {myQuizList.length === 0   ? <div  className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> :
+        
+        myQuizList.map((quiz, index) => (
           <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler} />
-        ))}
+        ))
+        
+
+   
+        
+        
+        }
        
         {/* <Link to={"/quiz/create"}> */}
         <Icon icon="material-symbols:add-circle-outline-rounded" className={styles.addIcon} onClick={() => setIsModal(!isModal)} />
