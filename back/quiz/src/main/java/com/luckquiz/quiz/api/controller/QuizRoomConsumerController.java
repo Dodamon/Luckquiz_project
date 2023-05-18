@@ -80,12 +80,14 @@ public class QuizRoomConsumerController {
                     quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                     quizRoom.setCreatedTime(LocalDateTime.now());
                     quizRoom.setHostId(hostId);
+                    quizRoom.setPinNum(roomId);
                     quizRoom.setTemplateName(temp.getName());
                     quizRoom.setTemplateId(templateId);
                 }else {
                     System.out.println("없니?");
                     quizRoom.setCreatedTime(LocalDateTime.now());
                     quizRoom.setHostId(hostId);
+                    quizRoom.setPinNum(roomId);
                     quizRoom.setTemplateName(temp.getName());
                     quizRoom.setTemplateId(templateId);
                     quizRoomRepository.save(quizRoom);
