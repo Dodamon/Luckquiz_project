@@ -90,12 +90,23 @@ public class QuizReportService {
 
     @Transactional(readOnly = true)
     public List<QuizRoomGuest> getQuizRoomParticipants(int roomId) {
-        return quizReportCustomRepository.getParticipants(roomId);
+        List<QuizRoomGuest> participants = quizReportCustomRepository.getParticipants(roomId);
+
+        int rank = 1;
+        for (QuizRoomGuest participant : participants) {
+            participant.setRank(rank++);
+        }
+        return participants;
     }
 
     @Transactional(readOnly = true)
     public Slice<QuizRoomQuestion> getQuizQuestions(int roomId) {
-        return quizReportCustomRepository.getQuestions(roomId);
+        Slice<QuizRoomQuestion> questions = quizReportCustomRepository.getQuestions(roomId);
+        int userNum = 1;
+        for (QuizRoomQuestion question : questions) {
+            question.setNum(userNum++);
+        }
+        return  questions;
     }
 
     @Transactional

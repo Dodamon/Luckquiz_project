@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 public class QuizRoomGuest {
     Integer rank;
     String nickName;
-    Long successRate;
+    Float successRate;
     Integer totalScore;
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
 }
