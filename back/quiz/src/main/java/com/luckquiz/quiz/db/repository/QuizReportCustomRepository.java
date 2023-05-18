@@ -143,7 +143,7 @@ public class QuizReportCustomRepository {
                 .from(quizReport)
                 .where(
                         quizReport.quizRoomId.eq(roomId),
-                        quizReport.question.ne("game"),
+                        quizReport.question.isNotNull(),
                         quizReport.submitCount.ne(0)
                 )
                 .orderBy(
@@ -161,7 +161,7 @@ public class QuizReportCustomRepository {
                 .from(quizReport)
                 .where(
                         quizReport.quizRoomId.eq(roomId),
-                        quizReport.question.ne("game"),
+                        quizReport.question.isNotNull(),
                         quizReport.submitCount.ne(0)
                 )
                 .orderBy(
