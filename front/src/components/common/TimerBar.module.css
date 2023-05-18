@@ -21,5 +21,6 @@
     background-size: 200% 100%;
     background-position: 0% 50%;
     animation: countdown var(--countdown-time) linear forwards;
+    -webkit-animation: countdown var(--countdown-time) linear forwards;
   }
 }
