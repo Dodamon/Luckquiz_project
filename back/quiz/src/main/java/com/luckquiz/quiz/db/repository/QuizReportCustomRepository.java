@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.luckquiz.quiz.db.entity.QQuizGuest.quizGuest;
@@ -73,7 +74,7 @@ public class QuizReportCustomRepository {
                         )
                 .orderBy(quizRoom.id.desc())
                 .fetch();
-        return new SliceImpl<>(results);
+        return new SliceImpl<>(results) ;
     }
 
 //    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
@@ -138,8 +139,7 @@ public class QuizReportCustomRepository {
                         Projections.constructor( QuizRoomQuestion.class,
                                 quizReport.id,
                                 quizReport.question,
-                                quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100))
-                )
+                                quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100)))
                 .from(quizReport)
                 .where(
                         quizReport.quizRoomId.eq(roomId),
@@ -156,8 +156,7 @@ public class QuizReportCustomRepository {
                 Projections.constructor( QuizRoomQuestion.class,
                         quizReport.id,
                         quizReport.question,
-                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100))
-                )
+                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100)))
                 .from(quizReport)
                 .where(
                         quizReport.quizRoomId.eq(roomId),

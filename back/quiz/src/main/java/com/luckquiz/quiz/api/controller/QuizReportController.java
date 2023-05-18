@@ -2,11 +2,7 @@ package com.luckquiz.quiz.api.controller;
 
 
 import com.luckquiz.quiz.api.request.QuizReportIdRequest;
-import com.luckquiz.quiz.api.response.ParticipantsWithTemplateNameResponse;
-import com.luckquiz.quiz.api.response.QuizRoomGuest;
-import com.luckquiz.quiz.api.response.QuizRoomQuestion;
-import com.luckquiz.quiz.api.response.QuizRoomResponse;
-import com.luckquiz.quiz.api.response.QuizRoomListResponse;
+import com.luckquiz.quiz.api.response.*;
 import com.luckquiz.quiz.api.service.QuizReportService;
 import com.luckquiz.quiz.api.service.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -65,10 +61,17 @@ public class QuizReportController {
 
     // 퀴즈룸의 모든 문제들의 정보를 가져온다
     @GetMapping("/questions")
-    public ResponseEntity<Slice<QuizRoomQuestion>> getQuizRoomQuestions(
+    public ResponseEntity<QuestionsWithTemplateNameResponse> getQuizRoomQuestions(
             @RequestParam(value = "id", required = true) int roomId) {
         log.info("roomId : " + String.valueOf(roomId));
-        return ResponseEntity.ok().body(quizReportService.getQuizQuestions(roomId));
+        Slice<QuizRoomQuestion> quizQuestions = quizReportService.getQuizQuestions(roomId);
+
+        QuestionsWithTemplateNameResponse questions = QuestionsWithTemplateNameResponse.builder()
+                .slice(quizReportService.getQuizQuestions(roomId))
+                .title(quizReportService.getTemplateName(roomId))
+                .build();
+
+        return ResponseEntity.ok().body(questions);
     }
 
     @PostMapping("/delete")
