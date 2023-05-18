@@ -74,26 +74,23 @@ public class QuizRoomConsumerController {
 
                 System.out.println("consumer came");
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND)); // 유효성 검사
-
+                QuizRoom quizRoom = new QuizRoom();
                 if(quizRoomRepository.existsQuizRoomByPinNum(roomId)){
                     System.out.println("있니???????");
-                    QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
+                    quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                     quizRoom.setCreatedTime(LocalDateTime.now());
                     quizRoom.setHostId(hostId);
                     quizRoom.setTemplateName(temp.getName());
                     quizRoom.setTemplateId(templateId);
                 }else {
                     System.out.println("없니?");
-                    QuizRoom quizRoom = QuizRoom.builder()
-                            .pinNum(roomId)
-                            .templateId(temp.getId())
-                            .hostId(hostId)
-                            .templateName(temp.getName())
-                            .createdTime(LocalDateTime.now())
-                            .build();
+                    quizRoom.setCreatedTime(LocalDateTime.now());
+                    quizRoom.setHostId(hostId);
+                    quizRoom.setTemplateName(temp.getName());
+                    quizRoom.setTemplateId(templateId);
                     quizRoomRepository.save(quizRoom);
                 }
-                redisTransService.roomTempTrans(roomId, hostId, templateId,2,template.getName());
+                redisTransService.roomTempTrans(roomId, hostId, templateId,quizRoom.getId(),template.getName());
             }
                 break;
             case "final_end": {
