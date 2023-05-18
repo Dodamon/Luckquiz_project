@@ -42,7 +42,7 @@
     }
     .score_box {
         background-color: rgb(52, 53, 126);
-        width: 150px;
+        width: 250px;
         height: 50px;
         margin-top: 10px;
         display: flex;
@@ -136,7 +136,7 @@
     }
     .score_box {
         background-color: rgb(52, 53, 126);
-        width: 150px;
+        width: 250px;
         height: 50px;
         margin-top: 10px;
         display: flex;

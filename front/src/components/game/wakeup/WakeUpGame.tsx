@@ -104,7 +104,7 @@ const WakeUpGame = (props: Props) => {
 
   return (
     <div>
-      <div>
+      <div style={{marginBottom:"4vh"}}>
         <QuizGameTitle title="일어나 럭퀴야 학교 가야지 게임" />
       </div>
       <div className={styles.content}>
