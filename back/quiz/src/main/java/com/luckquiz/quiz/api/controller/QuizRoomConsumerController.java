@@ -46,7 +46,6 @@ public class QuizRoomConsumerController {
 
     private final QuizGuestRepository quizGuestRepository;
     private final UserRepository userRepository;
-
     @Transactional
     @KafkaListener(topics = "server_message",groupId = "test4") // 여기 컨슈머고 지금 파이널 엔드 요청 오면 이걸 받아서 처리를 합니다. 여기서 이제 레디스에 있는 값을 마리아로 옮기면 됩니다.
     public void quizEnd(String in,@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key) throws Exception {
@@ -77,12 +76,22 @@ public class QuizRoomConsumerController {
                 Template temp = templateRepository.findTemplateById(templateId).orElseThrow(() -> new CustomException(CustomExceptionType.TEMPLATE_NOT_FOUND)); // 유효성 검사
 
                 if(quizRoomRepository.existsQuizRoomByPinNum(roomId)){
-                    System.out.println("이미 있네");
+                    System.out.println("있니???????");
                     QuizRoom quizRoom = quizRoomRepository.findQuizRoomByPinNum(roomId).orElseThrow(()-> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
                     quizRoom.setCreatedTime(LocalDateTime.now());
                     quizRoom.setHostId(hostId);
                     quizRoom.setTemplateId(templateId);
+                }else {
+                    System.out.println("없니?");
+                    QuizRoom quizRoom = QuizRoom.builder()
+                            .pinNum(roomId)
+                            .templateId(temp.getId())
+                            .hostId(hostId)
+                            .createdTime(LocalDateTime.now())
+                            .build();
+                    quizRoomRepository.save(quizRoom);
                 }
+
                 redisTransService.roomTempTrans(roomId, hostId, templateId,2,template.getName());
             }
                 break;
