@@ -3,6 +3,7 @@
     background-position: 100% 50%;
   }
 }
+
 .timerBar {
   height: 100%;
   width: 100%;
@@ -26,11 +27,7 @@
 }
 
 @media (-webkit-animation) {
-  @keyframes countdown {
-  to {
-    background-position: 100% 50%;
-  }
-}
+
 .timerBar {
   height: 100%;
   width: 100%;
@@ -49,7 +46,7 @@
     background-size: 200% 100%;
     background-position: 0% 50%;
     animation: countdown var(--countdown-time) linear forwards;
-    /* -webkit-animation: countdown var(--countdown-time) linear forwards; */
+    -webkit-animation: countdown var(--countdown-time) linear forwards;
   }
 }
 
