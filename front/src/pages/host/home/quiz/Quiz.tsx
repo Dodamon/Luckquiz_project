@@ -96,7 +96,6 @@ const Quiz = () => {
   return (
     <div className={styles.content} style={isModal || isModals ? {zIndex:"0"}:{}}>
       <div className={styles.bgtools} style={isModal || isModals ? { backgroundColor:"rgba(0, 0, 0, 0.5)", backdropFilter: 'blur(3px)' } : {}} ></div>
-      <div className={styles.title}></div>
       <div className={styles.listColFrame}  style={isModal || isModals ? {zIndex:"-2"}:{}} >
         {myQuizList.length === 0 ? <div  className={styles.empty_comment}>퀴즈 템플릿이 비어있습니다.</div> : myQuizList.map((quiz, index) => (
           <HomeListCard key={index} menu={0} quiz={quiz} onDeleteQuiz={deleteQuizHandler} />

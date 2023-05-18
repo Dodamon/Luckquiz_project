@@ -26,6 +26,7 @@ const HostLobby = () => {
 
   useEffect(() => {
     quizItem && navigate(`/host/quiz/${quiz_id}/play`);
+    dispatch(socketActions.updatePinNum(quiz_id));
   }, [navigate, quizItem, quiz_id]);
 
   const handleClick = ({ url }: Props) => {

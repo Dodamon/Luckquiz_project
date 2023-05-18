@@ -113,6 +113,8 @@ const ProfileNickname: React.FC = () => {
       sendGuestRequest({ url: `/api/quizroom/duplicate/${paramPin}/${guestName}` });
     }, 500);
 
+    dispatch(socketActions.updatePinNum(paramPin));
+
     return () => {
       clearTimeout(identifier);
     };
