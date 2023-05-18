@@ -13,6 +13,7 @@ public class QuizRoomQuestion {
     Integer num;
     String problem;
     Float successRate;
+    String templateName;
 
     public void setNum(Integer num) {
         this.num = num;
