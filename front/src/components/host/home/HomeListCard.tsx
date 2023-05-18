@@ -26,17 +26,21 @@ interface Props {
   menu: number;
   report?: Report;
   onDeleteQuiz?: (quizId: string) => void;
+  setUpdateChk?:React.Dispatch<React.SetStateAction<boolean>>;
+  updataChk?:boolean;
 }
 
 
 const HomeListCard = (props: Props) => {
-  const { quiz, menu, report, onDeleteQuiz } = props;
+  const { quiz, menu, report, onDeleteQuiz, setUpdateChk, updataChk} = props;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const hostName = useSelector((state: RootState) => state.auth.name);
   const { data, sendHostRequest } = useHostAxios();
+  const { data: getCommentData, sendHostRequest: getCommentRequest } = useHostAxios();
   const [open, setOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.userId);
+ 
 
   useEffect(() => {
     if (data) {
@@ -96,10 +100,28 @@ const HomeListCard = (props: Props) => {
     return formattedDate;
   }
 
+  const navigateHandler =(event: React.MouseEvent)=>{
+    event.stopPropagation();
+    if(report){
+      navigate(`/home/report/${report.reportId}/basicinfo`)
+    }
+  }
 
+
+  const deleteReportHandler= (event: React.MouseEvent)=>{
+    event.stopPropagation(); 
+    getCommentRequest({
+      url: `/api/quiz/report/delete`,
+      method: "POST",
+      data: { reportId: report?.reportId },
+    })
+
+    setUpdateChk && setUpdateChk(!updataChk);
+    alert("레포트가 삭제 되었습니다.");
+  }
 
   return (
-    <div className={styles.quizBox}>
+    <div className={styles.quizBox} style={report&& {cursor:"pointer"}} onClick={navigateHandler}>
       <div className={styles.quizRowFrame}>
         <div className={styles.logoImgContainer}>
           {
@@ -107,7 +129,7 @@ const HomeListCard = (props: Props) => {
           }
 
         </div>
-        <div>
+        <div >
           {/* quiz에서 쓰이는 경우 (menu = 0)*/}
           {menu === 0 && quiz ? (
             <>
@@ -117,14 +139,14 @@ const HomeListCard = (props: Props) => {
           ) : (
             report&& <>
              
-              <div className={styles.quizTitle}>{report?.title}</div>
+              <div className={styles.quizTitle}  >{report?.title}</div>
               <div className={styles.placeholder}>{dateChangeHandler(report?.createdTime)} 기록</div>
             </>
           )}
         </div>
       </div>
 
-      <div className={styles.quizRowFrame}>
+      <div className={styles.quizRowFrame}  >
         {/* quiz에서 쓰이는 경우 (menu = 0)*/}
         {menu === 0 && quiz ?  (
           <>
@@ -167,8 +189,12 @@ const HomeListCard = (props: Props) => {
 
         ) : (
           // report에서 쓰이는 경우 (menu = 1)
-          <>   
+          <>  
+           
+
+            <div className={styles.parti_box}>
             <div className={styles.parti}>참여 {report?.participantCount} 명 </div>
+            <div className={styles.parti_trash} onClick={deleteReportHandler}><Icon icon="material-symbols:delete-forever-rounded" color="red" /></div></div>
           </>
         )}
       </div>

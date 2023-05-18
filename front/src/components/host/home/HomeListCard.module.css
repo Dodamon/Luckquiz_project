@@ -35,6 +35,7 @@
         padding-left: 6%;
         padding-right: 5%;
         box-sizing: border-box;
+        position: relative;
     }
 }
 
@@ -91,4 +92,28 @@
     display: flex;
     justify-content: flex-start;
     margin-left:3%;
+}
+
+.parti_box{
+    display: flex;
+    align-items: center;
+    
+    
+}
+
+.parti_trash{
+    font-size: 28px;
+    display: flex;
+    visibility: hidden;
+
+    z-index: 2;
+
+}
+
+.parti_trash:hover{
+    /* font-size: 38px; */
+}
+
+.quizBox:hover .parti_trash{
+    visibility: visible;
 }

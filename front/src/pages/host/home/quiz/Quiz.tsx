@@ -57,6 +57,7 @@ const Quiz = () => {
         console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;
 
+        const finishList = [...newQuizList].filter(it=> it.is)
 
         const sortedItems = [...newQuizList].sort((a: any, b: any) => {
           // true인 경우를 먼저 오도록 정렬
