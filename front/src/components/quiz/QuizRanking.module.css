@@ -1,176 +1,165 @@
 .modalBack {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(3px)
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
 }
-@media screen and (min-width:767px) {
-
-    .QuizRanking {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .rank_logo {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        /* height: 100%; */
-    
-    }
-    
-    .logos {
-        font-size: 56px;
-        color: var( --white-color);
-    }
-    
-    .logos>img {
-        width: 320px;
-        
-    }
-    
-    .rank_box {
-        background-color: var( --ranking-background);
-        width: 500px;
-        /* height: 500px; */
-        height: 70vh;
-        border-radius: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;       
-    }
-
-    .crown {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .crown_img {
-        width: 100%;
-        height: 100%;
-    }
-    
-    .ranking {
-        display: flex;
-        flex-direction: column;
-        height: 55%;
-    }
-    
-    .ranking_list {
-        width: 450px;
-        overflow: auto;
-        overflow-x: hidden;
-    }
-    
-    
-    /* 스크롤바 설정*/
-    
-    .ranking_list::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    
-    /* 스크롤바 막대 설정*/
-    
-    .ranking_list::-webkit-scrollbar-thumb {
-        background-color: var( --wrong-answer);
-        /* 스크롤바 둥글게 설정    */
-        border-radius: 10px;
-    }
-    
-    
-    /* 스크롤바 뒷 배경 설정*/
-    
-    .ranking_list::-webkit-scrollbar-track {
-        background-color: rgba(0, 0, 0, 0);
-    }
-    
-    .ranking_item {
-        display: flex;
-        justify-content: space-between;
-        height: 65px;
-        background-color: white;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    
-    .item_left {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
-        width: 60%;
-    }
-    
-    .item_right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 30%;
-    }
-    
-    .item_img {
-        width: 50px;
-        height: 50px;
-        background-color: skyblue;
-        border-radius: 60px;
-    }
-    
-    .user_img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50px;
-    }
-    
-    .item_num {
-        font-size: 28px;
-    }
-    
-    .item_name {
-        font-size: 24px;
-    }
-    
-    .item_score {
-        font-size: 24px;
-        color: var(--grey-color);
-    }
-    
-    
-}
-
-@media screen and (max-width: 767px) {
-
-   
-.QuizRanking {
+@media screen and (min-width: 767px) {
+  .QuizRanking {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .rank_logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /* height: 100%; */
+  }
+
+  .logos {
+    font-size: 56px;
+    color: var(--white-color);
+  }
+
+  .logos > img {
+    width: 320px;
+  }
+
+  .rank_box {
+    background-color: var(--ranking-background);
+    width: 500px;
+    /* height: 500px; */
+    height: 70vh;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .crown {
+    width: 200px;
+    height: 200px;
+  }
+
+  .crown_img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ranking {
+    display: flex;
+    flex-direction: column;
+    height: 55%;
+  }
+
+  .ranking_list {
+    width: 450px;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+
+  /* 스크롤바 설정*/
+
+  .ranking_list::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* 스크롤바 막대 설정*/
+
+  .ranking_list::-webkit-scrollbar-thumb {
+    background-color: var(--wrong-answer);
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 뒷 배경 설정*/
+
+  .ranking_list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .ranking_item {
+    display: flex;
+    justify-content: space-between;
+    height: 65px;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .item_left {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 60%;
+  }
+
+  .item_right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+  }
+
+  .item_img {
+    width: 50px;
+    height: 50px;
+    background-color: skyblue;
+    border-radius: 60px;
+  }
+
+  .user_img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+  }
+
+  .item_num {
+    font-size: 28px;
+  }
+
+  .item_name {
+    font-size: 24px;
+  }
+
+  .item_score {
+    font-size: 24px;
+    color: var(--grey-color);
+  }
 }
 
-.rank_logo {
+@media screen and (max-width: 767px) {
+  .QuizRanking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rank_logo {
     width: 360px;
     /* height: 100%; */
     display: flex;
     justify-content: center;
-}
+  }
 
-.logos {
+  .logos {
     font-size: 56px;
-    
-    color: var( --white-color);
-}
 
-.logos>img {
+    color: var(--white-color);
+  }
+
+  .logos > img {
     width: 300px;
-    
-}
+  }
 
-.rank_box {
-    background-color: var( --ranking-background);
+  .rank_box {
+    background-color: var(--ranking-background);
     width: 360px;
     /* height: 500px; */
     height: 70vh;
@@ -178,103 +167,99 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+  }
 
-.crown {
-    width: 200px;
-    height: 200px;
-}
+  .crown {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.crown_img {
-    width: 100%;
-    height: 100%;
-}
+  .crown_img {
+    width: 80%;
+    height: 80%;
+  }
 
-.ranking {
+  .ranking {
     display: flex;
     flex-direction: column;
     height: 55%;
-}
+  }
 
-.ranking_list {
+  .ranking_list {
     width: 340px;
     overflow: auto;
     overflow-x: hidden;
-}
+  }
 
+  /* 스크롤바 설정*/
 
-/* 스크롤바 설정*/
-
-.ranking_list::-webkit-scrollbar {
+  .ranking_list::-webkit-scrollbar {
     width: 8px;
-}
+  }
 
+  /* 스크롤바 막대 설정*/
 
-/* 스크롤바 막대 설정*/
-
-.ranking_list::-webkit-scrollbar-thumb {
-    background-color: var( --wrong-answer);
+  .ranking_list::-webkit-scrollbar-thumb {
+    background-color: var(--wrong-answer);
     /* 스크롤바 둥글게 설정    */
     border-radius: 10px;
-}
+  }
 
+  /* 스크롤바 뒷 배경 설정*/
 
-/* 스크롤바 뒷 배경 설정*/
-
-.ranking_list::-webkit-scrollbar-track {
+  .ranking_list::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
-}
+  }
 
-.ranking_item {
+  .ranking_item {
     display: flex;
     justify-content: space-between;
     height: 65px;
     background-color: white;
     border-radius: 10px;
     margin-bottom: 10px;
-}
+  }
 
-.item_left {
+  .item_left {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: 70%;
-}
+  }
 
-.item_right {
+  .item_right {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30%;
-}
+  }
 
-.item_img {
+  .item_img {
     width: 50px;
     height: 50px;
     background-color: skyblue;
     border-radius: 60px;
-}
+  }
 
-.user_img {
+  .user_img {
     width: 50px;
     height: 50px;
     border-radius: 50px;
-}
+  }
 
-.item_num {
+  .item_num {
     font-size: 22px;
-}
+  }
 
-.item_name {
+  .item_name {
     font-size: 22px;
-}
+  }
 
-.item_score {
+  .item_score {
     font-size: 24px;
     color: var(--grey-color);
+  }
 }
-}
-
-
-
-

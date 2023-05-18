@@ -10,11 +10,18 @@ import useHostAxios from "hooks/useHostAxios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { connectAndSubscribe } from "store/webSocket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { quizAtions } from "store/quiz";
 import { toast } from "react-toastify";
 import { QuizStartConfirm, TemplateDeleteConfirm } from "components/common/ConfirmCustom";
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 
 interface Props {
   quiz?: Quiz;

@@ -17,22 +17,13 @@ interface basicType {
   successRate: number;
 }
 
-const reportBasic = {
-  title: "SSAFY 스타트 캠프 퀴즈",
-  parti: 431,
-  quizs: 21,
-  games: 5,
-  times: 188,
-  percentage: 42,
-};
-
 const ReportBasic = () => {
   const { report_id } = useParams();
 
   const [basicReport, setBasicReport] = useState<basicType | null>(null);
   const [pieData, setPieData] = useState<any>();
 
-  const { data, status, sendHostRequest } = useHostAxios();
+  const { data, sendHostRequest } = useHostAxios();
 
   useEffect(() => {
     sendHostRequest({
