@@ -23,6 +23,23 @@ public class Grade implements Serializable{
 	private int playerImg;
 	private int count;
 	private int quizNum;
+	private int totalRankNow;
+
+	public int getTotalScore() {
+		return totalScore;
+	}
+
+	private int totalRankPre;
+	private int totalScore;
+
+	public int getTotalRankNow() {
+		return totalRankNow;
+	}
+
+	public int getTotalRankPre() {
+		return totalRankPre;
+	}
+
 	public String getPlayerName() {
 		if(playerName==null){
 			throw new CustomException(CustomExceptionType.NULL_VALUE_ERROR);

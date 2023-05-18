@@ -287,6 +287,8 @@ public class GradeService {
 			rankKey.setSender(value.getPlayerName());
 			value.setRankNow(value.getRankPre());
 			zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),-value.getScoreGet());
+			value.setTotalScore(value.getTotalScore()-value.getScoreGet());
+			value.setTotalRankNow(value.getTotalRankPre());
 			value.setScoreGet(0);
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
@@ -353,9 +355,27 @@ public class GradeService {
 			hashGradeOperations.put(roomId+"p",playerInfo.getValue().getPlayerName(),playerInfo.getValue());
 		}
 
-
+		// 전체 랭킹 데이터
 		Set<ZSetOperations.TypedTuple<String>> rankingData = zSetOperations.reverseRangeWithScores(roomId+"rank",0,-1);
+		// Json으로 만들려고 linkedhashmap으로 변환. {사람1:1500, 사람2:1300, 사람3:1000, 사람4:500}
 		LinkedHashMap<String, Integer> rankingDataMap = rankingData.stream().collect(Collectors.toMap(data->gson.fromJson(data.getValue(), RankKey.class).getSender() , data->data.getScore().intValue(),(a, b)->a,LinkedHashMap::new));
+		scoreGet = -10000;
+		ranking = 0;
+		for(Map.Entry<String,Integer> data :rankingDataMap.entrySet()){
+			Grade grade = sortedPlayerInfo.get(data.getKey());
+			RankKey rankKey = new RankKey();
+			rankKey.setSender(grade.getPlayerName());
+			rankKey.setImg(grade.getPlayerImg());
+			grade.setTotalScore(data.getValue());
+			if(scoreGet == data.getValue()){
+				grade.setTotalRankNow(ranking);
+				hashGradeOperations.put(roomId+"p", gson.toJson(rankKey), grade);
+			} else {
+				grade.setTotalRankNow(++ranking);
+				hashGradeOperations.put(roomId+"p", gson.toJson(rankKey), grade);
+			}
+			scoreGet = data.getValue();
+		}
 		//정답률
 		Double correctRate = solveCount!=0?(correctCount.doubleValue()/solveCount.doubleValue())*100 :0;
 
@@ -389,6 +409,7 @@ public class GradeService {
 			value.setRankPre(value.getRankNow());
 			value.setScoreGet(0);
 			value.setRankNow(0);
+			value.setTotalRankPre(value.getTotalRankNow());
 			log.info("키값 : "+ key+" 받은 점수 : " + value.getScoreGet() + " 현재 순위 : " +value.getRankNow());
 			hashGradeOperations.put(roomId+"p",value.getPlayerName(),value);
 		});
