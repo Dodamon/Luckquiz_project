@@ -59,24 +59,7 @@ public class QuizReportCustomRepository {
         return new SliceImpl<>(results, pageable, hasNext);
     }
 
-//    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
-//        List<QuizRoomListResponse> results = queryFactory.select(
-//                        Projections.constructor( QuizRoomListResponse.class,
-//                                quizRoom.id,
-//                                quizRoom.templateName,
-//                                quizRoom.createdTime,
-//                                quizRoom.participantCount))
-//                .from(quizRoom)
-//                .where(
-//                        quizRoom.hostId.eq(userId),
-//                        quizRoom.finishedTime.isNotNull()
-//                        )
-//                .orderBy(quizRoom.id.desc())
-//                .fetch();
-//        return new SliceImpl<>(results);
-//    }
-
-    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
         List<QuizRoomListResponse> results = queryFactory.select(
                         Projections.constructor( QuizRoomListResponse.class,
                                 quizRoom.id,
@@ -87,11 +70,28 @@ public class QuizReportCustomRepository {
                 .where(
                         quizRoom.hostId.eq(userId),
                         quizRoom.finishedTime.isNotNull()
-                )
+                        )
                 .orderBy(quizRoom.id.desc())
                 .fetch();
-        return results;
+        return new SliceImpl<>(results);
     }
+
+//    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+//        List<QuizRoomListResponse> results = queryFactory.select(
+//                        Projections.constructor( QuizRoomListResponse.class,
+//                                quizRoom.id,
+//                                quizRoom.templateName,
+//                                quizRoom.createdTime,
+//                                quizRoom.participantCount))
+//                .from(quizRoom)
+//                .where(
+//                        quizRoom.hostId.eq(userId),
+//                        quizRoom.finishedTime.isNotNull()
+//                )
+//                .orderBy(quizRoom.id.desc())
+//                .fetch();
+//        return results;
+//    }
 
 
     public Slice<QuizRoomGuest> getParticipants(int roomId, int lastGuestId, Pageable pageable) {

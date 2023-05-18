@@ -40,7 +40,7 @@ public class QuizReportService {
     private final QuizReportCustomRepository quizReportCustomRepository;
 
     @Transactional(readOnly = true)
-    public List<QuizRoomListResponse> getQuizRoomList(UUID userId) {
+    public Slice<QuizRoomListResponse> getQuizRoomList(UUID userId) {
         return quizReportCustomRepository.getQuizRoomList(userId);
     }
     @Transactional(readOnly = true)
@@ -110,7 +110,7 @@ public class QuizReportService {
     }
 
     @Transactional
-    public List<QuizRoomListResponse> deleteQuizReport(int roomId, UUID hostId) {
+    public Slice<QuizRoomListResponse> deleteQuizReport(int roomId, UUID hostId) {
         QuizRoom quizRoom = quizRoomRepository.findById(roomId).orElseThrow(() -> new CustomException(CustomExceptionType.ROOM_NOT_FOUND));
         quizRoomRepository.delete(quizRoom);
         return getQuizRoomList(hostId);

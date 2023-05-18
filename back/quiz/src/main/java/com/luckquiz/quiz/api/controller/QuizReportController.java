@@ -2,7 +2,11 @@ package com.luckquiz.quiz.api.controller;
 
 
 import com.luckquiz.quiz.api.request.QuizReportIdRequest;
-import com.luckquiz.quiz.api.response.*;
+import com.luckquiz.quiz.api.response.ParticipantsWithTemplateNameResponse;
+import com.luckquiz.quiz.api.response.QuizRoomGuest;
+import com.luckquiz.quiz.api.response.QuizRoomQuestion;
+import com.luckquiz.quiz.api.response.QuizRoomResponse;
+import com.luckquiz.quiz.api.response.QuizRoomListResponse;
 import com.luckquiz.quiz.api.service.QuizReportService;
 import com.luckquiz.quiz.api.service.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +35,11 @@ public class QuizReportController {
 
     // 유저가 열었던 모든 quiz room 정보를 가져옵니다
     @GetMapping("")
-    public ResponseEntity<QuizRoomListwithTemplateResponse> getQuizRoomList(HttpServletRequest request) {
+    public ResponseEntity<Slice<QuizRoomListResponse>> getQuizRoomList(HttpServletRequest request) {
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("access token :  " + accessToken);
-        QuizRoomListwithTemplateResponse quizRoomListwithTemplateResponse = QuizRoomListwithTemplateResponse.builder()
-                .list(quizReportService.getQuizRoomList(hostId))
-                .title(quizReportService.getTemplateNamebyHostId(hostId))
-                .build();
-        return ResponseEntity.ok().body(quizRoomListwithTemplateResponse);
+        return ResponseEntity.ok().body(quizReportService.getQuizRoomList(hostId));
     }
 
     // 퀴즈룸 하나의 기본 정보를 가져옵니다
@@ -72,7 +72,7 @@ public class QuizReportController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<List<QuizRoomListResponse>> deleteQuizRoom(@RequestBody QuizReportIdRequest quizRoomIdRequest, HttpServletRequest request) {
+    public ResponseEntity<Slice<QuizRoomListResponse>> deleteQuizRoom(@RequestBody QuizReportIdRequest quizRoomIdRequest, HttpServletRequest request) {
         String accessToken = getJwtFromRequest(request);
         UUID hostId = tokenProvider.getUserIdFromToken(accessToken);
         log.info("access token :  " + accessToken);
