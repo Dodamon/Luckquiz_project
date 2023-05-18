@@ -19,22 +19,22 @@ const TimerBar = ({ handleOrder, handleSubmit }: Props) => {
   const gametype = useSelector((state: RootState) => state.socket.quizItem?.game);
   const time = useSelector((state: RootState) => state.socket.quizItem?.timer);
 
-  // useEffect(() => {
-  //   // 마운트시 time 활성화
-  //   let timer = setTimeout(() => {
-  //     if (!isHost && gametype === "emotion") {
-  //       // 게스트의 wakeup,balloon 게임에서는 애니메이션을 보여줘야해서 해당 컴포넌트에서 handleorder
-  //       handleOrder(2);
-  //     } else {
-  //       handleOrder(2);
-  //       handleSubmit && handleSubmit(); // 자동제출(채점해줘)
-  //     }
-  //   }, time! * 1000);
-  //   // 언마운트시 timer reset
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
+  useEffect(() => {
+    // 마운트시 time 활성화
+    let timer = setTimeout(() => {
+      if (!isHost && gametype === "emotion") {
+        // 게스트의 wakeup,balloon 게임에서는 애니메이션을 보여줘야해서 해당 컴포넌트에서 handleorder
+        handleOrder(2);
+      } else {
+        handleOrder(2);
+        handleSubmit && handleSubmit(); // 자동제출(채점해줘)
+      }
+    }, time! * 1000);
+    // 언마운트시 timer reset
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   // 보여지는 timerbar 시간세팅값 :
   // 게스트의 wakeup 게임에서는 애니메이션을 보여줘야해서 게임시간 - 애니메이션노출시간(6.5s) 만큼 타이머 세팅
