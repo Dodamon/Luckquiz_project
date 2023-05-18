@@ -1,5 +1,6 @@
 package com.luckquiz.quiz.api.response;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,5 +14,5 @@ public class QuizRoomGuest {
     Integer rank;
     String nickName;
     Long successRate;
-    Double totalScore;
+    Integer totalScore;
 }
