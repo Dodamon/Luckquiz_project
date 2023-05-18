@@ -4,6 +4,7 @@ import com.luckquiz.quiz.db.entity.QuizRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 // 이거 안해도 됨돠 JPAREPOSITORY extends 하면 알아서 되던뎁숑
 public interface QuizRoomRepository extends JpaRepository<QuizRoom, Integer> {
@@ -12,4 +13,6 @@ public interface QuizRoomRepository extends JpaRepository<QuizRoom, Integer> {
     boolean existsQuizRoomByPinNum(int pinNum);
     Optional<QuizRoom> findQuizRoomByPinNum(Integer pinNum);
     Optional<QuizRoom> findQuizRoomById(Integer id);
+
+    Optional<QuizRoom> findQuizRoomByHostId(UUID hostId);
 }
