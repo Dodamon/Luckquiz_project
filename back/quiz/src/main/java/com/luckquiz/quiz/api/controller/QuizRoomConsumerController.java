@@ -185,7 +185,7 @@ public class QuizRoomConsumerController {
                 quizRoom.setGameCount(gameCnt);
                 // quiz_room 에 정보를 입력
                 Map all = hashOperations.entries(finalRequest.getRoomId() + "p");
-                log.info(all.toString());
+
 
                 log.info("퀴즈 게스트 정보 입력 시작");
                 // quiz_guest 에 정보를 입력
@@ -196,13 +196,17 @@ public class QuizRoomConsumerController {
                     correctCnt += g.getCount();
                     QuizGuest qguest = QuizGuest.builder()
                             .guestNickname(g.getPlayerName())
-                            .totalCount(templateDetailResponse.getQuizList().size())
+                            .correctCount(g.getCount())
                             .pinNum(quizRoom.getPinNum())
                             .templateId(quizRoom.getTemplateId())
                             .hostId(hostId)
+                            .score(g.getTotalScore())  // 참가자의 총점
                             .quizRoomId(quizRoom.getId())
                             .build();
-                    quizGuestRepository.save(qguest);
+                    if(!quizGuestRepository.existsByGuestNickname(g.getPlayerName())){
+                        quizGuestRepository.save(qguest);
+                    }
+                    log.info("참가자---->"+qguest.getGuestNickname());
                 }
 
                 quizRoom.setCorrectCount(correctCnt);  // 모든 유저의 맞은 수 다 더한겨
@@ -216,10 +220,6 @@ public class QuizRoomConsumerController {
                     if (host.getName().equals(temp.getSender())) {
                         continue;
                     }
-                    QuizGuest quizGuest = quizGuestRepository.findQuizGuestByGuestNicknameAndQuizRoomId(temp.getSender(),quizRoom.getId()).orElseThrow(()->new CustomException(CustomExceptionType.QUIZGUEST_NOT_FOUND));
-
-                    quizGuest.setScore(a.getScore().intValue());  // 게스트의 총점
-                    log.info("참가자의 총점   "+ quizGuest.getScore());
                     participant_count++;
                 }
                 quizRoom.setParticipantCount(participant_count);
