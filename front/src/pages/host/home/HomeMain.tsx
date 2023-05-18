@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { RootState } from "store";
 import Modal from "components/host/quiz/Modal";
 import { quizAtions } from "store/quiz";
+import { disconnect } from "store/webSocket";
 
 
 interface Data {
@@ -34,6 +35,8 @@ const HomeMain = () => {
 
   useEffect(()=>{
     dispatch(quizAtions.resetUpdate())
+    disconnect()
+    console.log('디스커넥해')
   },[]);
 
 

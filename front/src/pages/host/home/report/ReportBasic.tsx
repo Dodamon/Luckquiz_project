@@ -31,6 +31,11 @@ const ReportBasic = () => {
     });
   }, []);
 
+  const floatChangeHandler= (num:number)=>{
+    const percentage = (num * 100).toFixed(1);
+    return percentage;
+  }
+  
   // data 받아왔을 때 basicReport, pieData 변경
   useEffect(() => {
     if (data) {
@@ -40,7 +45,7 @@ const ReportBasic = () => {
         labels: [],
         datasets: [
           {
-            data: [data.successRate, 100 - data.successRate],
+            data: [(data.successRate * 100).toFixed(1), 100-Number((data.successRate * 100).toFixed(1))],
             backgroundColor: ["#7557ff", "#f75555"],
             borderRadius: 30,
             border: "white",
@@ -59,6 +64,8 @@ const ReportBasic = () => {
 
   console.log("basic_data : ", data);
   console.log("basic_reportID : ", report_id);
+
+
 
   return (
     <div className={styles.content}>
@@ -88,7 +95,7 @@ const ReportBasic = () => {
             <div className={styles.chartBox}>
               <div className={styles.percentageBox} style={{ display: "flex", alignItems: "center" }}>
                 <div className={styles.textStyle}>총 정답률</div>
-                {basicReport && <div className={styles.textStyle}>{basicReport.successRate}%</div>}
+                {basicReport && <div className={styles.textStyle}>{floatChangeHandler(basicReport.successRate)}%</div>}
               </div>
               <div className={styles.pieStyle}>{pieData && <Doughnut data={pieData} />}</div>
             </div>

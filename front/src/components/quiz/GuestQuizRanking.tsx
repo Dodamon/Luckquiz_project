@@ -21,9 +21,9 @@ const GuestQuizRanking = () => {
         </main>
 
         <div className={styles.real_rank}>
-          <div className={styles.real_num}>{guestResult?.rankNow}위</div>
+          <div className={styles.real_num}>{guestResult?.totalRankNow}위</div>
         </div>
-        {guestResult?.quizNum !== 0 && (
+        {guestResult && guestResult?.quizNum !== 0 && (
           <div className={styles.diff_box}>
             <div className={styles.diff_updown}>
               {guestResult?.isUp === "true" ? (
@@ -34,12 +34,15 @@ const GuestQuizRanking = () => {
                 <Icon icon="mdi:menu-swap" color="gray" />
               )}
             </div>
-            <div className={styles.diff_number}>{Math.abs(guestResult?.rankDiff!)}</div>
+            <div className={styles.diff_number}>{Math.abs(guestResult?.totalRankPre - guestResult?.totalRankNow)}</div>
           </div>
         )}
 
         <div className={styles.score_box}>
-          <div className={styles.score_number}>+{guestResult?.scoreGet}</div>
+          <div className={styles.score_number}>
+            <span>{guestResult?.totalScore}</span>
+            <span style={{color:"#a9a9a9", border:"2px "}}>{` (+${guestResult?.scoreGet})`}</span>
+          </div>
         </div>
       </section>
     </div>

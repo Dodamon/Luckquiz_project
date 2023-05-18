@@ -1,0 +1,52 @@
+.container {
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* white-space: nowrap; */
+}
+
+.btnBox {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.btnYes {
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--point-color);
+  border-color: #00000000;
+  cursor: pointer;
+}
+
+.btnNo {
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  border-color: #00000030;
+  cursor: pointer;
+}
+
+.btnYes2 {
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #00000040;
+  border-color: #00000000;
+  cursor: pointer;
+}
+
+.btnNo2 {
+  width: 40%;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border-color: #00000000;
+  cursor: pointer;
+}

@@ -16,37 +16,49 @@ export interface Report {
 
 const Report = () => {
   // const [myReportList, setMyReportList] = useState<Report[]>([])
-  const { data, sendHostRequest } = useHostAxios();
-  const userId = useSelector((state: RootState) => state.auth.userId);
-  const [reportList, setReportList] = useState<Report[]>([]);
-
-  useEffect(() => {
+  const { data, status, sendHostRequest } = useHostAxios();
+  const userId = useSelector((state: RootState)=> state.auth.userId);
+  const [reportList, setReportList]=useState<Report[]>([]);
+  const [updataChk, setUpdateChk] = useState(false);
+  useEffect(()=>{
     sendHostRequest({
       url: `/api/quiz/report`,
-    });
-  }, []);
+    })
+  }, [updataChk])
 
-  useEffect(() => {
-    if (data) {
-      setReportList(data.content);
+  useEffect(()=>{
+  
+    if(data){
+      const reportinfo = data.content.sort((a: any, b: any) => {
+        const dateA = new Date(a.createdTime);
+        const dateB = new Date(b.createdTime);
+        if (dateA < dateB) {
+          return 1;
+        }
+        if (dateA > dateB) {
+          return -1;
+        }
+        return 0;
+      });
+      setReportList(reportinfo);
     }
-    console.log(data)
-  }, [data]);
+  }, [data])
+
+  
+  
 
   return (
-    <div className={styles.content} style={{ backgroundImage: report_bg }}>
-      <div className={styles.scrollWrapper}>
-        <div className={styles.listColFrame}>
-          {reportList && reportList.length === 0 ? (
-            <div className={styles.empty_comment}>기록된 레포트가 없습니다.</div>
-          ) : (
-            reportList &&
-            reportList.map((report: Report, index: number) => (
-              <Link key={index} to={`/home/report/${report.reportId}/basicinfo`} style={{ width: "100%" }}>
-                <HomeListCard menu={1} report={report} />
-              </Link>
-            ))
-          )}
+      <div className={styles.content} style={{ backgroundImage: report_bg }}>
+        <div className={styles.scrollWrapper}>
+          <div className={styles.listColFrame}>
+        
+            {(reportList && reportList.length===0)?<div  className={styles.empty_comment}>기록된 레포트가 없습니다.</div>:
+           reportList &&reportList.map((report:Report, index:number) => (
+              <a key={index}  style={{width:"100%"}}>
+                <HomeListCard menu={1} report={report} setUpdateChk={setUpdateChk} updataChk={updataChk}/>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </div>
