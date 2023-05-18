@@ -87,4 +87,6 @@ public class QuizRoom {
     }
 
     public void setTemplateName(String templateName){this.templateName = templateName;}
+
+    public void setPinNum(int pinNum){this.pinNum = pinNum;}
 }
