@@ -3,8 +3,10 @@ package com.luckquiz.quiz.db.repository;
 import com.luckquiz.quiz.api.response.QuizRoomGuest;
 import com.luckquiz.quiz.api.response.QuizRoomQuestion;
 import com.luckquiz.quiz.api.response.QuizRoomListResponse;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -88,11 +90,12 @@ public class QuizReportCustomRepository {
     }
 
     public List<QuizRoomGuest> getParticipants(int roomId) {
+        int rank = 1;
         List<QuizRoomGuest> results = queryFactory.select(
                 Projections.constructor( QuizRoomGuest.class,
                     quizGuest.id,
                     quizGuest.guestNickname,
-                    quizGuest.correctCount.divide(quizGuest.totalCount).longValue(),
+                    quizGuest.correctCount.divide(quizGuest.totalCount).floatValue().multiply(100),
                     quizGuest.score.intValue())
             )
             .from(quizGuest)
@@ -100,18 +103,17 @@ public class QuizReportCustomRepository {
                 quizGuest.quizRoomId.eq(roomId),
                 quizGuest.totalCount.ne(0)
             )
-            .orderBy(quizGuest.score.desc(), quizGuest.id.desc())
+            .orderBy(quizGuest.score.desc())
             .fetch();
         return results;
     }
 
     public Slice<QuizRoomQuestion> getQuestions(int roomId) {
-
         List<QuizRoomQuestion> mostDifficultProblem =  queryFactory.select(
                         Projections.constructor( QuizRoomQuestion.class,
                                 quizReport.id,
                                 quizReport.question,
-                                quizReport.correctCount.divide(quizReport.submitCount).longValue())
+                                quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100))
                 )
                 .from(quizReport)
                 .where(
@@ -120,7 +122,7 @@ public class QuizReportCustomRepository {
                         quizReport.submitCount.ne(0)
                 )
                 .orderBy(
-                        quizReport.correctCount.divide(quizReport.submitCount).asc()
+                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().asc()
                 )
                 .limit(1)
                 .fetch();
@@ -129,7 +131,7 @@ public class QuizReportCustomRepository {
                 Projections.constructor( QuizRoomQuestion.class,
                         quizReport.id,
                         quizReport.question,
-                        quizReport.correctCount.divide(quizReport.submitCount).longValue())
+                        quizReport.correctCount.divide(quizReport.submitCount).floatValue().multiply(100))
                 )
                 .from(quizReport)
                 .where(
@@ -142,7 +144,6 @@ public class QuizReportCustomRepository {
                 )
                 .fetch();
         results.addAll(mostDifficultProblem);
-
         return new SliceImpl<>(results);
     }
 }

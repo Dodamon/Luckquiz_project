@@ -12,5 +12,9 @@ import lombok.NoArgsConstructor;
 public class QuizRoomQuestion {
     Integer num;
     String problem;
-    Long successRate;
+    Float successRate;
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
 }
