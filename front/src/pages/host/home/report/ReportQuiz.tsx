@@ -37,9 +37,9 @@ const hardest = [
 ];
 
 type listType = {
-  id: number;
-  title: string;
-  answer: number;
+  num: number;
+  problem: string;
+  successRate: number;
 };
 
 interface quizType {
@@ -58,32 +58,61 @@ const ReportQuiz = () => {
     });
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (data) setBasicReport(data);
+  }, [data]);
 
   console.log(data);
 
   return (
     <div className={styles.content}>
-      <div className={styles.title}>{quiz.title}</div>
+      {basicReport && <div className={styles.title}>{basicReport.title}</div>}
       <ReportTab report_id={report_id}></ReportTab>
+      {basicReport && basicReport.list ? (
+        <div
+          className={styles.reportContent}
+          style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "center", gap: "6%" }}
+        >
+          <div className={styles.reportWrapper}>
+            <div className={styles.quizType}>
+              <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
+              <div>가장 어려웠던 문제</div>
+            </div>
 
-      <div
-        className={styles.reportContent}
-        style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "start", gap: "6%" }}
-      >
-        <div className={styles.reportWrapper}>
-          <div className={styles.quizType}>
-            <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
-            <div>가장 어려웠던 문제</div>
+            <ReportTable
+              property={["번호", "문제", "정답률"]}
+              data={[basicReport.list[basicReport.list.length - 1]]}
+              type="quiz"
+            />
+
+            <div className={styles.quizTypeTwo}>
+              <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
+              <div>전체 문제</div>
+            </div>
+            <ReportTable property={[]} data={basicReport.list} type="quiz" />
           </div>
-          <ReportTable property={[]} data={hardest} />
-          <div className={styles.quizType}>
-            <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
-            <div>전체 문제</div>
-          </div>
-          <ReportTable property={[]} data={quiz.list} />
         </div>
-      </div>
+      ) : (
+        <div
+          className={styles.reportContent}
+          style={{ backgroundColor: "var(--button-two)", flexDirection: "column", alignItems: "center", gap: "6%" }}
+        >
+          <div
+            style={{
+              color: "var(--placeholder-text",
+              backgroundColor: "white",
+              width: "100%",
+              height: "100%",
+              borderRadius: "20px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            문제 정보가 없습니다.
+          </div>
+        </div>
+      )}
     </div>
   );
 };
