@@ -139,21 +139,6 @@ const HostPlayQuiz = () => {
         {order === 2 && (
           <>
             <StartFinishText title="채점중인뎁숑" />
-            <div className={styles.nextBtn}>
-              <ButtonWithLogo
-                name="다음 퀴즈(임시)"
-                fontSize="18px"
-                height="45px"
-                onClick={() =>
-                  dispatch(
-                    socketActions.sendAnswerMessage({
-                      destination: "/app/quiz/next",
-                      body: { hostId: userId, roomId: quiz_id },
-                    }),
-                  )
-                }
-              />
-            </div>
           </>
         )}
         {order === 3 && (

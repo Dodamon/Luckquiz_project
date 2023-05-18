@@ -9,7 +9,7 @@ import { IMAGES } from "components/guest/ProfileNickname";
 // 최종결과 어워즈에 달리는 모달형 랭킹
 const QuizRanking = () => {
   const finalResult = useSelector((state: RootState) => state.socket.getFinalResultList);
-
+  
   return (
     <div className={styles.modalBack}>
       <div className={styles.QuizRanking}>
@@ -28,17 +28,12 @@ const QuizRanking = () => {
               {finalResult?.map((it, index) => {
                 return (
                   <li className={styles.ranking_item} key={index}>
-                    <div className={styles.item_left}>
                       <div className={styles.item_num}>{it.rank}</div>
                       <div className={styles.item_img}>
                         <img src={IMAGES[it.img]} alt="img" className={styles.user_img} />
                       </div>
                       <div className={styles.item_name}>{it.sender}</div>
-                    </div>
-
-                    <div className={styles.item_right}>
                       <div className={styles.item_score}>{it.score}</div>
-                    </div>
                   </li>
                 );
               })}

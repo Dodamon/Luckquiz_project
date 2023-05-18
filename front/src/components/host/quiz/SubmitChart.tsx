@@ -50,6 +50,8 @@ const SubmitChart = () => {
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
+  const backgroundColorArray =
+    data?.length === 2 ? ["#1BD392", "#F75555"] : ["#F75555", "#1BD392", "#FF981F", "#3779FF"];
 
   // 커스텀을 위한 chartjs-plugin-datalabels 플러그인 사용.
   Chart.register(ChartDataLabels);
@@ -63,7 +65,7 @@ const SubmitChart = () => {
           label: "# of Votes",
           data: data!,
           borderWidth: 1,
-          backgroundColor: ["#F75555", "#1BD392", "#FF981F", "#3779FF"],
+          backgroundColor: backgroundColorArray,
           borderRadius: 20,
         },
       ],
