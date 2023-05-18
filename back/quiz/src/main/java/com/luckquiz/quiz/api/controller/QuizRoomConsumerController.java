@@ -17,6 +17,7 @@ import com.luckquiz.quiz.db.repository.*;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -135,7 +136,7 @@ public class QuizRoomConsumerController {
                     Boolean isGame = true;
                     log.info("타입 점 보자고"+a.getType());
                     QuizReport quizReport = new QuizReport();
-                    if("quiz".equals(a.getType())){
+                    if(!Strings.isEmpty(a.getQuestion())){
                         isGame = false;
                         quizCnt ++;
                         quizReport.setQuestion(a.getQuestion());
