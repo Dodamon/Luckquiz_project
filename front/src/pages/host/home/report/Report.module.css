@@ -41,8 +41,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 3px solid var(--point-color);
-    border-bottom: 3px solid var(--point-color);
+    border-top: 3px solid var(--side-bar);
+    border-bottom: 3px solid var(--side-bar);
 }
 
 .reportContent {
@@ -161,6 +161,7 @@
 
 .textStyle {
     display: flex;
+    
 }
 
 .chartBox {
@@ -171,10 +172,9 @@
     align-items: center;
     border-radius: 5px;
     box-shadow: 2px 2px 2.5px 2.5px rgb(179, 178, 233);
-    /* background-color: #1bd392; */
     padding: 3%;
     position: relative;
-    gap: 5%;
+    gap: 8%;
 }
 
 .pieStyle {
@@ -196,6 +196,7 @@
     height: 50px;
     border-radius: 5px;
     font-size: 20px;
+    gap: 6%;
     /* font-weight: bold; */
     /* color: var(--white-color); */
 }
@@ -234,7 +235,6 @@
     margin-bottom: 20px;
     margin-top: 20px;
     color: var(--placeholder-text);
-    color: #ffe28a4a
   }
   
   .quizType{

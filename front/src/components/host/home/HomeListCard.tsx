@@ -9,7 +9,7 @@ import { Report } from "pages/host/home/report/Report";
 import useHostAxios from "hooks/useHostAxios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
-import { connectAndSubscribe, socketActions, client } from "store/webSocket";
+import { connectAndSubscribe } from "store/webSocket";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { quizAtions } from "store/quiz";
@@ -20,7 +20,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
-import { isConstructorDeclaration } from "typescript";
+
 interface Props {
   quiz?: Quiz;
   menu: number;

@@ -59,7 +59,7 @@ const ReportQuiz = () => {
               <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
               <div>전체 문제</div>
             </div>
-            <ReportTable property={[]} data={basicReport.list} type="quiz" />
+            <ReportTable property={[]} data={basicReport.list.slice(0,basicReport.list.length-1)} type="quiz" />
           </div>
         </div>
       ) : (
