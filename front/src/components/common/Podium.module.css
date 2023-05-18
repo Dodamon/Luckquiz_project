@@ -20,15 +20,3 @@
   object-fit: cover;
   border: 2px solid var(--grey-color);
 }
-
-.nameTag {
-  position: absolute;
-  top: 90%;
-  height: 40%;
-  width: 65%;
-  border-radius: 10px;
-  background-color: rgb(201, 201, 201);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}

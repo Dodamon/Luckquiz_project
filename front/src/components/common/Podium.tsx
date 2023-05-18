@@ -9,6 +9,7 @@ import confetti from "canvas-confetti";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { IMAGES } from "components/guest/ProfileNickname"
+import NameTag from "./NameTag";
 
 const Podium = () => {
   const aniBox = useRef<HTMLDivElement>(null);
@@ -67,19 +68,19 @@ const Podium = () => {
       {finalResult && showFirstProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "31%", bottom: "56.5%" }}>
           <img src={IMAGES[finalResult[0].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>{finalResult[0].sender}</div>
+          <NameTag subtitle={finalResult[0].sender} />
         </div>
       )}
       {finalResult && minGuest! >= 2 && showSecondProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "-4%", bottom: "45%" }}>
           <img src={IMAGES[finalResult[1].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>{finalResult[1].sender}</div>
+          <NameTag subtitle={finalResult[1].sender} />
         </div>
       )}
       {finalResult && minGuest! >= 3 && showThirdProfile && (
         <div className={styles.profileBox} style={{ position: "absolute", left: "66%", bottom: "35.5%" }}>
           <img src={IMAGES[finalResult[2].img]} alt="" className={styles.profileImg} />
-          <div className={styles.nameTag}>{finalResult[2].sender}</div>
+          <NameTag subtitle={finalResult[2].sender} />
         </div>
       )}
       <div ref={aniBox}></div>

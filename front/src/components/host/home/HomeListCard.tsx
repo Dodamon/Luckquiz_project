@@ -117,16 +117,41 @@ const HomeListCard = (props: Props) => {
     }
   };
 
+  // const deleteReportHandler = (event: React.MouseEvent) => {
+  //   event.stopPropagation();
+  //   getCommentRequest({
+  //     url: `/api/quiz/report/delete`,
+  //     method: "POST",
+  //     data: { reportId: report?.reportId },
+  //   });
+
+  //   setUpdateChk && setUpdateChk(!updataChk);
+  //   alert("레포트가 삭제 되었습니다.");
+  // };
+
   const deleteReportHandler = (event: React.MouseEvent) => {
     event.stopPropagation();
-    getCommentRequest({
-      url: `/api/quiz/report/delete`,
-      method: "POST",
-      data: { reportId: report?.reportId },
-    });
-
-    setUpdateChk && setUpdateChk(!updataChk);
-    alert("레포트가 삭제 되었습니다.");
+    toast.error(
+      () => (
+        <TemplateDeleteConfirm
+          message={`정말로 삭제하시겠습니까?`}
+          onConfirm={() => {
+            getCommentRequest({
+              url: `/api/quiz/report/delete`,
+              method: "POST",
+              data: { reportId: report?.reportId },
+            }).then(() => {
+              setUpdateChk && setUpdateChk(!updataChk);
+            });
+          }}
+          onCancel={() => {}}
+        />
+      ),
+      {
+        position: "top-center",
+        autoClose: false,
+      },
+    );
   };
 
   return (

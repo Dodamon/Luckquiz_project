@@ -70,11 +70,14 @@ export interface HostResult {
 }
 
 export interface GuestResult {
-    isUp: string;
-    rankDiff: number;
-    scoreGet: number;
-    quizNum: number;
-    rankNow: number;
+  isUp: string;
+  rankDiff: number;
+  scoreGet: number;
+  quizNum: number;
+  rankNow: number;
+  totalRankNow: number;
+  totalRankPre: number;
+  totalScore: number;
 }
 
 export interface FinalResultList {
