@@ -6,7 +6,6 @@ import { RootState } from "store";
 import { IMAGES } from "components/guest/ProfileNickname";
 
 const HostGameRanking = () => {
-  const quizGameType = useSelector((state: RootState) => state.socket.quizItem);
   const hostResult = useSelector((state: RootState) => state.socket.getHostResult);
 
   return (
