@@ -1,0 +1,128 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    gap: 2vh;
+}
+
+@media screen and (max-width: 767px) {
+.podium {
+  width: 90%;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+}
+
+@media screen and (min-width: 767px) {
+  .podium {
+    width: 60%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+  }
+  }
+
+  .flexend{
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+.open_btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 15px;
+  background-color: var(--side-bar);
+  border-radius: 20px;
+  gap: 5px;
+}
+.open_btn > img {
+  width: 30px;
+}
+
+.Tag {
+  border-radius: 5px;
+  background-color: white;
+  border: 3px solid orange;
+  width: fit-content;
+  min-width: 65%;
+  height: 40%;
+  margin-bottom: -3vh;
+  z-index: 1;
+  position: absolute;
+  top: 90%;
+}
+
+.Header {
+  background: orange;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  padding: 5px;
+  z-index: 1;
+}
+
+.Hello {
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: center;
+  font-size: 40%;
+  color: white;
+  z-index: 1;
+}
+
+.Mynameis {
+  height: 40%;
+  width: fit-content;
+  padding: 5% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  font-weight: bold;
+  text-align: center;
+  /* font-size: 50%; */
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.container2 {
+  position: relative;
+  margin: 5%;
+  z-index: -1;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 38%;
+}
+
+.profileImg {
+  width: 54%;
+  border-radius: 100%;
+  margin-top: 10%;
+  object-fit: cover;
+  border: 2px solid var(--grey-color);
+}
+
+.nameTag {
+  position: absolute;
+  top: 90%;
+  height: 40%;
+  width: 65%;
+  border-radius: 10px;
+  background-color: rgb(201, 201, 201);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

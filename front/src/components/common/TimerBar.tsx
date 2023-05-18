@@ -37,8 +37,8 @@ const TimerBar = ({ handleOrder, handleSubmit }: Props) => {
   }, []);
 
   // 보여지는 timerbar 시간세팅값 :
-  // 게스트의 wakeup 게임에서는 애니메이션을 보여줘야해서 게임시간 - 애니메이션노출시간(6.5s) 만큼 타이머 세팅
-  const barTime = !isHost && gametype === "wakeup" ? time! - 6 : time;
+  // wakeup 게임에서는 애니메이션을 보여줘야해서 게임시간 - 애니메이션노출시간(6s) 만큼 타이머 세팅
+  const barTime = gametype === "wakeup" ? time! - 6 : time;
 
   const style: CSSProperties = {
     "--countdown-time": `${barTime}s`,
