@@ -13,5 +13,5 @@ public class QuizRoomGuest {
     int rank;
     String nickName;
     long successRate;
-    double totalScore;
+    Double totalScore;
 }

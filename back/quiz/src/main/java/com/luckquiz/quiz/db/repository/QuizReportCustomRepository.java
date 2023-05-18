@@ -70,14 +70,14 @@ public class QuizReportCustomRepository {
                         quizGuest.id,
                         quizGuest.guestNickname,
                         quizGuest.correctCount.divide(quizGuest.totalCount).longValue(),
-                        quizGuest.score.doubleValue())
+                        quizGuest.score)
                 )
                 .from(quizGuest)
                 .where(
                         ltQuizGuestId(lastGuestId),
                         quizGuest.quizRoomId.eq(roomId)
                 )
-                .orderBy(quizGuest.id.desc(), quizGuest.score.desc())
+                .orderBy(quizGuest.score.desc(), quizGuest.id.desc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         return checkLastPage(pageable, results);
