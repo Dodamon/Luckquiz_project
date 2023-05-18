@@ -146,7 +146,7 @@ public class GradeService {
 				for(String ans:quiz.getAnswerList()){
 					log.info(ans+ " ");
 				}
-				hashGradeOperations.put(roomId+"p", playerName, userGrade);
+
 			}
 		} else {
 			//게임일 경우
@@ -162,10 +162,9 @@ public class GradeService {
 				case wakeup:
 					Long numOfClick = Long.parseLong(answer);
 					scoreGet = (int)(10L*numOfClick);
-					userGrade = hashGradeOperations.get(roomId+"p", playerName);
 					userGrade.setScoreGet(scoreGet);
 					// userGrade.setCount(userGrade.getCount()+1);
-					hashGradeOperations.put(roomId+"p", playerName, userGrade);
+
 					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 					log.info("받은점수 : "+scoreGet + "클릭 횟수 : " + numOfClick);
 					break;
@@ -173,20 +172,19 @@ public class GradeService {
 				case balloon:
 					Double timeDifference = Double.parseDouble(answer);
 					scoreGet = (int) Math.round((1d/(0.65d+timeDifference))*650d);
-					userGrade = hashGradeOperations.get(roomId+"p", playerName);
 					userGrade.setScoreGet(scoreGet);
 					// userGrade.setCount(userGrade.getCount()+1);
-					hashGradeOperations.put(roomId+"p", playerName, userGrade);
+
 					zSetOperations.incrementScore(roomId+"rank",gson.toJson(rankKey),scoreGet);
 					log.info("받은 점수 :"+scoreGet + " 시간차: " + timeDifference);
 					break;
 				default:
 					log.warn("없는 키값이 카프카 grade 토픽에 들어왔습니다. 확인해주세요.");
-					hashGradeOperations.put(roomId+"p", playerName, userGrade);
 					break;
 			};
-
 		}
+		hashGradeOperations.put(roomId+"p", playerName, userGrade);
+		System.out.println("aaaaaaa"+userGrade.getScoreGet() + userGrade.getRankNow());
 		// System.out.println(correctAnswer);
 		// System.out.println(gradeRequest.getMessage());
 		// System.out.println(gradeRequest.getSender());
@@ -243,7 +241,7 @@ public class GradeService {
 		// 받은 감정 종류의 개수에 +1 (통계용)
 		zSetOperations.incrementScore(roomId+"statics",answer.getValue(),1);
 		// 감정 종류가 제출한 사진 데이터의 감정과 같다면.
-		if (answer.getValue()=="laugh"){
+		if (answer.getValue().equals("laugh")){
 			answer.setValue("smile");
 		}
 		if(correctAnswer.equals(answer.getValue())){
@@ -360,6 +358,7 @@ public class GradeService {
 
 		for(Map.Entry<String,Grade> playerInfo: sortedPlayerInfo.entrySet()){
 			// 이전 사람 점수와 같으면 같은 등수.
+			System.out.println("유저 : " + playerInfo.getValue() + " 점수 : " + playerInfo.getValue().getScoreGet());
 			if(scoreGet == playerInfo.getValue().getScoreGet()){
 				playerInfo.getValue().setRankNow(ranking);
 			} else {
@@ -383,11 +382,10 @@ public class GradeService {
 			grade.setDone(false);
 			if(scoreGet == data.getValue()){
 				grade.setTotalRankNow(ranking);
-				hashGradeOperations.put(roomId+"p", data.getKey(), grade);
 			} else {
 				grade.setTotalRankNow(++ranking);
-				hashGradeOperations.put(roomId+"p", data.getKey(), grade);
 			}
+			hashGradeOperations.put(roomId+"p", data.getKey(), grade);
 			scoreGet = data.getValue();
 		}
 		//정답률
@@ -420,6 +418,7 @@ public class GradeService {
 		Map<String, Grade> hashmap = hashGradeOperations.entries(roomId+"p");
 		// 현재 등수 이전 등수로 만들기, 이전 문제에서 얻은점수 썻으니 0으로 만들어주기
 		hashmap.forEach((key, value)->{
+			log.info("키값1 : "+ key+" 받은 점수1 : " + value.getScoreGet() + " 현재 순위1 : " +value.getRankNow());
 			value.setRankPre(value.getRankNow());
 			value.setScoreGet(0);
 			value.setRankNow(0);
