@@ -78,12 +78,6 @@
 }
 
 @media screen and (max-width: 767px) {
-  .podium {
-    width: 90%;
-    height: fit-content;
-    justify-content: center;
-    align-items: center;
-  }
   .flexend {
     width:80%;
     display: flex;
@@ -107,12 +101,6 @@
 }
 
 @media screen and (min-width: 767px) {
-  .podium {
-    width: 60%;
-    height: fit-content;
-    justify-content: center;
-    align-items: center;
-  }
   .flexend {
     width: 80%;
     display: flex;

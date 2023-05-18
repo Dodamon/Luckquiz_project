@@ -1,8 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./GuestQuiz.module.css";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { socketActions } from "store/webSocket";
 
 const GuestQuiz = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -18,7 +22,8 @@ const GuestQuiz = () => {
         // ...
 
         // 페이지를 벗어납니다.
-        
+        dispatch(socketActions.resetSocket())
+        navigate("/");
       } else {
         // 뒤로가기 동작을 취소합니다.
         window.history.pushState(null, "", window.location.pathname);
