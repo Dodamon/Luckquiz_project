@@ -36,7 +36,6 @@ const HomeMain = () => {
   useEffect(()=>{
     dispatch(quizAtions.resetUpdate())
     disconnect()
-    console.log('디스커넥해')
   },[]);
 
 

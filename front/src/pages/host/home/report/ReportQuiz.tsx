@@ -36,7 +36,6 @@ const ReportQuiz = () => {
     }
   }, [data]);
 
-  console.log(data);
 
   return (
     <div className={styles.content}>
@@ -63,7 +62,9 @@ const ReportQuiz = () => {
               <img src={orangeCat} alt="" style={{ width: "22px", height: "23px" }} />
               <div>전체 문제</div>
             </div>
+   
             <ReportTable property={[]} data={basicReport.content.slice(0,basicReport.content.length-1)} type="quiz" />
+       
           </div>
         </div>
       ) : (

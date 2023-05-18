@@ -61,8 +61,6 @@ const QuizCreatePage: React.FC = () => {
     };
   }, [navigate]);
 
-  console.log(quizInfo);
-  console.log(authInfo.choiceIndex);
   return (
     <>
       <Default>

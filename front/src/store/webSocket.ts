@@ -45,8 +45,6 @@ const socketSlice = createSlice({
     // Send message when submit
     sendAnswerMessage: (state, actions) => {
       if (client) {
-        console.log("publish");
-        console.log(actions.payload.destination, actions.payload.body);
         client.publish({
           destination: actions.payload.destination,
           body: JSON.stringify(actions.payload.body),
@@ -58,7 +56,6 @@ const socketSlice = createSlice({
     // body 없는 publish
     sendRequest: (state, actions) => {
       if (client) {
-        console.log("publish");
         client.publish({
           destination: actions.payload,
         });
@@ -75,13 +72,11 @@ const socketSlice = createSlice({
 
     updatePinNum: (state, actions) => {
       state.pinNum = actions.payload;
-      console.log(actions.payload);
     },
 
     getQuizItem: (state, actions) => {
       state.quizItem = actions.payload;
       state.quizEnd = null;
-      console.log(state.quizItem);
     },
 
     quizEnd: (state) => {
@@ -124,7 +119,7 @@ export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Func
     await subscribe(socketProps, dispatch);
     await sendEnterMessage(socketProps);
     await dispatch(socketActions.updateGetMessage(true));
-    console.log("socket connected");
+    console.log("socket Connected");
   };
   client.onDisconnect = () => {
     console.log("socket Disconnected");
@@ -136,11 +131,9 @@ export const connectAndSubscribe = (socketProps: SocketPropsType, dispatch: Func
 };
 
 const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
-  console.log("제발 subscribe 실행됐다고 해줘");
   const callback = (res: any) => {
     if (res) {
       const data = JSON.parse(res.body);
-      console.log("구독 메세지 data:", data);
       // message가 guestList일 때,
       if (data.type === "enterGuestList") dispatch(socketActions.changeGuestList(data.enterGuestList));
       else if (data.type === "getQuizItem") dispatch(socketActions.getQuizItem(data.getQuizItem));
@@ -152,7 +145,6 @@ const subscribe = async (socketProps: SocketPropsType, dispatch: Function) => {
       else if (data.type === "userLList") dispatch(socketActions.getHostResult(data.userLList));
       else if (data.type === "userTurnEndResponse") dispatch(socketActions.getGuestResult(data.userTurnEndResponse));
       else if (data.type === "finalResultList") dispatch(socketActions.getFinalResultList(data.finalResultList));
-      else console.log("got empty message");
     }
   };
 
@@ -179,7 +171,6 @@ const sendEnterMessage = async (socketProps: SocketPropsType) => {
         roomId: socketProps.roomNum,
       }),
     });
-    console.log(`publish : send name - ${socketProps.name} / send img - ${socketProps.img}`);
   }
 };
 

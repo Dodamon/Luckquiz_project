@@ -31,9 +31,6 @@ const AnalyzeEmotion = async (img: string | undefined | null) => {
 
   try {
     const response = await axios(requestOptions);
-    console.log(response.status);
-    console.log(response.headers["content-type"]);
-    console.log(response.data);
   } catch (error) {
     console.error(error);
   }

@@ -19,7 +19,6 @@ const ShowPin = () => {
   const url = `${location}/guest/quiz/${quiz_id}`;
 
   useEffect(() => {
-    console.log(guestList);
     if (guestList && guestList.length >= 1) {
       navigate(`/host/quiz/${quiz_id}/lobby`);
     }
@@ -30,11 +29,10 @@ const ShowPin = () => {
     navigator.clipboard
       .writeText(url)
       .then(() => {
-        console.log("Text copied to clipboard:", url);
         toast("📋참여자 입장 링크가 복사되었습니다")
       })
       .catch((error) => {
-        console.error("Failed to copy text to clipboard:", error);
+        // console.error("Failed to copy text to clipboard:", error);
       });
   };
 

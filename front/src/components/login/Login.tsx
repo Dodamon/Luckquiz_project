@@ -8,9 +8,8 @@ interface Provider {
 
 const socialLogin = (props: Provider) => {
   const { provider } = props;
-  window.location.href.includes("local") ? console.log("local") : console.log("server");
   const location = window.location.href.includes("local") ? "http://localhost:3000" : process.env.REACT_APP_HOST;
-  console.log(location);
+
   window.location.href = `${process.env.REACT_APP_HOST}/api/auth/oauth2/authorize/${provider}?redirect_uri=${location}/oauth/redirect`;
 };
 

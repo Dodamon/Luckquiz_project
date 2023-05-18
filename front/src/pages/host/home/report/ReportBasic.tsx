@@ -62,10 +62,6 @@ const ReportBasic = () => {
     }
   }, [data]);
 
-  console.log("basic_data : ", data);
-  console.log("basic_reportID : ", report_id);
-
-
 
   return (
     <div className={styles.content}>

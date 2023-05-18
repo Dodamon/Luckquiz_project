@@ -65,11 +65,10 @@ const QuizListBar = () => {
     useEffect(() => {
         if (quiz_id) {
             axios.get(`${process.env.REACT_APP_HOST}/api/quiz/template/info?templateId=${quiz_id}&hostId=${authInfo.userId}`).then(res => {
-                console.log("아놔 여긴데~ 수정에서받은겨", res);
                 const data = res.data;
                 dispatch(quizAtions.receiveUpdate(data));
             }).catch(err=>{
-                console.log(err);
+        
                 navigate('/error', { state: { code:err.response.status}});
             })
 
@@ -77,8 +76,6 @@ const QuizListBar = () => {
     }, [])
 
     const itemSelectHandler = (quiznum: number) => {
-        console.log("사람살려", quiznum);
-
         dispatch(authActions.selectIndex(quiznum));
         setFocusedItem(quiznum);
     }

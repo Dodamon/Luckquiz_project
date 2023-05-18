@@ -109,7 +109,6 @@ const ProfileNickname: React.FC = () => {
     setNameLoading(true);
     const identifier = setTimeout(() => {
       // keyup 1초 후 중복 검사
-      console.log("api 요청");
       sendGuestRequest({ url: `/api/quizroom/duplicate/${paramPin}/${guestName}` });
     }, 500);
 
@@ -141,7 +140,6 @@ const ProfileNickname: React.FC = () => {
     const queryString = location.search;
     const searchParams = new URLSearchParams(queryString);
     const value = searchParams.get("pinnum");
-    console.log("params: ", value);
     if (typeof value === "string") setParamPin(value);
 
     if (guestName.length > 0 ) {

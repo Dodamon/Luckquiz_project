@@ -114,7 +114,7 @@ const ReportTable = (props: Props) => {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody style={{ overflow: "auto" }}>
+          <TableBody style={{ overflow: "auto"}}>
             {data && data.map((row, index) => (
               <StyledTableRow key={index}>
                 {Object.values(row).map((r, index) => (

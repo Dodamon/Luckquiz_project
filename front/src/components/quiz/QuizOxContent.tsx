@@ -17,7 +17,6 @@ const QuizOxContent = ({ handleAnswer }: QuizOxContentProps) => {
 
   const answerHandler = (answer: string) => {
     setItem(answer);
-    console.log(answer);
     handleAnswer && handleAnswer(answer);
   };
   return (

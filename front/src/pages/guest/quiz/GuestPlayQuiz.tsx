@@ -29,7 +29,6 @@ const GuestPlayQuiz = () => {
   // 하나의 퀴즈에서 보여지는 컴포넌트 순서
   // -1: 게임일때 카운트다운 이전에 설명 화면, 0: 카운트다운, 1: 퀴즈/게임 시작, 2: 채점중
   const [order, setOrder] = useState(0);
-  console.log("order:", order);
 
   // 퀴즈 다음문제 새로 가져오면 0부터 다시 진행
   // 게임이면 -1부터 진행
@@ -39,8 +38,6 @@ const GuestPlayQuiz = () => {
 
   // 해당 문제의 퀴즈 채점결과가 들어오면 결과페이지로 이동
   useEffect(() => {
-    console.log("게스트가받는결과:", guestResult);
-    console.log(quizItem?.quizNum, guestResult?.quizNum)
     if (quizItem?.quizNum === guestResult?.quizNum) {
       navigate("/guest/quiz/result");
     }
@@ -77,7 +74,6 @@ const GuestPlayQuiz = () => {
                   fontSize="18px"
                   height="45px"
                   onClick={() => {
-                    console.log("수동제출");
                     dispatch(
                       socketActions.sendAnswerMessage({
                         destination: "/app/submit",

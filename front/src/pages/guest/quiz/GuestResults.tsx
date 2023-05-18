@@ -13,7 +13,6 @@ const GuestResults = () => {
   // 새로운 퀴즈가 들어오면 퀴즈페이지로 이동
   
   useEffect(() => {
-    console.log("게스트가 받은 새퀴즈:", quizItem);
     if (quizItem?.quizNum !== result?.quizNum) {
       navigate('/guest/quiz/play')
       }

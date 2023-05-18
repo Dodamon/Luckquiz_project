@@ -10,12 +10,7 @@ import { useNavigate } from "react-router";
 const GuestLobby: React.FC = () => {
   const navigate = useNavigate();
   const quizItem = useSelector((state: RootState) => state.socket.quizItem);
-  const guestList = useSelector<RootState, GuestType[]|null>((state) => state.socket.guestList);
   
-  useEffect(() => {
-    console.log("바뀐", guestList);
-  }, [guestList]);
-
   useEffect(() => {
     quizItem && navigate(`/guest/quiz/play`);
   }, [navigate, quizItem]);

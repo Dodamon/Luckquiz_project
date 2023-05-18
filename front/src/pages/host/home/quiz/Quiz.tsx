@@ -45,19 +45,14 @@ const Quiz = () => {
   // 컴포넌트 분리로 삭제후 업데이트가 안돼서 강제로 사용
   const deleteQuizHandler = (quizId: string) => {
     setDeleteItem(quizId)
-    console.log("삭제된 템플릿 번호", quizId);
   };
 
 
   useEffect(() => {
-    console.log("이거다링", authInfo.userId);
     
     axios.get(`${process.env.REACT_APP_HOST}/api/quiz/template/list?hostId=${authInfo.userId}`)
       .then(res => {
-        console.log("서버에서 바로받은 데이터", res.data);
         const newQuizList = res.data;
-        console.log(newQuizList);
-        
 
         const finishList = [...newQuizList].filter(it=> it.isValid==="true").sort((a: any, b: any) => {
           const dateA = new Date(a.date);
@@ -81,10 +76,6 @@ const Quiz = () => {
           }
           return 0;
         });
-
-        console.log(nonFinishList);
-        console.log(finishList);
-        
 
         setMyQuizList([...finishList, ...nonFinishList]);
         dispatch(authActions.selectIndex(0));
