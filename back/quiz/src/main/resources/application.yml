@@ -1,0 +1,58 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://k8a7071.p.ssafy.io:3308/luckquiz?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: carrot707
+    password: ekdrmsehdrms1111!!
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false #To beautify or pretty print the SQL
+        show_sql: false #show sql
+  cloud:
+    gcp:
+      storage:
+        bucket: luckquiz
+        project-id: snappy-analog-384101
+        credentials:
+          location: classpath:snappy-analog-384101-5ff843401827.json
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5000
+      cache-null-values: false
+      host: k8a7071.p.ssafy.io
+      port: 3309
+      password: 'eodrms1111!'
+
+  kafka:
+    bootstrap-servers:
+      - http://13.125.215.143:9092
+      - http://54.180.139.100:9092
+      - http://54.180.165.36:9092
+    consumer:
+      group-id: test
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+app:
+  cors:
+    allowedOrigins: http://localhost:3000
+  auth:
+    token-secret: Y2Fycm90NzA3X3RoaXNpc19maW5hbF9wcm9qZWN0X0xPVkVfWU9VVVVVX0dVWVNTU1NTY2Fycm90NzA3X3RoaXNpc19maW5hbF9wcm9qZWN0X0xPVkVfWU9VVVVVX0dVWVNTU1NT
