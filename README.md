@@ -134,7 +134,7 @@
 
 ![감정게임](https://github.com/Ryeohwan/TRL/assets/73810834/66b4d302-beb0-4dbb-9d1c-e59c50e109f5)
 
-# 주요 기술 소개
+# <img src= "https://github.com/Ryeohwan/TRL/assets/73810834/79367754-6ed4-4510-9da4-c658efef4e8b"  width="20" height="20"/> 주요 기술 소개
 
 ## Frontend
 ![image](https://github.com/Ryeohwan/TRL/assets/73810834/e0ec795e-b7be-44c9-af6b-e7d7cd9a20fc)
@@ -154,7 +154,7 @@
 
 ![image](https://github.com/Ryeohwan/TRL/assets/73810834/91dfa453-5977-4c42-9d4a-64bd7b18570e)
 
-# 팀원 소개
+# <img src= "https://github.com/Ryeohwan/TRL/assets/73810834/79367754-6ed4-4510-9da4-c658efef4e8b"  width="20" height="20"/> 팀원 소개
 
 ![image](https://github.com/Ryeohwan/TRL/assets/73810834/c9545be8-fde5-498b-8b79-63bcafb5474a)
 
