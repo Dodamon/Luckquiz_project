@@ -1,0 +1,122 @@
+.emotion_content {
+    width: 80%;
+    height: 90%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2%;
+}
+
+ul {
+    padding-left: 0px;
+}
+
+.emotion_intro {
+    display: flex;
+    background-color: white;
+    min-width: 700px;
+    width: 100%;
+    min-height: 280px;
+    /* height: 45%; */
+    margin-top: 20px;
+    justify-content: space-between;
+    border-radius: 20px;
+}
+
+.intro_img {
+    width: 30%;
+    height: 100%;
+    min-width: 250px;
+}
+
+.intro_img img {
+    width: 100%;
+    height: 100%;
+    min-width: 250px;
+    object-fit: contain;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.intro_explain {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.intro_title {
+    font-size: 26px;
+    margin: 30px 0;
+}
+
+.intro_comment {
+    width: 100%;
+    word-break: keep-all;
+    font-size: 18px;
+    text-align: center;
+    color: var(--placeholder-text);
+    margin-bottom: 20px;
+    
+}
+.intro_comment>p {
+    margin-bottom: 6px;
+}
+
+.intro_discription {
+    width: 100%;
+    word-break: keep-all;
+    height: 15%;
+    font-size: 18px;
+    text-align: center;
+    line-height: 25px;
+}
+
+.emotion_select {
+    margin-top: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emotion_grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    row-gap: 30px;
+    column-gap: 100px;
+}
+
+.emotion_grid>li {
+    background-color: white;
+    border-radius: 10px;
+    height: 70px;
+    min-width: 150px;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.emotion_box {
+    width: 36%;
+    min-width: 60px;
+    color: white;
+    font-size: 48px;
+    height: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emotion_ment {
+    font-size: 20px;
+    width: 75%;
+    text-align: center;
+}

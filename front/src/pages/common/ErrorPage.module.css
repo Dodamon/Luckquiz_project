@@ -1,0 +1,10 @@
+.ErrorPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.ErrorPage>img {
+    width: 900px;
+}

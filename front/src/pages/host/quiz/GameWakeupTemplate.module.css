@@ -1,0 +1,52 @@
+.gameTitle {
+    width: 50%;
+    margin-top: 4.5%;
+}
+
+.shake_content{
+    background-color: white;
+    border-radius: 20px;
+    width: 80%;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.shake_name {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+.shake_title{
+    display: flex;
+    font-size: 26px;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.shake_explain{
+    font-size: 18px;
+    color: var(--placeholder-text);
+
+}
+
+.shake_discription {
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.shake_img{
+    /* background-color: red; */
+    width: 280px;
+    margin: 15px 0;
+    object-fit: contain;
+}
+
+.shake_img img{
+  height: 100%;
+  width: 100%;
+}

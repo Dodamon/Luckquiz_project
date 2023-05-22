@@ -1,0 +1,13 @@
+.row {
+  display: flex;
+  margin-left: 70px;
+}
+
+.bookmarker {
+  width: 120px;
+  height: 40px;
+  border-radius: 10px 10px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
