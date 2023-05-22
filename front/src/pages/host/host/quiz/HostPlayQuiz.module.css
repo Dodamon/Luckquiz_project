@@ -1,0 +1,123 @@
+@media screen and (min-width: 767px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* justify-content: space-around; */
+    align-items: center;
+    gap: 4vh;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    /* padding-top: 10%;
+  padding-bottom: 10%; */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* justify-content: space-evenly; */
+    align-items: center;
+    gap: 4vh;
+  }
+}
+
+.header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2%;
+  text-align: center;
+}
+
+.quizNum {
+  height: 18px;
+}
+
+.nextBtn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2%;
+  /* margin-top: 5vh; */
+}
+
+.currentSubmitChart {
+  position: fixed;
+  top: 40%;
+  right: 10px;
+  width: 20%;
+  height: 20%;
+}
+
+.submitChart {
+  width: 70%;
+  /* height: 30%; */
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2vh;
+}
+
+@media screen and (max-width: 767px) {
+  .flexend {
+    width:80%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .open_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px 10px;
+    background-color: var(--side-bar);
+    border-radius: 20px;
+    gap: 5px;
+  }
+  .open_btn > img {
+    width: 30px;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .flexend {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .open_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 15px;
+    background-color: var(--side-bar);
+    border-radius: 20px;
+    gap: 5px;
+  }
+  .open_btn > img {
+    width: 30px;
+  }
+}

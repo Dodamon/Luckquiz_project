@@ -1,0 +1,22 @@
+.container {
+  position: relative;
+  margin: 5%;
+  z-index: -1;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 38%;
+}
+
+.profileImg {
+  width: 54%;
+  border-radius: 100%;
+  margin-top: 10%;
+  object-fit: cover;
+  border: 2px solid var(--grey-color);
+}

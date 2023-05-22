@@ -1,0 +1,110 @@
+/* @import url("https://fonts.googleapis.com/css?family=Luckiest+Guy"); */
+
+/* ANIMATION */
+@keyframes bounce {
+  100% {
+    top: -20px;
+    text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+      0 5px 0 #67676792, 0 6px 0 #67676792, 0 7px 0 #67676792, 0 8px 0 #67676792, 0 9px 0 #67676792,
+      0 50px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* JUMP */
+.title {
+  cursor: default;
+  width: fit-content;
+  margin: auto;
+  display: block;
+  text-align: center;
+  /* font-family: "Luckiest Guy", cursive; */
+  white-space: nowrap;
+}
+
+.title > span {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  animation: bounce 0.3s ease infinite alternate;
+  font-size: 10vw;
+}
+
+.title > span:nth-child(1) {
+    color: var(--select-one);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+
+.title > span:nth-child(2) {
+  animation-delay: 0.1s;
+      color: var(--select-two);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+.title > span:nth-child(3) {
+  animation-delay: 0.2s;
+      color: var(--button-two);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+.title > span:nth-child(4) {
+  animation-delay: 0.3s;
+      color: var(--select-one);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+.title > span:nth-child(5) {
+  animation-delay: 0.4s;
+        color: var(--select-two);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+.title > span:nth-child(6) {
+  animation-delay: 0.5s;
+        color: var(--button-two);
+  text-shadow: 0 1px 0 #67676792, 0 2px 0 #67676792, 0 3px 0 #67676792, 0 4px 0 #67676792,
+    0 5px 0 #67676792, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* .title > span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+.title > span:nth-child(8) {
+  animation-delay: 0.2s;
+}
+
+.title > span:nth-child(9) {
+  animation-delay: 0.3s;
+}
+
+.title > span:nth-child(10) {
+  animation-delay: 0.4s;
+}
+
+.title > span:nth-child(11) {
+  animation-delay: 0.5s;
+}
+
+.title > span:nth-child(12) {
+  animation-delay: 0.6s;
+}
+
+.title > span:nth-child(13) {
+  animation-delay: 0.7s;
+}
+
+.title > span:nth-child(14) {
+  animation-delay: 0.8s;
+} */

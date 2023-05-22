@@ -1,0 +1,119 @@
+@media screen and (min-width:767px) {
+    .containerWrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .logo {
+        height: 180px;
+        width: 400px;
+        object-fit: fill;
+        /* margin-top: -10%; */
+    }
+    
+    .formBox {
+        height: 220px;
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top: 20px;
+        background-color: white;
+        border-radius: 20px;
+    }
+    
+    .enterTxt {
+        margin-top: 30px;
+        margin-bottom: -20px;
+        font-size: 20px;
+
+    }
+
+    .border {
+        width: 250px;
+        margin-top: 20px;
+    }
+
+    .inputBox {
+        height: 45px;
+        width: 352.8px;
+        border-radius: 15px;
+        border: 2px solid var(--grey-color);
+        /* margin-top: 8%; */
+        text-align: center;
+        outline: none;
+        font-size: 18px;
+    }
+    
+    .enterBtn {
+        height: 43px;
+        width: 360px;
+        border-radius: 15px;
+        border: none;
+        background-color: var(--button-two);
+        margin-bottom: 8%;
+        cursor: pointer;
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .logo {
+        height: 110px;
+        width: 250px;
+        object-fit: fill;
+        margin-top: 20%;
+    }
+    
+    .formBox {
+        height: 170px;
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 25px;
+        background-color: var(--white-color);
+        border-radius: 20px;
+    }
+
+    .border {
+        width: 200px;
+        margin-top: 10px;
+    }
+
+    .inputBox {
+        height: 40px;
+        width: 220px;
+        border-radius: 13px;
+        border: 2px solid var(--grey-color);
+        margin-top: 3%;
+        text-align: center;
+        outline: none;
+        font-size: 18px;
+    }
+    
+    .enterBtn {
+        height: 40px;
+        width: 227px;
+        border-radius: 13px;
+        border: none;
+        background-color: var(--button-two);
+        margin-top: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+}
+

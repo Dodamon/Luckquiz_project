@@ -1,0 +1,115 @@
+.profileNicknameContainer {
+    width: 100%;
+    height: 60%;
+    background-color: var(--white-color);
+    box-shadow: 0px 0px 10px -4px #3d3d3d;
+    border-radius: 20px;
+    font-size: 18px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgWrapper {
+    height: 50%;
+    /* padding-top: 2%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileImgMiddler {
+    position: relative;
+}
+
+.guestProfileImg {
+    height: 120px;
+    width: 120px;
+    border-radius: 100%;
+    /* margin-top: 10%; */
+    object-fit: cover;
+    border: 2px solid var(--grey-color);
+}
+
+.imgEditBtn {
+    position: absolute;
+    top: 91px;
+    left: 88px;
+    font-size: 40px;
+    color: var(--button-two);
+    cursor: pointer;
+}
+
+.nicknameWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 14%;
+    width: 80%;
+    border: 1.5px solid var(--grey-color);
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.errorBox {
+    border: 1.5px solid var(--select-one) !important;
+}
+
+.nicknameInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    width: 80%;
+    text-align: center;
+    border: none;
+    font-size: 18px;
+    outline: none;
+}
+
+.spinnerContainer {
+    width: 10%;
+    height: 60%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.spinner {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.useOkTxt {
+    font-size: 10px;
+    margin: 4px 0 0 4px;
+    height: 10px;
+}
+.possible {
+    color: var(--select-four);
+}
+.impossible {
+    color: var(--select-one);
+}
+.btnWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 100%;
+}
+
+.startBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
+    width: 80%;
+    /* margin-bottom: 10%; */
+    background-color: var(--button-two);
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+}

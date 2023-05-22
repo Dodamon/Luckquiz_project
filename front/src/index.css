@@ -1,0 +1,72 @@
+@font-face {
+  font-family: "GodoM";
+  src: url("assets/font/GodoM.ttf") format("truetype");
+}
+
+* {
+  font-family: "GodoM", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+
+  /* 기본 색깔 */
+  --point-color: #7557ff;
+  --black-color: #010101;
+  --white-color: #fbfbfb;
+  --grey-color: #cacaca;
+
+  /* 버튼 색깔, one을 위주로 사용, 버튼 두 개거나 배경이 포인트 컬러일 때 two 사용 */
+  --button-one: #7557ff;
+  --button-two: #ffc107;
+  --button-delete: #f75555;
+
+  /* 퀴즈의 선택지 색깔과 틀린 답 색깔 */
+  --select-one: #f75555;
+  --select-two: #1bd392;
+  --select-three: #ff981f;
+  --select-four: #3779ff;
+  --wrong-answer: #cbcbcb;
+
+  /* 세팅 색깔 */
+  --placeholder-text: #7e7e7e;
+  --side-bar: #dcd5ff;
+  --mypage-background: #f1f1f1;
+  --ranking-background: #917afd;
+  --box-shadow: 1px 1px 10px -4px #858585;
+
+  /* 위 색들 다 쓰고도 색깔이 더 필요한 경우에만 기타 색깔로 사용 */
+  --etc-one: #7a5548;
+  --etc-two: #607d8a;
+  --etc-three: #935cd7;
+
+  background-image: url(assets/images/background.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  background-attachment: fixed;
+  /* 텍스트 크기 설정 (페이지 만들면서 추가 예정) */
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:focus {
+  text-decoration: none;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+}

@@ -1,0 +1,62 @@
+@media screen and (min-width: 767px) {
+    .ReadyGameContainer {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* margin-top: 16%; */
+        margin-bottom: 5%;
+    }
+    
+    .logoCatImg {
+        width: 70px;
+        height: 70px;
+        object-fit: fill;
+        margin-right: -40%;
+    }
+    
+    .gameContainer {
+        width: 90%;
+        height: fit-content;
+        max-width: 750px;
+        background-color: var(--white-color);
+        border-radius: 20px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .ReadyGameContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+        align-items: center;
+        margin-bottom: 40%;
+    }
+    
+    .logoCatImg {
+        width: 50px;
+        height: 53px;
+        object-fit: fill;
+        margin-right: -40%;
+        margin-top: 16%;
+    }
+    
+    .gameContainer {
+        width: 90%;
+        height: fit-content;
+        max-width: 600px;
+        min-width: 210px;
+        background-color: var(--white-color);
+        border-radius: 20px; 
+        display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center; 
+    }
+}

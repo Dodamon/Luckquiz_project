@@ -1,0 +1,29 @@
+.btnBox {
+  display: flex;
+  cursor: pointer;
+  /* z-index: -1; */
+}
+
+.logoBox {
+  background-color: white;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 10px 0px 0px 10px;
+  box-shadow: 4px 4px #00000015;
+  box-sizing: border-box;
+}
+
+.nameBox {
+  display: flex;
+  align-items: center;
+  border-radius: 0px 10px 10px 0px;
+  background-size: contain;
+  background-position: center;
+  background-color: var(--button-two);
+  box-shadow: 4px 4px #00000015;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  box-sizing: content-box;
+  font-size: 30px;
+  white-space: nowrap;
+}
