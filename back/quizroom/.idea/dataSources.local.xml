@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-223.8617.56">
+    <data-source name="luckquiz@k8a7071.p.ssafy.io" uuid="de6ef0bb-b46e-4318-ba09-0fda90103438">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" exact-version="0" />
+      <secret-storage>forget</secret-storage>
+      <schema-mapping />
+    </data-source>
+    <data-source name="0@k8a707.p.ssafy.io" uuid="7a299e0d-9c3f-4d93-9c27-56b6614f98ea">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="REDIS" exact-version="0" />
+      <secret-storage>forget</secret-storage>
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
